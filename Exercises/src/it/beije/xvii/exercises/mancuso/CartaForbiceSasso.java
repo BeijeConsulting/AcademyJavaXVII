@@ -104,6 +104,8 @@ public class CartaForbiceSasso {
 		String outcome = game.play();
 		
 		System.out.println("Risultato: " + outcome);
+		
+		reader.close();
 	}
 
 }

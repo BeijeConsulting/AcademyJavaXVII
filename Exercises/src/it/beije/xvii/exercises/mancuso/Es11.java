@@ -27,7 +27,7 @@ public class Es11 {
 		
 		System.out.print("Inserisci il carattere da contare:\n");
 		char c = reader.next().charAt(0);
-		
+		reader.close();
 		Es11 letsCount = new Es11();
 		
 		System.out.println(letsCount.contaLettera(c,s));

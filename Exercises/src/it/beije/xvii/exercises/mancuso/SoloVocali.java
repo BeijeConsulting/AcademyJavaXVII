@@ -9,7 +9,7 @@ public class SoloVocali {
 		Scanner reader = new Scanner(System.in);
 		System.out.print("Inserisci una stringa");
 		String stringa = reader.nextLine();
-		
+		reader.close();
 		String vocali = "aeiouAEIOU";
 		
 		int length = stringa.length();

@@ -17,7 +17,7 @@ public class Contrario {
 		StringBuilder sb = new StringBuilder(s);
 		
 		sb.reverse();
-		
+		reader.close();
 		System.out.println(sb);
 	}
 

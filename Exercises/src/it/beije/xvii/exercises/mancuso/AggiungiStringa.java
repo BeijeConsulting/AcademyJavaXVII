@@ -1,7 +1,6 @@
 package it.beije.xvii.exercises.mancuso;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /*
  * Scrivere il metodo: “public String [] addString(String s, String[] a)”, che accetta come

@@ -14,9 +14,8 @@ public class SetterGetter {
 		Scanner reader = new Scanner(System.in);
 		
 		String s = reader.nextLine();
-		
-		StringBuilder sb = new StringBuilder(s);
-		
+		reader.close();
+				
 		s = s.substring(0,1).toUpperCase() + s.substring(1);
 		
 		System.out.println("set" + s);

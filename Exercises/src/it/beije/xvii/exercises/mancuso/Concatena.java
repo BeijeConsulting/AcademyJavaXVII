@@ -21,7 +21,7 @@ public class Concatena {
 				concat += "*";
 			}
 		}
-		
+		reader.close();
 		System.out.print(concat);
 	}
 

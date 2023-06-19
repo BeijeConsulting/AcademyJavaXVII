@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class MyArrayList {
 
-	public static boolean equals(ArrayList one, ArrayList two) {
+	public static boolean equals(ArrayList<Integer> one, ArrayList<Integer> two) {
 		if(one.size() != two.size()) {
 			return false;
 		}else {

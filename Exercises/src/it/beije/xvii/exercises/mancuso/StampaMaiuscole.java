@@ -22,7 +22,7 @@ public class StampaMaiuscole {
 			stringhe[i] = stringa;
 			i++;
 		}
-		
+		reader.close();
 		for(String s : stringhe) {
 			if(maiuscole.contains(String.valueOf(s.charAt(0)))) {
 				System.out.println(s);

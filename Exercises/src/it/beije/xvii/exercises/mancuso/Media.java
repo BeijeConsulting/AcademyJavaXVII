@@ -17,7 +17,7 @@ public class Media {
 			System.out.println("Inserisci un numero: ");
 			numeri[i] = reader.nextInt();
 		}
-		
+		reader.close();
 		int sum = 0;
 		
 		for(int n : numeri) {

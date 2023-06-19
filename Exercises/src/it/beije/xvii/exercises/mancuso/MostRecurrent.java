@@ -1,6 +1,5 @@
 package it.beije.xvii.exercises.mancuso;
 
-import java.util.ArrayList;
 /*
  * Scrivere il metodo: “public int mostRecurrent(int [] array)” , 
  * che trova l’elemento più ricorrente in un array. Il metodo restituisce l’elemento trovato.
