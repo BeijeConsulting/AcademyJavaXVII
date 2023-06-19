@@ -1,4 +1,4 @@
-package it.beijeit.xvii.exercises.sala;
+package it.beije.xvii.exercises.sala;
 import java.util.Scanner;
 /*
  * Scrivere un programma Concatena che chiede all’utente di inserire tre singole parole e le ristampa 

@@ -1,4 +1,4 @@
-package it.beijeit.xvii.exercises.sala;
+package it.beije.xvii.exercises.sala;
 import java.util.Scanner;
 /*
  * Scrivere un metodo che, data una stringa in input, assuma questa come un nome di variabile e stampi 

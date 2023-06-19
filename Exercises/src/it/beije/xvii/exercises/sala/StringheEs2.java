@@ -1,4 +1,4 @@
-package it.beijeit.xvii.exercises.sala;
+package it.beije.xvii.exercises.sala;
 import java.util.Scanner;
 /*
  * Scrivere un programma StampaMaiuscole che, dato un array di stringhe, ne stampa 

@@ -1,4 +1,4 @@
-package it.beijeit.xvii.exercises.sala;
+package it.beije.xvii.exercises.sala;
 
 public class ProvaArray {
 

@@ -1,4 +1,4 @@
-package it.beijeit.xvii.exercises.sala;
+package it.beije.xvii.exercises.sala;
 import java.util.Scanner;
 /*
  * Scrivere un programma che chieda agli utenti due stringhe in ingresso, le stringhe possono valere 

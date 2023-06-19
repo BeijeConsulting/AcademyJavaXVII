@@ -1,4 +1,4 @@
-package it.beijeit.xvii.exercises.sala;
+package it.beije.xvii.exercises.sala;
 import java.util.Scanner;
 /*
  * Verificare la sequenza crescente di un array. Il metodo “boolean isCrescente(int [] array)” 

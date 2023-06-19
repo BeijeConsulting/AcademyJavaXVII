@@ -1,4 +1,4 @@
-package it.beijeit.xvii.exercises.sala;
+package it.beije.xvii.exercises.sala;
 
 /*
  * Scrivere un programma StampaZigZag che, dato un array di 10 numeri interi contenente valori a 
