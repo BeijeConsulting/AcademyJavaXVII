@@ -201,15 +201,20 @@ public class StringUtils {
 
 		return word;
 	}
-	public static String trim(String s) {
-		String word = "";
-		for(int i= 0; i< s.length(); i++) {
-			if(s.charAt(i) != ' ' ) {
-				word += s.charAt(i);
-			}
 
-		}
-		return word;
+	public static String trim(String s) {
+	    int start = 0;
+	    int end = s.length() - 1;
+
+	    while (start <= end && s.charAt(start) == ' ') {
+	        start++;
+	    }
+
+	    while (end >= start && s.charAt(end) == ' ') {
+	        end--;
+	    }
+
+	    return s.substring(start, end + 1);
 	}
 	
 }
