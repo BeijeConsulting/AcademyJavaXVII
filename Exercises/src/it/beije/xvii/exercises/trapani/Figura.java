@@ -3,13 +3,18 @@ package it.beije.xvii.exercises.trapani;
 public class Figura {
 
 	public static void main(String[] args) {
-		    for(int x=6;x>=1;x--){
-
-		    	for(int space=7-x;space>0;space--) 
-		        	System.out.print(space);
+		int num=6;
+		
+		for(int i=0;i<6;i++) {
+			int y;
+			for(y=0;y<i+1;y++) {
+				
+				System.out.print(y+1);
+				
+			}
 		    	System.out.print(" ");
-		        for (int y=x;y>0;y--)
-		        System.out.print(y);
+		        for (int k=0;k<num-i ;k++)
+		        System.out.print((num - k - y + 1));
 		        System.out.println();
 		        
 		    }
