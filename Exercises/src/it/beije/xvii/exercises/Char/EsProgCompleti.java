@@ -4,8 +4,9 @@ public class EsProgCompleti {
 	
 	public static void main(String[] args) {
 //		fabbricaBibita(700,8,30);
-		caffeina(6);
-	
+//		caffeina(6);
+	System.out.println(conversioneStringa("din"))	; 
+
 	}
 	public static void fabbricaBibita(int content, int evapPerDay, int threshold) {
         int days = 0;
@@ -37,5 +38,18 @@ public class EsProgCompleti {
 		else 
 			System.out.println("match_missed!");
 			
+	}
+	public static StringBuilder conversioneStringa(String s) {
+		StringBuilder conversione = new StringBuilder();
+		for(int i = 0; i< s.length(); i++) {
+			StringBuilder parolaSenzaLettera = new StringBuilder();
+			parolaSenzaLettera.append(s.substring(0,i));
+			parolaSenzaLettera.append(s.substring(i + 1));
+			if(parolaSenzaLettera.toString().contains(s.substring(i, i+1))) {
+				conversione.append(")");
+			}
+			else conversione.append("(");
+		}
+		return conversione;
 	}
 }
