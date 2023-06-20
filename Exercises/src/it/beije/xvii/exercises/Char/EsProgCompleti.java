@@ -5,7 +5,8 @@ public class EsProgCompleti {
 	public static void main(String[] args) {
 //		fabbricaBibita(700,8,30);
 //		caffeina(6);
-	System.out.println(conversioneStringa("din"))	; 
+//	System.out.println(conversioneStringa("din")); 
+	System.out.println(persistenza(39));
 
 	}
 	public static void fabbricaBibita(int content, int evapPerDay, int threshold) {
@@ -51,5 +52,22 @@ public class EsProgCompleti {
 			else conversione.append("(");
 		}
 		return conversione;
+	}
+	public static int persistenza(int num) {
+		int persistenza = 0;
+
+        while (num >= 10) {
+            int pr = 1;
+            while (num > 0) {
+                int cifra = num % 10; // ultima cifra
+                pr *= cifra; 
+                num /= 10; // Rimuove l'ultima cifra
+            }
+
+            num = pr;
+            persistenza++;
+        }
+
+        return persistenza;
 	}
 }
