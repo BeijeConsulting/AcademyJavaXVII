@@ -1,5 +1,18 @@
 package it.beije.xvii.exercises.mancuso;
 
+/*
+ * Lo scopo di questo esercizio è convertire una stringa in una nuova stringa, 
+ * dove ogni carattere della nuova stringa è ‘(‘ se il carattere corrispondente 
+ * nella stringa originale è unico, altrimenti vale ‘)’. Ignorare le maiuscole/minuscole 
+ * per decidere se un carattere è duplicato o meno.Per esempio:”din” => “(((“”recede” => “()()()”
+
+“Success” => “)())())”
+
+“(( @” => “))((“
+ * 
+ * 
+ */
+
 public class ConvertiStringa {
 
 	public static void main(String[] args) {
