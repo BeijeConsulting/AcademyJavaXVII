@@ -1,5 +1,9 @@
 package it.beije.xvii.exercises.ulloa;
 
+/*
+ * Scrivere un programma che stampi i primi 100 elementi della successione di Fibonacci. 
+ */
+
 public class Esercizio7 {
 
 	public static void main(String[] args) {
