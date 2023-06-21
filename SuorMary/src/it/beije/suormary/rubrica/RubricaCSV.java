@@ -13,24 +13,11 @@ public class RubricaCSV {
 
 	public static void main(String[] args) throws Exception {
 		
-		File file = new File("/temp/prova.txt");
+		File file = new File("/v/prova2.txt");
 		System.out.println("exists? " + file.exists());
 		System.out.println("isDirectory? " + file.isDirectory());
 		
 		FileReader fileReader = new FileReader(file);
-//		char c;// = fileReader.read();
-//		StringBuilder r = new StringBuilder(); 
-//		while (fileReader.ready()) {
-//			//System.out.print((char)c);
-//			//c = fileReader.read();
-//			c = (char) fileReader.read();
-//			if (c != '\n') r.append(c);
-//			else {
-//				System.out.print(r);
-//				r = new StringBuilder();
-//			}
-//		}
-		
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		List<String> rows = new ArrayList<String>();
 		while (bufferedReader.ready()) {
@@ -42,12 +29,7 @@ public class RubricaCSV {
 		System.out.println("rows number: " + rows.size());
 		
 		for (String row : rows) {
-//			StringTokenizer tokenizer = new StringTokenizer(row, ";");
-//			while (tokenizer.hasMoreElements()) {
-//				System.out.println(tokenizer.nextToken());
-//			}
-//			System.out.println("---");
-			
+
 			String[] contact = row.split("\";\"");
 			System.out.println(Arrays.toString(contact));
 
