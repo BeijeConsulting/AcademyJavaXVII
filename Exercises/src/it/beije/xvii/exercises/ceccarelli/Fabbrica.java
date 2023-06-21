@@ -16,6 +16,9 @@ public class Fabbrica {
 	
 	public Fabbrica(int content, int evapPerDay, int threshold) {
 		// TODO Auto-generated constructor stub
+		this.content = content;
+		this.evapPerDay = evapPerDay;
+		this.threshold = threshold;
 	}
 
 	public static void main(String[] args) {
