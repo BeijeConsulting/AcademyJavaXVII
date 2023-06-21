@@ -37,13 +37,15 @@ public class StringUtils {
 	}
 	
 	public static int indexOf(String s, String str, int fromIndex) {
-		int index = -1;
-		int j=0;
-		
-		for(int i=fromIndex; i<s.length();i++) {
-			if(s.charAt(i)==str.charAt(j)) {
-				index = i;
-			}
+
+		int index =0;
+		for (int i=fromIndex; i<s.length(); i++) {
+			for (int j=0; j<str.length(); j++) {
+				if((s.charAt(i)==str.charAt(j))) {
+					index=i-j;
+				} else 
+					index=-1;	
+			}	
 		}
 		return index;
 	}
@@ -166,20 +168,20 @@ public class StringUtils {
 		return str;
 	}
 	
-	public static String replace(String s, String oldC, String newC) {
-		String str="";
-		if(!(contains(s,oldC))) 
-			System.out.println("Stringa da sostituire non trovata");
-		for(int i=0; i<s.length(); i++) {
-			if(indexOf(s,oldC)==-1) {
-				str += 
-			}
-		}
-		
-		
-		
-		return str;
-	}
+//	public static String replace(String s, String oldC, String newC) {
+//		String str="";
+//		if(!(contains(s,oldC))) 
+//			System.out.println("Stringa da sostituire non trovata");
+//		for(int i=0; i<s.length(); i++) {
+//			if(indexOf(s,oldC)==-1) {
+//				str += 
+//			}
+//		}
+//		
+//		
+//		
+//		return str;
+//	}
 	
 	public static void main(String[] args) {
 		String s = "animal";
@@ -187,45 +189,48 @@ public class StringUtils {
 		String up= "ANIMAL";
 		String up1 = "AnimAl";
 		
-		/*System.out.println(indexOf(s, 'n'));		
-		/System.out.println(indexOf(s, 's'));
-		/
-		/System.out.println(indexOf(s,'m', 3));		
-		/System.out.println(indexOf(s,'m', 4));		
-		/
-		/System.out.println(indexOf(s,"mal"));		
-		/System.out.println(indexOf(s,"son"));
-		/
-		/System.out.println(indexOf(s,"al",1));		
-		/System.out.println(indexOf(s,"ni",2));
-		/
-		/System.out.println(substring(s,2));			
-		/System.out.println(substring(s,7));
-		/
-		/System.out.println(substring(s,1,6));		
-		/System.out.println(substring(s,1,7));
-		/System.out.println(substring(s,1,1));
-		/
-		/System.out.println(toLowerCase(up));		
-		/System.out.println(toLowerCase(up1));
-		/
-		/System.out.println(toUpperCase(s));
-		/
-		/System.out.println(equals(s,eq));
-		/
-		/System.out.println(equalsIgnoreCase(s,up));
-		/
-		/System.out.println(contains(s,"mal"));
-		/System.out.println(contains(s,"fes"));
-		/
-		/System.out.println(startsWith(s, "ani"));
-		/System.out.println(startsWith(s, "mal"));
-		/
-		/System.out.println(endsWith(s,"imal"));
-		/
-		/System.out.println(replace(s,'m','M'));*/
+//		System.out.println(indexOf(s, 'n'));		
+//		System.out.println(indexOf(s, 's'));
+//		
+//		System.out.println(indexOf(s,'m', 3));		
+//		System.out.println(indexOf(s,'m', 4));		
 		
-		System.out.println(replace(s,"msms", "hehe"));
+//		System.out.println(indexOf(s,"mal"));		
+//		System.out.println(indexOf(s,"son"));
+//		
+//		System.out.println(indexOf(s,"al",1));		
+//		System.out.println(indexOf(s,"als",1));
+//		System.out.println(indexOf(s,"sdf", 1));
+//		System.out.println(indexOf(up,"l", 1));
+//		
+		
+//		System.out.println(substring(s,2));			
+//		System.out.println(substring(s,7));
+//		
+//		System.out.println(substring(s,1,6));		
+//		System.out.println(substring(s,1,7));
+//		System.out.println(substring(s,1,1));
+//		
+//		System.out.println(toLowerCase(up));		
+//		System.out.println(toLowerCase(up1));
+//		
+//		System.out.println(toUpperCase(s));
+//		
+//		System.out.println(equals(s,eq));
+//		
+//		System.out.println(equalsIgnoreCase(s,up));
+//		
+//		System.out.println(contains(s,"mal"));
+//		System.out.println(contains(s,"fes"));
+//		
+//		System.out.println(startsWith(s, "ani"));
+//		System.out.println(startsWith(s, "mal"));
+//		
+//		System.out.println(endsWith(s,"imal"));
+//		
+//		System.out.println(replace(s,'m','M'));*/
+//		
+//		System.out.println(replace(s,"msms", "hehe"));
 		
 	}
 
