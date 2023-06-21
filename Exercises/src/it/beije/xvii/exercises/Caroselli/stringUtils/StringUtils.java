@@ -1,7 +1,5 @@
 package stringUtils;
 
-import stringUtils2.*;
-
 import java.util.ArrayList;
 
 public class StringUtils {
@@ -37,7 +35,7 @@ public class StringUtils {
 
         for (int i = fromIndex; i < s.length(); i++) {
             //mi trovo il vero indice del carattere c nella stringa s
-            index = IndexOfEx.indexOf(s, c);
+            index = indexOf(s, c);
             //devo controllare che l'indice da cui parto
             // cioe' fromIndex non sia maggiore dell'indice restituito
             if (fromIndex > index) {
@@ -112,7 +110,7 @@ public class StringUtils {
 
         char c = s.charAt(beginIndex);
 
-        int indexFromBeginIndex = IndexOfEx.indexOf(s, c);
+        int indexFromBeginIndex = indexOf(s, c);
 
         if (indexFromBeginIndex != -1) {
             for (int i = indexFromBeginIndex; i < s.length(); i++) {
@@ -221,17 +219,17 @@ public class StringUtils {
     }
 
     public static boolean equalsIgnoreCase(String s1, String s2) {
-        s1 = ToLowerCase.toLowerCase(s1);
-        s2 = ToLowerCase.toLowerCase(s2);
+        s1 = toLowerCase(s1);
+        s2 = toLowerCase(s2);
 
-        return EqualsString.equals(s1, s2);
+        return equals(s1, s2);
     }
 
     public static boolean contains(String s, String str) {
 
         boolean isInTheString = false;
 
-        int index = IndexOfStrStr.indexOfStrStr(s, str);
+        int index = indexOfStrFromStr(s, str);
         if (index != -1) {
             isInTheString = true;
         }
@@ -270,7 +268,7 @@ public class StringUtils {
 
     public static String replace(String s, char oldChar, char newChar) {
 
-        int index = IndexOfEx.indexOf(s, oldChar);
+        int index = indexOf(s, oldChar);
 
         char[] charArray = s.toCharArray();
 
@@ -287,10 +285,10 @@ public class StringUtils {
 
     public static String replace(String s, String oldChar, String newChar) {
 
-        boolean contains = Contains.contains(s, oldChar);
+        boolean contains = contains(s, oldChar);
         StringBuilder result = new StringBuilder();
         int startIndex = 0;
-        int index = IndexOfEx.indexOf(s, oldChar.charAt(0));
+        int index = indexOf(s, oldChar.charAt(0));
 
         if (contains) {
 
@@ -329,7 +327,7 @@ public class StringUtils {
 
         //faccio la substring
 //            return s.substring(startIndex, endIndex + 1);
-        return Substring2.substring(s, startIndex, endIndex);
+        return substring(s, startIndex, endIndex);
     }
 
 
