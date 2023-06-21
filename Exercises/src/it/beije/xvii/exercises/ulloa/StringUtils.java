@@ -29,6 +29,11 @@ package it.beije.xvii.exercises.ulloa;
  */
 
 public class StringUtils {
+	//solo per testing
+	public static void main(String[] args) {
+		
+	}
+	
 	public static int indexOf(String s, char c) {
 		return 0;
 	}
