@@ -11,16 +11,17 @@ public class Fraudolent {
 	public static boolean isValid(String s) throws Exception{
 		String[] row = s.split(" ");
 		if (row.length != 4) return false; //not enough fields
+		if (!row[0].equals(row[0].toUpperCase())) return false; //name in lower case
 		if (row[0].length() != 3) return false; //name too long or too short
-		if (!row[0].equals(row[0].toUpperCase())) return false; //name in lowercase
+		double d;
+		int n;
 		try {
-			double d = Double.parseDouble(row[1]); //no number
-			if (d < 0) return false;
-			int n = Integer.parseInt(row[2]); //no number
-			if (n < 0) return false;
+			d = Double.parseDouble(row[1]); //no number
+			n = Integer.parseInt(row[2]); //no number
 		} catch(Exception e) {
 			return false;
 		}
+		if (d < 0 || n < 0) return false; //negative number
 		if (!row[3].equals("B") && !row[3].equals("S")) return false;
 		return true;
 		}

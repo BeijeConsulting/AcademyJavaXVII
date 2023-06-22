@@ -1,5 +1,8 @@
 "ABC 50.0 210 B"
 "AAA 20 10 S"
-"BBB d 10 B"
-CCC 21.9 -4 S
-FR 21 32 S
+"BBB 5 10 B"
+no1 45. 2 B
+CCC 21.9 4 S
+NO2 . E
+NO3 43 3 S
+FRS 21 32 S
