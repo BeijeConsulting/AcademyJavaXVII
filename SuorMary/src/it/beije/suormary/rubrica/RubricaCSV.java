@@ -13,7 +13,8 @@ public class RubricaCSV {
 
 	public static void main(String[] args) throws Exception {
 		
-		File file = new File("/temp/prova.txt");
+		//File file = new File("/temp/prova.txt");
+		File file = new File("/Users/Padawan/eclipse-workspace/File/prova.txt");
 		System.out.println("exists? " + file.exists());
 		System.out.println("isDirectory? " + file.isDirectory());
 		
