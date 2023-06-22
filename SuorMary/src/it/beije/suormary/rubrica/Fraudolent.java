@@ -10,8 +10,8 @@ public class Fraudolent {
 
 	public static boolean isValid(String s) throws Exception{
 		String[] row = s.split(" ");
-		if (row.length != 4) return false; //not enough fields
-		if (!row[0].equals(row[0].toUpperCase())) return false; //name in lower case
+		if (row.length != 4) return false; //not enough fields 
+		row[0] = row[0].replaceAll("[^A-Z]", ""); //name in lower case or not 
 		if (row[0].length() != 3) return false; //name too long or too short
 		double d;
 		int n;
