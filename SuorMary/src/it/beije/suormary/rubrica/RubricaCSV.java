@@ -13,13 +13,14 @@ public class RubricaCSV {
 
 	public static void main(String[] args) throws Exception {
 		
-		File file = new File("/temp/prova.txt");
+		File file2 = new File("/home/flaviana/dev/corso-beije/AcademyJavaXVII/SuorMary/src/rubrica.csv");
+		File file = new File("/home/flaviana/dev/corso-beije/AcademyJavaXVII/SuorMary/src/prova.txt");
 		System.out.println("exists? " + file.exists());
 		System.out.println("isDirectory? " + file.isDirectory());
 		
 		FileReader fileReader = new FileReader(file);
 //		char c;// = fileReader.read();
-//		StringBuilder r = new StringBuilder(); 
+//		StringBuilder r = new StringBuilder();
 //		while (fileReader.ready()) {
 //			//System.out.print((char)c);
 //			//c = fileReader.read();
@@ -40,7 +41,7 @@ public class RubricaCSV {
 		}
 		
 		System.out.println("rows number: " + rows.size());
-		
+
 		for (String row : rows) {
 //			StringTokenizer tokenizer = new StringTokenizer(row, ";");
 //			while (tokenizer.hasMoreElements()) {

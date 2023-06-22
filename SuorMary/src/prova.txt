@@ -1,0 +1,4 @@
+"NOME";"COGNOME";"TELEFONO";"EMAIL";"NOTE"
+"mario";"rossi";"333333333";"mario@rossi.it";"zio mario"
+"carlo maria";"rossi";"333333334";"carlo@rossi.it";"nonno carlo"
+"giovanni";"rossi";"333333335";"giovanni@rossi.it";"vicino di casa; persona gentile"

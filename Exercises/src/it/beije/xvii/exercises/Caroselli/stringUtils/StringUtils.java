@@ -1,4 +1,4 @@
-package stringUtils;
+package it.beije.xvii.exercises.Caroselli.stringUtils;
 
 import java.util.ArrayList;
 
