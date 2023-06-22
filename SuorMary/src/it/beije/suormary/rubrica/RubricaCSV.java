@@ -1,13 +1,15 @@
 package it.beije.suormary.rubrica;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-import java.lang.reflect.Array;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
+
 
 public class RubricaCSV {
 
@@ -26,17 +28,35 @@ public class RubricaCSV {
 			//System.out.println(r);
 		}
 		
+		bufferedReader.close();
+		fileReader.close();
+		
+		
 		System.out.println("rows number: " + rows.size());
-		int nn = 0;
-		int bb = 0;
-		int ss = 0;
-		List<String> righeErrate = new ArrayList<String>();
+
+		FileWriter fileWriter = new FileWriter("/temp/appoggio/prova.csv");
+
 		for (String row : rows) {
+
+			row = row.substring(1,row.length()-1);
 
 			String[] contact = row.split("\";\"");
 			System.out.println(Arrays.toString(contact));
-		
+	
+			for (int j=4; j > 0; j--) {
+				fileWriter.write(contact[j]);
+				fileWriter.write('|');
+			}
+			fileWriter.write(contact[0]);
+			fileWriter.write('\n');
+			fileWriter.flush();
+
 		}
 		
+
+		fileWriter.close();
+		
+		System.out.println("FINE");
+
 	}
 }
