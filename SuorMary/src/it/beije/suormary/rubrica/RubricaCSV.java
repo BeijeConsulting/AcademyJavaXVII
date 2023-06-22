@@ -1,13 +1,9 @@
 package it.beije.suormary.rubrica;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
-<<<<<<< HEAD
-=======
 import java.io.FileWriter;
->>>>>>> refs/heads/main
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
