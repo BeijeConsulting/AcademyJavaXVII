@@ -56,9 +56,7 @@ public class LetturaDirectory {
 				File[] directory = file.listFiles();
 				
 				for(File f : directory) {
-					System.out.println("Scanning: " + f.getPath());
-					
-					
+					System.out.println("Scanning: " + f.getPath());			
 					scanDirectory(fWriter, f.getPath(), (cycle+1));
 				}
 				

@@ -53,13 +53,17 @@ public class CopyFile {
 				br.close();
 				fr.close();
 				
-				FileWriter fWriter = new FileWriter(destinationPath);
-				
-				for (String row : rows) {
-					fWriter.write(row + "\n");
+				try {
+					FileWriter fWriter = new FileWriter(destinationPath);
+					
+					for (String row : rows) {
+						fWriter.write(row + "\n");
+					}
+					fWriter.flush();
+					fWriter.close();
+				}catch(Exception e) {
+					System.out.println("Could not write in the destination file path.");
 				}
-				fWriter.flush();
-				fWriter.close();
 				
 			}else {
 				System.out.println("Source file is a directory.");
