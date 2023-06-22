@@ -1,12 +1,9 @@
 package it.beije.suormary.rubrica.exFiles;
 
-import com.sun.media.jfxmediaimpl.HostUtils;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 public class Ex1 {
 
