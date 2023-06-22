@@ -1,5 +1,6 @@
 package it.beije.xvii.exercises.Char;
 import java.io.FileReader;
+
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.BufferedReader;
