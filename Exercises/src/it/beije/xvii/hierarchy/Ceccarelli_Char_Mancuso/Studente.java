@@ -1,6 +1,6 @@
 package it.beije.xvii.hierarchy.Ceccarelli_Char_Mancuso;
 
-public abstract class Studente {
+public abstract class Studente  {
 	
 	public String nomeIstituto;
 	public int annoAccademico;

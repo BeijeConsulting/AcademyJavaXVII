@@ -48,8 +48,10 @@ public class MassimoArray {
 					
 					ricorr[y][0]=array[i];
 					ricorr[y][1]= 1;
+					break;
 				}else if(array[i]==ricorr[y][0]){
 					ricorr[y][1]=ricorr[y][1]+1;
+					break;
 				}
 			}
 		}
