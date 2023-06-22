@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class RubricaCSV {
 
 	public static void main(String[] args) throws Exception {
-		File file = new File("C:\\Users\\Lara Dorren\\Documenti\\myFile.txt");
+		File file = new File("/Temp/myFile.txt");
 		//System.out.println("esiste?" + file.exists());
 		
 		FileReader fileReader = new FileReader(file);
