@@ -10,9 +10,25 @@ public class Caffeina {
 	public Caffeina() {
 		// TODO Auto-generated constructor stub
 	}
+	
+	public void caffeina(int n) {
+		if(n%3==0 && n%4==0) {
+			System.out.print("Java");
+			if(n%2==0) {
+				System.out.println("Script");
+			}
+		}else if(n%3==0) {
+			System.out.print("Coffee");
+			
+		}else  {
+			System.out.println("match_missed!");
+		}
+	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		Caffeina c= new Caffeina();
+		c.caffeina(12);
 
 	}
 
