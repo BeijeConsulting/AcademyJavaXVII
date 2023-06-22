@@ -3,17 +3,15 @@ package it.beije.suormary.rubrica;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.StringTokenizer;
 
 public class RubricaCSV {
 
 	public static void main(String[] args) throws Exception {
 		
-		File file = new File("/temp/prova.txt");
+		File file = new File("C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\prova.txt");
 		System.out.println("exists? " + file.exists());
 		System.out.println("isDirectory? " + file.isDirectory());
 		
@@ -38,6 +36,7 @@ public class RubricaCSV {
 			rows.add(r);
 			//System.out.println(r);
 		}
+		bufferedReader.close();
 		
 		System.out.println("rows number: " + rows.size());
 		
