@@ -14,7 +14,7 @@ public class RubricaCSV {
 
 	public static void main(String[] args) throws Exception {
 		
-		File file = new File("/temp/prova.txt");
+		File file = new File("C:\\Users\\Padawan\\Desktop\\azienda.txt");
 		System.out.println("exists? " + file.exists());
 		System.out.println("isDirectory? " + file.isDirectory());
 		
