@@ -13,7 +13,7 @@ public class RubricaCSV {
 
 	public static void main(String[] args) throws Exception {
 		
-		File file = new File("/v/prova2.txt");
+		File file = new File("/v/prova.txt");
 		System.out.println("exists? " + file.exists());
 		System.out.println("isDirectory? " + file.isDirectory());
 		
@@ -27,14 +27,16 @@ public class RubricaCSV {
 		}
 		
 		System.out.println("rows number: " + rows.size());
-		
+		int nn = 0;
+		int bb = 0;
+		int ss = 0;
+		List<String> righeErrate = new ArrayList<String>();
 		for (String row : rows) {
 
 			String[] contact = row.split("\";\"");
 			System.out.println(Arrays.toString(contact));
-
+		
 		}
 		
-		System.out.println("FINE");
 	}
 }
