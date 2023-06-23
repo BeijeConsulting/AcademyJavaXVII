@@ -1,4 +1,4 @@
-package it.beije.xvii.exercises.sala;
+package esercizi;
 import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
