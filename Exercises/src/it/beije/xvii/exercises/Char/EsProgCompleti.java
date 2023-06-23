@@ -1,5 +1,5 @@
 package it.beije.xvii.exercises.Char;
-
+import java.util.Arrays;
 public class EsProgCompleti {
 	
 	public static void main(String[] args) {
@@ -7,7 +7,9 @@ public class EsProgCompleti {
 //		caffeina(6);
 //	System.out.println(conversioneStringa("din")); 
 //	System.out.println(persistenza(39));
-	System.out.println(rowSumOddNumbers(3));
+//	System.out.println(rowSumOddNumbers(3));
+       String[] result = sfumatureGrigio(10);
+       System.out.println(Arrays.toString(result));
 
 	}
 	public static void fabbricaBibita(int content, int evapPerDay, int threshold) {
@@ -50,6 +52,23 @@ public class EsProgCompleti {
 		else 
 			System.out.println("match_missed!");
 			
+	}
+	public static String[] sfumatureGrigio(int num) {
+		 if (num < 0) {
+	            return new String[0]; // Ritorna un array vuoto se n è negativo
+	        }
+	        
+	        int size = Math.min(num, 254); // Limita la dimensione dell'array a 254 se n è maggiore di 254
+	        String[] shades = new String[size];
+	        
+	        for (int i = 0; i < size; i++) {
+	            int shadeValue = (int) Math.ceil((double) i * 255 / size); // Calcola il valore della sfumatura di grigio
+	            String hexValue = String.format("#%02x%02x%02x", shadeValue, shadeValue, shadeValue); // Converte il valore in codice esadecimale
+	            
+	            shades[i] = hexValue;
+	        }
+	        
+	        return shades;
 	}
 	public static StringBuilder conversioneStringa(String s) {
 		StringBuilder conversione = new StringBuilder();
