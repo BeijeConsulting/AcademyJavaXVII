@@ -6,23 +6,34 @@ public class EsProgCompleti {
 //		fabbricaBibita(700,8,30);
 //		caffeina(6);
 //	System.out.println(conversioneStringa("din")); 
-	System.out.println(persistenza(39));
+//	System.out.println(persistenza(39));
+	System.out.println(rowSumOddNumbers(3));
 
 	}
 	public static void fabbricaBibita(int content, int evapPerDay, int threshold) {
-        int days = 0;
+        int gg = 0;
         while (content > 0) {
             int numEvap = (content * evapPerDay) / 100;
             content -= numEvap;
-            double contentPerc = ((double) content / 1000) * 100;
+            double contentPerc = ( content / 1000) * 100;
             if (contentPerc <= threshold) {
-                System.out.println("La bibita scade dopo : " + days + " giorni");
+                System.out.println("La bibita scade dopo : " + gg + " giorni");
                 break;
             }
 
-            days++;
+            gg++;
         }
 
+	}
+	public static int rowSumOddNumbers(int n) {
+		 int primoNum = 1 + (n - 1) * n; 
+	        int somma = 0;
+
+	        for (int i = 0; i < n; i++) {
+	            somma += primoNum + 2 * i;  
+	        }
+
+	        return somma;
 	}
 	public static void caffeina(int n) {
 		if(n % 3 == 0 && n % 4 != 0) {
