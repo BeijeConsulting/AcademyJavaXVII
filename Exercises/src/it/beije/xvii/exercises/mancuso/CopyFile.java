@@ -31,22 +31,25 @@ public class CopyFile {
 	
 	public static void main(String[] args) throws Exception {
 		
-		String filePath;
-		String destinationPath;
+		String filePath="";
+		String destinationPath="";
 		Scanner keyboard = new Scanner(System.in);
+		
+		//Prioritize arguments, if there are none ask the user to write them
 		if(args.length>0) {
-			filePath = args[0];
-			destinationPath = args[1];
-		}else {
-			
-			
+			try {
+				filePath = args[0];
+				destinationPath = args[1];
+			}catch(ArrayIndexOutOfBoundsException ex) {
+				System.out.println("Destination path was not inserted. Insert destination path: ");
+				destinationPath = keyboard.nextLine();	
+			}
+		}else {						
 			System.out.println("Insert file path: ");
 			filePath = keyboard.nextLine();
 			
 			System.out.println("Insert destination path: ");
 			destinationPath = keyboard.nextLine();
-			
-			
 		}
 		
 		File sourceFile = new File(filePath);
@@ -80,6 +83,8 @@ public class CopyFile {
 						copyFile(filePath,destinationPath);
 					}catch(IOException ex){
 						ex.getStackTrace();
+					}finally {
+						System.out.println("Programma terminato.");
 					}
 				}
 				/*FileReader fr = new FileReader(sourceFile);			
