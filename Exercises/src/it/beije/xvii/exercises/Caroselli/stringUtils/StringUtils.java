@@ -76,15 +76,15 @@ public class StringUtils {
 
     public static int indexOfStrFromIndex(String s, String str, int fromIndex) {
 
-        if (fromIndex < 0 || fromIndex >= s.length()) {
-            return -1;
-        }
-
-        for (int i = fromIndex; i <= s.length() - str.length(); i++) {
-            if (equalsSubstring(s, i, str, 0, str.length())) {
-                return i;
-            }
-        }
+//        if (fromIndex < 0 || fromIndex >= s.length()) {
+//            return -1;
+//        }
+//
+//        for (int i = fromIndex; i <= s.length() - str.length(); i++) {
+//            if () {
+//                return i;
+//            }
+//        }
 
         return -1;
     }
@@ -97,7 +97,6 @@ public class StringUtils {
         }
         return true;
     }
-
 
 
     public static String substring(String s, int beginIndex) {
@@ -135,6 +134,10 @@ public class StringUtils {
     }
 
     public static String toLowerCase(String s) {
+
+        // i caratteri in minuscolo hanno valori ASCII compresi tra 97 e 122,
+        // mentre i caratteri in maiuscolo hanno valori ASCII compresi tra 65 e 90.
+
         StringBuilder result = new StringBuilder();
 
         if (s == null || s.isEmpty()) {
@@ -143,8 +146,12 @@ public class StringUtils {
 
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            char lowercase = Character.toLowerCase(c);
-            result.append(lowercase);
+            if (c >= 'A' && c <= 'Z') {
+                // in minuscolo
+                c = (char) (c + 32);
+            }
+
+            result.append(c);
         }
 
         return result.toString();
@@ -159,8 +166,12 @@ public class StringUtils {
 
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            char upperCase = Character.toUpperCase(c);
-            result.append(upperCase);
+            if (c >= 'a' && c <= 'z') {
+                // in maiuscolo
+                c = (char) (c - 32);
+            }
+
+            result.append(c);
         }
         return result.toString();
     }

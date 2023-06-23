@@ -37,7 +37,8 @@ public class Ex3 {
         }
 
         File fileToCopy = new File(path1);
-        File fileToWrite = new File(path2, "copia.txt");
+        String name = fileToCopy.getName();
+        File fileToWrite = new File(path2, name + "2.txt");
 
 
         if (fileToCopy.isFile() && fileToCopy.canRead() && fileToWrite.getParentFile().canWrite()) {
