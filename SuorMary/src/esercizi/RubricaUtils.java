@@ -146,5 +146,8 @@ public class RubricaUtils {
 		
 	}
 	//public List<Contatto> loadRubricaFromXML(String pathFile) {...}
-	//public void writeRubricaCSV(List<Contatto> contatti, String pathFile, String separator) {...}
+	
+	public void writeRubricaCSV(List<Contact> contatti, String pathFile, String separator) {
+		
+	}
 }
