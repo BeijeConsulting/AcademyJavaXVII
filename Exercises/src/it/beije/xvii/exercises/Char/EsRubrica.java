@@ -16,7 +16,8 @@ import java.io.BufferedReader;
 public class EsRubrica {
 
 	public static void main(String[] args) throws Exception {
-//		loadRubricaFromCSV("/v/rubricacsv.txt",";");
+		loadRubricaFromCSV("/v/rubricacsv.txt",";");
+		loadRubricaFromXML("/v/rubrica.xml");
 
 	}
 	public static List<Contact> loadRubricaFromCSV(String pathFile, String separator) throws Exception {
@@ -42,6 +43,45 @@ public class EsRubrica {
 		    contacts.add(con);
 		}
 		return contacts;
+	}
+	
+	public static List<Contact> loadRubricaFromXML(String pathFile) throws Exception {
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.parse(pathFile);
+		Element el = document.getDocumentElement();
+		List<Contact> contacts = new ArrayList<>();
+		List<Element> elements = getChildElements(el);
+		List<Element> els = null;
+		Contact c = null;
+		for(Element contact : elements) {
+			els = getChildElements(contact);
+			c = new Contact();
+			for(Element elem : els) {
+				switch(elem.getTagName()) {
+				case "nome" : c.setName(elem.getTextContent()); break;
+				case "cognome" : c.setSurname(elem.getTextContent()); break;
+				case "email" : c.setEmail(elem.getTextContent()); break;
+				case "telefono" : c.setPhoneNumber(elem.getTextContent()); break;
+				case "note" : c.setNote(elem.getTextContent()); break;
+				default : System.out.println("Il tag non è stato riconosciuto"); break;
+				}
+			}
+			contacts.add(c);
+		}
+	
+		return contacts;
+	}
+	
+	public static List<Element> getChildElements(Element el){
+		NodeList nodeList = el.getChildNodes();
+		List<Element> elements = new ArrayList<>();
+		for(int i = 0; i< nodeList.getLength(); i++) {
+			Node node = nodeList.item(i);
+			if(node instanceof Element) elements.add((Element)node);
+		}
+		return elements;
+		
 	}
 	
 }
