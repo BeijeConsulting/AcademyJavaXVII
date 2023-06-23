@@ -20,17 +20,47 @@ public class Sfumature {
 	
 	public static String[] sfumature(int n) {
 		String[] sf = new String[n];
-		String c ="";
 		if(n<0) {
 			return sf;
 		}else if(n>254) {
 			sf = new String[254];
 		}
+		
+		
+		for(int i=0;i<n;i++) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("#");
+			int decina = i/16;
+			int unità = i-(decina*16);
+			for(int v =0;v<3;v++) {
+				if(decina>=10) {
+					char c = (char)(decina+55);
+					//System.out.println("carattere" + c);
+					sb.append(c);
+				}else {
+					sb.append(decina);
+				}
+				if(unità>=10) {
+					char c = (char)(unità+55);
+					sb.append(c);
+				}else {
+					sb.append(unità);
+				}
+			}
+			sf[i] = sb.toString();
+		}
+		
 		return sf;
 	}
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		int n = 254;
+		Sfumature sf = new Sfumature();
+		for(String s:sf.sfumature(n) ) {
+			System.out.println(s);
+		}
+		
 
 	}
 
