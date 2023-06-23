@@ -11,14 +11,13 @@ import java.util.List;
 public class BancaFraudolent {
 
 	public static void main(String[] args) throws Exception {
-		File file = new File("/v/prova2.txt");
+		File file = new File("/v/banca.txt");
 		FileReader fileReader = new FileReader(file);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		List<String> rows = new ArrayList<String>();
 		while (bufferedReader.ready()) {
 			String r = bufferedReader.readLine();
 			rows.add(r);
-			//System.out.println(r);
 		}
 		
 		int nn = 0;
@@ -26,19 +25,18 @@ public class BancaFraudolent {
 		double ss = 0;
 		List<String> righeErrate = new ArrayList<String>();
 		for (String row : rows) {
+             String newRow = row.substring(1,row.length()-1);
 
-			String[] contact = row.split(" ");
+			String[] contact = newRow.split(" ");
 		
-				String op = contact[contact.length - 1].substring(0,1);
-			
-				if(op.equals("B")) {
+				if(contact[contact.length - 1].equals("B")) {
 					int numBuy = Integer.parseInt(contact[contact.length - 2]) ;
 					double azione  = Double.parseDouble(contact[contact.length - 3]);
 					bb += numBuy * azione;
 					nn++;
 				}
 					
-				else if(op.equals("S")) {
+				else if(contact[contact.length - 1].equals("S")) {
 					int numSell = Integer.parseInt(contact[contact.length - 2]) ;
 					double azione  = Double.parseDouble(contact[contact.length - 3]);
 					ss += numSell * azione;
@@ -50,9 +48,11 @@ public class BancaFraudolent {
 
 		}
 		System.out.println("Op : " + nn + " Buy " + bb + " Sell " + ss);
-		System.out.println("Righe errate : ");
-		for(String row : righeErrate) {
-			System.out.println(row);
+		if(!(righeErrate.isEmpty())){
+			System.out.println("Righe errate : ");
+			for(String row : righeErrate) {
+				System.out.println(row);
+			}
 		}
 
 	}

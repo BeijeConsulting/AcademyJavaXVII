@@ -23,7 +23,7 @@ public class StringBuilderUtils {
 		return sb;
 		}
 	public static StringBuilder insert(StringBuilder sb, int offset, String str) {
-
+ 
 		 StringBuilder newString = new StringBuilder();
 		 newString = append(newString,sb.substring(0, offset));
 		 newString = append(newString,str);
