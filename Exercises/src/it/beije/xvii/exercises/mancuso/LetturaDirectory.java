@@ -33,6 +33,8 @@ qua.png
 Per maggiore chiarezza, potete prevedere di riportare non solo il nome del file, ma il suo path completo sul disco.
  * 
  * 
+ * 
+ * deciso di riportare solo il nome perchè usando la path completa il file è meno leggibile
  */
 
 public class LetturaDirectory {
