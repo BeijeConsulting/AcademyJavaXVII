@@ -2,6 +2,8 @@ package it.beije.xvii.exercises.trapani;
 
 public class StringUtils {
 	
+	
+	
 	public static int indexOf(String s, char c) {
 		int index = 0;
 		for (int i=0; i<s.length(); i++) {
@@ -24,30 +26,40 @@ public class StringUtils {
 	}
 	
 	public static int indexOf(String s, String str) {
-		int index =0;
-		for (int i=0; i<s.length(); i++) {
-			for (int j=0; j<str.length(); j++) {
-				if((s.charAt(i)==str.charAt(j))) {
-					index=i-j;
-				} else 
-					index=-1;	
-			}	
-		}
-		return index;
+		
+	    for (int i= 0; i<=s.length()-str.length(); i++){		
+	        boolean found = true;
+	        for (int j = 0; j < str.length(); j++) {
+	            if (s.charAt(i + j) != str.charAt(j)) {
+	                found = false;
+	                break;
+	            }
+	        }
+	        if (found) {
+	            return i;  
+	        }
+	    }
+
+	    return -1;  
 	}
+
 	
 	public static int indexOf(String s, String str, int fromIndex) {
+		
+	    for (int i= fromIndex; i<=s.length()-str.length(); i++){		
+	        boolean found = true;
+	        for (int j = 0; j < str.length(); j++) {
+	            if (s.charAt(i + j) != str.charAt(j)) {
+	                found = false;
+	                break;
+	            }
+	        }
+	        if (found) {
+	            return i;  
+	        }
+	    }
 
-		int index =0;
-		for (int i=fromIndex; i<s.length(); i++) {
-			for (int j=0; j<str.length(); j++) {
-				if((s.charAt(i)==str.charAt(j))) {
-					index=i-j;
-				} else 
-					index=-1;	
-			}	
-		}
-		return index;
+	    return -1;  
 	}
 	
 	public static String substring(String s, int beginIndex) {
@@ -122,16 +134,8 @@ public class StringUtils {
 	}
 	
 	public static boolean contains(String s,String str) {
-		for(int i=0; i<str.length(); i++) {
-			for(int j=0; j<str.length(); j++) {
-				if(str.charAt(i)!=s.charAt(j)) {
-					break;
-				} else {
-					return true;
-				}
-			}
-			
-		}		
+		if(indexOf(s,str)!=-1) return true;
+		else
 		return false;
 	}
 	
@@ -168,69 +172,47 @@ public class StringUtils {
 		return str;
 	}
 	
-//	public static String replace(String s, String oldC, String newC) {
-//		String str="";
-//		if(!(contains(s,oldC))) 
-//			System.out.println("Stringa da sostituire non trovata");
-//		for(int i=0; i<s.length(); i++) {
-//			if(indexOf(s,oldC)==-1) {
-//				str += 
-//			}
-//		}
-//		
-//		
-//		
-//		return str;
-//	}
+	public static String replace(String s, String oldC, String newC) {
+		String str="";
+		int temp=0;
+		int l=0;
+		if(newC.length()>oldC.length()) {
+			l=s.length()+(newC.length()-oldC.length());
+		} else l=s.length();
+
+		if(contains(s,oldC)) {															
+			if(indexOf(s,oldC)==0) {							//SOSTITUZIONE INIZIO STRINGA	
+				for(int i=0; i<newC.length(); i++) {			
+					str+=newC.charAt(i);												
+				}												
+				for(int i=newC.length(); i<l; i++) {						
+					str+=s.charAt(i);							
+				}	
+			} else {											//SOSTITUZIONE NON INIZIO STRINGA
+				for(int i=0; i<indexOf(s,oldC); i++) {			
+					str+=s.charAt(i);							
+				} 
+			
+				for(int i=indexOf(s,oldC); i<newC.length(); i++) {			
+				str+=newC.charAt(i);							
+				temp=i+1;
+				}
+				for(int i=temp; i<l; i++) {			
+					str+=s.charAt(i);
+				}
+			}
+		} else str="stringa non sostituibile";
+		
+		return str;
+	}
 	
 	public static void main(String[] args) {
-		String s = "animal";
-		String eq = "animal";
-		String up= "ANIMAL";
-		String up1 = "AnimAl";
 		
-//		System.out.println(indexOf(s, 'n'));		
-//		System.out.println(indexOf(s, 's'));
-//		
-//		System.out.println(indexOf(s,'m', 3));		
-//		System.out.println(indexOf(s,'m', 4));		
 		
-//		System.out.println(indexOf(s,"mal"));		
-//		System.out.println(indexOf(s,"son"));
-//		
-//		System.out.println(indexOf(s,"al",1));		
-//		System.out.println(indexOf(s,"als",1));
-//		System.out.println(indexOf(s,"sdf", 1));
-//		System.out.println(indexOf(up,"l", 1));
-//		
 		
-//		System.out.println(substring(s,2));			
-//		System.out.println(substring(s,7));
-//		
-//		System.out.println(substring(s,1,6));		
-//		System.out.println(substring(s,1,7));
-//		System.out.println(substring(s,1,1));
-//		
-//		System.out.println(toLowerCase(up));		
-//		System.out.println(toLowerCase(up1));
-//		
-//		System.out.println(toUpperCase(s));
-//		
-//		System.out.println(equals(s,eq));
-//		
-//		System.out.println(equalsIgnoreCase(s,up));
-//		
-//		System.out.println(contains(s,"mal"));
-//		System.out.println(contains(s,"fes"));
-//		
-//		System.out.println(startsWith(s, "ani"));
-//		System.out.println(startsWith(s, "mal"));
-//		
-//		System.out.println(endsWith(s,"imal"));
-//		
-//		System.out.println(replace(s,'m','M'));*/
-//		
-//		System.out.println(replace(s,"msms", "hehe"));
+		System.out.println(contains("domodazzola","azz"));
+		//System.out.println(indexOf("domodossola","la",8));
+
 		
 	}
 
