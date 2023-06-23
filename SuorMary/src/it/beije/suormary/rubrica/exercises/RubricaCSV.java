@@ -1,4 +1,4 @@
-package it.beije.xvii.exercises.ulloa;
+package it.beije.suormary.rubrica.exercises;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class MioRubricaCSV {
+public class RubricaCSV {
 
 	public static void main(String[] args) throws Exception {
 		

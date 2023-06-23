@@ -1,4 +1,4 @@
-package it.beije.xvii.exercises.ulloa;
+package it.beije.suormary.rubrica.exercises;
 
 import java.io.BufferedReader;
 import java.io.File;

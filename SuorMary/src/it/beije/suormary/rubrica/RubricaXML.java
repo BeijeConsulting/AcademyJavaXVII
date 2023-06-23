@@ -30,7 +30,7 @@ public class RubricaXML {
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		Document document = documentBuilder.parse("/temp/rubrica.xml");
+		Document document = documentBuilder.parse("/Users/Padawan/git/file/rubrica.xml");
 		
 		Element docEl = document.getDocumentElement();
 		System.out.println(docEl.getTagName());
@@ -49,7 +49,7 @@ public class RubricaXML {
 		Contact c = null;
 		List<Element> els = null;
 		for (Element el : elements) {
-			System.out.println("età contatto = " + el.getAttribute("eta"));
+			System.out.println("eta' contatto = " + el.getAttribute("eta"));
 			//System.out.println("contenuto contatto = " + el.getTextContent());
 			els = getChildElements(el);
 			c = new Contact();
