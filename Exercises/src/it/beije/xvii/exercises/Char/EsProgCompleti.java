@@ -13,8 +13,8 @@ public class EsProgCompleti {
 	public static void fabbricaBibita(int content, int evapPerDay, int threshold) {
         int gg = 0;
         while (content > 0) {
-            int numEvap = (content * evapPerDay) / 100;
-            content -= numEvap;
+            int mlEvap = (content * evapPerDay) / 100;
+            content -= mlEvap;
             double contentPerc = ( content / 1000) * 100;
             if (contentPerc <= threshold) {
                 System.out.println("La bibita scade dopo : " + gg + " giorni");
