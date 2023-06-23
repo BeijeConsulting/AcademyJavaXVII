@@ -51,14 +51,15 @@ public class BancaFraudolent {
 			double ss = 0.0; //l’importo totale delle operazioni di vendita
 			for (String row : rows) {				
 				String[] operazioni = row.split(" ");
-				double importo = Double.parseDouble(operazioni[1]);
-				nn = nn + Integer.parseInt(operazioni[2]);
+				double importoTot = Double.parseDouble(operazioni[1]) * Integer.parseInt(operazioni[2]);
+			
 				if (operazioni[3].equals("B")) {
-					bb = bb + importo;
+					bb = bb + importoTot;
+					nn++;
 				} else if (operazioni[3].equals("S")) {
-					ss = ss + importo;
+					ss = ss + importoTot;
+					nn++;
 				}
-				//System.out.println("Op: (nn) Buy: (bb) Sell: (ss)");
 
 			}
 			System.out.println("Op: " + nn + " Buy: " + bb + " Sell: "+ ss);

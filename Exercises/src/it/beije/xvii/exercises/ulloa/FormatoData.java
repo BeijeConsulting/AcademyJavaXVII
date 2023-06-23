@@ -31,6 +31,5 @@ public class FormatoData {
 				+ ", week number " + d.get(ChronoField.ALIGNED_WEEK_OF_YEAR)
 				);
 
-
 	}
 }
