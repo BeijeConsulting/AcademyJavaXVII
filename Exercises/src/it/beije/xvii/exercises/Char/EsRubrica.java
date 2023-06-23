@@ -8,7 +8,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileReader;
@@ -16,8 +16,9 @@ import java.io.BufferedReader;
 public class EsRubrica {
 
 	public static void main(String[] args) throws Exception {
-		loadRubricaFromCSV("/v/rubricacsv.txt",";");
-		loadRubricaFromXML("/v/rubrica.xml");
+//		loadRubricaFromCSV("/v/rubricacsv.txt",";");
+		List<Contact> contatti = loadRubricaFromXML("/v/rubrica.xml");
+		writeRubricaCSV(contatti,"/v/writeRubrica.txt",";");
 
 	}
 	public static List<Contact> loadRubricaFromCSV(String pathFile, String separator) throws Exception {
@@ -42,6 +43,7 @@ public class EsRubrica {
 		    con.setNote(cont[4]);
 		    contacts.add(con);
 		}
+		fileReader.close();
 		return contacts;
 	}
 	
@@ -83,5 +85,14 @@ public class EsRubrica {
 		return elements;
 		
 	}
+	public static void writeRubricaCSV(List<Contact> contatti, String pathFile, String separator) throws Exception {
+		FileWriter fileWriter = new FileWriter(pathFile);
+		for(Contact contatto : contatti) {
+			fileWriter.write(contatto.getSurname() + separator + contatto.getName() + separator + contatto.getPhoneNumber() + separator + contatto.getEmail()  + (contatto.getNote() == null ? "" : separator + contatto.getNote()) + "\n");
+			fileWriter.flush();
+		}
+		fileWriter.close();
+	}
+
 	
 }
