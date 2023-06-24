@@ -30,9 +30,10 @@ public class MioRubricaXML {
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		Document document = documentBuilder.parse("C:\\Users\\Padawan\\Desktop\\rubrica.xml");
+		Document document = documentBuilder.parse("/Users/Padawan/Desktop/fileAcademy/rubrica.xml");
 		
 		Element docEl = document.getDocumentElement();
+		//stampa il nome del tasg dell'elemento radice ---> rubrica nel nostro caso
 		System.out.println(docEl.getTagName());
 		
 //		NodeList nomi = docEl.getElementsByTagName("nome");
