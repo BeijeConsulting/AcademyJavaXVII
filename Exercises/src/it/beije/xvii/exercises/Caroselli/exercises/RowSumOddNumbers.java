@@ -3,9 +3,8 @@ package it.beije.xvii.exercises.Caroselli.exercises;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
-public class Ex2 {
+public class RowSumOddNumbers {
 
 //    Dato il seguente triangolo di numeri dispari:                    1
 //            3       5

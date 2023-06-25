@@ -15,7 +15,6 @@ public class Ex1 {
 
     public static double day() {
         Drink drink = new Drink(10.0, 2.0, 6);
-        double days = 0;
         double content = drink.getContent();
         double threshold = drink.getThreshold();
         double evapPerDay = drink.getEvapPerDay();

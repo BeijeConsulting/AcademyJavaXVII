@@ -2,7 +2,7 @@ package it.beije.xvii.exercises.Caroselli.exercises;
 
 import java.util.Arrays;
 
-public class Ex4 {
+public class ShadesOfGray {
 
     //n e' il numero di sfumature di grigio
 
@@ -18,26 +18,34 @@ public class Ex4 {
 //   un array vuoto, se n è maggiore di 254, ritornare un array di 254 elementi.
 
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(shades(4)));
+        System.out.println(Arrays.toString(shadesOfGrey(4)));
     }
 
 
-    public static String[] shades(int n) {
+    public static String[] shadesOfGrey(int n) {
 
+        if (n < 0) {
+            return new String[0];
+        }
+
+        if (n > 254) {
+            n = 254;
+        }
 
         String[] grayShades = new String[n];
 
         for (int i = 0; i < n; i++) {
             //value = il valore della sfumatura corrente per tutti i componenti R, G e B
             int value = i + 1;
-//          %02x rappresenta il placeholder per il valore esadecimale di due cifre (%x),
+//          %02x rappresenta il valore esadecimale di due cifre (%x),
 //          con la possibilità di inserire zeri iniziali se il valore esadecimale ha meno di due cifre (%02x).
-//          i 3 valori %02x consecutivi rappresentano i tre componenti: rosso (R), verde (G) e blu (B).
+//          i 3 valori %02x consecutivi rappresentano i tre componenti: rosso (R), verde (G) e blu (B), che hanno lo stesso valore.
 
             String hexValue = String.format("#%02x%02x%02x", value, value, value);
             grayShades[i] = hexValue;
         }
 
+        Arrays.sort(grayShades);
 
 
         return grayShades;

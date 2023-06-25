@@ -1,6 +1,6 @@
 package it.beije.xvii.exercises.Caroselli.exercises;
 
-public class Ex3 {
+public class Caffeine {
 
 //    Scrivere la funzione caffeina(int n) che prende un numero positivo come argomento e:
 //    Se il numero è divisibile per 3, stampa “Java”

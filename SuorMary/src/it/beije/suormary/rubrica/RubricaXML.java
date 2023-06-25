@@ -49,7 +49,7 @@ public class RubricaXML {
 		Contact c = null;
 		List<Element> els = null;
 		for (Element el : elements) {
-			System.out.println("età contatto = " + el.getAttribute("eta"));
+			System.out.println("etï¿½ contatto = " + el.getAttribute("eta"));
 			//System.out.println("contenuto contatto = " + el.getTextContent());
 			els = getChildElements(el);
 			c = new Contact();
