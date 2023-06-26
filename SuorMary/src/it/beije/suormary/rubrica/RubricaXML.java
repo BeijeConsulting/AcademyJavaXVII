@@ -1,11 +1,21 @@
 package it.beije.suormary.rubrica;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,7 +36,7 @@ public class RubricaXML {
 		return elements;
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void readXML(String[] args) throws Exception {
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -77,6 +87,94 @@ public class RubricaXML {
 		}
 		
 		System.out.println("contacts.size() : " + contacts.size());
+	}
+
+	public static void main(String[] args) {
+		
+		try {
+		
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			Document document = documentBuilder.newDocument();
+			
+			Element contacts = document.createElement("contacts");
+			document.appendChild(contacts);
+			
+			Contact contact1 = new Contact();
+			contact1.setName("Pippo");
+			contact1.setSurname("Rossi");
+			contact1.setPhoneNumber("09876543");
+			contact1.setEmail("Pippo@beije.it");
+			
+			Contact contact2 = new Contact();
+			contact2.setName("Pluto");
+			contact2.setSurname("Bianchi");
+			contact2.setPhoneNumber("098767564");
+			contact2.setEmail("pluto@beije.it");
+			
+			List<Contact> contactsList = new ArrayList<Contact>();
+			contactsList.add(contact1);
+			contactsList.add(contact2);
+			
+			Element contact = null;
+			for (Contact c : contactsList) {
+				contact = document.createElement("contact");
+				contact.setAttribute("age", "50");
+				if (c.getName() != null) {
+					Element name = document.createElement("name");
+					name.setTextContent(c.getName());
+					contact.appendChild(name);
+				}
+				if (c.getSurname() != null) {
+					Element surname = document.createElement("surname");
+					surname.setTextContent(c.getSurname());
+					contact.appendChild(surname);
+				}
+				if (c.getPhoneNumber() != null) {
+					Element phoneNumber = document.createElement("phone");
+					phoneNumber.setTextContent(c.getPhoneNumber());
+					contact.appendChild(phoneNumber);
+				}
+				if (c.getEmail() != null) {
+					Element email = document.createElement("email");
+					email.setTextContent(c.getEmail());
+					contact.appendChild(email);
+				}
+				if (c.getNote() != null) {
+					Element note = document.createElement("note");
+					note.setTextContent(c.getNote());
+					contact.appendChild(note);
+				}
+				
+				contacts.appendChild(contact);
+			}
+			
+			
+			// write the content into xml file
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(document);
+			
+			StreamResult result = new StreamResult(new File("/temp/contacts.xml"));
+	
+			// Output to console for testing
+			StreamResult syso = new StreamResult(System.out);
+	
+			transformer.transform(source, result);
+			transformer.transform(source, syso);
+	
+			//System.out.println("File saved!");
+		
+		} catch (ParserConfigurationException pEx) {
+			pEx.printStackTrace();
+		} catch (TransformerConfigurationException tcEx) {
+			tcEx.printStackTrace();
+		} catch (TransformerException tEx) {
+			tEx.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }
