@@ -153,7 +153,7 @@ public class RubricaXML {
 		// Output to console for testing
 		StreamResult syso = new StreamResult(System.out);
 
-		transformer.transform(source, result);
+		//transformer.transform(source, result);
 		transformer.transform(source, syso);
 
 		//System.out.println("File saved!");

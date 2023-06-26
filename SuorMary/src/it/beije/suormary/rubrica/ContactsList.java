@@ -10,6 +10,12 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -90,7 +96,79 @@ public class ContactsList {
 		return elements;
 	}
 	
-	public static void writeContactListCSV(List<Contact> listOfContacts, String pathFile, String separator) throws Exception{
+	public static void writeContactListsXLM(List<Contact> listOfContacts, String pathFile) throws Exception {
+		
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.newDocument();
+		
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		DOMSource source = new DOMSource(document);
+		
+		
+		File writeFile = new File(pathFile);
+		Element contacts;
+		List<Contact> allContacts;
+		if (writeFile.exists()) {
+			allContacts = loadContactListFromXML(pathFile);
+			allContacts.addAll(listOfContacts);
+			contacts = document.getDocumentElement();
+		}
+		else {
+			allContacts = listOfContacts;
+			contacts = document.createElement("contacts");
+			document.appendChild(contacts);
+		}
+		
+		for(Contact c : allContacts) System.out.println(c.getName() + " ");
+		
+		System.out.println(allContacts.size());
+		Element contact = null;
+		for (int i = 3; i < allContacts.size(); i++) {
+			Contact con = allContacts.get(i);
+			contact = document.createElement("contact");
+			
+			if (con.getName() != null) {
+				Element name = document.createElement("nome");
+				name.setTextContent(con.getName());
+				contact.appendChild(name);
+			}
+			if (con.getSurname() != null) {
+				Element surname = document.createElement("cognome");
+				surname.setTextContent(con.getSurname());
+				contact.appendChild(surname);
+			}
+			if (con.getPhoneNumber() != null) {
+				Element phoneNumber = document.createElement("telefono");
+				phoneNumber.setTextContent(con.getPhoneNumber());
+				contact.appendChild(phoneNumber);
+			}
+			if (con.getEmail() != null) {
+				Element email = document.createElement("email");
+				email.setTextContent(con.getEmail());
+				contact.appendChild(email);
+			}
+			if (con.getNote() != null) {
+				Element note = document.createElement("note");
+				note.setTextContent(con.getNote());
+				contact.appendChild(note);
+			}
+			contacts.appendChild(contact);
+		}
+
+		
+		// Output to console for testing
+		StreamResult result = new StreamResult(new File(pathFile));
+		StreamResult syso = new StreamResult(System.out);
+
+		transformer.transform(source, result);
+		transformer.transform(source, syso);
+		
+	}
+	
+	
+ 	public static void writeContactListCSV(List<Contact> listOfContacts, String pathFile, String separator) throws Exception{
 		
 		FileWriter fileWriter = null;
 		if ((new File(pathFile)).exists()) fileWriter = new FileWriter(pathFile, true);
@@ -115,13 +193,14 @@ public class ContactsList {
 		
 		String pathReadFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\rubrica.xml";
 		String separator = "|";
-		String pathWriteFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\primotentativo.csv";
+		String pathWriteFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\primotentativo.xml";
 		
 		List<Contact> listOfContacts = new ArrayList<>();
 		if (pathReadFile.endsWith(".csv")) listOfContacts = loadContactListFromCSV(pathReadFile, separator);
 		else if (pathReadFile.endsWith(".xml")) listOfContacts = loadContactListFromXML(pathReadFile);
 
-		writeContactListCSV(listOfContacts, pathWriteFile, separator);	
+		if (pathWriteFile.endsWith(".csv")) writeContactListCSV(listOfContacts, pathWriteFile, separator);
+		else if (pathWriteFile.endsWith(".xml")) writeContactListsXLM(listOfContacts, pathWriteFile);
 		
 	}
 
