@@ -14,6 +14,7 @@ import org.w3c.dom.NodeList;
 
 public class MioRubricaXML {
 	
+	
 	public static List<Element> getChildElements(Element el) {
 		NodeList nodeList = el.getChildNodes();
 		//System.out.println("nodeList size: " + nodeList.getLength());

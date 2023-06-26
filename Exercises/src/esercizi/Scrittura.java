@@ -49,7 +49,8 @@ public class Scrittura {
 		//creo un array dove salvo i file della cartella
 		File[] listOfFiles = folder.listFiles();
 		
-		ricorsiva(listOfFiles,f1, 0);
+		Scrittura s = new Scrittura();
+		s.ricorsiva(listOfFiles,f1, 0);
 		
 		
 		
