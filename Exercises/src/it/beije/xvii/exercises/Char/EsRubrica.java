@@ -26,10 +26,13 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 public class EsRubrica {
 
-	public static void main(String[] args) throws Exception {
-//		loadRubricaFromCSV("/v/rubricacsv.txt",";");
-		List<Contact> contatti = loadRubricaFromXML("/v/rubrica.xml");
-		writeRubricaXML(contatti,"/v/writeRubrica.txt");
+	public static void main(String[] args)  {
+		List<Contact> contatti2 = loadRubricaFromCSV("/v/rubricacsv.txt",";");
+//		List<Contact> contatti = loadRubricaFromXML("/v/rubrica.xml");
+		for(Contact c : contatti2) {
+			System.out.println(c.getName());
+		}
+//		writeRubricaXML(contatti,"/v/writeRubrica.txt");
 
 	}
 	public static List<Contact> loadRubricaFromCSV(String pathFile, String separator)  {
@@ -43,21 +46,29 @@ public class EsRubrica {
 			contacts = new ArrayList<>();
 			Contact con = null;
 			List<String> arr = new ArrayList<>();
+			String primaRiga = bufferedReader.readLine();
 			while(bufferedReader.ready()) {
 				String line = bufferedReader.readLine();
 				arr.add(line);
 			}
-	
-			for(String str : arr) {
-				String[] cont = str.split(separator);
+			String[] arrPrimaRiga = primaRiga.split(separator);
+			for(int i = 0; i< arr.size(); i++) {
 				con = new Contact();
-				con.setSurname(cont[0]);
-				con.setName(cont[1]);
-				con.setPhoneNumber(cont[2]);
-				con.setEmail(cont[3]);
-				con.setNote(cont[4]);
+				String str = arr.get(i);
+				String[] arrspl =str.split(separator);
+				for(int j = 0; j < arrPrimaRiga.length; j++) {
+	
+					switch(arrPrimaRiga[j]) {
+					case "NAME" : con.setName(arrspl[j]); break;
+					case "SURNAME" : con.setSurname(arrspl[j]); break;
+					case "PHONE" : con.setPhoneNumber(arrspl[j]); break;
+					case "EMAIL" : con.setEmail(arrspl[j]); break;
+					case "NOTE" : con.setNote(arrspl[j]); break;
+					}
+				}
 				contacts.add(con);
 			}
+	
 		} catch(FileNotFoundException e) {
 			e.printStackTrace();
 		} catch(IOException e) {
