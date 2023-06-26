@@ -123,6 +123,9 @@ public class RubricaUtils {
 		 *  */
 		Element docEl = document.getDocumentElement();
 		
+		//Stampa il nome del tag in questo caso l'elemento radice che è stato memorizzato nell'istanza di oggetto docEl
+		//System.out.println(docEl.getTagName());
+		
 		/*
 		 * Utilizza il metodo getChildElements per ottenere una lista di elementi 
 		 * figlio dell'elemento radice ovvero docEl
@@ -274,6 +277,12 @@ public class RubricaUtils {
 		fileWriter.close();
 	}
 	
+	public void writeRubricaXML(List<Contact> contatti, String pathFile) throws Exception {
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.newDocument();
+	}
+	
 	public static void printContactList(List<Contact> contacts) {	    
 	    if (contacts.isEmpty()) {
 	        System.out.println("La lista dei contatti è vuota.");
@@ -296,14 +305,16 @@ public class RubricaUtils {
 		String pathFile = "/Users/Padawan/git/file/rubrica.csv";
 		String pathFileW = "/Users/Padawan/git/file/rubrica_scrittura.csv";
 		String pathFileXML = "/Users/Padawan/git/file/rubrica.xml";
-		//String pathFileW = "/Users/Padawan/git/file/rubrica_scrittura.csv";
+		String pathFileXMLW = "/Users/Padawan/git/file/rubrica_scrittura.xml";
 		String separator = ";";
 		
 		List<Contact> contatti = ru.loadRubricaFromCSV(pathFile, separator);
 		ru.writeRubricaCSV(contatti, pathFileW, separator);
 		
 		List<Contact> contattiXML = ru.loadRubricaFromXML(pathFileXML);
-		RubricaUtils.printContactList(contatti);
+		ru.writeRubricaXML(contattiXML, pathFileW);
+		
+		RubricaUtils.printContactList(contattiXML);
 
 	}
 

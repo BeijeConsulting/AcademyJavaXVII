@@ -29,7 +29,7 @@ import java.util.List;
 public class BancaFraudolent {
 
 	public static void main(String[] args) throws Exception {
-		final String path_file = "/Users/Padawan/eclipse-workspace/File/op_finanziare_banca_Fraudolent.txt";
+		final String path_file = "/Users/Padawan/git/file/op_finanziare_banca_Fraudolent.txt";
 		File file = new File(path_file);
 		//FileReader fileReader;
 		
