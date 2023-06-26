@@ -5,6 +5,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -121,24 +123,38 @@ public class EsRubrica {
 		return elements;
 		
 	}
-	public static void writeRubricaCSV(List<Contact> contatti, String pathFile, String separator) throws Exception {
-		File file = new File(pathFile);
-		FileWriter fileWriter = new FileWriter(file,true);
+	public static void writeRubricaCSV(List<Contact> contatti, String pathFile, String separator)  {
+		FileWriter fileWriter = null;
+		try {
+		 File file = new File(pathFile);
+		 fileWriter = new FileWriter(file,true);
 		for(Contact contatto : contatti) {
 			fileWriter.write(contatto.getSurname() + separator + contatto.getName() + separator + contatto.getPhoneNumber() + separator + contatto.getEmail()  + (contatto.getNote() == null ? "" : separator + contatto.getNote()) + "\n");
 			fileWriter.flush();
 		}
-		fileWriter.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				fileWriter.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
 	}
-	
-	public static void writeRubricaXML(List<Contact> contatti, String pathFile) throws Exception {
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		Document document = documentBuilder.newDocument();
-		Element contacts = document.createElement("contacts");
-		document.appendChild(contacts);
-		Element contact = null;
-		for(Contact c : contatti) {
+
+	public static void writeRubricaXML(List<Contact> contatti, String pathFile)  {
+		try {
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			Document document = documentBuilder.newDocument();
+			Element contacts = document.createElement("contacts");
+			document.appendChild(contacts);
+			Element contact = null;
+			for(Contact c : contatti) {
 			contact = document.createElement("contact");
 			if(c.getName() != null) {
 				Element name = document.createElement("name");
@@ -166,16 +182,24 @@ public class EsRubrica {
 				contact.appendChild(note);
 			}
 			contacts.appendChild(contact);
+			}
+		
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(document);
+			StreamResult file = new StreamResult(new File("/v/contacts.xml"));
+			StreamResult syso = new StreamResult(System.out);
+			transformer.transform(source, file);
+			transformer.transform(source, syso);
+
+		} catch(ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch(TransformerConfigurationException e) {
+			e.printStackTrace();
+		} catch(TransformerException e) {
+			e.printStackTrace();
 		}
 		
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource source = new DOMSource(document);
-		StreamResult file = new StreamResult(new File("/v/contacts.xml"));
-		StreamResult syso = new StreamResult(System.out);
-		transformer.transform(source, file);
-		transformer.transform(source, syso);
-
 		
 	}
 
