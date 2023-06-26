@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class IO_File {
 	public static void main(String[] args) throws Exception {
 		
-		File file = new File("\\Users\\marty\\Desktop\\Marti\\Beije\\Esercizi Academy\\nuovo.txt");  //Apertura file eq in c a file opener
+		File file = new File("\\Users\\marty\\Desktop\\Marti\\Beije\\Esercizi Academy\\FILE ESERCIZI\\rubrica.csv");  //Apertura file eq in c a file opener
 		
 		FileReader fileReader = new FileReader(file);			
 		BufferedReader bufferedReader = new BufferedReader(fileReader); 	 //lettura file stringa

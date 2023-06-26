@@ -31,7 +31,7 @@ public class BancaFraudelent {
 		float totB=0;
 		float totS=0;
 		
-		File file = new File("\\Users\\marty\\Desktop\\Marti\\Beije\\Esercizi Academy\\File Banca.txt");
+		File file = new File("\\Users\\marty\\Desktop\\Marti\\Beije\\Esercizi Academy\\FILE ESERCIZI\\File Banca.txt");
 		//System.out.println("exists? " + file.exists());
 		
 		FileReader fileReader = new FileReader(file);
