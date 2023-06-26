@@ -86,7 +86,8 @@ public class EsRubrica {
 		
 	}
 	public static void writeRubricaCSV(List<Contact> contatti, String pathFile, String separator) throws Exception {
-		FileWriter fileWriter = new FileWriter(pathFile);
+		File file = new File(pathFile);
+		FileWriter fileWriter = new FileWriter(file,true);
 		for(Contact contatto : contatti) {
 			fileWriter.write(contatto.getSurname() + separator + contatto.getName() + separator + contatto.getPhoneNumber() + separator + contatto.getEmail()  + (contatto.getNote() == null ? "" : separator + contatto.getNote()) + "\n");
 			fileWriter.flush();

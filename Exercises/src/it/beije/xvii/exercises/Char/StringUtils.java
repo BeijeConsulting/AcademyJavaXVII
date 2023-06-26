@@ -51,6 +51,21 @@ public class StringUtils {
 
 	    return -1;  
 	}
+	public static int indexOf(String s, String str, int fromIndex) {
+        for (int i = fromIndex; i <= s.length() - str.length(); i++) {
+            int j;
+            for (j = 0; j < str.length(); j++) {
+                if (s.charAt(i + j) != str.charAt(j)) {
+                    break;
+                }
+            }
+            if (j == str.length()) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 	public static String subString(String s, int beginIndex) {
 		String word = "";
 		for(int i = beginIndex; i < s.length(); i++) {

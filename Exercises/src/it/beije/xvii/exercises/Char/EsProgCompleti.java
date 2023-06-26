@@ -55,10 +55,12 @@ public class EsProgCompleti {
 	}
 	public static String[] sfumatureGrigio(int num) {
 		 if (num < 0) {
-	            return new String[0]; // Ritorna un array vuoto se n è negativo
+	            return new String[0];
 	        }
-	        
-	        int size = Math.min(num, 254); // Limita la dimensione dell'array a 254 se n è maggiore di 254
+		 int size = 0;
+	        if (num > 254) size = 254;
+	        else size = num;
+
 	        String[] shades = new String[size];
 	        
 	        for (int i = 0; i < size; i++) {
