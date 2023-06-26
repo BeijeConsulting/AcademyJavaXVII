@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Path;
 public class Scrittura {
+	
+	
+	
 
 	public static void main(String[] args) throws Exception{
 		
@@ -42,9 +45,11 @@ public class Scrittura {
 		
 		//SENZA RICORSIONE
 		File folder = new File(nomeDir);
-		File[] listOfFiles = folder.listFiles();
+		
 		//creo un array dove salvo i file della cartella
-		ricorsiva(listOfFiles,f1);
+		File[] listOfFiles = folder.listFiles();
+		
+		ricorsiva(listOfFiles,f1, 0);
 		
 		
 		
@@ -58,7 +63,7 @@ public class Scrittura {
 		
 	}
 	
-public static void ricorsiva(File [] listOfFiles, FileWriter f1) throws Exception {
+public void ricorsiva(File [] listOfFiles, FileWriter f1, int livello) throws Exception {
 	
 	//creo lista di files a partire dal folder attuale
 
@@ -90,21 +95,30 @@ public static void ricorsiva(File [] listOfFiles, FileWriter f1) throws Exceptio
 	for(File f : listOfFiles) {
 		if(f!=null) {
 			if(f.isFile()) {
+				f1.write(getIndentation(livello));
 				f1.write(f.getName());
 				f1.write('\n');
-				f1.write('\t');
 				f1.flush();
 			} else if(f.isDirectory()) {
-				f1.write('\n');
-				f1.write('\t');
+				f1.write(getIndentation(livello));
 				f1.write(f.getName()+"(dir)");
+				f1.write('\n');
+				livello++;
 				listOfFiles=f.listFiles();
-				ricorsiva(listOfFiles,f1);
+				ricorsiva(listOfFiles,f1, livello);
 			}
 		}
 	
 	}
 	
+}
+
+public String getIndentation(int livello) {
+	StringBuilder sb = new StringBuilder();
+	for(int i=0; i<livello; i++) {
+		sb.append('\t');
+	}
+	return sb.toString();
 }
 	
 }

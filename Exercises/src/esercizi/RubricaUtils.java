@@ -129,7 +129,7 @@ public class RubricaUtils {
 				contatti.add(c);
 			} else {
 				//è buona norma tenere una traccia di tutte le linee che sono sbagliate
-				System.out.println("La seguente linea non è corretta: "+campi);
+				System.out.println("La seguente linea non è corretta: "+riga);
 			}
 			
 			
@@ -269,6 +269,8 @@ public class RubricaUtils {
 		return elements;
 	}
 	
+	
+	//SCRITTURA CSV
 	public void writeRubricaCSV(List<Contact> contatti, String pathFile, String separator) throws Exception{
 		//creo un nuovo oggetto della classe File che punti al path
 		File f = new File(pathFile);
@@ -322,30 +324,30 @@ public class RubricaUtils {
 	public void stampaContatti(List<MioContact> contatti) {
 		for(MioContact c1 : contatti) {
 			if(c1!=null) {
-				if(c1.getSurname()==null) {
+				if(c1.getSurname()==null || c1.getSurname().isEmpty()) {
 					System.out.println("cognome mancante!");
 				} else {
 					System.out.println(c1.getSurname());
 				}
 				
-				if(c1.getName()==null) {
+				if(c1.getName()==null || c1.getName().isEmpty()) {
 					System.out.println("nome mancante!");
 				} else {
 					System.out.println(c1.getName());
 				}
 				
-				if(c1.getPhoneNumber()==null) {
+				if(c1.getPhoneNumber()==null || c1.getPhoneNumber().isEmpty()) {
 					System.out.println("telefono mancante!");
 				} else {
 					System.out.println(c1.getPhoneNumber());
 				}
 				
-				if(c1.getEmail()==null) {
+				if(c1.getEmail()==null || c1.getEmail().isEmpty()) {
 					System.out.println("email mancante!");
 				} else {
 					System.out.println(c1.getEmail());
 				}
-				if(c1.getNote()==null) {
+				if(c1.getNote()==null || c1.getNote().isEmpty()) {
 					System.out.println("nota mancante");
 				} else {
 					System.out.println(c1.getNote());
