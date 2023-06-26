@@ -4,6 +4,12 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -135,8 +141,69 @@ public class AddressBook {
 		return contacts;
 	}
 	
-	public void writeAddressBook(String pathFile, String separator) {
+	public void writeAddressBookCSV(String pathFile, String separator, List<String> rows) {
 		return;
+	}
+	
+	public void writeAddressBookXML(List<Contact> contacts) throws ParserConfigurationException, TransformerException {
+		
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.newDocument();
+		
+		Element root = document.createElement("addressBook");
+		document.appendChild(root);
+		
+		Element el = null;
+		
+		for (Contact c : contacts) {
+			el = document.createElement("contact");
+			
+			if (c.getFirstName() != null) {
+				Element name = document.createElement("name");
+				name.setTextContent(c.getFirstName());
+				el.appendChild(name);
+			}
+			if (c.getLastName() != null) {
+				Element surname = document.createElement("surname");
+				surname.setTextContent(c.getLastName());
+				el.appendChild(surname);
+			}
+			if (c.getPhoneNumber() != null) {
+				Element phoneNumber = document.createElement("phone");
+				phoneNumber.setTextContent(c.getPhoneNumber());
+				el.appendChild(phoneNumber);
+			}
+			if (c.getEmail() != null) {
+				Element email = document.createElement("email");
+				email.setTextContent(c.getEmail());
+				el.appendChild(email);
+			}
+			if (c.getNotes() != null) {
+				Element note = document.createElement("note");
+				note.setTextContent(c.getNotes());
+				el.appendChild(note);
+			}
+			
+			root.appendChild(el);
+			
+		}
+		
+		// write the content into xml file
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		DOMSource source = new DOMSource(document);
+				
+		StreamResult result = new StreamResult(new File("/temp/contacts.xml"));
+
+		// Output to console for testing
+		StreamResult syso = new StreamResult(System.out);
+
+		transformer.transform(source, result);
+		transformer.transform(source, syso);
+
+		//System.out.println("File saved!");
+		
 	}
 	
 	public String toString() {
@@ -151,15 +218,17 @@ public class AddressBook {
 	public static void main(String[] args) throws Exception {
 		AddressBook addressBook = new AddressBook();
 		
-		List<Contact> newContacts = addressBook.loadAddressesFromCSV("/Temp/addressBook.csv", ";");
+		//List<Contact> newContacts = addressBook.loadAddressesFromCSV("/Temp/addressBook.csv", ";");
+		//addressBook.contacts = newContacts;
+		
+		//System.out.println(addressBook.toString());
+		
+		List<Contact> newContacts = addressBook.loadAddressesFromXML("/Temp/rubrica.xml");
 		addressBook.contacts = newContacts;
 		
-		System.out.println(addressBook.toString());
+		addressBook.writeAddressBookXML(addressBook.contacts);
 		
-		newContacts = addressBook.loadAddressesFromXML("/Temp/rubrica.xml");
-		addressBook.contacts = newContacts;
-		
-		System.out.println(addressBook.toString());
+		//System.out.println(addressBook.toString());
 	}
 	
 	
