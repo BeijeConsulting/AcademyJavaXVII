@@ -3,6 +3,7 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -12,6 +13,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,13 +73,14 @@ public class EsRubrica {
 		return contacts;
 	
 	}
-	
-	public static List<Contact> loadRubricaFromXML(String pathFile) throws Exception {
+	public static List<Contact> loadRubricaFromXML(String pathFile)  {
+		List<Contact> contacts = null;
+		try {
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(pathFile);
 		Element el = document.getDocumentElement();
-		List<Contact> contacts = new ArrayList<>();
+		contacts = new ArrayList<>();
 		List<Element> elements = getChildElements(el);
 		List<Element> els = null;
 		Contact c = null;
@@ -95,6 +99,14 @@ public class EsRubrica {
 			}
 			contacts.add(c);
 		}
+		} catch(ParserConfigurationException e) {
+			e.printStackTrace();
+		} catch(IOException e) {
+			e.printStackTrace();
+		} catch(SAXException e) {
+			e.printStackTrace();
+		}
+	
 	
 		return contacts;
 	}
