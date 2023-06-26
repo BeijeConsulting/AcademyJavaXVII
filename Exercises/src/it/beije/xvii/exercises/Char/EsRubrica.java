@@ -3,6 +3,10 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -18,7 +22,7 @@ public class EsRubrica {
 	public static void main(String[] args) throws Exception {
 //		loadRubricaFromCSV("/v/rubricacsv.txt",";");
 		List<Contact> contatti = loadRubricaFromXML("/v/rubrica.xml");
-		writeRubricaCSV(contatti,"/v/writeRubrica.txt",";");
+		writeRubricaXML(contatti,"/v/writeRubrica.txt");
 
 	}
 	public static List<Contact> loadRubricaFromCSV(String pathFile, String separator) throws Exception {
@@ -93,6 +97,54 @@ public class EsRubrica {
 			fileWriter.flush();
 		}
 		fileWriter.close();
+	}
+	
+	public static void writeRubricaXML(List<Contact> contatti, String pathFile) throws Exception {
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+		Document document = documentBuilder.newDocument();
+		Element contacts = document.createElement("contacts");
+		document.appendChild(contacts);
+		Element contact = null;
+		for(Contact c : contatti) {
+			contact = document.createElement("contact");
+			if(c.getName() != null) {
+				Element name = document.createElement("name");
+				name.setTextContent(c.getName());
+				contact.appendChild(name);
+			}
+			if(c.getSurname() != null) {
+				Element surname = document.createElement("surname");
+				surname.setTextContent(c.getSurname());
+				contact.appendChild(surname);
+			}
+			if(c.getEmail() != null) {
+				Element email = document.createElement("email");
+				email.setTextContent(c.getEmail());
+				contact.appendChild(email);
+			}
+			if(c.getPhoneNumber() != null) {
+				Element phone = document.createElement("phone");
+				phone.setTextContent(c.getPhoneNumber());
+				contact.appendChild(phone);
+			}
+			if(c.getNote() != null) {
+				Element note = document.createElement("note");
+				note.setTextContent(c.getNote());
+				contact.appendChild(note);
+			}
+			contacts.appendChild(contact);
+		}
+		
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		DOMSource source = new DOMSource(document);
+		StreamResult file = new StreamResult(new File("/v/contacts.xml"));
+		StreamResult syso = new StreamResult(System.out);
+		transformer.transform(source, file);
+		transformer.transform(source, syso);
+
+		
 	}
 
 	
