@@ -19,6 +19,7 @@ import org.w3c.dom.NodeList;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.BufferedReader;
 
@@ -141,8 +142,46 @@ public class AddressBook {
 		return contacts;
 	}
 	
-	public void writeAddressBookCSV(String pathFile, String separator, List<String> rows) {
-		return;
+	public void writeAddressBookCSV(String pathFile, String separator, List<Contact> contacts) throws IOException {
+		
+		FileWriter writer = new FileWriter(pathFile);
+		
+		writer.write("First Name;Last Name;Phone Number;Email;Notes\n");
+		
+		for (Contact contact : contacts) {
+			if(contact.getFirstName() != null) {
+				writer.write(contact.getFirstName());
+			}else {
+				writer.write("");
+			}
+			writer.write(separator);
+			if(contact.getLastName() != null) {
+				writer.write(contact.getLastName());
+			}else {
+				writer.write("");
+			}
+			writer.write(separator);
+			if(contact.getPhoneNumber() != null) {
+				writer.write(contact.getPhoneNumber());
+			}else {
+				writer.write("");
+			}
+			writer.write(separator);
+			if(contact.getEmail() != null) {
+				writer.write(contact.getEmail());
+			}else {
+				writer.write("");
+			}
+			writer.write(separator);
+			if(contact.getNotes() != null) {
+				writer.write(contact.getNotes());
+			}else {
+				writer.write("");
+			}
+			writer.write('\n');
+		}
+		writer.flush();
+		writer.close();
 	}
 	
 	public void writeAddressBookXML(List<Contact> contacts) throws ParserConfigurationException, TransformerException {
@@ -226,7 +265,9 @@ public class AddressBook {
 		List<Contact> newContacts = addressBook.loadAddressesFromXML("/Temp/rubrica.xml");
 		addressBook.contacts = newContacts;
 		
-		addressBook.writeAddressBookXML(addressBook.contacts);
+		//addressBook.writeAddressBookXML(addressBook.contacts);
+		
+		addressBook.writeAddressBookCSV("/Temp/newCSV.csv", ";", newContacts);
 		
 		//System.out.println(addressBook.toString());
 	}
