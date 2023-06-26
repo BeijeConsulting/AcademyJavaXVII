@@ -78,15 +78,50 @@ public class AddressBook {
 					List<Contact> newContacts = new ArrayList<Contact>();
 					List<String[]> csv = readCSV(file, separator);
 					
+					String[] headers = csv.get(0);
+					
+					int idxFirstName = -1;
+					int idxLastName = -1;
+					int idxPhone = -1;
+					int idxEmail = -1;
+					int idxNotes = -1;
+					
+					for(int i=0;i<headers.length;i++) {
+						if(headers[i].toLowerCase().equals("NAME")) {
+							idxFirstName = i;
+						}
+						if(headers[i].toLowerCase().equals("SURNAME")) {
+							idxLastName = i;
+						}
+						if(headers[i].toLowerCase().equals("PHONE")) {
+							idxPhone = i;
+						}
+						if(headers[i].toLowerCase().equals("EMAIL")) {
+							idxEmail = i;
+						}
+						if(headers[i].toLowerCase().equals("NOTES")) {
+							idxNotes = i;
+						}
+					}
+					
 					Contact c = null;
 					for(int i=1; i<csv.size(); i++) {
 						c = new Contact();
-						c.setFirstName(csv.get(i)[0]);
-						c.setLastName(csv.get(i)[1]);
-						c.setPhoneNumber(csv.get(i)[2]);
-						c.setEmail(csv.get(i)[3]);
-						c.setNotes(csv.get(i)[4]);
-						
+						if(idxFirstName != -1) {
+							c.setFirstName(csv.get(i)[idxFirstName]);
+						}
+						if(idxLastName != -1) {
+							c.setLastName(csv.get(i)[idxLastName]);
+						}
+						if(idxPhone != -1) {
+							c.setPhoneNumber(csv.get(i)[idxPhone]);
+						}
+						if(idxEmail != -1) {
+							c.setEmail(csv.get(i)[idxEmail]);
+						}
+						if(idxNotes != -1) {
+							c.setNotes(csv.get(i)[idxNotes]);
+						}				
 						newContacts.add(c);
 					}
 					return newContacts;
@@ -186,7 +221,7 @@ public class AddressBook {
 		try {
 			writer = new FileWriter(pathFile, true);
 			
-			writer.write("First Name;Last Name;Phone Number;Email;Notes\n");
+			writer.write("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
 			
 			for (Contact contact : contacts) {
 				if(contact.getFirstName() != null) {
