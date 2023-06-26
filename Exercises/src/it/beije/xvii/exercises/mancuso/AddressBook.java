@@ -99,31 +99,30 @@ public class AddressBook {
 		List<Element> elements = getChildrenElements(rootElement);	
 		List<Contact> contacts = new ArrayList<>();
 		List<Element> innerElements;
-		
+		Contact c = null;
 		for(Element e : elements) {
 			
 			innerElements = getChildrenElements(e);
-			Contact c = null;
 			
+			c = new Contact();
 			for(Element inEl : innerElements) {
-				c = new Contact();
-				
-				switch(e.getTagName()) {
+							
+				switch(inEl.getTagName()) {
 				
 				case "nome":
-					c.setFirstName(e.getTextContent());
+					c.setFirstName(inEl.getTextContent());
 					break;
 				case "cognome":
-					c.setLastName(e.getTextContent());
+					c.setLastName(inEl.getTextContent());
 					break;
 				case "telefono":
-					c.setPhoneNumber(e.getTextContent());
+					c.setPhoneNumber(inEl.getTextContent());
 					break;
 				case "email":
-					c.setEmail(e.getTextContent());
+					c.setEmail(inEl.getTextContent());
 					break;
 				case "note":
-					c.setNotes(e.getTextContent());
+					c.setNotes(inEl.getTextContent());
 					break;
 				default:
 					System.out.println("Elemento non riconosciuto.");
