@@ -13,8 +13,10 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.BufferedReader;
 public class EsRubrica {
@@ -25,30 +27,48 @@ public class EsRubrica {
 		writeRubricaXML(contatti,"/v/writeRubrica.txt");
 
 	}
-	public static List<Contact> loadRubricaFromCSV(String pathFile, String separator) throws Exception {
-		File file = new File(pathFile);
-		FileReader fileReader = new FileReader(file);
-		BufferedReader bufferedReader = new BufferedReader(fileReader);
-		List<Contact> contacts = new ArrayList<>();
-		Contact con = null;
-		List<String> arr = new ArrayList<>();
-		while(bufferedReader.ready()) {
-			String line = bufferedReader.readLine();
-			arr.add(line);
-		}
+	public static List<Contact> loadRubricaFromCSV(String pathFile, String separator)  {
+		FileReader fileReader = null;
+		List<Contact> contacts = null;
+		BufferedReader bufferedReader = null;
+		try {
+			File file = new File(pathFile);
+			fileReader = new FileReader(file);
+			bufferedReader = new BufferedReader(fileReader);
+			contacts = new ArrayList<>();
+			Contact con = null;
+			List<String> arr = new ArrayList<>();
+			while(bufferedReader.ready()) {
+				String line = bufferedReader.readLine();
+				arr.add(line);
+			}
 	
-		for(String str : arr) {
-		    String[] cont = str.split(separator);
-		    con = new Contact();
-		    con.setSurname(cont[0]);
-		    con.setName(cont[1]);
-		    con.setPhoneNumber(cont[2]);
-		    con.setEmail(cont[3]);
-		    con.setNote(cont[4]);
-		    contacts.add(con);
+			for(String str : arr) {
+				String[] cont = str.split(separator);
+				con = new Contact();
+				con.setSurname(cont[0]);
+				con.setName(cont[1]);
+				con.setPhoneNumber(cont[2]);
+				con.setEmail(cont[3]);
+				con.setNote(cont[4]);
+				contacts.add(con);
+			}
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+		} catch(IOException e) {
+			e.printStackTrace();
 		}
-		fileReader.close();
+		finally {
+			try {
+				fileReader.close();
+				bufferedReader.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		return contacts;
+	
 	}
 	
 	public static List<Contact> loadRubricaFromXML(String pathFile) throws Exception {
