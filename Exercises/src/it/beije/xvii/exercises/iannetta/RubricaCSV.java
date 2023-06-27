@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica;
+package it.beije.xvii.exercises.iannetta;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,9 +13,9 @@ import java.util.List;
 
 public class RubricaCSV {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
-<<<<<<< HEAD
+
 		File file = new File("C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\prova.txt");
 		System.out.println("exists? " + file.exists());
 		System.out.println("isDirectory? " + file.isDirectory());
@@ -31,59 +31,14 @@ public class RubricaCSV {
 //			else {
 //				System.out.print(r);
 //				r = new StringBuilder();
-=======
-		FileReader fileReader = null;
-		BufferedReader bufferedReader = null;
-		List<String> rows = null;
-		try {
-			File file = new File("/temp/prova.txt");
-			System.out.println("exists? " + file.exists());
-			System.out.println("isDirectory? " + file.isDirectory());
-			
-			fileReader = new FileReader(file);
-//			char c;// = fileReader.read();
-//			StringBuilder r = new StringBuilder(); 
-//			while (fileReader.ready()) {
-//				//System.out.print((char)c);
-//				//c = fileReader.read();
-//				c = (char) fileReader.read();
-//				if (c != '\n') r.append(c);
-//				else {
-//					System.out.print(r);
-//					r = new StringBuilder();
-//				}
->>>>>>> refs/heads/main
-//			}
-<<<<<<< HEAD
-//		}
-		
+
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		List<String> rows = new ArrayList<String>();
 		while (bufferedReader.ready()) {
 			String r = bufferedReader.readLine();
 			rows.add(r);
 			System.out.println(r);
-=======
-			
-			bufferedReader = new BufferedReader(fileReader);
-			rows = new ArrayList<String>();
-			while (bufferedReader.ready()) {
-				String r = bufferedReader.readLine();
-				rows.add(r);
-				//System.out.println(r);
-			}
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				bufferedReader.close();
-				fileReader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
->>>>>>> refs/heads/main
+
 		}
 		bufferedReader.close();
 		

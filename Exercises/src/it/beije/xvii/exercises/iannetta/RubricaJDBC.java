@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica;
+package it.beije.xvii.exercises.iannetta;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -55,8 +55,6 @@ public class RubricaJDBC {
 			}
 		}
 		
-
-
 	}
 
 }

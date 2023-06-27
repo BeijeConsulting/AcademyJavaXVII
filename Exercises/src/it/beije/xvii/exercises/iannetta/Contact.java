@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica;
+package it.beije.xvii.exercises.iannetta;
 
 public class Contact {
 	

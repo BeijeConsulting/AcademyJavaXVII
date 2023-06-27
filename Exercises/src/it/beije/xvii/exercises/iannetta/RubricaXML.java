@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica;
+package it.beije.xvii.exercises.iannetta;
 
 import java.io.File;
 import java.io.IOException;
@@ -175,25 +175,7 @@ public class RubricaXML {
 			e.printStackTrace();
 		}
 		
-<<<<<<< HEAD
-		
-		// write the content into xml file
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource source = new DOMSource(document);
-		
-		StreamResult result = new StreamResult(new File("C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\primotentativo.xml"));
 
-		// Output to console for testing
-		StreamResult syso = new StreamResult(System.out);
-
-		transformer.transform(source, result);
-		transformer.transform(source, syso);
-
-		//System.out.println("File saved!");
-		
-=======
->>>>>>> refs/heads/main
 	}
 
 }
