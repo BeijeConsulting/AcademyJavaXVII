@@ -221,7 +221,11 @@ public class AddressBook {
 		try {
 			writer = new FileWriter(pathFile, true);
 			
-			writer.write("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
+			File file = new File(pathFile);
+			
+			if(!file.exists()) {
+				writer.write("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
+			}
 			
 			for (Contact contact : contacts) {
 				if(contact.getFirstName() != null) {

@@ -65,6 +65,7 @@ public class RubricaJDBC {
 			AddressBook ab = new AddressBook();
 			
 			ab.writeAddressBookCSV("/Temp/addressBookFromDB.csv", ";", contacts);
+			ab.writeAddressBookXML(contacts, "/Temp/addressBookFromDB.xml");
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
