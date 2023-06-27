@@ -15,6 +15,7 @@ public class RubricaCSV {
 
 	public static void main(String[] args) {
 		
+
 		FileReader fileReader = null;
 		BufferedReader bufferedReader = null;
 		List<String> rows = null;
@@ -55,10 +56,12 @@ public class RubricaCSV {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+
 		}
 		
 		
 		System.out.println("rows number: " + rows.size());
+
 		
 		FileWriter fileWriter = null;
 		try {
@@ -82,7 +85,11 @@ public class RubricaCSV {
 				fileWriter.write(contact[0]);
 				fileWriter.write('\n');
 				fileWriter.flush();
+
 			}
+
+
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -91,8 +98,11 @@ public class RubricaCSV {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+
 		}
 		
+
 		System.out.println("FINE");
+
 	}
 }
