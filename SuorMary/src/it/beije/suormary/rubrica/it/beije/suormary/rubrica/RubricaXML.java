@@ -54,7 +54,7 @@ public class RubricaXML {
 		Contact c = null;
 		List<Element> els = null;
 		for (Element el : elements) {
-			System.out.println("et� contatto = " + el.getAttribute("eta"));
+			//System.out.println("eta' contatto = " + el.getAttribute("eta"));
 			//System.out.println("contenuto contatto = " + el.getTextContent());
 			els = getChildElements(el);
 			c = new Contact();
@@ -62,7 +62,7 @@ public class RubricaXML {
 				System.out.println(e.getTagName() + " = " + e.getTextContent());
 				
 				switch (e.getTagName()) {
-					case "nome": c.setName(e.getTextContent());
+					case "nome": c.setName(e.getTextContent()); 
 						break;
 					case "cognome": c.setSurname(e.getTextContent());
 						break;
