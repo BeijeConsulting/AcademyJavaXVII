@@ -333,7 +333,6 @@ public class RubricaUtils {
 		//le altre tipologie di nodi non vengono contate 
 		NodeList nodeList = el.getChildNodes();
 		
-		
 		//System.out.println("nodeList size: " + nodeList.getLength());
 		
 		//E' una lista vuota che andrà a contenere gli elementi figli dell'
