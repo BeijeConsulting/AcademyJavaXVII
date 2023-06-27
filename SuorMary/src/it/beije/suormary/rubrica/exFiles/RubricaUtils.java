@@ -33,7 +33,7 @@ public class RubricaUtils {
             while (reader.ready()) {
                 String r = reader.readLine();
                 String[] values = r.split(separator);
-                newList.add(new Contact(values[1], values[0], values[2], values[3], values[4], 0));
+                newList.add(new Contact(values[1], values[0], values[2], values[3], values[4]));
             }
 
             System.out.println(newList);
@@ -44,80 +44,116 @@ public class RubricaUtils {
         }
     }
 
-        public static List<Contact> loadRubricaFromXML (String pathFile) {
-            try {
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
-                Document document = db.parse(pathFile);
-                Element rootElement = document.getDocumentElement();
-                List<Contact> contacts = new ArrayList<>();
-                Contact c = new Contact();
+    public static List<Contact> loadRubricaFromXML(String pathFile) {
+        try {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            Document document = db.parse(pathFile);
+            List<Contact> contacts = new ArrayList<>();
+            Contact c = new Contact();
 
-                Element docEl = document.getDocumentElement();
-                List<Element> elements = getChildElements(docEl);
-                NodeList listOfContacts = rootElement.getElementsByTagName("contatto");
+            Element docEl = document.getDocumentElement();
+            List<Element> elements = getChildElements(docEl);
 
-                List<Element> els;
-                for (Element el : elements) {
-                    System.out.println("et� contatto = " + el.getAttribute("eta"));
-                    els = getChildElements(el);
-                    for (Element e : els) {
-                        System.out.println(e.getTagName() + " = " + e.getTextContent());
+            List<Element> els;
+            for (Element el : elements) {
+                System.out.println("et� contatto = " + el.getAttribute("eta"));
+                els = getChildElements(el);
+                for (Element e : els) {
+                    System.out.println(e.getTagName() + " = " + e.getTextContent());
 
-                        switch (e.getTagName()) {
-                            case "nome":
-                                c.setName(e.getTextContent());
-                                break;
-                            case "cognome":
-                                c.setSurname(e.getTextContent());
-                                break;
-                            case "telefono":
-                                c.setPhoneNumber(e.getTextContent());
-                                break;
-                            case "email":
-                                c.setEmail(e.getTextContent());
-                                break;
-                            case "note":
-                                c.setNote(e.getTextContent());
-                                break;
-                            default:
-                                System.out.println("TagName non riconosciuto!");
-                                break;
-                        }
+                    switch (e.getTagName()) {
+                        case "nome":
+                            c.setName(e.getTextContent());
+                            break;
+                        case "cognome":
+                            c.setSurname(e.getTextContent());
+                            break;
+                        case "telefono":
+                            c.setPhoneNumber(e.getTextContent());
+                            break;
+                        case "email":
+                            c.setEmail(e.getTextContent());
+                            break;
+                        case "note":
+                            c.setNote(e.getTextContent());
+                            break;
+                        default:
+                            System.out.println("TagName non riconosciuto!");
+                            break;
                     }
-
-                    contacts.add(c);
                 }
-                System.out.println(contacts);
-                return contacts;
-            } catch (ParserConfigurationException | IOException | SAXException e) {
-                throw new RuntimeException(e);
+
+                contacts.add(c);
             }
-
-        }
-
-            public void writeRubricaCSV (List < Contact > contacts, String pathFile, String separator){
-
-        }
-
-        public static List<Element> getChildElements (Element el){
-            NodeList nodeList = el.getChildNodes();
-            //System.out.println("nodeList size: " + nodeList.getLength());
-            List<Element> elements = new ArrayList<>();
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node n = nodeList.item(i);
-                if (n instanceof Element) elements.add((Element) n);
-            }
-
-            return elements;
-        }
-
-
-        public static void main (String[]args) throws IOException, ParserConfigurationException, SAXException {
-
-//        loadRubricaFromCSV("/home/flaviana/dev/corso-beije/AcademyJavaXVII/SuorMary/src/rubrica.csv", ";");
-            loadRubricaFromXML("/home/flaviana/dev/corso-beije/AcademyJavaXVII/SuorMary/src/rubrica.xml");
+            System.out.println(contacts);
+            return contacts;
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            throw new RuntimeException(e);
         }
 
     }
+
+    public static void writeRubricaCSV(List<Contact> contacts, String pathFile, String separator) {
+        boolean fileExists = new File(pathFile).exists();
+
+        try (FileWriter fileWriter = new FileWriter(pathFile, true);
+             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
+
+            // Se il file esiste già aggiungi un separatore di riga iniziale
+            if (fileExists) {
+                bufferedWriter.newLine();
+            }
+
+            // Scrivi i nuovi contatti in coda al file
+            for (Contact contact : contacts) {
+                String row = contact.getName() + separator + contact.getEmail() + separator + contact.getPhoneNumber();
+                bufferedWriter.write(row);
+                bufferedWriter.newLine();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Errore durante la scrittura del file", e);
+        }
+
+
+    }
+
+    public static List<Contact> areContactsEquals(List<Contact> contactList, List<Contact> newContactList) {
+        List<Contact> contactsThatAreAlreadyInList = new ArrayList<>();
+        for (int i = 0; i < contactList.size(); i ++) {
+            if (contactList.get(i).equals(newContactList.get(i))) {
+                contactsThatAreAlreadyInList.add(contactList.get(i));
+            }
+        }
+        return contactsThatAreAlreadyInList;
+    }
+
+
+    public static List<Element> getChildElements(Element el) {
+        NodeList nodeList = el.getChildNodes();
+        List<Element> elements = new ArrayList<>();
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node n = nodeList.item(i);
+            if (n instanceof Element) elements.add((Element) n);
+        }
+
+        return elements;
+    }
+
+
+    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
+
+        Contact contact1 = new Contact("Pippo", "Rossi", "09876543", "Pippo@beije.it", "friend");
+        Contact contact2 = new Contact("Minnie", "Bianchi", "09876883", "Minnie@beije.it", "bestFriend");
+
+        List<Contact> contacts = new ArrayList<>();
+        contacts.add(contact1);
+        contacts.add(contact2);
+
+//        loadRubricaFromCSV("/home/flaviana/dev/corso-beije/AcademyJavaXVII/SuorMary/src/rubrica.csv", ";");
+//            loadRubricaFromXML("/home/flaviana/dev/corso-beije/AcademyJavaXVII/SuorMary/src/rubrica.xml");
+        writeRubricaCSV(contacts, "/home/flaviana/proveFile1.csv", ";");
+    }
+
+}
 

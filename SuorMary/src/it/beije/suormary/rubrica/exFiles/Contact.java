@@ -7,13 +7,12 @@ public class Contact {
     public Contact() {
     }
 
-    public Contact(String name, String surname, String phoneNumber, String email, String note, int age) {
+    public Contact(String name, String surname, String phoneNumber, String email, String note) {
         this.name = name;
         this.surname = surname;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.note = note;
-        this.age = age;
     }
 
     private String name;
@@ -22,7 +21,6 @@ public class Contact {
     private String email;
     private String note;
 
-    private int age;
 
     public String getName() {
         return name;
@@ -64,13 +62,6 @@ public class Contact {
         this.note = note;
     }
 
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
 
     @Override
     public String toString() {
@@ -80,7 +71,6 @@ public class Contact {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
                 ", note='" + note + '\'' +
-                ", age=" + age +
                 '}';
     }
 
@@ -89,11 +79,11 @@ public class Contact {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Contact contact = (Contact) o;
-        return age == contact.age && Objects.equals(name, contact.name) && Objects.equals(surname, contact.surname) && Objects.equals(phoneNumber, contact.phoneNumber) && Objects.equals(email, contact.email) && Objects.equals(note, contact.note);
+        return Objects.equals(name, contact.name) && Objects.equals(surname, contact.surname) && Objects.equals(phoneNumber, contact.phoneNumber) && Objects.equals(email, contact.email) && Objects.equals(note, contact.note);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, phoneNumber, email, note, age);
+        return Objects.hash(name, surname, phoneNumber, email, note);
     }
 }
