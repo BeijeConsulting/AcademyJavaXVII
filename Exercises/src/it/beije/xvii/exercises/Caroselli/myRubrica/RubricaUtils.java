@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica.exFiles;
+package it.beije.xvii.exercises.Caroselli.myRubrica;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,15 +119,56 @@ public class RubricaUtils {
 
     }
 
-    public static List<Contact> areContactsEquals(List<Contact> contactList, List<Contact> newContactList) {
-        List<Contact> contactsThatAreAlreadyInList = new ArrayList<>();
-        for (int i = 0; i < contactList.size(); i ++) {
-            if (contactList.get(i).equals(newContactList.get(i))) {
-                contactsThatAreAlreadyInList.add(contactList.get(i));
-            }
-        }
-        return contactsThatAreAlreadyInList;
+    public static void writeRubricaFromXML() {
+
     }
+
+    public static void readFromDb() {
+
+        Connection connection = null;
+        Statement statement = null;
+
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "password");
+
+            statement = connection.createStatement();
+            System.out.println("connection open? " + !connection.isClosed());
+
+            //SELECT
+            ResultSet rs = statement.executeQuery("SELECT * FROM suor_mary.rubrica");
+
+            while (rs.next()) {
+
+                System.out.println("id : " + rs.getInt("id"));
+                System.out.println("name : " + rs.getString("name"));
+                System.out.println("surname : " + rs.getString("surname"));
+                System.out.println("phone : " + rs.getString("phone"));
+                System.out.println("email : " + rs.getString("email"));
+                System.out.println("note : " + rs.getString("note"));
+
+                System.out.println("---------------");
+            }
+            rs.close();
+
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+//        } finally {
+//            try {
+//                if (connection != null && statement != null) {
+//                    statement.close();
+//                    connection.close();
+//                }
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//            }
+        }
+
+
+    }
+
 
 
     public static List<Element> getChildElements(Element el) {
@@ -150,9 +192,10 @@ public class RubricaUtils {
         contacts.add(contact1);
         contacts.add(contact2);
 
-//        loadRubricaFromCSV("/home/flaviana/dev/corso-beije/AcademyJavaXVII/SuorMary/src/rubrica.csv", ";");
-//            loadRubricaFromXML("/home/flaviana/dev/corso-beije/AcademyJavaXVII/SuorMary/src/rubrica.xml");
-        writeRubricaCSV(contacts, "/home/flaviana/proveFile1.csv", ";");
+////        loadRubricaFromCSV("/home/flaviana/dev/corso-beije/AcademyJavaXVII/SuorMary/src/rubrica.csv", ";");
+////            loadRubricaFromXML("/home/flaviana/dev/corso-beije/AcademyJavaXVII/SuorMary/src/rubrica.xml");
+//        writeRubricaCSV(contacts, "/home/flaviana/proveFile1.csv", ";");
+       readFromDb();
     }
 
 }

@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica.exFiles;
+package it.beije.xvii.exercises.Caroselli.myRubrica;
 
 import java.util.Objects;
 
