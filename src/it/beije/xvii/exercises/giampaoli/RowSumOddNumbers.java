@@ -8,7 +8,6 @@ public class RowSumOddNumbers {
 		int n_NumeriPrima = 0;
 		int n_NumeriTotali = 0;
 		
-		//Calcolo riga tabella
 		for(int i = 0; i <= n; i++) {
 			n_NumeriTotali = n_NumeriTotali + i;
 		}
