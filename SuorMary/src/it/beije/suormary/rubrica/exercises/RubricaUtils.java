@@ -6,9 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -30,20 +37,6 @@ import it.beije.suormary.rubrica.Contact;
 
 public class RubricaUtils {
 	
-	/*Si definiscono le seguenti costanti che rappresentano gli indici dei rispettivi campi 
-	 *array fields.
-	 *Utilizzando queste costanti, il codice diventa più leggibile e indipendente 
-	 *dall'ordine dei campi nel file CSV. 
-	 *In caso di modifiche all'ordine dei campi o l'aggiunta di nuovi campi, 
-	 *si dovrà aggiornare le costanti anziché modificare direttamente gli indici nel codice.
-	 *infatti ora: fields[SURNAME_INDEX]
-	 *prima:	   fields[0]
-	 */
-	private static final int SURNAME_INDEX = 0;
-	private static final int NAME_INDEX = 1;
-	private static final int PHONE_NUMBER_INDEX = 2;
-	private static final int EMAIL_INDEX = 3;
-	private static final int NOTE_INDEX = 4;
 	private static final String SURNAME_FIELD = "COGNOME";
 	private static final String NAME_FIELD = "NOME";
 	private static final String PHONE_NUMBER_FIELD = "TELEFONO";
@@ -58,54 +51,76 @@ public class RubricaUtils {
 			File file = new File(pathFile);
 			fileReader = new FileReader(file);
 			bufferedReader = new BufferedReader(fileReader);
+			
 			contatti = new ArrayList<Contact>();
+			Map<String, Integer> columnMap = new HashMap<>();
 			Contact contatto = null;
+			
+			//Costrutti per le righe dei valori
 			String line = null;
 			String[] fields = null;
 			StringBuilder stringBuilder = new StringBuilder();
+	        int index = -1;
 			
-			// Ignora la prima riga (intestazione)
-	        bufferedReader.readLine();
+			//Costrutti e gestione dell'intestazione
+	        String headerLine = bufferedReader.readLine();
+	        String[] headers = headerLine.split(separator);
+	        
+	        //Si riempie la mappa per chiave (nome campo) e valore (l'indice)
+	        for (int i = 0; i < headers.length; i++) {
+                columnMap.put(headers[i], i);
+            }
+	        
 	        
 			while (bufferedReader.ready()) {
-				//La funzione readLine() della classe BufferedReader legge una riga di testo dal file di input, 
-				//ma rimuove il carattere di ritorno a capo (\n) alla fine della riga letta.
+				//legge una riga di testo dal file di input
 				line = bufferedReader.readLine();
-				fields = line.split(separator);
-				if (fields.length == 5) {
-	                contatto = new Contact();
-	                
-	                stringBuilder.setLength(0);
-	                /*Nel contesto di Java 8, la chiamata al metodo trim() della classe String 
-	                 * rimane la soluzione più efficiente per rimuovere gli spazi bianchi iniziali 
-	                 * e finali da una stringa. 
-	                 * La funzione trim() crea una nuova istanza di stringa solo se necessario, 
-	                 * altrimenti restituisce la stessa istanza di stringa se non sono presenti 
-	                 * spazi bianchi iniziali o finali.*/
-	                stringBuilder.append(fields[SURNAME_INDEX].trim());
-	                contatto.setSurname(stringBuilder.toString());
-	                
-	                stringBuilder.setLength(0);
-	                stringBuilder.append(fields[NAME_INDEX].trim());
-	                contatto.setName(stringBuilder.toString());
-	                
-	                stringBuilder.setLength(0);
-	                stringBuilder.append(fields[PHONE_NUMBER_INDEX].trim());
-	                contatto.setPhoneNumber(stringBuilder.toString());
-	                
-	                stringBuilder.setLength(0);
-	                stringBuilder.append(fields[EMAIL_INDEX].trim());
-	                contatto.setEmail(stringBuilder.toString());
-	                
-	                stringBuilder.setLength(0);
-	                stringBuilder.append(fields[NOTE_INDEX].trim());
-	                contatto.setNote(stringBuilder.toString());
-	                
-	                contatti.add(contatto);
-	            } else {
+				//l'ultimo campo della riga non viene letto correttamente quando il suo valore è null.
+				//indicando -1 nello split manteniamo anche gli elementi vuoti alla fine della riga
+				fields = line.split(separator,-1);
+				
+				if (fields.length == headers.length) {
+					contatto = new Contact();
+		            
+					if (columnMap.containsKey(SURNAME_FIELD)) {
+	                    index = columnMap.get(SURNAME_FIELD);
+	                    stringBuilder.setLength(0);
+	                    stringBuilder.append(fields[index].trim());
+	                    contatto.setSurname(stringBuilder.toString());
+	                }
+					
+					if (columnMap.containsKey(NAME_FIELD)) {
+	                    index = columnMap.get(NAME_FIELD);
+	                    stringBuilder.setLength(0);
+	                    stringBuilder.append(fields[index].trim());
+	                    contatto.setName(stringBuilder.toString());
+	                }
+					
+					if (columnMap.containsKey(PHONE_NUMBER_FIELD)) {
+	                    index = columnMap.get(PHONE_NUMBER_FIELD);
+	                    stringBuilder.setLength(0);
+	                    stringBuilder.append(fields[index].trim());
+	                    contatto.setPhoneNumber(stringBuilder.toString());
+	                }
+					
+					if (columnMap.containsKey(EMAIL_FIELD)) {
+	                    index = columnMap.get(EMAIL_FIELD);
+	                    stringBuilder.setLength(0);
+	                    stringBuilder.append(fields[index].trim());
+	                    contatto.setEmail(stringBuilder.toString());
+	                }
+					
+					if (columnMap.containsKey(NOTE_FIELD)) {
+	                    index = columnMap.get(NOTE_FIELD);
+	                    stringBuilder.setLength(0);
+	                    stringBuilder.append(fields[index].trim());
+	                    contatto.setNote(stringBuilder.toString());
+	                }
+		            contatti.add(contatto);
+				} else {
 	                System.out.println("Riga non valida: " + line);
 	            }
-				//System.out.println(r);
+				
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -124,97 +139,49 @@ public class RubricaUtils {
 		return contatti;
 	}
 	
-	public List<Contact> loadRubricaFromCSVDynamic(String pathFile, String separator) {
-		FileReader fileReader = null;
-		BufferedReader bufferedReader = null;
+	public List<Contact> loadRubricaFromJDBC() {
+		Connection connection = null;
+		Statement statement = null;
 		List<Contact> contatti = null;
+		
 		try {
-			File file = new File(pathFile);
-			fileReader = new FileReader(file);
-			bufferedReader = new BufferedReader(fileReader);
 			contatti = new ArrayList<Contact>();
 			Contact contatto = null;
-			String line = null;
-			String[] fields = null;
-			StringBuilder stringBuilder = new StringBuilder();
 			
-			// Legge la prima riga (intestazione)
-	        String headerLine = bufferedReader.readLine();
-	        String[] headers = headerLine.split(separator);
-	        
-	        //Il motivo della trasformazione da Array a Lista di String
-	        //perché è una struttura dinamica 
-	        List<String> headerList = Arrays.asList(headers);
-	        
-	        List<String> fieldsList = null;
-	        int index = -1;
-	        
-			while (bufferedReader.ready()) {
-				//legge una riga di testo dal file di input
-				line = bufferedReader.readLine();
-				fields = line.split(separator);
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			
+			statement = connection.createStatement();
+			System.out.println("connection open? " + !connection.isClosed());
+			
+			//SELECT
+			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
+			
+			while (rs.next()) {
+				contatto = new Contact();
+				//rs.getInt("id")
+				contatto.setSurname(rs.getString(SURNAME_FIELD));
+				contatto.setName(rs.getString(NAME_FIELD));
+				contatto.setPhoneNumber(rs.getString(PHONE_NUMBER_FIELD));
+				contatto.setEmail(rs.getString(EMAIL_FIELD));
+				contatto.setNote(rs.getString(NOTE_FIELD));
 				
-				if (fields.length == headers.length) {
-	                contatto = new Contact();
-	                
-	                fieldsList = Arrays.asList(fields);
-	                
-	                if(headerList.contains(SURNAME_FIELD)) {
-	                	index = headerList.indexOf(SURNAME_FIELD);
-	                	stringBuilder.setLength(0);
-		                stringBuilder.append(fieldsList.get(index).trim());
-		                contatto.setSurname(stringBuilder.toString());
-	                }
-	                
-                    if (headerList.contains(NAME_FIELD)) {
-                        index = headerList.indexOf(NAME_FIELD);
-                        stringBuilder.setLength(0);
-                        stringBuilder.append(fieldsList.get(index).trim());
-                        contatto.setName(stringBuilder.toString());
-                    }
-                    
-                    if (headerList.contains(PHONE_NUMBER_FIELD)) {
-                    	index = headerList.indexOf(PHONE_NUMBER_FIELD);
-                    	stringBuilder.setLength(0);
-    	                stringBuilder.append(fieldsList.get(index).trim());
-    	                contatto.setPhoneNumber(stringBuilder.toString());
-                    }
-	                
-	                if (headerList.contains(EMAIL_FIELD)) {
-	                	index = headerList.indexOf(EMAIL_FIELD);
-	                	stringBuilder.setLength(0);
-	                	stringBuilder.append(fieldsList.get(index).trim());
-		                contatto.setEmail(stringBuilder.toString());
-	                }
-	                
-	                if (headerList.contains(NOTE_FIELD)) {
-	                	index = headerList.indexOf(NOTE_FIELD);
-	                	stringBuilder.setLength(0);
-	                	stringBuilder.append(fieldsList.get(index).trim());
-		                contatto.setNote(stringBuilder.toString());
-	                }
-	                
-	                
-	                contatti.add(contatto);
-	            } else {
-	                System.out.println("Riga non valida: " + line);
-	            }
-				//System.out.println(r);
+				contatti.add(contatto);
 			}
-		} catch (FileNotFoundException e) {
+			rs.close();
+			
+		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				bufferedReader.close();
-				fileReader.close();
-			} catch (IOException e) {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		//System.out.println("rows number: " + contatti.size());
 		return contatti;
 	}
 	
@@ -291,18 +258,18 @@ public class RubricaUtils {
 					
 					//Viene utilizzato un costrutto switch-case per assegnare il valore appropriato 
 					//al campo corrispondente nell'oggetto Contact, in base al nome dell'elemento.
-					switch (e.getTagName()) {
-						case "nome": c.setName(e.getTextContent());
+					switch (e.getTagName().toUpperCase()) {
+						case NAME_FIELD: c.setName(e.getTextContent());
 							break;
-						case "cognome": c.setSurname(e.getTextContent());
+						case SURNAME_FIELD: c.setSurname(e.getTextContent());
 							break;
-						case "telefono": c.setPhoneNumber(e.getTextContent());
+						case PHONE_NUMBER_FIELD: c.setPhoneNumber(e.getTextContent());
 							break;
-						case "email": c.setEmail(e.getTextContent());
+						case EMAIL_FIELD: c.setEmail(e.getTextContent());
 							break;
-						case "note": c.setNote(e.getTextContent());
+						case NOTE_FIELD: c.setNote(e.getTextContent());
 							break;
-						default: System.out.println("TagName non riconosciuto!");
+						default: System.out.println("TagName non riconosciuto! " + e.getTagName());
 							break;
 					}
 				}
@@ -459,7 +426,7 @@ public class RubricaUtils {
 			} else {
 				// Il file non esiste, crea un nuovo documento
                 document = documentBuilder.newDocument();
-                rootElement = document.createElement("contacts");
+                rootElement = document.createElement("rubrica");
                 document.appendChild(rootElement);
 			}
 			
@@ -494,7 +461,7 @@ public class RubricaUtils {
 				
 				if (c != null) {
 					//Per ogni contatto, viene creato un nuovo elemento "contact"
-					contact = document.createElement("contact");
+					contact = document.createElement("contatto");
 					
 					/*
 					 *  impostato un attributo "age" con il valore "50" per ogni elemento 
@@ -510,27 +477,27 @@ public class RubricaUtils {
 					 * ogni elemento figlio viene aggiunto all'elemento "contact" usando appendChild()
 					 */
 					if (c.getName() != null) {
-						Element name = document.createElement("name");
+						Element name = document.createElement(NAME_FIELD);
 						name.setTextContent(c.getName());
 						contact.appendChild(name);
 					}
 					if (c.getSurname() != null) {
-						Element surname = document.createElement("surname");
+						Element surname = document.createElement(SURNAME_FIELD);
 						surname.setTextContent(c.getSurname());
 						contact.appendChild(surname);
 					}
 					if (c.getPhoneNumber() != null) {
-						Element phoneNumber = document.createElement("phone");
+						Element phoneNumber = document.createElement(PHONE_NUMBER_FIELD);
 						phoneNumber.setTextContent(c.getPhoneNumber());
 						contact.appendChild(phoneNumber);
 					}
 					if (c.getEmail() != null) {
-						Element email = document.createElement("email");
+						Element email = document.createElement(EMAIL_FIELD);
 						email.setTextContent(c.getEmail());
 						contact.appendChild(email);
 					}
 					if (c.getNote() != null) {
-						Element note = document.createElement("note");
+						Element note = document.createElement(NOTE_FIELD);
 						note.setTextContent(c.getNote());
 						contact.appendChild(note);
 					}
@@ -635,6 +602,8 @@ public class RubricaUtils {
 	    }
 	}
 	
+	
+	
 	//testing
 	public static void main(String[] args)  {
 		RubricaUtils ru = new RubricaUtils();
@@ -644,21 +613,24 @@ public class RubricaUtils {
 		String pathFileXML = "/Users/Padawan/git/file/rubrica.xml";
 		String pathFileXMLW = "/Users/Padawan/git/file/rubrica_scrittura.xml";
 		
-		String pathFileDynamic = "/Users/Padawan/git/file/rubrica_dinamico_v1.csv";
+		String pathFileDynamic = "/Users/Padawan/git/file/rubrica_dinamico_v2.csv";
 		
 		String separator = ";";
 		
-		List<Contact> contatti = ru.loadRubricaFromCSV(pathFile, separator);
-		ru.writeRubricaCSV(contatti, pathFileW, separator);
+		//List<Contact> contatti = ru.loadRubricaFromCSV(pathFile, separator);
+		//ru.writeRubricaCSV(contatti, pathFileW, separator);
 		
 		List<Contact> contattiXML = ru.loadRubricaFromXML(pathFileXML);
 		ru.writeRubricaXML(contattiXML, pathFileXMLW);
 		
 		System.out.println();
 		
-		List<Contact> contattiDynamic = ru.loadRubricaFromCSVDynamic(pathFileDynamic, separator);
+		List<Contact> contattiDynamic = ru.loadRubricaFromCSV(pathFileDynamic, separator);
 		RubricaUtils.printContactList(contattiDynamic);
-
+		
+		
+		/*List<Contact> contatti = ru.loadRubricaFromJDBC();
+		RubricaUtils.printContactList(contatti)*/;
 	}
 
 }
