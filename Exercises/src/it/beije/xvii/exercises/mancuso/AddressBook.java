@@ -87,19 +87,19 @@ public class AddressBook {
 					int idxNotes = -1;
 					
 					for(int i=0;i<headers.length;i++) {
-						if(headers[i].toLowerCase().equals("NAME")) {
+						if(headers[i].toUpperCase().equals("NAME")) {
 							idxFirstName = i;
 						}
-						if(headers[i].toLowerCase().equals("SURNAME")) {
+						if(headers[i].toUpperCase().equals("SURNAME")) {
 							idxLastName = i;
 						}
-						if(headers[i].toLowerCase().equals("PHONE")) {
+						if(headers[i].toUpperCase().equals("PHONE")) {
 							idxPhone = i;
 						}
-						if(headers[i].toLowerCase().equals("EMAIL")) {
+						if(headers[i].toUpperCase().equals("EMAIL")) {
 							idxEmail = i;
 						}
-						if(headers[i].toLowerCase().equals("NOTES")) {
+						if(headers[i].toUpperCase().equals("NOTES")) {
 							idxNotes = i;
 						}
 					}
@@ -363,12 +363,12 @@ public class AddressBook {
 		List<Contact> newContacts = addressBook.loadAddressesFromCSV("/Temp/addressBook.csv", ";");
 		addressBook.contacts = newContacts;
 		
-		//System.out.println(addressBook.toString());
+		System.out.println(addressBook.toString());
 		
 		//newContacts = addressBook.loadAddressesFromXML("/Temp/rubrica.xml");
 		//addressBook.contacts = newContacts;
 		
-		addressBook.writeAddressBookXML(addressBook.contacts, "/Temp/contacts.xml");
+		//addressBook.writeAddressBookXML(addressBook.contacts, "/Temp/contacts.xml");
 		
 		//addressBook.writeAddressBookCSV("/Temp/newCSV.csv", ";", newContacts);
 		
