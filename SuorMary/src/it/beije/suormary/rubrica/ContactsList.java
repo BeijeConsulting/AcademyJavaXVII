@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -30,21 +31,38 @@ public class ContactsList {
 		FileReader fileReader = new FileReader(pathFile);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		
-		String [] contactInfo = null;
+		List<String> contactInfo = new ArrayList<>();
 		Contact con = null;
 		List<Contact> listOfContacts = new ArrayList<>();
  		
-		while (bufferedReader.ready()) {
-			String line = bufferedReader.readLine();
-			 contactInfo = line.split(separator);
-			 con = new Contact();
-			 con.setName(contactInfo[0]);
-			 con.setSurname(contactInfo[1]);
-			 con.setPhoneNumber(contactInfo[2]);
-			 con.setEmail(contactInfo[3]);
-			 con.setNote(contactInfo[4]);
-			 listOfContacts.add(con);
+		String line;
+		int name;
+		int surname;
+		int telephone;
+		int email;
+		int note;
+		
+		if (bufferedReader.ready()) {
+			line = bufferedReader.readLine();
+			contactInfo = Arrays.asList(line.split(separator));
+			name = contactInfo.indexOf("NOME");
+			surname = contactInfo.indexOf("COGNOME");
+			telephone = contactInfo.indexOf("TELEFONO");
+			email = contactInfo.indexOf("EMAIL");
+			note = contactInfo.indexOf("NOTE");
+		
+			while (bufferedReader.ready()) {
+				line = bufferedReader.readLine();
+				contactInfo = Arrays.asList(line.split(separator));
+				con = new Contact();
+				if (name != -1) con.setName(contactInfo.get(name));
+				if (surname != -1) con.setSurname(contactInfo.get(surname));
+				if (telephone != -1) con.setPhoneNumber(contactInfo.get(telephone));
+				if (email != -1)con.setEmail(contactInfo.get(email));
+				if (note != -1)con.setNote(contactInfo.get(note));
+				listOfContacts.add(con);
 			}
+		}
 		bufferedReader.close();
 		fileReader.close();
 		
@@ -159,15 +177,21 @@ public class ContactsList {
 		transformer.transform(source, result);
 		transformer.transform(source, syso);
 		
+		System.out.println("Contacts added");
 	}	
 	
  	public static void writeContactListCSV(List<Contact> listOfContacts, String pathFile, String separator) throws IOException{
 		
 		FileWriter fileWriter = null;
+		StringBuilder line;
 		if ((new File(pathFile)).exists()) fileWriter = new FileWriter(pathFile, true);
-		else fileWriter = new FileWriter(pathFile);
-
-		StringBuilder line = null;
+		else {
+			fileWriter = new FileWriter(pathFile);
+			line = new StringBuilder("NOME;COGNOME;TELEFONO;EMAIL;NOTE\n");
+			fileWriter.write(line.toString());
+		}
+		
+		line = null;
 		
 		for (Contact con : listOfContacts) {
 			line = new StringBuilder(con.getName() + separator + con.getSurname() + separator + con.getPhoneNumber() 
@@ -183,9 +207,9 @@ public class ContactsList {
 	
 	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException{
 		
-		String pathReadFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\rubrica.xml";
-		String separator = "|";
-		String pathWriteFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\primotentativo.xml";
+		String pathReadFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\rubrica.csv";
+		String separator = ";";
+		String pathWriteFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\terzotentativo.csv";
 		
 		List<Contact> listOfContacts = new ArrayList<>();
 		if (pathReadFile.endsWith(".csv")) listOfContacts = loadContactListFromCSV(pathReadFile, separator);

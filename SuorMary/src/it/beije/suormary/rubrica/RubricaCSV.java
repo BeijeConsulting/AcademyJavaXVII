@@ -36,7 +36,7 @@ public class RubricaCSV {
 		while (bufferedReader.ready()) {
 			String r = bufferedReader.readLine();
 			rows.add(r);
-			//System.out.println(r);
+			System.out.println(r);
 		}
 		bufferedReader.close();
 		
