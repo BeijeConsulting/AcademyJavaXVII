@@ -27,6 +27,7 @@ i nuovi contatti non vadano a sovrascrivere quelli già presenti, bensì vengano
 		try {
 			file = new File(pathFile);
 		} catch(NullPointerException e) {
+			//System.out.println("file non trovato");
 			e.printStackTrace();
 		}
 			List<Contatto> contacts = new ArrayList<Contatto>();
@@ -39,7 +40,6 @@ i nuovi contatti non vadano a sovrascrivere quelli già presenti, bensì vengano
 				e.printStackTrace();
 			}
 			BufferedReader bufferedReader = new BufferedReader(fileReader);
-			
 			
 			// crea lista di righe
 			List<String> rows = new ArrayList<String>();
@@ -115,7 +115,7 @@ i nuovi contatti non vadano a sovrascrivere quelli già presenti, bensì vengano
 	
 	public static void main(String[] args)  {
 		// ESERCIZIO CON FILE TXT
-		String path = "/Users/Padawan/eclipse-workspace/File/rubrica.csv";
+		String path = "/Users/Padawan/eclipse-workspace/File/rubrica.sv";
 		String separator = ";";
 		Rubrica_CSV txtRubrica = new Rubrica_CSV();
 		List<Contatto> c = txtRubrica.loadRubricaFromCSV(path, separator);
@@ -166,18 +166,6 @@ i nuovi contatti non vadano a sovrascrivere quelli già presenti, bensì vengano
 		}
 		
 		System.out.println("FINE");
-		
-		
-		// ESERCIZIO CON FILE XML
-		
-		/*DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		Document document = documentBuilder.parse("/Users/Padawan/eclipse-workspace/File/rubrica.xml");
-		
-		// prende tag "rubrica"
-		Element docEl = document.getDocumentElement();
-		System.out.println(docEl.getTagName());
-		*/
 	}
 	}
 }
