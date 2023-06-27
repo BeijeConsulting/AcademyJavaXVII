@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -21,6 +22,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class ContactsList {
 
@@ -49,7 +51,7 @@ public class ContactsList {
 		return listOfContacts;
 	}
 	
-	public static List<Contact> loadContactListFromXML(String pathFile) throws Exception {
+	public static List<Contact> loadContactListFromXML(String pathFile) throws ParserConfigurationException, SAXException, IOException{
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(pathFile);
@@ -65,7 +67,6 @@ public class ContactsList {
 			els = getChildElements(el);
 			con = new Contact();
 			for (Element e : els) {
-				
 				switch (e.getTagName()) {
 					case "nome": con.setName(e.getTextContent());
 						break;
@@ -96,51 +97,40 @@ public class ContactsList {
 		return elements;
 	}
 	
-	public static void writeContactListsXLM(List<Contact> listOfContacts, String pathFile) throws Exception {
+	public static void writeContactListsXLM(List<Contact> listOfContacts, String pathFile) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		Document document = documentBuilder.newDocument();
+		Document document;
 		
-		TransformerFactory transformerFactory = TransformerFactory.newInstance();
-		Transformer transformer = transformerFactory.newTransformer();
-		DOMSource source = new DOMSource(document);
-		
-		
-		File writeFile = new File(pathFile);
+	
 		Element contacts;
-		List<Contact> allContacts;
-		if (writeFile.exists()) {
-			allContacts = loadContactListFromXML(pathFile);
-			allContacts.addAll(listOfContacts);
+		if (new File(pathFile).exists()) {
+			document = documentBuilder.parse(pathFile);
 			contacts = document.getDocumentElement();
 		}
 		else {
-			allContacts = listOfContacts;
+			document = documentBuilder.newDocument();
 			contacts = document.createElement("contacts");
 			document.appendChild(contacts);
 		}
 		
-		for(Contact c : allContacts) System.out.println(c.getName() + " ");
-		
-		System.out.println(allContacts.size());
 		Element contact = null;
-		for (int i = 3; i < allContacts.size(); i++) {
-			Contact con = allContacts.get(i);
+		for (Contact con : listOfContacts) {
 			contact = document.createElement("contact");
 			
 			if (con.getName() != null) {
-				Element name = document.createElement("nome");
+				Element name = document.createElement("name");
 				name.setTextContent(con.getName());
 				contact.appendChild(name);
 			}
 			if (con.getSurname() != null) {
-				Element surname = document.createElement("cognome");
+				Element surname = document.createElement("surname");
 				surname.setTextContent(con.getSurname());
 				contact.appendChild(surname);
 			}
 			if (con.getPhoneNumber() != null) {
-				Element phoneNumber = document.createElement("telefono");
+				Element phoneNumber = document.createElement("phone");
 				phoneNumber.setTextContent(con.getPhoneNumber());
 				contact.appendChild(phoneNumber);
 			}
@@ -154,9 +144,13 @@ public class ContactsList {
 				note.setTextContent(con.getNote());
 				contact.appendChild(note);
 			}
+			
 			contacts.appendChild(contact);
 		}
 
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		Transformer transformer = transformerFactory.newTransformer();
+		DOMSource source = new DOMSource(document);
 		
 		// Output to console for testing
 		StreamResult result = new StreamResult(new File(pathFile));
@@ -165,10 +159,9 @@ public class ContactsList {
 		transformer.transform(source, result);
 		transformer.transform(source, syso);
 		
-	}
+	}	
 	
-	
- 	public static void writeContactListCSV(List<Contact> listOfContacts, String pathFile, String separator) throws Exception{
+ 	public static void writeContactListCSV(List<Contact> listOfContacts, String pathFile, String separator) throws IOException{
 		
 		FileWriter fileWriter = null;
 		if ((new File(pathFile)).exists()) fileWriter = new FileWriter(pathFile, true);
@@ -188,8 +181,7 @@ public class ContactsList {
 		System.out.println("Contacts added");
 	}
 	
-	
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException{
 		
 		String pathReadFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\rubrica.xml";
 		String separator = "|";
