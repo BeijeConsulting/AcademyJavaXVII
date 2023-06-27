@@ -25,6 +25,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.io.BufferedReader;
 
 
@@ -214,6 +219,74 @@ public class AddressBook {
 		
 	}
 	
+	public List<Contact> loadAddressesFromJDBC(){
+		Connection connection = null;
+		Statement statement = null;
+		List<Contact> contacts = null;
+		try {
+			
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "myDatabase1");
+			
+			statement = connection.createStatement();
+			
+			//SELECT
+			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
+			Contact c = null;
+			
+			contacts = new ArrayList<Contact>();
+			
+			while(rs.next()) {
+				/*System.out.println("id : " + rs.getInt(1));
+				System.out.println("nome : " + rs.getString(2));
+				System.out.println("cognome : " + rs.getString(3));
+				System.out.println("telefono : " + rs.getString(4));
+				System.out.println("email : " + rs.getString(5));
+				System.out.println("note : " + rs.getString(6));*/
+				
+				c = new Contact();
+				
+				String nome = rs.getString("nome");
+				String cognome = rs.getString("cognome");
+				String telefono = rs.getString("telefono");
+				String email = rs.getString("email");
+				String note = rs.getString("note");
+				
+				System.out.println("id : " + rs.getInt("id"));
+				System.out.println("nome : " + nome);
+				System.out.println("cognome : " + cognome);
+				System.out.println("telefono : " + telefono);
+				System.out.println("email : " + email);
+				System.out.println("note : " + note);
+				
+				System.out.println("------------------");
+				
+				c.setFirstName(nome);
+				c.setLastName(cognome);
+				c.setPhoneNumber(telefono);
+				c.setEmail(email);
+				c.setNotes(note);
+				
+				contacts.add(c);
+			}
+			rs.close();			
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		return contacts;
+	}
+	
 	public void writeAddressBookCSV(String pathFile, String separator, List<Contact> contacts) {
 		
 		FileWriter writer = null;
@@ -364,7 +437,10 @@ public class AddressBook {
 	public static void main(String[] args) {
 		AddressBook addressBook = new AddressBook();
 		
-		List<Contact> newContacts = addressBook.loadAddressesFromCSV("/Temp/addressBook.csv", ";");
+		//List<Contact> newContacts = addressBook.loadAddressesFromCSV("/Temp/addressBook.csv", ";");
+		
+		List<Contact> newContacts = addressBook.loadAddressesFromJDBC();
+		
 		addressBook.contacts = newContacts;
 		
 		System.out.println(addressBook.toString());
