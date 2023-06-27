@@ -31,10 +31,10 @@ public class RubricaJDBC {
 			statement = connection.createStatement();
 			System.out.println("connection open? " + !connection.isClosed());
 			
-			//SELECT
 			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
 			Contact contact = null;
 			while (rs.next()) {
+				
 				contact = new Contact();
 				contact.setName(rs.getString("name"));
 				contact.setSurname(rs.getString("surname"));
