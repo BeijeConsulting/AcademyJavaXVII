@@ -5,6 +5,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -115,6 +120,27 @@ public class ContactsList {
 		return elements;
 	}
 	
+	public static List<Contact> loadContactListFromDB (Connection connection) throws ClassNotFoundException, SQLException{
+		Statement statement = null;
+		statement = connection.createStatement();
+		System.out.println("connection open? " + !connection.isClosed());
+		ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
+		List<Contact> listOfContacts = new ArrayList<>();
+		Contact con = null; new Contact();
+		while (rs.next()) {
+			con = new Contact();
+			con.setName(rs.getString("nome"));
+			con.setSurname(rs.getString("cognome"));
+			con.setPhoneNumber(rs.getString("telefono"));
+			con.setEmail(rs.getString("email"));
+			con.setNote(rs.getString("note"));
+			listOfContacts.add(con);
+		}
+		rs.close();
+		connection.close();
+		return listOfContacts;
+	}
+	
 	public static void writeContactListsXLM(List<Contact> listOfContacts, String pathFile) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -205,16 +231,22 @@ public class ContactsList {
 		System.out.println("Contacts added");
 	}
 	
-	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException{
+	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException, ClassNotFoundException, SQLException{
 		
-		String pathReadFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\rubrica.csv";
+		String pathReadFile = "db";
 		String separator = ";";
-		String pathWriteFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\terzotentativo.csv";
+		String pathWriteFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\primodatabase.xml";
 		
 		List<Contact> listOfContacts = new ArrayList<>();
 		if (pathReadFile.endsWith(".csv")) listOfContacts = loadContactListFromCSV(pathReadFile, separator);
 		else if (pathReadFile.endsWith(".xml")) listOfContacts = loadContactListFromXML(pathReadFile);
-
+		else if (pathReadFile.equals("db")) {
+			Class.forName("com.mysql.cj.jdbc.Driver");	
+			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");
+			listOfContacts = loadContactListFromDB(connection);
+		}
+		
+		
 		if (pathWriteFile.endsWith(".csv")) writeContactListCSV(listOfContacts, pathWriteFile, separator);
 		else if (pathWriteFile.endsWith(".xml")) writeContactListsXLM(listOfContacts, pathWriteFile);
 		

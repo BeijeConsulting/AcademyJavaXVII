@@ -16,7 +16,7 @@ public class RubricaJDBC {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "beije");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");
 			
 			statement = connection.createStatement();
 			System.out.println("connection open? " + !connection.isClosed());
