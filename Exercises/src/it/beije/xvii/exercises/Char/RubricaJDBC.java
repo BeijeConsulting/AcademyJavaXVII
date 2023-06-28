@@ -150,6 +150,37 @@ public class RubricaJDBC {
 			}
 		}
 	}
+	public static void createContactFromRubrica(Contact c) {
+		Connection connection = null;
+		Statement statement = null;
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
+			
+			statement = connection.createStatement();
+			StringBuilder str = new StringBuilder("INSERT INTO rubrica (`name`,`surname`,`email`,`phone`,`note`) VALUES (`")
+					.append(c.getName()).append("','")
+					.append(c.getSurname()).append("','")
+					.append(c.getEmail()).append("','")
+					.append(c.getPhoneNumber()).append("','")
+					.append(c.getNote()).append("')");
+			statement.executeUpdate(str.toString());
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 }
 
