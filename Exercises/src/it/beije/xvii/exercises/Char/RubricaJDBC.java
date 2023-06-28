@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.ArrayList;
-
+import java.util.Scanner;
 public class RubricaJDBC {
 
 	public static void main(String[] args) {
@@ -16,8 +16,6 @@ public class RubricaJDBC {
 //	EsRubrica.writeRubricaXML(contacts, "/v/jdbc.xml");
 //    EsRubrica.writeRubricaCSV(contacts, "/v/jdbc2.csv",";");
 //    deleteContactFromRubrica(4);
-		updateContactFromRubrica(5,"phone","1234567");
-
 
 	}
 	public static List<Contact> loadRubricaJDBC(){
@@ -31,7 +29,6 @@ public class RubricaJDBC {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
 			
 			statement = connection.createStatement();
-			System.out.println("connection open? " + !connection.isClosed());
 			
 			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
 			Contact contact = null;
@@ -125,10 +122,20 @@ public class RubricaJDBC {
 			}
 		}
 	}
-	public static void updateContactFromRubrica(int id, String field, String newField) {
+	public static void updateContactFromRubrica() {
 		Connection connection = null;
 		Statement statement = null;
 		try {
+			
+			Scanner scanner = new Scanner(System.in);
+			System.out.print("Inserisci l'id del contatto da modificare : "); 
+			int id = scanner.nextInt();
+			scanner.nextLine();
+			System.out.print("Inserisci il campo che vuoi  modificare : "); 
+			String field = scanner.nextLine();
+			System.out.print("Inserisci il nuovo campo : "); 
+			String newField = scanner.nextLine();
+			scanner.close();
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
@@ -150,17 +157,31 @@ public class RubricaJDBC {
 			}
 		}
 	}
-	public static void createContactFromRubrica(Contact c) {
+	public static void createContactFromRubrica() {
 		Connection connection = null;
 		Statement statement = null;
 		try {
+			Scanner scanner = new Scanner(System.in);
+			System.out.print("Nome : ");
+			String name = scanner.nextLine(); 
+			System.out.print("Cognome : ");
+			String surname = scanner.nextLine(); 
+			System.out.print("Email : ");
+			String email = scanner.nextLine(); 
+			System.out.print("Telefono : ");
+			String phone = scanner.nextLine(); 
+			System.out.print("Note : ");
+			String note = scanner.nextLine(); 
+			scanner.close();
+			Contact c = new Contact();
+			c.setName(name); c.setSurname(surname); c.setEmail(email); c.setPhoneNumber(phone); c.setNote(note);
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
 			
 			statement = connection.createStatement();
-			StringBuilder str = new StringBuilder("INSERT INTO rubrica (`name`,`surname`,`email`,`phone`,`note`) VALUES (`")
+			StringBuilder str = new StringBuilder("INSERT INTO rubrica (`name`,`surname`,`email`,`phone`,`note`) VALUES ('")
 					.append(c.getName()).append("','")
 					.append(c.getSurname()).append("','")
 					.append(c.getEmail()).append("','")

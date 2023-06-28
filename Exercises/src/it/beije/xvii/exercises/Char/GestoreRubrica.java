@@ -19,24 +19,13 @@ public class GestoreRubrica {
         case "lista contatti" : System.out.println("Lista contatti : ");
         						List<Contact> contacts = RubricaJDBC.loadRubricaJDBC(); 
         						for(Contact c : contacts) {
-        							System.out.println("Nome : " + c.getName() + " - Cognome : " + c.getSurname());
+        							System.out.println(c);
         						}
         						break;
-        case "nuovo contatto" : System.out.println("Nome : ");
-        						String name = scanner.nextLine(); 
-        						System.out.println("Cognome : ");
-        						String surname = scanner.nextLine(); 
-        						System.out.println("Email : ");
-        						String email = scanner.nextLine(); 
-        						System.out.println("Telefono : ");
-        						String phone = scanner.nextLine(); 
-        						System.out.println("Note : ");
-        						String note = scanner.nextLine(); 
-        						Contact c = new Contact();
-        						c.setName(name); c.setSurname(surname); c.setEmail(email); c.setPhoneNumber(phone); c.setNote(note);
-        						RubricaJDBC.createContactFromRubrica(c);
+        case "nuovo contatto" : RubricaJDBC.createContactFromRubrica();
         						break;
-        case "modifica contatto" : System.out.println("a"); break;
+        case "modifica contatto" : RubricaJDBC.updateContactFromRubrica();
+        						   break;
         case "cancella contatto" : System.out.println("a"); break;
         case "trova contatti duplicati" : System.out.println("a"); break;
         case "unisci contatti duplicati" : System.out.println("a"); break;

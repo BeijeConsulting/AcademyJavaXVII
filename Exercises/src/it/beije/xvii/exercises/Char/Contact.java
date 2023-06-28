@@ -45,4 +45,7 @@ public class Contact {
 	public void setNote(String note) {
 		this.note = note;
 	}
+	public String toString() {
+		return "Nome : " + getName() + " - " + "Cognome : " + getSurname();
+	}
 }
