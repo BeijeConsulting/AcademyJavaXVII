@@ -494,12 +494,17 @@ public class AddressBook {
 	}
 	
 	public String toString() {
-		String myString = "";
-		for(Contact c : contacts) {
-			myString += c.toString();
-			myString += "--------------------------\n";
+		int i=0;
+		StringBuilder sb = new StringBuilder();
+		for(Contact c : contacts) {		
+			sb.append("\nIndex : ");
+			sb.append(i);
+			sb.append("\n\n");
+			sb.append(c.toString());
+			sb.append("--------------------------\n");
 		}
-		return myString;
+		
+		return sb.toString();
 	}
 	
 	public boolean findContact(Contact c) {
@@ -561,10 +566,19 @@ public class AddressBook {
 		List<Contact> parallel = new ArrayList<>();
 		
 		for(Contact c : contacts) {
-			if(parallel.contains(c)) {
-				if(!dups.contains(c)) {
-					dups.add(c);
+			boolean found = false;
+			for(Contact p : parallel) {
+				if(p.equals(c)) {
+					if(!dups.contains(p)) {
+						dups.add(p);
+					}
+					found = true;
+					break;
 				}
+			}
+			if(found) {
+				
+				dups.add(c);
 			}else {
 				parallel.add(c);
 			}
@@ -573,6 +587,7 @@ public class AddressBook {
 		return dups;
 	}
 	
+	// Da mettere se possibile scelta di quale dup tenere in futuro
 	public void mergeDuplicates() {
 		List<Contact> dups = findDuplicates();
 		
