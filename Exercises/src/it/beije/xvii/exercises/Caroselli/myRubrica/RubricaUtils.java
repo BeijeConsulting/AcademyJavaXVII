@@ -1,7 +1,5 @@
 package it.beije.xvii.exercises.Caroselli.myRubrica;
 
-import com.mysql.cj.protocol.a.NativePacketPayload;
-import com.sun.xml.internal.ws.spi.db.FieldSetter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -21,6 +19,7 @@ import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 public class RubricaUtils {
@@ -81,7 +80,7 @@ public class RubricaUtils {
                             c.setSurname(e.getTextContent());
                             break;
                         case "phone":
-                            c.setPhoneNumber(e.getTextContent());
+                            c.setPhone(e.getTextContent());
                             break;
                         case "email":
                             c.setEmail(e.getTextContent());
@@ -134,7 +133,7 @@ public class RubricaUtils {
 
             // Scrivi i nuovi contatti in coda al file
             for (Contact contact : contacts) {
-                String row = contact.getName() + separator + contact.getSurname() + separator + contact.getPhoneNumber() + separator + contact.getEmail() + separator + contact.getNote();
+                String row = contact.getName() + separator + contact.getSurname() + separator + contact.getPhone() + separator + contact.getEmail() + separator + contact.getNote();
 
                 bufferedWriter.write(row);
                 bufferedWriter.newLine();
@@ -170,9 +169,9 @@ public class RubricaUtils {
                     surname.setTextContent(c.getSurname());
                     contact.appendChild(surname);
                 }
-                if (c.getPhoneNumber() != null) {
+                if (c.getPhone() != null) {
                     Element phoneNumber = document.createElement("phone");
-                    phoneNumber.setTextContent(c.getPhoneNumber());
+                    phoneNumber.setTextContent(c.getPhone());
                     contact.appendChild(phoneNumber);
                 }
                 if (c.getEmail() != null) {
@@ -304,7 +303,7 @@ public class RubricaUtils {
             for (Contact c : contactListFromCSV) {
                 String query = "INSERT INTO rubrica (`name`, `surname`, `phone`, `email`) VALUES ('" +
                         c.getName() + "', '" + c.getSurname() + "', '" +
-                        c.getPhoneNumber() + "', '" + c.getEmail() + "')";
+                        c.getPhone() + "', '" + c.getEmail() + "')";
                 statement.executeUpdate(query);
             }
 
@@ -322,7 +321,7 @@ public class RubricaUtils {
             for (Contact c : contactListFromXML) {
                 String query = "INSERT INTO rubrica (`name`, `surname`, `phone`, `email`) VALUES ('" +
                         c.getName() + "', '" + c.getSurname() + "', '" +
-                        c.getPhoneNumber() + "', '" + c.getEmail() + "')";
+                        c.getPhone() + "', '" + c.getEmail() + "')";
                 statement.executeUpdate(query);
 
             }
@@ -381,7 +380,7 @@ public class RubricaUtils {
             String query = "INSERT INTO rubrica (`name`, `surname`, `phone`, `email`, `note`) VALUES (";
             query += "'" + (contact.getName() != null ? contact.getName() : "NULL") + "', ";
             query += "'" + (contact.getSurname() != null ? contact.getSurname() : "NULL") + "', ";
-            query += "'" + (contact.getPhoneNumber() != null ? contact.getPhoneNumber() : "NULL") + "', ";
+            query += "'" + (contact.getPhone() != null ? contact.getPhone() : "NULL") + "', ";
             query += "'" + (contact.getEmail() != null ? contact.getEmail() : "NULL") + "', ";
             query += "'" + (contact.getNote() != null ? contact.getNote() : "NULL") + "'";
             query += ")";
@@ -396,35 +395,175 @@ public class RubricaUtils {
         System.out.println(contact);
     }
 
-    public static void changeContact(String value) {
+    public static void deleteContact(String value) {
 
-        List<Contact> contactsFounded = new ArrayList<>();
-        String query = "SELECT * FROM rubrica WHERE ";
+        List<Contact> contacts = findContactFromInsertedValue(value);
 
-        Field[] fields = Contact.class.getDeclaredFields();
+        printContacts(contacts);
 
-        // Build the header row based on the field names
-        StringBuilder headerBuilder = new StringBuilder();
-        for (Field field : fields) {
+        // Richiedi all'utente di selezionare il contatto da eliminare
+        System.out.print("Inserisci il numero del contatto da eliminare: ");
+        Scanner scanner = new Scanner(System.in);
+        int choice = scanner.nextInt();
+        Contact contactToDelete = returnAContact(contacts, choice);
 
+        try {
+            Statement statement = connection("suor_mary", "root");
 
-//
-//        if () {
-//            query = query + " name = '" + name + "';";
-//
-//        } else if (surname != null && !surname.isEmpty()) {
-//            query = query + " surname = '" + surname + "';";
-//
-//        } else if (email != null && !email.isEmpty()) {
-//            query = query + " email = '" + email + "';";
-//
-//        } else if (phone != null && !phone.isEmpty()) {
-//            query = query + " phone = '" + phone + "';";
-//
-//        }
+            // Esegui la query di eliminazione
+            String deleteQuery = "DELETE FROM rubrica WHERE id = '" + contactToDelete.getId() + "';";
+            statement.executeUpdate(deleteQuery);
+
+            System.out.println("Contatto eliminato con successo.");
+            System.out.println(contactToDelete);
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
+    public static void changeContact(String value) {
+
+        Scanner scanner = new Scanner(System.in);
+        List<Contact> contacts = findContactFromInsertedValue(value);
+        printContacts(contacts);
+        System.out.print("Inserisci il numero del contatto da cambiare: ");
+
+        int choice = scanner.nextInt();
+        Contact contactToChange = returnAContact(contacts, choice);
+        System.out.println("Contatto selezionato:");
+        System.out.println(contactToChange);
+        String name = contactToChange.getName();
+        String surname = contactToChange.getSurname();
+        String phone = contactToChange.getPhone();
+        String email = contactToChange.getEmail();
+        String note = contactToChange.getNote();
+
+        try {
+
+            Statement statement = connection("suor_mary", "root");
+
+            System.out.print("Inserisci il nuovo nome (o premi Invio per mantenere lo stesso valore): ");
+            String newName = scanner.nextLine();
+            if (!newName.isEmpty()) {
+                name = newName;
+            }
+
+            System.out.print("Inserisci il nuovo cognome (o premi Invio per mantenere lo stesso valore): ");
+            String newSurname = scanner.nextLine();
+            if (!newSurname.isEmpty()) {
+                surname = newSurname;
+            }
+
+            System.out.print("Inserisci il nuovo telefono (o premi Invio per mantenere lo stesso valore): ");
+            String newPhone = scanner.nextLine();
+            if (!newPhone.isEmpty()) {
+                phone = newPhone;
+            }
+
+            System.out.print("Inserisci la nuova email (o premi Invio per mantenere lo stesso valore): ");
+            String newEmail = scanner.nextLine();
+            if (!newEmail.isEmpty()) {
+                email = newEmail;
+            }
+
+            System.out.print("Inserisci le nuove note (o premi Invio per mantenere lo stesso valore): ");
+            String newNote = scanner.nextLine();
+            if (!newNote.isEmpty()) {
+                note = newNote;
+            }
+
+            // Esegui l'aggiornamento nel database con i nuovi valori
+            String updateQuery = "UPDATE rubrica SET name = '" + name + "', surname = '" + surname + "', phone = '" + phone + "', email = '" + email + "', note = '" + note + "';";
+            statement.executeUpdate(updateQuery);
+
+
+            System.out.println(updateQuery);
+            System.out.println("Contatto cambiato correttamente");
+            System.out.println(returnAContact(contacts, choice));
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static List<Contact> findContactFromInsertedValue(String value) {
+        List<Contact> contacts = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT * FROM rubrica WHERE ");
+
+        Field[] fields = Contact.class.getDeclaredFields();
+        List<String> searchFields = new ArrayList<>();
+
+        // Costruisci una lista di nomi dei campi in cui cercare
+        for (Field field : fields) {
+            searchFields.add(field.getName());
+        }
+
+        // Costruisci la clausola WHERE basata sui campi di ricerca
+        for (int i = 0; i < searchFields.size(); i++) {
+            String field = searchFields.get(i);
+            query.append(field).append(" = '").append(value).append("'");
+
+            // Aggiungi l'operatore OR se non è l'ultimo campo
+            if (i < searchFields.size() - 1) {
+                query.append(" OR ");
+            }
+        }
+        query.append(";");
+
+        try {
+            Statement statement = connection("suor_mary", "root");
+            ResultSet rs = statement.executeQuery(query.toString());
+            while (rs.next()) {
+                contacts.add(new Contact(rs.getInt("id"), rs.getString("name"), rs.getString("surname"), rs.getString("phone"), rs.getString("email"), rs.getString("note")));
+            }
+
+            rs.close();
+
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println(query);
+
+        System.out.println(contacts);
+
+        return contacts;
+    }
+
+    public static void printContacts(List<Contact> contacts) {
+
+        if (contacts.isEmpty()) {
+            System.out.println("Nessun contatto trovato.");
+            return;
+        }
+
+        // Mostra la lista dei contatti trovati
+        System.out.println("Contatti trovati:");
+        for (Contact contact : contacts) {
+            System.out.println(contact.getId() + ". " + contact.getName() + " " + contact.getSurname());
+        }
+    }
+
+    public static Contact returnAContact(List<Contact> contacts, int choice) {
+
+        // Verifica la scelta dell'utente
+        boolean validChoice = false;
+        Contact currentContact = null;
+        for (Contact contact : contacts) {
+            if (contact.getId() == choice) {
+                validChoice = true;
+                currentContact = contact;
+                break;
+            }
+        }
+
+        if (!validChoice) {
+            System.out.println("ID del contatto non valido.");
+        }
+        return currentContact;
+    }
 
     //per distinguere i tag effettivi da elementi a capo o tab
     public static List<Element> getChildElements(Element el) {

@@ -20,8 +20,12 @@ public class RubricaManager {
 
 
 //        RubricaUtils.readContactsFromDb("cognome");
-//        RubricaUtils.writeOnDbFromCommandLine("Barbara", "Nanna", "344353", "", "");
+//        RubricaUtils.insertContact("mario", "Rossi", "344353", "", "");
 //        System.out.println(RubricaUtils.findContacts("mario", "rossi", " ", " "));
+        RubricaUtils.changeContact("mario");
+//        RubricaUtils.deleteContact("Mario");
+//        RubricaUtils.findContactFromInsertedValue("Mario");
+//        RubricaUtils.deleteContacts("mario");
 
     }
 }

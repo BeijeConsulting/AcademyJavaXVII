@@ -7,20 +7,38 @@ public class Contact {
     public Contact() {
     }
 
-    public Contact(String name, String surname, String phoneNumber, String email, String note) {
+    public Contact( String name, String surname, String phone, String email, String note) {
         this.name = name;
         this.surname = surname;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
         this.email = email;
         this.note = note;
     }
 
+    public Contact(int id, String name, String surname, String phone, String email, String note) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.phone = phone;
+        this.email = email;
+        this.note = note;
+    }
+
+    private int id;
     private String name;
     private String surname;
-    private String phoneNumber;
+    private String phone;
     private String email;
     private String note;
 
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -38,12 +56,12 @@ public class Contact {
         this.surname = surname;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
@@ -66,9 +84,10 @@ public class Contact {
     @Override
     public String toString() {
         return "Contact{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
+                ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", note='" + note + '\'' +
                 '}';
@@ -79,11 +98,11 @@ public class Contact {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Contact contact = (Contact) o;
-        return Objects.equals(name, contact.name) && Objects.equals(surname, contact.surname) && Objects.equals(phoneNumber, contact.phoneNumber) && Objects.equals(email, contact.email) && Objects.equals(note, contact.note);
+        return id == contact.id && Objects.equals(name, contact.name) && Objects.equals(surname, contact.surname) && Objects.equals(phone, contact.phone) && Objects.equals(email, contact.email) && Objects.equals(note, contact.note);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, phoneNumber, email, note);
+        return Objects.hash(id, name, surname, phone, email, note);
     }
 }
