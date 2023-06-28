@@ -233,6 +233,46 @@ public class RubricaJDBC {
 			}
 		}
 	}
+	public static void findContactFromRubrica() {
+		Connection connection = null;
+		Statement statement = null;
+		try {
+			Scanner scanner = new Scanner(System.in);
+			System.out.print("Inserisci l`id del contatto da cercare : ");
+			int id = scanner.nextInt();
+			scanner.nextLine();
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
+			
+			statement = connection.createStatement();
+			ResultSet res = statement.executeQuery("SELECT * FROM rubrica WHERE ID = " + id);
+			res.next();
+			Contact c = new Contact();
+		    c.setName(res.getString("name"));
+		    c.setSurname(res.getString("surname"));
+		    c.setEmail(res.getString("email"));
+		    c.setPhoneNumber(res.getString("phone"));
+		    c.setNote(res.getString("note"));
+			System.out.println("Contatto trovato : ");
+			System.out.println(c);
+			System.out.print("Vuoi modificare il contatto? (si/no) : ");
+			String scelta = scanner.nextLine();
+			if(scelta.equals("si")) updateContactFromRubrica();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	public static List<Contact> findDuplicatedContacts() {
 		List<Contact> duplicatedContacts = new ArrayList<>();

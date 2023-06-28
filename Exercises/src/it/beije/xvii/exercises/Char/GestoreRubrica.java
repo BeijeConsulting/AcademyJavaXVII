@@ -11,6 +11,7 @@ public class GestoreRubrica {
         	
     		System.out.println("Scegli una tra le seguenti opzioni : ");
     		System.out.println("lista contatti");
+    		System.out.println("cerca contatto");
     		System.out.println("nuovo contatto");
     		System.out.println("modifica contatto");
     		System.out.println("cancella contatto");
@@ -28,7 +29,8 @@ public class GestoreRubrica {
         							System.out.println(c);
         						}
         						break;
-          case "nuovo contatto" : RubricaJDBC.createContactFromRubrica(); break;
+          case "cerca contatto" : RubricaJDBC.findContactFromRubrica(); break;
+          case "nuovo contatto" : RubricaJDBC.createContactFromRubrica(); break;        
           case "modifica contatto" : RubricaJDBC.updateContactFromRubrica(); break;
           case "cancella contatto" : RubricaJDBC.deleteContactFromRubrica(); break;
           case "trova contatti duplicati" : RubricaJDBC.findDuplicatedContacts(); break;
