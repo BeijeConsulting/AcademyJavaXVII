@@ -22,7 +22,7 @@ public class ToolsRubrica {
     	  List<Contact> contacts = RubricaJDBC.loadRubricaJDBC();
     	  EsRubrica.writeRubricaXML(contacts,pathXML);
        }
-       public static void exportCSVtoDb() {
+       public static void exportCSVToDb() {
     	   Scanner scanner = new Scanner(System.in);
     	   System.out.print("Indica il path del file CSV : ");
     	   String pathFile = scanner.nextLine();
@@ -31,7 +31,7 @@ public class ToolsRubrica {
     	  List<Contact> contacts = EsRubrica.loadRubricaFromCSV(pathFile, separator);
     	  RubricaJDBC.writeRubricaJDBC(contacts);
        }
-       public static void exportXMLtoDb() {
+       public static void exportXMLToDb() {
     	   Scanner scanner = new Scanner(System.in);
     	   System.out.print("Indica il path del file CSV : ");
     	   String pathFile = scanner.nextLine();

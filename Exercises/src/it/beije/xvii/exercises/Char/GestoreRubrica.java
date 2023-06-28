@@ -19,6 +19,8 @@ public class GestoreRubrica {
     		System.out.println("unisci contatti duplicati");
     		System.out.println("esporta contatti in file CSV");
     		System.out.println("esporta contatti in file XML");
+    		System.out.println("importa contatti da file CSV");
+    		System.out.println("importa contatti da file XML");
     		System.out.println("esci");
     		System.out.println("--------");
             scelta = scanner.nextLine();
@@ -37,6 +39,8 @@ public class GestoreRubrica {
           case "unisci contatti duplicati" : RubricaJDBC.mergeDuplicatedContacts(); break;
           case "esporta contatti in file CSV" : ToolsRubrica.exportDbToCSV(); break;
           case "esporta contatti in file XML" : ToolsRubrica.exportDbToXML(); break;
+          case "importa contatti da file CSV" : ToolsRubrica.exportCSVToDb(); break;
+          case "importa contatti da file XML" : ToolsRubrica.exportXMLToDb(); break;
           case "esci" : System.out.println("Arrivederci"); break;
           default : System.out.println("Non hai inserito nessuna tra le opzioni disponibili"); break;
         }

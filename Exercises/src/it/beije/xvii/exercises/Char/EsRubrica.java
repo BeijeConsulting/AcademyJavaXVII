@@ -201,9 +201,7 @@ public class EsRubrica {
 			DOMSource source = new DOMSource(document);
 			StreamResult file = new StreamResult(new File("/v/contacts.xml"));
 			System.out.println("Contatti inseriti nel file indicato");
-			StreamResult syso = new StreamResult(System.out);
 			transformer.transform(source, file);
-			transformer.transform(source, syso);
 
 		} catch(ParserConfigurationException e) {
 			e.printStackTrace();

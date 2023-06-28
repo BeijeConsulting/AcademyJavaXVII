@@ -54,7 +54,7 @@ public class RubricaJDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
 		} finally {
 			try {
 				statement.close();
@@ -77,7 +77,6 @@ public class RubricaJDBC {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
 			
 			statement = connection.createStatement();
-			System.out.println("connection open? " + !connection.isClosed());
 			StringBuilder str = null;
 			for(Contact c : contatti) {
 				str = new StringBuilder("INSERT INTO rubrica(`name`,`surname`,`email`,`phone`,`note`) VALUES ('")
@@ -88,11 +87,12 @@ public class RubricaJDBC {
 						.append(c.getNote()).append("')");
 				statement.executeUpdate(str.toString());
 			}
+			System.out.println("Operazione eseguita");
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
 		} finally {
 			try {
 				statement.close();
@@ -136,7 +136,7 @@ public class RubricaJDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
 		} finally {
 			try {
 				statement.close();
@@ -173,7 +173,7 @@ public class RubricaJDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
 		} finally {
 			try {
 				statement.close();
@@ -223,7 +223,7 @@ public class RubricaJDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
 		} finally {
 			try {
 				statement.close();
@@ -263,7 +263,8 @@ public class RubricaJDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
 		} finally {
 			try {
 				statement.close();
@@ -344,7 +345,7 @@ public class RubricaJDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
 		} finally {
 			try {
 				statement.close();
