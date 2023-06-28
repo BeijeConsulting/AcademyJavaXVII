@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rubrica>
+    <contact age="30">
+        <name>Mario</name>
+        <surname>Rossi</surname>
+        <phone>3337658390</phone>
+        <email>mario.rossi@tim.it</email>
+        <note>compagno di squadra</note>
+    </contact>
+    <contact age="35">
+        <name>Claudio</name>
+        <surname>Bianchi</surname>
+        <phone>3352672537</phone>
+        <email>claudio.white@virgilio.it</email>
+    </contact>
+    <contact age="40">
+        <name>Piero</name>
+        <surname>Pelù</surname>
+        <phone>3352652356</phone>
+        <email>piero@virgilio.it</email>
+    </contact>
+</rubrica>
