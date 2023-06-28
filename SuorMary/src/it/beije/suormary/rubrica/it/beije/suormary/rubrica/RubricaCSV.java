@@ -15,7 +15,7 @@ public class RubricaCSV {
 
 	public static void main(String[] args) throws Exception {
 		
-		File file = new File("C:\\Users\\marty\\Desktop\\Marti\\Beije\\Esercizi Academy\\prova.txt");
+		File file = new File("\\Users\\marty\\Desktop\\Marti\\Beije\\Esercizi Academy\\FILE ESERCIZI\\nuovo.txt");
 		System.out.println("exists? " + file.exists());
 		System.out.println("isDirectory? " + file.isDirectory());
 		
@@ -48,18 +48,18 @@ public class RubricaCSV {
 		System.out.println("rows number: " + rows.size());
 		
 		
-		FileWriter fileWriter = new FileWriter("/temp/appoggio/prova.csv");
+		FileWriter fileWriter = new FileWriter("\\Users\\marty\\Desktop\\Marti\\Beije\\Esercizi Academy\\FILE ESERCIZI\\prova.txt");
 	
 		for (String row : rows) {
 			StringTokenizer tokenizer = new StringTokenizer(row, ";");
 			while (tokenizer.hasMoreElements()) {
-				System.out.println(tokenizer.nextToken());
+				//System.out.println(tokenizer.nextToken());
 			}
-			System.out.println("---");
+			//System.out.println("---");
 			
 			row = row.substring(1,row.length()-1);
 			String[] contact = row.split("\";\"");
-			System.out.println(Arrays.toString(contact));
+		//	System.out.println(Arrays.toString(contact));
 			
 			for (int j=4; j > 0; j--) {
 				fileWriter.write(contact[j]);
