@@ -43,13 +43,14 @@ public class Contact {
 	}
 	
 	public String toString() {
-		String myString = "First Name: " + this.getFirstName() + "\n";
-		myString += "Last Name: " + this.getLastName() + "\n";
-		myString += "Email: " + this.getEmail() + "\n";
-		myString += "Phone Number: " + this.getPhoneNumber() + "\n";
-		myString += "Notes: " + this.getNotes() + "\n";
+		StringBuilder builder = new StringBuilder();
+		builder.append("{\nFirst Name : ").append(this.getFirstName()).append("\n");
+		builder.append("Last Name : ").append(this.getLastName()).append("\n");
+		builder.append("Email : ").append(this.getEmail()).append("\n");
+		builder.append("Phone Number : ").append(this.getPhoneNumber()).append("\n");
+		builder.append("Notes : ").append(this.getNotes()).append("\n}");
 		
-		return myString;
+		return builder.toString();
 	}
 	
 }

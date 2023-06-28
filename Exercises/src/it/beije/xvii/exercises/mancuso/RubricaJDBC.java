@@ -21,6 +21,35 @@ public class RubricaJDBC {
 			
 			statement = connection.createStatement();
 			
+			//INSERT
+			// statement.executeUpdate("INSERT INTO rubrica (nome, cognome, telefono, email, note) "
+			//		+ "VALUES ('Serena','Rossi','3925841223','serena.rossi@beije.it','Questo è il quarto contatto.')");
+			
+			/*String inputNome = "Elena";
+			String inputCognome = "Verdi";
+			String inputTelefono = "3664855212";
+			String inputEmail = "elena.verdi@beije.it";
+			
+			StringBuilder query = new StringBuilder("INSERT INTO rubrica (nome, cognome, telefono, email) VALUES(");
+			
+			query.append("'");
+			query.append(inputNome);
+			query.append("', '");
+			query.append(inputCognome);
+			query.append("', '");
+			query.append(inputTelefono);
+			query.append("', '");
+			query.append(inputEmail);
+			query.append("')");
+			
+			statement.executeUpdate(query.toString());*/
+			
+			//DELETE
+			int u = statement.executeUpdate("DELETE FROM rubrica WHERE id > 5");
+			// returns number of deleted records
+			
+			System.out.println("Deleted records : " + u);
+			
 			//SELECT
 			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
 			Contact c = null;
@@ -43,29 +72,24 @@ public class RubricaJDBC {
 				String email = rs.getString("email");
 				String note = rs.getString("note");
 				
-				System.out.println("id : " + rs.getInt("id"));
-				System.out.println("nome : " + nome);
-				System.out.println("cognome : " + cognome);
-				System.out.println("telefono : " + telefono);
-				System.out.println("email : " + email);
-				System.out.println("note : " + note);
-				
-				System.out.println("------------------");
-				
 				c.setFirstName(nome);
 				c.setLastName(cognome);
 				c.setPhoneNumber(telefono);
 				c.setEmail(email);
 				c.setNotes(note);
 				
+				System.out.println(c.toString());
+				
+				System.out.println("---------------------------");
+				
 				contacts.add(c);
 			}
 			rs.close();
 			
-			AddressBook ab = new AddressBook();
+			//AddressBook ab = new AddressBook();
 			
-			ab.writeAddressBookCSV("/Temp/addressBookFromDB.csv", ";", contacts);
-			ab.writeAddressBookXML(contacts, "/Temp/addressBookFromDB.xml");
+			//ab.writeAddressBookCSV("/Temp/addressBookFromDB.csv", ";", contacts);
+			//ab.writeAddressBookXML(contacts, "/Temp/addressBookFromDB.xml");
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
