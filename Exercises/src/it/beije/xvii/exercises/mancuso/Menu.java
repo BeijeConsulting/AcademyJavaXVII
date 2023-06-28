@@ -303,6 +303,7 @@ public class Menu {
 			break;
 		case "merge":
 			ab.mergeDuplicates();
+			System.out.println("I contatti duplicati sono stati uniti.\n");
 			break;
 		case "find name":
 			System.out.println("Inserire il nome da cercare: ");
