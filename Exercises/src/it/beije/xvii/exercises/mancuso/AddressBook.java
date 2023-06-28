@@ -502,5 +502,76 @@ public class AddressBook {
 		return myString;
 	}
 	
+	public boolean findContact(Contact c) {
+		for(Contact contact : contacts) {
+			if(contact.equals(c)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
+	public Contact findContactByName(String name) {
+		for(Contact c : contacts) {
+			if(c.getFirstName().equals(name)) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
+	public Contact findContactByName(String name, String surname) {
+		for(Contact c : contacts) {
+			if(c.getLastName().equals(surname) && c.getFirstName().equals(name)) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
+	public Contact findContactBySurname(String surname) {
+		for(Contact c : contacts) {
+			if(c.getLastName().equals(surname)) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
+	public Contact findContactByPhone(String phone) {
+		for(Contact c : contacts) {
+			if(c.getPhoneNumber().equals(phone)) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
+	public Contact findContactByEmail(String email) {
+		for(Contact c : contacts) {
+			if(c.getEmail().equals(email)) {
+				return c;
+			}
+		}
+		return null;
+	}
+	
+	public List<Contact> findDuplicates() {
+		List<Contact> dups = new ArrayList<>();
+		List<Contact> parallel = new ArrayList<>();
+		
+		for(Contact c : contacts) {
+			if(parallel.contains(c)) {
+				dups.add(c);
+			}else {
+				parallel.add(c);
+			}
+		}
+		
+		return dups;
+	}
+	
+	public void mergeDuplicates() {
+		
+	}
 }

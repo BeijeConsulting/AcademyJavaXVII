@@ -53,4 +53,17 @@ public class Contact {
 		return builder.toString();
 	}
 	
+	public boolean equals(Contact c) {
+		if (this.getFirstName().equals(c.getFirstName())) {
+			if (this.getLastName().equals(c.getLastName())) {
+				if (this.getPhoneNumber().equals(c.getPhoneNumber())) {
+					if (this.getEmail().equals(c.getEmail())) {	
+						return true;		
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 }
