@@ -143,6 +143,7 @@ public class EsRubrica {
 			fileWriter.write(contatto.getSurname() + separator + contatto.getName() + separator + contatto.getPhoneNumber() + separator + contatto.getEmail()  + (contatto.getNote() == null ? "" : separator + contatto.getNote()) + "\n");
 			fileWriter.flush();
 		}
+		System.out.println("Contatti inseriti nel file indicato");
 		} catch(IOException e) {
 			e.printStackTrace();
 		} finally {
@@ -199,6 +200,7 @@ public class EsRubrica {
 			Transformer transformer = transformerFactory.newTransformer();
 			DOMSource source = new DOMSource(document);
 			StreamResult file = new StreamResult(new File("/v/contacts.xml"));
+			System.out.println("Contatti inseriti nel file indicato");
 			StreamResult syso = new StreamResult(System.out);
 			transformer.transform(source, file);
 			transformer.transform(source, syso);
