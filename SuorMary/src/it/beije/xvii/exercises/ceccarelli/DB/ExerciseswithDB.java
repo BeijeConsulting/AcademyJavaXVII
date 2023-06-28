@@ -33,11 +33,11 @@ import it.beije.suormary.rubrica.Contact;
 
 public class ExerciseswithDB {
 	
-	private Connection connection = null;
-	private Statement statement = null;
-	private DocumentBuilderFactory documentBuilderFactory;
-	private DocumentBuilder documentBuilder;
-	private Document document;
+	public Connection connection = null;
+	public Statement statement = null;
+	public DocumentBuilderFactory documentBuilderFactory;
+	public DocumentBuilder documentBuilder;
+	public Document document;
 	
 	//connection check and take child elements
 	public boolean connectionCheck() {
