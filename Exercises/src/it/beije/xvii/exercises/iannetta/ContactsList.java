@@ -203,7 +203,7 @@ public class ContactsList {
 		transformer.transform(source, result);
 		transformer.transform(source, syso);
 		
-		System.out.println("Contacts added");
+		System.out.println("Contacts added to XML file");
 	}	
 	
  	public static void writeContactListCSV(List<Contact> listOfContacts, String pathFile, String separator) throws IOException{
@@ -228,27 +228,42 @@ public class ContactsList {
 		fileWriter.flush();
 		fileWriter.close();
 		
-		System.out.println("Contacts added");
+		System.out.println("Contacts added to CSV file");
 	}
 	
+ 	public static void writeContactListDB(Connection connection, List<Contact> listOfContacts) throws ClassNotFoundException, SQLException {
+ 		
+		Statement statement = null;			
+		statement = connection.createStatement();
+		StringBuilder query;
+		for (Contact con : listOfContacts) {
+			query = new StringBuilder("INSERT INTO suor_mary.rubrica (`nome`, `cognome`, `telefono`, `email`, `note`) VALUES ('")
+					.append(con.getName()).append("', '").append(con.getSurname()).append("', '").append(con.getPhoneNumber()).append("', '")
+					.append(con.getEmail()).append("', '").append(con.getNote()).append("');");
+			statement.executeUpdate(query.toString());
+		}
+		System.out.println("Contacts added to database");
+ 	}
+ 	
 	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException, ClassNotFoundException, SQLException{
 		
-		String pathReadFile = "db";
+		String pathReadFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\rubricanotel.csv";
 		String separator = ";";
-		String pathWriteFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\primodatabase.xml";
+		String pathWriteFile = "db";
 		
+		Class.forName("com.mysql.cj.jdbc.Driver");	
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");
+		
+		//read
 		List<Contact> listOfContacts = new ArrayList<>();
 		if (pathReadFile.endsWith(".csv")) listOfContacts = loadContactListFromCSV(pathReadFile, separator);
 		else if (pathReadFile.endsWith(".xml")) listOfContacts = loadContactListFromXML(pathReadFile);
-		else if (pathReadFile.equals("db")) {
-			Class.forName("com.mysql.cj.jdbc.Driver");	
-			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");
-			listOfContacts = loadContactListFromDB(connection);
-		}
+		else if (pathReadFile.equals("db")) listOfContacts = loadContactListFromDB(connection);
 		
-		
+		//write
 		if (pathWriteFile.endsWith(".csv")) writeContactListCSV(listOfContacts, pathWriteFile, separator);
 		else if (pathWriteFile.endsWith(".xml")) writeContactListsXLM(listOfContacts, pathWriteFile);
+		else if (pathWriteFile.equals("db")) writeContactListDB(connection, listOfContacts);
 		
 	}
 
