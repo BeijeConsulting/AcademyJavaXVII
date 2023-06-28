@@ -15,6 +15,7 @@ public class Rubrica {
 			String command = "";
 			String pathFile;
 			String separator;
+			String overwrite;
 			boolean exit = false;
 			
 			while(!exit) {
@@ -64,13 +65,37 @@ public class Rubrica {
 					System.out.println("\nInserisci il separatore del file CSV ( ; , : [etc...] ): ");
 					separator = input.nextLine();
 					
-					ab.writeAddressBookCSV(pathFile, separator);
+					overwrite = "";
+					
+					while(!overwrite.equals("y") && !overwrite.equals("n")) {
+						System.out.println("\nDesideri sovrascrivere il file se esistente? (Y/n)");
+						overwrite = input.nextLine().toLowerCase();
+					}
+					// methods takes "append" not "overwrite"
+					if(overwrite.equals("y")) {
+						ab.writeAddressBookCSV(pathFile, separator, false);
+					} else {
+						ab.writeAddressBookCSV(pathFile, separator, true);
+					}
+					
 					break;
 				case "5":
-					System.out.println("\\Inserisci il path del file XML su cui esportare i dati: ");
+					System.out.println("\nInserisci il path del file XML su cui esportare i dati: ");
 					pathFile = input.nextLine();
 					
-					ab.writeAddressBookXML(pathFile);
+					overwrite = "";
+					
+					while(!overwrite.equals("y") && !overwrite.equals("n")) {
+						System.out.println("\nDesideri sovrascrivere il file se esistente? (Y/n)");
+						overwrite = input.nextLine().toLowerCase();
+					}
+					// methods takes "append" not "overwrite"
+					if(overwrite.equals("y")) {
+						ab.writeAddressBookXML(pathFile, false);
+					} else {
+						ab.writeAddressBookXML(pathFile, true);
+					}
+					
 					break;
 				case "6":
 					ab.writeAddressBookJDBC();

@@ -166,7 +166,7 @@ public class AddressBook {
 						
 						DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 						DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-						Document document = documentBuilder.parse("/Temp/rubrica.xml");
+						Document document = documentBuilder.parse(pathFile);
 						
 						Element rootElement = document.getDocumentElement();
 						
@@ -183,13 +183,13 @@ public class AddressBook {
 											
 								switch(inEl.getTagName()) {
 								
-								case "nome":
+								case "name":
 									c.setFirstName(inEl.getTextContent());
 									break;
-								case "cognome":
+								case "surname":
 									c.setLastName(inEl.getTextContent());
 									break;
-								case "telefono":
+								case "phone":
 									c.setPhoneNumber(inEl.getTextContent());
 									break;
 								case "email":
@@ -291,22 +291,23 @@ public class AddressBook {
 		return contacts;
 	}
 	
-	public void writeAddressBookCSV(String pathFile, String separator) {
+	public void writeAddressBookCSV(String pathFile, String separator, boolean append) {
 		
 		FileWriter writer = null;
 		
 		try {
-			// Commented stuff for append, not necessary for now
-			//writer = new FileWriter(pathFile, true);
-			writer = new FileWriter(pathFile);
 			
-			/*File file = new File(pathFile);
+			writer = new FileWriter(pathFile, append);
 			
-			if(!file.exists()) {
+			if(append) {
+				File file = new File(pathFile);
+				
+				if(!file.exists()) {
+					writer.write("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
+				}
+			}else {
 				writer.write("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
-			}*/
-			
-			writer.write("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
+			}		
 			
 			for (Contact contact : contacts) {
 				if(contact.getFirstName() != null) {
@@ -353,17 +354,19 @@ public class AddressBook {
 		
 	}
 	
-	public void writeAddressBookXML(String filePath) {
+	public void writeAddressBookXML(String filePath, boolean append) {
 		
 		File file = new File(filePath);
+		List<Contact> oldContacts = null;
 		
-		// to append if exists, comment for now
-		/*if(file.exists()) {
-			List<Contact> oldContacts = loadAddressesFromXML(filePath);
-			for (int i=0; i<oldContacts.size(); i++) {
-				contacts.add(oldContacts.get(i));
+		if(append) {
+			if(file.exists()) {
+				oldContacts = loadAddressesFromXML(filePath);
+				for (int i=0; i<oldContacts.size(); i++) {
+					contacts.add(oldContacts.get(i));
+				}
 			}
-		}*/
+		}	
 		
 		try {
 		
