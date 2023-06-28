@@ -516,49 +516,54 @@ public class AddressBook {
 		return false;
 	}
 	
-	public Contact findContactByName(String name) {
+	public List<Contact> findContactByName(String name) {
+		List<Contact> conts = new ArrayList<>();
 		for(Contact c : contacts) {
-			if(c.getFirstName().equals(name)) {
-				return c;
+			if(c.getFirstName().contains(name)) {
+				conts.add(c);
 			}
 		}
-		return null;
+		return conts;
 	}
 	
-	public Contact findContactByName(String name, String surname) {
+	public List<Contact> findContactByName(String name, String surname) {
+		List<Contact> conts = new ArrayList<>();
 		for(Contact c : contacts) {
-			if(c.getLastName().equals(surname) && c.getFirstName().equals(name)) {
-				return c;
+			if(c.getLastName().contains(surname) && c.getFirstName().contains(name)) {
+				conts.add(c);
 			}
 		}
-		return null;
+		return conts;
 	}
 	
-	public Contact findContactBySurname(String surname) {
+	public List<Contact> findContactBySurname(String surname) {
+		List<Contact> conts = new ArrayList<>();
 		for(Contact c : contacts) {
-			if(c.getLastName().equals(surname)) {
-				return c;
+			if(c.getLastName().contains(surname)) {
+				conts.add(c);
 			}
 		}
-		return null;
+		return conts;
 	}
 	
-	public Contact findContactByPhone(String phone) {
+	public List<Contact> findContactByPhone(String phone) {
+		List<Contact> conts = new ArrayList<>();
 		for(Contact c : contacts) {
 			if(c.getPhoneNumber().equals(phone)) {
-				return c;
+				conts.add(c);
 			}
 		}
-		return null;
+		return conts;
 	}
 	
-	public Contact findContactByEmail(String email) {
+	public List<Contact> findContactByEmail(String email) {
+		List<Contact> conts = new ArrayList<>();
 		for(Contact c : contacts) {
 			if(c.getEmail().equals(email)) {
-				return c;
+				conts.add(c);
 			}
 		}
-		return null;
+		return conts;
 	}
 	
 	public List<Contact> findDuplicates() {
