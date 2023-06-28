@@ -20,6 +20,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 
 public class RubricaUtils {
@@ -205,21 +206,29 @@ public class RubricaUtils {
     public static List<Contact> readContactsFromDb() {
 
         List<Contact> newList = new ArrayList<>();
+        System.out.println("Vuoi cecare i contatti per nome o per cognome?");
+        String yesOrNo = useScanner();
+        if (yesOrNo.equalsIgnoreCase("si")) {
+            System.out.println("Scrivi 'nome' per cercare i contatti pper nome, altrimenti 'cognome' per cercare i contatti per cognome");
+            String value = useScanner();
+            orderContactsByNameOrSurname(value);
+        } else {
 
-        try {
-            Statement statement = connection("suor_mary", "root");
+            try {
+                Statement statement = connection("suor_mary", "root");
 
-            ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
+                ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
 
-            while (rs.next()) {
+                while (rs.next()) {
 
-                newList.add(new Contact(rs.getString("name"), rs.getString("surname"), rs.getString("phone"), rs.getString("email"), rs.getString("note")));
+                    newList.add(new Contact(rs.getString("name"), rs.getString("surname"), rs.getString("phone"), rs.getString("email"), rs.getString("note")));
+                }
+
+                rs.close();
+
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
             }
-
-            rs.close();
-
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
         }
 
         return newList;
@@ -233,9 +242,7 @@ public class RubricaUtils {
 
             Statement statement = connection("suor_mary", "root");
 
-            if (nameOrSurname == null) {
-                ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
-            } else if (nameOrSurname.equals("nome")) {
+            if (nameOrSurname.equals("nome")) {
 
                 ResultSet rs = statement.executeQuery("SELECT * FROM rubrica ORDER BY name ASC;");
 
@@ -365,43 +372,56 @@ public class RubricaUtils {
     }
 
 
-    public static void insertContact(String name, String surname, String phone, String email, String note) {
+    public static void insertContact() {
+
+        System.out.println("Inserisci i campi del contatto che vuoi aggiungere alla rubrica");
+        System.out.println("Inserisci il nome");
+        String name = useScanner();
+        System.out.println("Inserisci il cognome");
+        String surname = useScanner();
+        System.out.println("Inserisci il telefono");
+        String phone = useScanner();
+        System.out.println("Inserisci l'email");
+        String email = useScanner();
+        System.out.println("Inserisci la nota");
+        String note = useScanner();
 
         Contact contact = new Contact(name, surname, phone, email, note);
 
-        if (areYouSure()) {
 
-            try {
+        try {
 
-                Statement statement = connection("suor_mary", "root");
+            Statement statement = connection("suor_mary", "root");
 
-                String query = "INSERT INTO rubrica (`name`, `surname`, `phone`, `email`, `note`) VALUES (";
-                query += "'" + (contact.getName() != null ? contact.getName() : "NULL") + "', ";
-                query += "'" + (contact.getSurname() != null ? contact.getSurname() : "NULL") + "', ";
-                query += "'" + (contact.getPhone() != null ? contact.getPhone() : "NULL") + "', ";
-                query += "'" + (contact.getEmail() != null ? contact.getEmail() : "NULL") + "', ";
-                query += "'" + (contact.getNote() != null ? contact.getNote() : "NULL") + "'";
-                query += ")";
+            String query = "INSERT INTO rubrica (`name`, `surname`, `phone`, `email`, `note`) VALUES (";
+            query += "'" + (contact.getName() != null ? contact.getName() : "NULL") + "', ";
+            query += "'" + (contact.getSurname() != null ? contact.getSurname() : "NULL") + "', ";
+            query += "'" + (contact.getPhone() != null ? contact.getPhone() : "NULL") + "', ";
+            query += "'" + (contact.getEmail() != null ? contact.getEmail() : "NULL") + "', ";
+            query += "'" + (contact.getNote() != null ? contact.getNote() : "NULL") + "'";
+            query += ")";
 
-                statement.executeUpdate(query);
+            statement.executeUpdate(query);
 
-                System.out.println("Contatto aggiunto alla rubrica");
-            } catch (SQLException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
+            System.out.println("Contatto aggiunto alla rubrica");
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
 
         System.out.println(contact);
     }
 
-    public static void deleteContact(String value) {
+    public static void deleteContact() {
+
+        System.out.println("Inserisci il valore (esempio mario) per trovare i contatti e cancellarne uno");
+        String value = useScanner();
 
         List<Contact> contacts = findContactFromInsertedValue(value);
 
         printContacts(contacts);
 
         // chiedo all'utente di selezionare il contatto da eliminare
-        System.out.print("Inserisci il numero del contatto da eliminare: ");
+        System.out.print("Inserisci l'id del numero del contatto da eliminare: ");
         Scanner scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
         Contact contactToDelete = returnAContact(contacts, choice);
@@ -424,14 +444,17 @@ public class RubricaUtils {
 
     }
 
-    public static void changeContact(String value) {
+    public static void changeContact() {
 
-        Scanner scanner = new Scanner(System.in);
+        System.out.println("Inserisci il valore del contatto che vuoi trovare (esempio mario) per poi cambiarlo");
+        String value = useScanner();
         List<Contact> contacts = findContactFromInsertedValue(value);
         printContacts(contacts);
-        System.out.print("Inserisci il numero del contatto da cambiare: ");
+        System.out.print("Inserisci l'id numero del contatto da cambiare: ");
 
+        Scanner scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
+        scanner.nextLine();
         Contact contactToChange = returnAContact(contacts, choice);
         System.out.println("Contatto selezionato:");
         System.out.println(contactToChange);
@@ -440,8 +463,6 @@ public class RubricaUtils {
         String phone = contactToChange.getPhone();
         String email = contactToChange.getEmail();
         String note = contactToChange.getNote();
-
-        if (areYouSure()) {
 
             try {
 
@@ -477,21 +498,26 @@ public class RubricaUtils {
                     note = newNote;
                 }
 
-                String updateQuery = "UPDATE rubrica SET name = '" + name + "', surname = '" + surname + "', phone = '" + phone + "', email = '" + email + "', note = '" + note + "';";
-                statement.executeUpdate(updateQuery);
+                if (areYouSure()) {
+
+                    String updateQuery = "UPDATE rubrica SET name = '" + name + "', surname = '" + surname + "', phone = '" + phone + "', email = '" + email + "', note = '" + note + "' WHERE id = " + contactToChange.getId();
+                    statement.executeUpdate(updateQuery);
 
 
-                System.out.println(updateQuery);
-                System.out.println("Contatto cambiato correttamente");
-                System.out.println(returnAContact(contacts, choice));
+//                    System.out.println(updateQuery);
+                    System.out.println("Contatto cambiato correttamente:");
+
+
+                }
 
             } catch (SQLException | ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-        }
+
     }
 
     public static List<Contact> findContactFromInsertedValue(String value) {
+
         List<Contact> contacts = new ArrayList<>();
         StringBuilder query = new StringBuilder("SELECT * FROM rubrica WHERE ");
 
@@ -527,35 +553,54 @@ public class RubricaUtils {
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
-
-        System.out.println(query);
-
+//
+//        System.out.println(query);
+//
         System.out.println(contacts);
 
         return contacts;
     }
 
-    public static List<Contact> findDuplicatesContactByValue(String value) {
+    public static List<Contact> findDuplicatesContactByValue() {
 
-        List<Contact> duplicateContacts = new ArrayList<>();
-        List<Contact> contacts  = findContactFromInsertedValue(value);
+        System.out.println("Inserisci il valore (esempio mario) per vedere i duplicati del contatto in rubrica");
+        String value = useScanner();
 
-        for (int i = 0; i < contacts.size() - 1; i ++) {
-            if (contacts.get(i).equals(contacts.get(i + 1))) {
-                duplicateContacts.add(contacts.get(i));
-            }System.out.println(duplicateContacts);
-        }
-
-
-        return duplicateContacts;
+        return getContacts(value);
 
     }
 
+    public static List<Contact> findDuplicatesContactByValue(String value) {
 
-    public static void mergeDuplicatesContact(String value) {
+        return getContacts(value);
 
+    }
+
+    private static List<Contact> getContacts(String value) {
+        List<Contact> duplicateContacts = new ArrayList<>();
+        List<Contact> contacts = findContactFromInsertedValue(value);
+
+        for (int i = 0; i < contacts.size() - 1; i++) {
+            for (int j = i + 1; j < contacts.size(); j++) {
+                if (contacts.get(i).equals(contacts.get(j))) {
+                    duplicateContacts.add(contacts.get(i));
+                    duplicateContacts.add(contacts.get(j));
+                }
+            }
+        }
+        if (duplicateContacts.size() == 1) {
+            System.out.println("Non ci sono duplicati");
+        }
+
+        return duplicateContacts;
+    }
+
+
+    public static void mergeDuplicatesContact() {
+        System.out.println("Inserire il valore (esempio mario) per cercare i contatti duplicati ed unirli scegliendo quello principale");
+
+        String value = useScanner();
         List<Contact> duplicateContacts = findDuplicatesContactByValue(value);
-
         printContacts(duplicateContacts);
 
         // chiedo all'utente di selezionare il contatto principale
@@ -563,7 +608,6 @@ public class RubricaUtils {
         Scanner scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
         Contact mainContact = returnAContact(duplicateContacts, choice);
-        System.out.println("Contatto selezionato:");
 
         // itero sui contatti duplicati per unirli
         for (Contact duplicateContact : duplicateContacts) {
@@ -589,14 +633,18 @@ public class RubricaUtils {
                     mainContact.setNote(duplicateContact.getNote());
                 }
 
-                // elimino il contatto duplicato
-                deleteContactById(duplicateContact.getId());
+                if (areYouSure()) {
+                    // elimino il contatto duplicato
+                    deleteContactById(duplicateContact.getId());
+
+                } else {
+                    System.out.println("Operazione annullata");
+                }
+
             }
         }
 
-        // aggiorno il contatto principale con le nuove informazioni unite
         updateContact(mainContact);
-
         System.out.println("Contatti duplicati uniti con successo.");
 
 
@@ -618,6 +666,7 @@ public class RubricaUtils {
 
 
     public static void updateContact(Contact contact) {
+
         try {
 
             Statement statement = connection("suor_mary", "root");
@@ -639,7 +688,6 @@ public class RubricaUtils {
     }
 
 
-
     public static void printContacts(List<Contact> contacts) {
 
         if (contacts.isEmpty()) {
@@ -647,8 +695,7 @@ public class RubricaUtils {
             return;
         }
 
-        // Mostra la lista dei contatti trovati
-        System.out.println("Contatti trovati:");
+        //lista dei contatti trovati
         for (Contact contact : contacts) {
             System.out.println(contact.toString());
         }
@@ -678,6 +725,11 @@ public class RubricaUtils {
         Scanner scanner = new Scanner(System.in);
         String choice = scanner.nextLine();
         return choice.equalsIgnoreCase("si");
+    }
+
+    public static String useScanner() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
     }
 
     //per distinguere i tag effettivi da elementi a capo o tab
