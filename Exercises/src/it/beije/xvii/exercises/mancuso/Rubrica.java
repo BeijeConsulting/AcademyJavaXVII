@@ -98,7 +98,18 @@ public class Rubrica {
 					
 					break;
 				case "6":
-					ab.writeAddressBookJDBC();
+					overwrite = "";
+					
+					while(!overwrite.equals("y") && !overwrite.equals("n")) {
+						System.out.println("\nDesideri sovrascrivere il database esistente? (Y/n)");
+						overwrite = input.nextLine().toLowerCase();
+					}
+					if(overwrite.equals("y")) {
+						ab.writeAddressBookJDBC(true);
+					} else {
+						ab.writeAddressBookJDBC(false);
+					}
+					
 					break;
 				case "7":
 					System.out.println(ab.toString());

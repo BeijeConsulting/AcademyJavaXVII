@@ -437,7 +437,7 @@ public class AddressBook {
 		}
 	}
 	
-	public void writeAddressBookJDBC() {
+	public void writeAddressBookJDBC(boolean overwrite) {
 		Connection connection = null;
 		Statement statement = null;
 
@@ -447,6 +447,12 @@ public class AddressBook {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "myDatabase1");
 			
 			statement = connection.createStatement();
+			
+			if(overwrite) {
+				System.out.println("Deleting all records ...");
+				statement.executeUpdate("DELETE FROM rubrica WHERE 1");
+				System.out.println("All records deleted.");
+			}
 			
 			//INSERT
 			
