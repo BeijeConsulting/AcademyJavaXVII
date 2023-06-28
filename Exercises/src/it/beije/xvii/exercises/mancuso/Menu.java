@@ -4,32 +4,55 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
+	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+	
+	public static final String ANSI_RED = "\u001B[31m";
+	public static final String ANSI_BLUE = "\u001B[34m";
+	public static final String ANSI_RESET = "\u001B[0m";
+	
 	public static void printOptions() {
-		System.out.println("Menu funzionalita' rubrica:\n");
-		System.out.println("\t1) IMPORTA contatti da file CSV");
-		System.out.println("\t2) IMPORTA contatti da file XML");
-		System.out.println("\t3) IMPORTA contatti da DATABASE\n");
+		System.out.println("_____________________________________________________________________\n");
+		System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\t\tMenu funzionalita' rubrica:\t\t\n" + ANSI_RESET);
 		
-		System.out.println("\t4) ESPORTA contatti su file CSV");
-		System.out.println("\t5) ESPORTA contatti su file XML");
-		System.out.println("\t6) ESPORTA contatti su DATABASE\n");
+		System.out.println("1\t\t\tIMPORTA contatti da file CSV");
+		System.out.println("2\t\t\tIMPORTA contatti da file XML");
+		System.out.println("3\t\t\tIMPORTA contatti da DATABASE");
 		
-		System.out.println("\t7) VISUALIZZA contatti su CONSOLE\n");
+		System.out.println("--------------------------------------------------------------------");
 		
-		System.out.println("\t8) INSERISCI nuovo contatto");
-		System.out.println("\t9) MODIFICA contatto");
-		System.out.println("\tA) ELIMINA contatto\n");
+		System.out.println("4\t\t\tESPORTA contatti su file CSV");
+		System.out.println("5\t\t\tESPORTA contatti su file XML");
+		System.out.println("6\t\t\tESPORTA contatti su DATABASE");
 		
-		System.out.println("\tB) RICERCA contatti duplicati");
-		System.out.println("\tC) UNISCI contatti duplicati\n");
+		System.out.println("---------------------------------------------------------------------");
 		
-		System.out.println("\tD) RICERCA contatto per nome\n");
-		System.out.println("\tE) RICERCA contatto per cognome\n");
-		System.out.println("\tF) RICERCA contatto per nome e cognome\n");
-		System.out.println("\tG) RICERCA contatto per numero di telefono\n");
-		System.out.println("\tH) RICERCA contatto per email\n");
+		System.out.println("view\t\t\tVISUALIZZA contatti su CONSOLE");
+		System.out.println("sort by name\t\tVISUALIZZA contatti su CONSOLE");
+		System.out.println("sort by surname\t\tVISUALIZZA contatti su CONSOLE");
 		
-		System.out.println("\t0) Chiudi il programma");
+		System.out.println("--------------------------------------------------------------------");
+		
+		System.out.println("add\t\t\tINSERISCI nuovo contatto");
+		System.out.println("edit\t\t\tMODIFICA contatto");
+		System.out.println("delete\t\t\tELIMINA contatto");
+		
+		System.out.println("--------------------------------------------------------------------");
+		
+		System.out.println("duplicates\t\tRICERCA contatti duplicati");
+		System.out.println("merge\t\t\tUNISCI contatti duplicati");
+		
+		System.out.println("--------------------------------------------------------------------");
+		
+		System.out.println("find name\t\tRICERCA contatto per nome");
+		System.out.println("find surname\t\tRICERCA contatto per cognome");
+		System.out.println("find fullname\t\tRICERCA contatto per nome e cognome");
+		System.out.println("find phone\t\tRICERCA contatto per numero di telefono");
+		System.out.println("find email\t\tRICERCA contatto per email");
+		
+		System.out.println("--------------------------------------------------------------------");
+		
+		System.out.println("exit\t\t\tChiudi il programma");
+		System.out.println("_____________________________________________________________________\n");
 	}
 	
 	public static boolean executeCommand(String command, Scanner input, AddressBook ab) {
@@ -129,11 +152,11 @@ public class Menu {
 			}
 			
 			break;
-		case "7":
-			System.out.println("\nI contatti presenti in rubrica sono i seguenti: \n");
+		case "view":
+			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\nI contatti presenti in rubrica sono i seguenti: \n" + ANSI_RESET);
 			System.out.println(ab.toString());
 			break;
-		case "8":
+		case "add":
 			System.out.println("\nInserisci il nome del contatto:");
 			name = input.nextLine();
 			
@@ -154,7 +177,7 @@ public class Menu {
 			ab.contacts.add(c);
 			
 			break;
-		case "9":
+		case "edit":
 			index = -1;
 			if(ab.contacts.size()>0) {
 				while(index<0 || index>=ab.contacts.size()) {
@@ -242,7 +265,7 @@ public class Menu {
 				System.out.println("La lista dei contatti e' vuota. Non e' possibile modificare un contatto.");
 			}
 			break;
-		case "A":
+		case "delete":
 			index = -1;
 			if(ab.contacts.size()>0) {
 				while(index<0 || index>=ab.contacts.size()) {
@@ -270,7 +293,7 @@ public class Menu {
 			}
 			
 			break;
-		case "B":
+		case "duplicates":
 			List<Contact> dups = ab.findDuplicates();
 			System.out.println("I contatti duplicati sono i seguenti: ");
 			for(Contact contact : dups) {
@@ -278,10 +301,10 @@ public class Menu {
 				System.out.println("--------------------------\n");
 			}
 			break;
-		case "C":
+		case "merge":
 			ab.mergeDuplicates();
 			break;
-		case "D":
+		case "find name":
 			System.out.println("Inserire il nome da cercare: ");
 			name = input.nextLine();
 				
@@ -293,7 +316,7 @@ public class Menu {
 			}
 				
 			break;
-		case "E":
+		case "find surname":
 			
 			System.out.println("Inserire il cognome da cercare: ");
 			surname = input.nextLine();
@@ -306,7 +329,7 @@ public class Menu {
 			}
 			
 			break;
-		case "F":
+		case "find fullname":
 			
 			System.out.println("Inserire il nome da cercare: ");
 			name = input.nextLine();
@@ -322,7 +345,7 @@ public class Menu {
 			}
 			
 			break;
-		case "G":
+		case "find phone":
 			
 			System.out.println("Inserire il numero di telefono da cercare: ");
 			phone = input.nextLine();
@@ -335,7 +358,7 @@ public class Menu {
 			}
 			
 			break;
-		case "H":
+		case "find email":
 			
 			System.out.println("Inserire l'email da cercare: ");
 			phone = input.nextLine();
@@ -348,10 +371,18 @@ public class Menu {
 			}
 			
 			break;
-		case "0":
+		case "exit":
 			return true;
+		
+		//Comandi submenu
+		case "sort by name":
+			System.out.println(ab.toString("nome"));
+			break;
+		case "sort by surname":
+			System.out.println(ab.toString("cognome"));
+			break;
 		default:
-			System.out.println("Comando non riconosciuto.\n");
+			System.out.println(ANSI_RED + "Comando non riconosciuto.\n" + ANSI_RESET);
 			break;
 		}
 		return false;

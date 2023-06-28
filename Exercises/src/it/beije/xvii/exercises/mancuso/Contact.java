@@ -1,6 +1,6 @@
 package it.beije.xvii.exercises.mancuso;
 
-public class Contact {
+public class Contact{
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -74,6 +74,14 @@ public class Contact {
 			}
 		}
 		return false;
+	}
+	
+	public int compareToByName(Contact c) {
+		return this.getFirstName().compareTo(c.getFirstName());
+	}
+	
+	public int compareToBySurname(Contact c) {
+		return this.getFirstName().compareTo(c.getFirstName());
 	}
 	
 }

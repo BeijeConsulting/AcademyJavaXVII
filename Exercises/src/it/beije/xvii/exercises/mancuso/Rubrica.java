@@ -1,6 +1,5 @@
 package it.beije.xvii.exercises.mancuso;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Rubrica {

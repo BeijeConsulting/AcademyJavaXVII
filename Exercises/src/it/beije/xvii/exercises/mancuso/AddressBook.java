@@ -20,6 +20,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -507,6 +508,75 @@ public class AddressBook {
 		return sb.toString();
 	}
 	
+	public String toString(String orderBy) {
+		List<Contact> orderedContacts = new ArrayList<>();
+		 // Copy di contacts per VISUALIZZARLI ordinati ma non ordinarli effettivamente
+		if(contacts.size()>0) {
+			if(orderBy.equals("nome")) {
+				orderedContacts.add(contacts.get(0));
+				for(int i=1, j=0; i<contacts.size(); i++, j++) {
+					if(contacts.get(i).compareToByName(orderedContacts.get(j)) > 0) {
+						orderedContacts.add(contacts.get(i));
+					}else {
+						// element in ordered contacts is equals or less than current
+						if(j == 0) {
+							orderedContacts.add(j, contacts.get(i));
+						}else {
+							int cont = 1;
+							boolean gotIt = false;
+							while(!gotIt && (j-cont) >= 0) {
+								int result = contacts.get(i).compareToByName(orderedContacts.get(j-cont));
+								if(result > 0) {
+									orderedContacts.add(j-cont + 1, contacts.get(i));
+									gotIt = true;
+								}else {
+									if(j-cont == 0) {
+										orderedContacts.add(0, contacts.get(i));
+									}
+								}
+								cont++;
+							}
+						}
+						
+					}
+				}
+			} else {
+				orderedContacts.add(contacts.get(0));
+				for(int i=1, j=0; i<contacts.size(); i++, j++) {
+					if(contacts.get(i).compareToBySurname(orderedContacts.get(j)) > 0) {
+						orderedContacts.add(contacts.get(i));
+					}else {
+						// element in ordered contacts is equals or less than current
+						if(j == 0) {
+							orderedContacts.add(j, contacts.get(i));
+						}else {
+							int cont = 1;
+							boolean gotIt = false;
+							while(!gotIt && (j-cont) >= 0) {
+								int result = contacts.get(i).compareToBySurname(orderedContacts.get(j-cont));
+								if(result > 0) {
+									orderedContacts.add(j-cont + 1, contacts.get(i));
+									gotIt = true;
+								}else {
+									if(j-cont == 0) {
+										orderedContacts.add(0, contacts.get(i));
+									}
+								}
+								cont++;
+							}
+						}
+						
+					}
+				}
+			}
+		}
+		String output = "";
+		for(Contact c : orderedContacts) {
+			output += c.toString();
+		}
+		return output;
+	}
+
 	public boolean findContact(Contact c) {
 		for(Contact contact : contacts) {
 			if(contact.equals(c)) {
