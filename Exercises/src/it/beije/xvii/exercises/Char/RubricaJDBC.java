@@ -60,6 +60,36 @@ public class RubricaJDBC {
 		return contacts;
 		
 	}
+	
+	public static void writeRubricaJDBC(List<Contact> contatti){
+		Connection connection = null;
+		Statement statement = null;
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
+			
+			statement = connection.createStatement();
+			System.out.println("connection open? " + !connection.isClosed());
+			for(Contact c : contatti) {
+				
+			}
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
 
 }
 
