@@ -21,6 +21,25 @@ public class RubricaJDBC {
 			statement = connection.createStatement();
 			System.out.println("connection open? " + !connection.isClosed());
 			
+			String nome = "Filippo";
+			String cognome = "Marrone";
+			String telefono = "329784842";
+			String email = "filippo.marrone@beije.it";
+			StringBuilder query = new StringBuilder("INSERT INTO rubrica (`nome`, `cognome`, `telefono`, `email`) VALUES ('")
+					.append(nome).append("', '").append(cognome).append("', '")
+					.append(telefono).append("', '").append(email).append("')");
+			//INSERT
+			//statement.executeUpdate("INSERT INTO rubrica VALUES (null, 'Marco', 'Gialli', '0432555311', 'marco.gialli@beije.it', 'sono un contatto');");
+			statement.executeUpdate(query.toString());
+			
+			//UPDATE
+//			int u = statement.executeUpdate("UPDATE rubrica set telefono = '987654' WHERE id < 4");
+//			System.out.println(u + " record modificati");
+
+			//DELETE
+//			int u = statement.executeUpdate("DELETE FROM rubrica WHERE id = 5");
+//			System.out.println(u + " record eliminati");
+
 			//SELECT
 			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
 			while (rs.next()) {
@@ -55,8 +74,6 @@ public class RubricaJDBC {
 			}
 		}
 		
-
-
 	}
 
 }
