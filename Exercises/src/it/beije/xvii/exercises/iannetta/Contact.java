@@ -43,4 +43,13 @@ public class Contact {
 		this.note = note;
 	}
 
+	public String toString() {
+		StringBuilder builder = new StringBuilder("{")
+				.append("name : ").append(name)
+				.append("surname : ").append(surname)
+				.append("telephone : ").append(phoneNumber)
+				.append("email : ").append(email)
+				.append("note : ").append(note);
+		return builder.toString();
+	}
 }

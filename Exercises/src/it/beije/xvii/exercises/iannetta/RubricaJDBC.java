@@ -21,6 +21,28 @@ public class RubricaJDBC {
 			statement = connection.createStatement();
 			System.out.println("connection open? " + !connection.isClosed());
 			
+			//execute Update è meglio per insert, delete
+			//INSERT
+			//statement.executeUpdate("INSERT INTO suor_mary.rubrica VALUES ( null, 'Bubu', 'Bubu', '3331233488', 'bubu.bubu@beije.it', 'yay contatto');");
+			
+			String nome = "Filippo";
+			String cognome = "Marrone";
+			String telefono = "4586912358";
+			String email = "filippo.marrone@beije.it";
+			StringBuilder query = new StringBuilder("INSERT INTO suor_mary.rubrica (`nome`, `cognome`, `telefono`, `email`) VALUES ('")
+					.append(nome).append("', '").append(cognome).append("', '").append(telefono).append("', '").append(email).append("');");
+			
+			statement.executeUpdate(query.toString());
+			
+			
+			//UPDATE
+			//int u = statement.executeUpdate("UPDATE suor_mary.rubrica set telefono = '1234567' WHERE id < 4;");
+			//System.out.println(u + " record modificati");
+			//u = statement.executeUpdate("DELETE FROM suor_mary.rubrica WHERE id = 12;");
+			//System.out.println(u + " record modificati");
+			
+			
+			
 			//SELECT
 			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
 			while (rs.next()) {
