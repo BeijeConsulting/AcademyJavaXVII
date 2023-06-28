@@ -29,8 +29,16 @@ public class RubricaJDBC {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
 			
 			statement = connection.createStatement();
-			
-			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
+			Scanner scanner = new Scanner(System.in);
+			System.out.print("Vuoi ordinare i contatti per nome e cognome? (si/no) : ");
+			String sceltaOrdine = scanner.nextLine();
+			scanner.close();
+			ResultSet rs = null;
+			switch(sceltaOrdine) {
+				case "si" :  rs = statement.executeQuery("SELECT * FROM rubrica ORDER BY name,surname"); break;
+				case "no" :  rs = statement.executeQuery("SELECT * FROM rubrica"); break;
+				default : System.out.println("Errore"); break;
+			}
 			Contact contact = null;
 			while (rs.next()) {
 				
@@ -96,10 +104,14 @@ public class RubricaJDBC {
 		}
 		
 	}
-	public static void deleteContactFromRubrica(int id) {
+	public static void deleteContactFromRubrica() {
 		Connection connection = null;
 		Statement statement = null;
 		try {
+			Scanner scanner = new Scanner(System.in);
+			System.out.print("Inserisci l'id del contatto da eliminare : ");
+			int id = scanner.nextInt();
+			scanner.close();
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			

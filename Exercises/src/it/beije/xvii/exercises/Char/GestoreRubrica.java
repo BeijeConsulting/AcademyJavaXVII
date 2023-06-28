@@ -1,7 +1,6 @@
 package it.beije.xvii.exercises.Char;
 import java.util.Scanner;
 import java.util.List;
-import java.util.ArrayList;
 public class GestoreRubrica {
 
 	public static void main(String[] args) {
@@ -16,20 +15,18 @@ public class GestoreRubrica {
 		Scanner scanner = new Scanner(System.in);
         String scelta = scanner.nextLine();
         switch(scelta) {
-        case "lista contatti" : System.out.println("Lista contatti : ");
-        						List<Contact> contacts = RubricaJDBC.loadRubricaJDBC(); 
+        case "lista contatti" : List<Contact> contacts = RubricaJDBC.loadRubricaJDBC(); 
         						for(Contact c : contacts) {
         							System.out.println(c);
         						}
         						break;
-        case "nuovo contatto" : RubricaJDBC.createContactFromRubrica();
-        						break;
-        case "modifica contatto" : RubricaJDBC.updateContactFromRubrica();
-        						   break;
-        case "cancella contatto" : System.out.println("a"); break;
+        case "nuovo contatto" : RubricaJDBC.createContactFromRubrica(); break;
+        case "modifica contatto" : RubricaJDBC.updateContactFromRubrica(); break;
+        case "cancella contatto" : RubricaJDBC.deleteContactFromRubrica(); break;
         case "trova contatti duplicati" : System.out.println("a"); break;
         case "unisci contatti duplicati" : System.out.println("a"); break;
         case "esci" :  break;
+         default : System.out.println("Non hai inserito nessuna tra le opzioni disponibili"); break;
         }
         scanner.close();
 	}
