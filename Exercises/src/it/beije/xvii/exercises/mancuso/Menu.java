@@ -14,15 +14,15 @@ public class Menu {
 		System.out.println("_____________________________________________________________________\n");
 		System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\t\tMenu funzionalita' rubrica:\t\t\n" + ANSI_RESET);
 		
-		System.out.println("1\t\t\tIMPORTA contatti da file CSV");
-		System.out.println("2\t\t\tIMPORTA contatti da file XML");
-		System.out.println("3\t\t\tIMPORTA contatti da DATABASE");
+		System.out.println("import csv\t\t\tIMPORTA contatti da file CSV");
+		System.out.println("import xml\t\t\tIMPORTA contatti da file XML");
+		System.out.println("import db\t\t\tIMPORTA contatti da DATABASE");
 		
 		System.out.println("--------------------------------------------------------------------");
 		
-		System.out.println("4\t\t\tESPORTA contatti su file CSV");
-		System.out.println("5\t\t\tESPORTA contatti su file XML");
-		System.out.println("6\t\t\tESPORTA contatti su DATABASE");
+		System.out.println("export csv\t\t\tESPORTA contatti su file CSV");
+		System.out.println("export xml\t\t\tESPORTA contatti su file XML");
+		System.out.println("export db\t\t\tESPORTA contatti su DATABASE");
 		
 		System.out.println("---------------------------------------------------------------------");
 		
@@ -73,7 +73,7 @@ public class Menu {
 		int index;
 		
 		switch(command) {
-		case "1":
+		case "import csv":
 			System.out.println("\nInserisci il path del file CSV da cui importare i dati: ");
 			pathFile = input.nextLine();
 			
@@ -86,7 +86,7 @@ public class Menu {
 				ex.printStackTrace();
 			}
 			break;
-		case "2":
+		case "import xml":
 			System.out.println("\nInserisci il path del file XML da cui importare i dati: ");
 			pathFile = input.nextLine();
 			
@@ -96,10 +96,10 @@ public class Menu {
 				ex.printStackTrace();
 			}
 			break;
-		case "3":
+		case "import db":
 			ab.contacts = ab.loadAddressesFromJDBC();
 			break;
-		case "4":
+		case "export csv":
 			System.out.println("\nInserisci il path del file CSV su cui esportare i dati: ");
 			pathFile = input.nextLine();
 			
@@ -120,7 +120,7 @@ public class Menu {
 			}
 			
 			break;
-		case "5":
+		case "export xml":
 			System.out.println("\nInserisci il path del file XML su cui esportare i dati: ");
 			pathFile = input.nextLine();
 			
@@ -138,7 +138,7 @@ public class Menu {
 			}
 			
 			break;
-		case "6":
+		case "export db":
 			overwrite = "";
 			
 			while(!overwrite.equals("y") && !overwrite.equals("n")) {
@@ -374,7 +374,6 @@ public class Menu {
 		case "exit":
 			return true;
 		
-		//Comandi submenu
 		case "sort by name":
 			System.out.println(ab.toString("nome"));
 			break;
