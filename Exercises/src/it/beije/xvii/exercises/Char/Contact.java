@@ -46,7 +46,7 @@ public class Contact {
 		this.note = note;
 	}
 	public String toString() {
-		return "Nome : " + getName() + " - " + "Cognome : " + getSurname();
+		return "Nome : " + getName() + " - " + "Cognome : " + getSurname() + " - " + "Email : " + getEmail() + " - " + "Telefono : " + getPhoneNumber() + " - " + "Note : " + getNote();
 	}
 	public boolean equals(Contact c2) {
 		if(this.getName().equals(c2.getName())&& 

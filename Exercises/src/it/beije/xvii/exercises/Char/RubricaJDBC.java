@@ -32,7 +32,6 @@ public class RubricaJDBC {
 			Scanner scanner = new Scanner(System.in);
 			System.out.print("Vuoi ordinare i contatti per nome e cognome? (si/no) : ");
 			String sceltaOrdine = scanner.nextLine();
-			scanner.close();
 			ResultSet rs = null;
 			switch(sceltaOrdine) {
 				case "si" :  rs = statement.executeQuery("SELECT * FROM rubrica ORDER BY name,surname"); break;
@@ -111,7 +110,6 @@ public class RubricaJDBC {
 			Scanner scanner = new Scanner(System.in);
 			System.out.print("Inserisci l'id del contatto da eliminare : ");
 			int id = scanner.nextInt();
-			scanner.close();
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
@@ -147,14 +145,16 @@ public class RubricaJDBC {
 			String field = scanner.nextLine();
 			System.out.print("Inserisci il nuovo campo : "); 
 			String newField = scanner.nextLine();
-			scanner.close();
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
-			
 			statement = connection.createStatement();
-			statement.executeUpdate("UPDATE rubrica set " + field + " = " + newField + " WHERE id = " + id);
+			statement.executeUpdate("UPDATE rubrica set " + field + " = " + "'" + newField  + "'" + " WHERE id = " + id);
+			System.out.println("Modifica eseguita");
+			System.out.print("Vuoi modificare un altro contatto? (si/no) : ");
+			String scelta = scanner.nextLine();
+			if(scelta.equals("si")) updateContactFromRubrica();
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -184,7 +184,6 @@ public class RubricaJDBC {
 			String phone = scanner.nextLine(); 
 			System.out.print("Note : ");
 			String note = scanner.nextLine(); 
-			scanner.close();
 			Contact c = new Contact();
 			c.setName(name); c.setSurname(surname); c.setEmail(email); c.setPhoneNumber(phone); c.setNote(note);
 
@@ -200,6 +199,12 @@ public class RubricaJDBC {
 					.append(c.getPhoneNumber()).append("','")
 					.append(c.getNote()).append("')");
 			statement.executeUpdate(str.toString());
+			System.out.print("Informazioni sul nuovo contatto : ");
+			System.out.println(c);
+			System.out.println("Vuoi modificare qualche informazione? (si/no) : ");
+			String scelta = scanner.nextLine();
+			if(scelta.equals("si"))  updateContactFromRubrica();
+			
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -228,6 +233,7 @@ public class RubricaJDBC {
 		}
 
 		for(Contact c : duplicatedContacts) {
+			System.out.println("Contatti duplicati trovati : ");
 			System.out.println(c);
 		}
 		return duplicatedContacts;
@@ -235,7 +241,6 @@ public class RubricaJDBC {
 	}
 	public static void mergeDuplicatedContacts() {
 		List<Contact> duplicatedContacts = findDuplicatedContacts();
-	    System.out.println(duplicatedContacts.size());
 	    
 	    List<Contact> contacts = new ArrayList<>();
 	    for (int i = 0; i < duplicatedContacts.size(); i++) {
