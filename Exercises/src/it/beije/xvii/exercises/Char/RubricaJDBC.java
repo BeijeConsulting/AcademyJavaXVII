@@ -11,11 +11,33 @@ import java.util.ArrayList;
 public class RubricaJDBC {
 
 	public static void main(String[] args) {
-	List<Contact> contacts = loadRubricaJDBC();
-	EsRubrica.writeRubricaXML(contacts, "/v/jdbc.xml");
-	for(Contact c : contacts) {
-		System.out.println(c.getName());
-	}
+	Contact c = new Contact();
+	c.setName("Mario");
+	c.setSurname("Rossi");
+	c.setEmail("mario@gmail.com");
+	c.setPhoneNumber("3542524");
+	c.setNote("first contact");
+	
+	Contact c2 = new Contact();
+	c2.setName("Luigi");
+	c2.setSurname("Verdi");
+	c2.setEmail("luigi@gmail.com");
+	c2.setPhoneNumber("3552323");
+	c2.setNote("second contact");
+	
+	Contact c3 = new Contact();
+	c3.setName("Antonio");
+	c3.setSurname("Gialli");
+	c3.setEmail("antonio@gmail.com");
+	c3.setPhoneNumber("3212945");
+	c3.setNote("third contact");
+	List<Contact> contacts = new ArrayList<>();
+	contacts.add(c);
+	contacts.add(c3);
+	contacts.add(c2);
+	writeRubricaJDBC(contacts);
+//	EsRubrica.writeRubricaXML(contacts, "/v/jdbc.xml");
+
 
 	}
 	public static List<Contact> loadRubricaJDBC(){
@@ -72,8 +94,15 @@ public class RubricaJDBC {
 			
 			statement = connection.createStatement();
 			System.out.println("connection open? " + !connection.isClosed());
+			StringBuilder str = null;
 			for(Contact c : contatti) {
-				
+				str = new StringBuilder("INSERT INTO rubrica(`name`,`surname`,`email`,`phone`,`note`) VALUES ('")
+						.append(c.getName()).append("','")
+						.append(c.getSurname()).append("','")
+						.append(c.getEmail()).append("','")
+						.append(c.getPhoneNumber()).append("','")
+						.append(c.getNote()).append("')");
+				statement.executeUpdate(str.toString());
 			}
 		
 		} catch (ClassNotFoundException e) {
