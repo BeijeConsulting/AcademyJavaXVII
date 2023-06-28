@@ -562,7 +562,9 @@ public class AddressBook {
 		
 		for(Contact c : contacts) {
 			if(parallel.contains(c)) {
-				dups.add(c);
+				if(!dups.contains(c)) {
+					dups.add(c);
+				}
 			}else {
 				parallel.add(c);
 			}
@@ -572,6 +574,7 @@ public class AddressBook {
 	}
 	
 	public void mergeDuplicates() {
+		List<Contact> dups = findDuplicates();
 		
 	}
 }
