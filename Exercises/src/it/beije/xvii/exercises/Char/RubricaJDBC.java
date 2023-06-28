@@ -11,32 +11,11 @@ import java.util.ArrayList;
 public class RubricaJDBC {
 
 	public static void main(String[] args) {
-	Contact c = new Contact();
-	c.setName("Mario");
-	c.setSurname("Rossi");
-	c.setEmail("mario@gmail.com");
-	c.setPhoneNumber("3542524");
-	c.setNote("first contact");
-	
-	Contact c2 = new Contact();
-	c2.setName("Luigi");
-	c2.setSurname("Verdi");
-	c2.setEmail("luigi@gmail.com");
-	c2.setPhoneNumber("3552323");
-	c2.setNote("second contact");
-	
-	Contact c3 = new Contact();
-	c3.setName("Antonio");
-	c3.setSurname("Gialli");
-	c3.setEmail("antonio@gmail.com");
-	c3.setPhoneNumber("3212945");
-	c3.setNote("third contact");
-	List<Contact> contacts = new ArrayList<>();
-	contacts.add(c);
-	contacts.add(c3);
-	contacts.add(c2);
-	writeRubricaJDBC(contacts);
+//    List<Contact> contacts = loadRubricaJDBC();
+//	writeRubricaJDBC(contacts);
 //	EsRubrica.writeRubricaXML(contacts, "/v/jdbc.xml");
+//    EsRubrica.writeRubricaCSV(contacts, "/v/jdbc2.csv",";");
+    deleteContactFromRubrica(4);
 
 
 	}
@@ -118,6 +97,32 @@ public class RubricaJDBC {
 			}
 		}
 		
+	}
+	public static void deleteContactFromRubrica(int id) {
+		Connection connection = null;
+		Statement statement = null;
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
+			
+			statement = connection.createStatement();
+		    int n = statement.executeUpdate("DELETE FROM rubrica WHERE id = " + id);
+		    System.out.println("Row deleted : " + n);
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
