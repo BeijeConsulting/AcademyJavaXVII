@@ -36,6 +36,10 @@ import java.io.BufferedReader;
 public class AddressBook {
 	
 	public List<Contact> contacts;
+	
+	public AddressBook() {
+		contacts = new ArrayList<>();
+	}
 
 	private static List<String[]> readCSV(File file, String separator){
 		FileReader fReader = null;
@@ -252,14 +256,14 @@ public class AddressBook {
 				String email = rs.getString("email");
 				String note = rs.getString("note");
 				
-				System.out.println("id : " + rs.getInt("id"));
+				/*System.out.println("id : " + rs.getInt("id"));
 				System.out.println("nome : " + nome);
 				System.out.println("cognome : " + cognome);
 				System.out.println("telefono : " + telefono);
 				System.out.println("email : " + email);
 				System.out.println("note : " + note);
 				
-				System.out.println("------------------");
+				System.out.println("------------------");*/
 				
 				c.setFirstName(nome);
 				c.setLastName(cognome);
@@ -287,18 +291,22 @@ public class AddressBook {
 		return contacts;
 	}
 	
-	public void writeAddressBookCSV(String pathFile, String separator, List<Contact> contacts) {
+	public void writeAddressBookCSV(String pathFile, String separator) {
 		
 		FileWriter writer = null;
 		
 		try {
-			writer = new FileWriter(pathFile, true);
+			// Commented stuff for append, not necessary for now
+			//writer = new FileWriter(pathFile, true);
+			writer = new FileWriter(pathFile);
 			
-			File file = new File(pathFile);
+			/*File file = new File(pathFile);
 			
 			if(!file.exists()) {
 				writer.write("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
-			}
+			}*/
+			
+			writer.write("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
 			
 			for (Contact contact : contacts) {
 				if(contact.getFirstName() != null) {
@@ -345,16 +353,17 @@ public class AddressBook {
 		
 	}
 	
-	public void writeAddressBookXML(List<Contact> contacts, String filePath) {
+	public void writeAddressBookXML(String filePath) {
 		
 		File file = new File(filePath);
 		
-		if(file.exists()) {
+		// to append if exists, comment for now
+		/*if(file.exists()) {
 			List<Contact> oldContacts = loadAddressesFromXML(filePath);
 			for (int i=0; i<oldContacts.size(); i++) {
 				contacts.add(oldContacts.get(i));
 			}
-		}
+		}*/
 		
 		try {
 		
@@ -408,10 +417,10 @@ public class AddressBook {
 			StreamResult result = new StreamResult(file);
 	
 			// Output to console for testing
-			StreamResult syso = new StreamResult(System.out);
+			//StreamResult syso = new StreamResult(System.out);
 	
 			transformer.transform(source, result);
-			transformer.transform(source, syso);
+			//transformer.transform(source, syso);
 	
 			//System.out.println("File saved!");
 		} catch (ParserConfigurationException pEx) {
@@ -425,34 +434,63 @@ public class AddressBook {
 		}
 	}
 	
+	public void writeAddressBookJDBC() {
+		Connection connection = null;
+		Statement statement = null;
+
+		try {
+			
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "myDatabase1");
+			
+			statement = connection.createStatement();
+			
+			//INSERT
+			
+			for (Contact c : contacts) {
+				StringBuilder query = new StringBuilder();
+				
+				
+				
+				query.append("INSERT INTO rubrica (id, nome, cognome, telefono, email, note) VALUES (null, '");
+				
+				query.append(c.getFirstName()).append("', '");
+				query.append(c.getLastName()).append("', '");
+				query.append(c.getPhoneNumber()).append("', '");
+				query.append(c.getEmail()).append("', '");
+				query.append(c.getNotes()).append("'");
+				
+				query.append(")");
+				
+				statement.executeUpdate(query.toString());
+				
+				System.out.println("The following contact has been added into the database : ");
+				System.out.println(c.toString());
+				System.out.println("------------------------------");
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
 	public String toString() {
 		String myString = "";
 		for(Contact c : contacts) {
 			myString += c.toString();
-			myString += "\n";
+			myString += "--------------------------\n";
 		}
 		return myString;
-	}
-	
-	public static void main(String[] args) {
-		AddressBook addressBook = new AddressBook();
-		
-		//List<Contact> newContacts = addressBook.loadAddressesFromCSV("/Temp/addressBook.csv", ";");
-		
-		List<Contact> newContacts = addressBook.loadAddressesFromJDBC();
-		
-		addressBook.contacts = newContacts;
-		
-		System.out.println(addressBook.toString());
-		
-		//newContacts = addressBook.loadAddressesFromXML("/Temp/rubrica.xml");
-		//addressBook.contacts = newContacts;
-		
-		//addressBook.writeAddressBookXML(addressBook.contacts, "/Temp/contacts.xml");
-		
-		//addressBook.writeAddressBookCSV("/Temp/newCSV.csv", ";", newContacts);
-		
-		//System.out.println(addressBook.toString());
 	}
 	
 	

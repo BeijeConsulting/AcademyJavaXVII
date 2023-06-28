@@ -44,11 +44,11 @@ public class Contact {
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("{\nFirst Name : ").append(this.getFirstName()).append("\n");
+		builder.append("First Name : ").append(this.getFirstName()).append("\n");
 		builder.append("Last Name : ").append(this.getLastName()).append("\n");
 		builder.append("Email : ").append(this.getEmail()).append("\n");
 		builder.append("Phone Number : ").append(this.getPhoneNumber()).append("\n");
-		builder.append("Notes : ").append(this.getNotes()).append("\n}");
+		builder.append("Notes : ").append(this.getNotes()).append("\n");
 		
 		return builder.toString();
 	}
