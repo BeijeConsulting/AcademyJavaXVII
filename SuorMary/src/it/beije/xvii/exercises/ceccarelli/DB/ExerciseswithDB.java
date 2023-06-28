@@ -1,5 +1,6 @@
 package it.beije.xvii.exercises.ceccarelli.DB;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -10,22 +11,38 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import it.beije.suormary.rubrica.Contact;
 
 public class ExerciseswithDB {
 	
 	private Connection connection = null;
 	private Statement statement = null;
+	private DocumentBuilderFactory documentBuilderFactory;
+	private DocumentBuilder documentBuilder;
+	private Document document;
 	
 	//connection check
 	public boolean connectionCheck() {
-		boolean check=false;
+		boolean check=true;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/alice_ceccarelli?serverTimezone=CET", "root", "Ali1196");
 			statement = connection.createStatement();
 			if(connection.isClosed()) {
-				return false;
+				check= false;
 			}
 		
 		}catch(ClassNotFoundException e) {
@@ -33,7 +50,7 @@ public class ExerciseswithDB {
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return true;
+		return check;
 	}
 	
 	
@@ -95,7 +112,68 @@ public class ExerciseswithDB {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void writeRubricaFromDbToXML(List<Contact> list) {
+		try {
+			documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			document = documentBuilder.newDocument();
+			Element contacts = document.createElement("contacts");
+			document.appendChild(contacts);
+			
+			Element contact = null;
+			for (Contact c : list) {
+				contact = document.createElement("contact");
+				
+				Element id = document.createElement("id");
+				id.setTextContent(Integer.toString(c.getId()));
+				contact.appendChild(id);
+				if (c.getName() != null) {
+					Element name = document.createElement("name");
+					name.setTextContent(c.getName());
+					contact.appendChild(name);
+				}
+				if (c.getSurname() != null) {
+					Element surname = document.createElement("surname");
+					surname.setTextContent(c.getSurname());
+					contact.appendChild(surname);
+				}
+				if (c.getPhoneNumber() != null) {
+					Element phoneNumber = document.createElement("phone");
+					phoneNumber.setTextContent(c.getPhoneNumber());
+					contact.appendChild(phoneNumber);
+				}
+				if (c.getEmail() != null) {
+					Element email = document.createElement("email");
+					email.setTextContent(c.getEmail());
+					contact.appendChild(email);
+				}
+				if (c.getNote() != null) {
+					Element note = document.createElement("note");
+					note.setTextContent(c.getNote());
+					contact.appendChild(note);
+				}
+				
+				contacts.appendChild(contact);
+			}
+			
+			// write the content into xml file
+				TransformerFactory transformerFactory = TransformerFactory.newInstance();
+				Transformer transformer = transformerFactory.newTransformer();
+				DOMSource source = new DOMSource(document);
+				
+				StreamResult result = new StreamResult(new File("/Users/Padawan/eclipse-workspace/File/contactFromDBtoXml.xml"));
+				// trasforma il documento in xml
+				transformer.transform(source, result);
 		
+		}catch (TransformerConfigurationException tcEx) {
+			tcEx.printStackTrace();
+		}catch (ParserConfigurationException pEx) {
+			pEx.printStackTrace();
+		} catch (TransformerException tEx) {
+			tEx.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {
@@ -104,6 +182,7 @@ public class ExerciseswithDB {
 		try {
 			List<Contact> list = db.loadRubricaFromDb();
 			db.writeRubricaFromDbToCSV(list);
+			db.writeRubricaFromDbToXML(list);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
