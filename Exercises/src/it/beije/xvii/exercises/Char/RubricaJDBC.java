@@ -15,7 +15,8 @@ public class RubricaJDBC {
 //	writeRubricaJDBC(contacts);
 //	EsRubrica.writeRubricaXML(contacts, "/v/jdbc.xml");
 //    EsRubrica.writeRubricaCSV(contacts, "/v/jdbc2.csv",";");
-    deleteContactFromRubrica(4);
+//    deleteContactFromRubrica(4);
+		updateContactFromRubrica(5,"phone","1234567");
 
 
 	}
@@ -110,6 +111,31 @@ public class RubricaJDBC {
 			statement = connection.createStatement();
 		    int n = statement.executeUpdate("DELETE FROM rubrica WHERE id = " + id);
 		    System.out.println("Row deleted : " + n);
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public static void updateContactFromRubrica(int id, String field, String newField) {
+		Connection connection = null;
+		Statement statement = null;
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
+			
+			statement = connection.createStatement();
+			statement.executeUpdate("UPDATE rubrica set " + field + " = " + newField + " WHERE id = " + id);
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
