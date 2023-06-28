@@ -120,23 +120,27 @@ public class ContactsList {
 		return elements;
 	}
 	
-	public static List<Contact> loadContactListFromDB (Connection connection) throws ClassNotFoundException, SQLException{
-		Statement statement = null;
+	public static List<Contact> loadContactListFromDB (String table, String... orderBy) throws ClassNotFoundException, SQLException{
+		Class.forName("com.mysql.cj.jdbc.Driver");	
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");Statement statement = null;
 		statement = connection.createStatement();
-		System.out.println("connection open? " + !connection.isClosed());
-		ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
+		//System.out.println("connection open? " + !connection.isClosed());
+		
+		ResultSet rs = statement.executeQuery("SELECT * FROM " + table + " ORDER BY " + orderBy[0] + ";");
 		List<Contact> listOfContacts = new ArrayList<>();
 		Contact con = null; new Contact();
 		while (rs.next()) {
 			con = new Contact();
-			con.setName(rs.getString("nome"));
-			con.setSurname(rs.getString("cognome"));
-			con.setPhoneNumber(rs.getString("telefono"));
+			con.setID(rs.getInt("id"));
+			con.setName(rs.getString("name"));
+			con.setSurname(rs.getString("surname"));
+			con.setPhoneNumber(rs.getString("phone_number"));
 			con.setEmail(rs.getString("email"));
 			con.setNote(rs.getString("note"));
 			listOfContacts.add(con);
 		}
 		rs.close();
+		statement.close();
 		connection.close();
 		return listOfContacts;
 	}
@@ -231,18 +235,21 @@ public class ContactsList {
 		System.out.println("Contacts added to CSV file");
 	}
 	
- 	public static void writeContactListDB(Connection connection, List<Contact> listOfContacts) throws ClassNotFoundException, SQLException {
- 		
+ 	public static void writeContactListDB(List<Contact> listOfContacts) throws ClassNotFoundException, SQLException {
+ 		Class.forName("com.mysql.cj.jdbc.Driver");	
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");
 		Statement statement = null;			
 		statement = connection.createStatement();
 		StringBuilder query;
 		for (Contact con : listOfContacts) {
-			query = new StringBuilder("INSERT INTO suor_mary.rubrica (`nome`, `cognome`, `telefono`, `email`, `note`) VALUES ('")
+			query = new StringBuilder("INSERT INTO telephone_book (`name`, `surname`, `phone_number`, `email`, `note`) VALUES ('")
 					.append(con.getName()).append("', '").append(con.getSurname()).append("', '").append(con.getPhoneNumber()).append("', '")
 					.append(con.getEmail()).append("', '").append(con.getNote()).append("');");
 			statement.executeUpdate(query.toString());
 		}
-		System.out.println("Contacts added to database");
+		statement.close();
+		connection.close();
+		//System.out.println("Contacts added to database");
  	}
  	
 	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException, ClassNotFoundException, SQLException{
@@ -251,19 +258,16 @@ public class ContactsList {
 		String separator = ";";
 		String pathWriteFile = "db";
 		
-		Class.forName("com.mysql.cj.jdbc.Driver");	
-		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");
-		
 		//read
 		List<Contact> listOfContacts = new ArrayList<>();
 		if (pathReadFile.endsWith(".csv")) listOfContacts = loadContactListFromCSV(pathReadFile, separator);
 		else if (pathReadFile.endsWith(".xml")) listOfContacts = loadContactListFromXML(pathReadFile);
-		else if (pathReadFile.equals("db")) listOfContacts = loadContactListFromDB(connection);
+		else if (pathReadFile.equals("db")) listOfContacts = loadContactListFromDB("rubrica");
 		
 		//write
 		if (pathWriteFile.endsWith(".csv")) writeContactListCSV(listOfContacts, pathWriteFile, separator);
 		else if (pathWriteFile.endsWith(".xml")) writeContactListsXLM(listOfContacts, pathWriteFile);
-		else if (pathWriteFile.equals("db")) writeContactListDB(connection, listOfContacts);
+		else if (pathWriteFile.equals("db")) writeContactListDB(listOfContacts);
 		
 	}
 

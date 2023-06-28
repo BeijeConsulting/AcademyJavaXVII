@@ -23,7 +23,7 @@ public class RubricaJDBC {
 			
 			//execute Update è meglio per insert, delete
 			//INSERT
-			//statement.executeUpdate("INSERT INTO suor_mary.rubrica VALUES ( null, 'Bubu', 'Bubu', '3331233488', 'bubu.bubu@beije.it', 'yay contatto');");
+			//statement.executeUpdate("INSERT INTO rubrica VALUES ( null, 'TEST', 'DEFAULT', '3331233488', 'test.test@beije.it', 'yay contatto');");
 			
 			String nome = "Filippo";
 			String cognome = "Marrone";
