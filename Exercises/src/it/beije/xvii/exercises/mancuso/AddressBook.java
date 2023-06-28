@@ -588,7 +588,7 @@ public class AddressBook {
 	public List<Contact> findContactByName(String name) {
 		List<Contact> conts = new ArrayList<>();
 		for(Contact c : contacts) {
-			if(c.getFirstName().contains(name)) {
+			if(c.getFirstName().toLowerCase().contains(name.toLowerCase())) {
 				conts.add(c);
 			}
 		}
@@ -598,7 +598,7 @@ public class AddressBook {
 	public List<Contact> findContactByName(String name, String surname) {
 		List<Contact> conts = new ArrayList<>();
 		for(Contact c : contacts) {
-			if(c.getLastName().contains(surname) && c.getFirstName().contains(name)) {
+			if(c.getLastName().toLowerCase().contains(surname.toLowerCase()) && c.getFirstName().toLowerCase().contains(name.toLowerCase())) {
 				conts.add(c);
 			}
 		}
@@ -608,7 +608,7 @@ public class AddressBook {
 	public List<Contact> findContactBySurname(String surname) {
 		List<Contact> conts = new ArrayList<>();
 		for(Contact c : contacts) {
-			if(c.getLastName().contains(surname)) {
+			if(c.getLastName().toLowerCase().contains(surname.toLowerCase())) {
 				conts.add(c);
 			}
 		}
@@ -628,7 +628,7 @@ public class AddressBook {
 	public List<Contact> findContactByEmail(String email) {
 		List<Contact> conts = new ArrayList<>();
 		for(Contact c : contacts) {
-			if(c.getEmail().equals(email)) {
+			if(c.getEmail().toLowerCase().equals(email.toLowerCase())) {
 				conts.add(c);
 			}
 		}
