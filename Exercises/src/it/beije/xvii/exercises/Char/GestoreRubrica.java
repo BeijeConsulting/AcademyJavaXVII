@@ -23,8 +23,8 @@ public class GestoreRubrica {
         case "nuovo contatto" : RubricaJDBC.createContactFromRubrica(); break;
         case "modifica contatto" : RubricaJDBC.updateContactFromRubrica(); break;
         case "cancella contatto" : RubricaJDBC.deleteContactFromRubrica(); break;
-        case "trova contatti duplicati" : System.out.println("a"); break;
-        case "unisci contatti duplicati" : System.out.println("a"); break;
+        case "trova contatti duplicati" : RubricaJDBC.findDuplicatedContacts(); break;
+        case "unisci contatti duplicati" : RubricaJDBC.mergeDuplicatedContacts(); break;
         case "esci" :  break;
          default : System.out.println("Non hai inserito nessuna tra le opzioni disponibili"); break;
         }

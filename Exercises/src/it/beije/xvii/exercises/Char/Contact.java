@@ -48,4 +48,13 @@ public class Contact {
 	public String toString() {
 		return "Nome : " + getName() + " - " + "Cognome : " + getSurname();
 	}
+	public boolean equals(Contact c2) {
+		if(this.getName().equals(c2.getName())&& 
+		   this.getSurname().equals(c2.getSurname()) && 
+		   this.getEmail().equals(c2.getEmail()) && 
+		   this.getPhoneNumber().equals(c2.getPhoneNumber())&&
+		   this.getNote().equals(c2.getNote())) return true;
+		else return false;
+	    
+	}
 }

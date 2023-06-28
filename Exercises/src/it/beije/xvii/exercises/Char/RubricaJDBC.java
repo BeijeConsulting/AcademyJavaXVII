@@ -214,6 +214,89 @@ public class RubricaJDBC {
 			}
 		}
 	}
+	
+	public static List<Contact> findDuplicatedContacts() {
+		List<Contact> duplicatedContacts = new ArrayList<>();
+		List<Contact> contacts = loadRubricaJDBC();
+		for(int i = 0; i < contacts.size(); i++) {
+			for(int j = 0; j < contacts.size(); j++ ) {
+				if(contacts.get(i) == (contacts.get(j))) continue;
+				if(contacts.get(i).equals(contacts.get(j)) && (!duplicatedContacts.contains(contacts.get(i)))) {
+					duplicatedContacts.add(contacts.get(i));
+				}
+			}
+		}
+
+		for(Contact c : duplicatedContacts) {
+			System.out.println(c);
+		}
+		return duplicatedContacts;
+		
+	}
+	public static void mergeDuplicatedContacts() {
+		List<Contact> duplicatedContacts = findDuplicatedContacts();
+	    System.out.println(duplicatedContacts.size());
+	    
+	    List<Contact> contacts = new ArrayList<>();
+	    for (int i = 0; i < duplicatedContacts.size(); i++) {
+	        boolean isDuplicate = false;
+	        
+	        for (int j = i + 1; j < duplicatedContacts.size(); j++) {
+	            
+	            if (duplicatedContacts.get(i).equals(duplicatedContacts.get(j))) {
+	                isDuplicate = true;
+	                break;
+	            }
+	        }
+	        
+	        if (!isDuplicate) {
+	            contacts.add(duplicatedContacts.get(i));
+	        }
+	    }
+		Connection connection = null;
+		Statement statement = null;
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
+			
+			statement = connection.createStatement();
+			StringBuilder str = null;
+		    for (Contact c : contacts) {
+		    	str = new StringBuilder("DELETE FROM rubrica WHERE name = '")
+						.append(c.getName()).append("' AND surname = '")
+						.append(c.getSurname()).append("' AND email = '")
+						.append(c.getEmail()).append("' AND phone = '")
+						.append(c.getPhoneNumber()).append("' AND note = '")
+						.append(c.getNote()).append("'");
+		       statement.executeUpdate(str.toString());
+		    }
+		    for (Contact c : contacts) {
+		    	 str = new StringBuilder("INSERT INTO rubrica (`name`,`surname`,`email`,`phone`,`note`) VALUES ('")
+						.append(c.getName()).append("','")
+						.append(c.getSurname()).append("','")
+						.append(c.getEmail()).append("','")
+						.append(c.getPhoneNumber()).append("','")
+						.append(c.getNote()).append("')");
+				statement.executeUpdate(str.toString());
+		    }
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+
+	}
 
 }
 
