@@ -188,6 +188,9 @@ public class RubricaUtils {
 		                
 			        	line = br.readLine();
 			        	
+			        	//POSSO AGGIUNGERE CONTROLLO PER VERIFICARE CHE LA LUNGHEZZA DEI DUE ARRAY SIA
+			        	//LA STESSA, ALTRIMENTI GENERO UNA LINEA NON VALIDA
+			        	
 			        	//l'ultimo campo della riga non viene letto correttamente quando il suo valore è null
 			        	//indicando -1 nello split, manteniamo anche gli elementi vuoti alla fine della riga
 		                fields = line.split(separator, -1);

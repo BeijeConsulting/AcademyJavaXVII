@@ -27,7 +27,7 @@ public class LetturaDB {
 					
 					/*
 					 * Crea una connessione al database MySQL utilizzando l'URL di connessione specificato, 
-					 * l'utente "root" e la password "cereza". 
+					 * l'utente "root" e la password "Arlabunakti". 
 					 * L'URL di connessione indica la posizione del database, 
 					 * che in questo caso è "localhost" sulla porta "3306", 
 					 * con il nome del database "suor_mary" e la timezone "CET".
