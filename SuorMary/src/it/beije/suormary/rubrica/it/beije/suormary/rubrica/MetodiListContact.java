@@ -184,6 +184,7 @@ public class MetodiListContact{
 	
 	public static void writeContactsInRubricaXML(List<Contact> contatti, String pathFile) {
 		//da rivedere
+	
 	}
 
 	public static void writeContactsInRubricaDB(List<Contact> contatti, Connection connection) throws SQLException {
