@@ -576,5 +576,17 @@ public class AddressBook {
 	public void mergeDuplicates() {
 		List<Contact> dups = findDuplicates();
 		
+		for(Contact dup : dups) {
+			int counter = 0;
+			for(Contact c : contacts) {
+				if(c.equals(dup)) {
+					counter++;
+				}
+			}
+			for(int i=0;i<counter-1;i++) {
+				contacts.remove(dup);
+			}
+		}		
+		
 	}
 }

@@ -1,5 +1,6 @@
 package it.beije.xvii.exercises.mancuso;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Rubrica {
@@ -18,6 +19,12 @@ public class Rubrica {
 			String overwrite;
 			boolean exit = false;
 			
+			String name;
+			String surname;
+			String phone;
+			String email;
+			String notes;
+			
 			while(!exit) {
 				System.out.println("Menu funzionalita' rubrica:\n");
 				System.out.println("\t1) IMPORTA contatti da file CSV");
@@ -27,6 +34,12 @@ public class Rubrica {
 				System.out.println("\t5) ESPORTA contatti su file XML");
 				System.out.println("\t6) ESPORTA contatti su DATABASE\n");
 				System.out.println("\t7) VISUALIZZA contatti su CONSOLE\n");
+				System.out.println("\t8) INSERISCI nuovo contatto\n");
+				System.out.println("\t9) MODIFICA contatto\n");
+				System.out.println("\tA) ELIMINA contatto\n");
+				System.out.println("\tB) RICERCA contatti duplicati\n");
+				System.out.println("\tC) UNISCI contatti duplicati\n");
+				System.out.println("\tD) RICERCA contatto per nome\n");
 				System.out.println("\t0) Chiudi il programma");
 				
 				command = input.nextLine();
@@ -113,6 +126,47 @@ public class Rubrica {
 					break;
 				case "7":
 					System.out.println(ab.toString());
+					break;
+				case "8":
+					System.out.println("\nInserisci il nome del contatto:");
+					name = input.nextLine();
+					
+					System.out.println("\nInserisci il cognome del contatto:");
+					surname = input.nextLine();
+
+					System.out.println("\nInserisci il telefono del contatto:");
+					phone = input.nextLine();
+					
+					System.out.println("\nInserisci la mail del contatto:");
+					email = input.nextLine();
+					
+					System.out.println("\nInserisci le note del contatto:");
+					notes = input.nextLine();
+					
+					Contact c = new Contact(name,surname,phone,email,notes);
+					
+					ab.contacts.add(c);
+					
+					break;
+				case "9":
+					
+					break;
+				case "A":
+	
+					break;
+				case "B":
+					List<Contact> dups = ab.findDuplicates();
+					System.out.println("I contatti duplicati sono i seguenti: ");
+					for(Contact contact : dups) {
+						contact.toString();
+						System.out.println("--------------------------\n");
+					}
+					break;
+				case "C":
+					ab.mergeDuplicates();
+					break;
+				case "D":
+	
 					break;
 				case "0":
 					exit = true;

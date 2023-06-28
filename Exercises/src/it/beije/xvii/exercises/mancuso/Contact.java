@@ -42,6 +42,16 @@ public class Contact {
 		this.notes = notes;
 	}
 	
+	public Contact() {}
+	
+	public Contact(String name, String surname, String phone, String email, String notes) {
+		this.firstName = name;
+		this.lastName = surname;
+		this.phoneNumber = phone;
+		this.email = email;
+		this.notes = notes;
+	}
+	
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("First Name : ").append(this.getFirstName()).append("\n");
