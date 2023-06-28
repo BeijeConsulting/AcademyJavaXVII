@@ -138,7 +138,7 @@ public class RubricaUtils {
             System.out.println("connection open? " + !connection.isClosed());
 
             //SELECT
-            ResultSet rs = statement.executeQuery("SELECT * FROM suor_mary.rubrica");
+            ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
 
             while (rs.next()) {
 
