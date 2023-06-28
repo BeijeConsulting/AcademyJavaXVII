@@ -181,7 +181,7 @@ public class Menu {
 			index = -1;
 			if(ab.contacts.size()>0) {
 				while(index<0 || index>=ab.contacts.size()) {
-					System.out.println("I contatti presenti sono i seguenti, inserire l'indice del contatto che si desidera modificare. Inserire \"exit\" per annullare l'operazione.");
+					System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "I contatti presenti sono i seguenti, inserire l'indice del contatto che si desidera modificare. Inserire \"exit\" per annullare l'operazione." + ANSI_RESET);
 					System.out.println(ab.toString());
 					command = input.nextLine();
 					if(command.equals("exit")) {
@@ -269,7 +269,7 @@ public class Menu {
 			index = -1;
 			if(ab.contacts.size()>0) {
 				while(index<0 || index>=ab.contacts.size()) {
-					System.out.println("I contatti presenti sono i seguenti, inserire l'indice del contatto che si desidera modificare. Scrivere \"exit\" per annullare l'operazione. ");
+					System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "I contatti presenti sono i seguenti, inserire l'indice del contatto che si desidera cancellare. Inserire \"exit\" per annullare l'operazione." + ANSI_RESET);
 					System.out.println(ab.toString());
 					command = input.nextLine();
 					if(command.equals("exit")) {
@@ -310,7 +310,7 @@ public class Menu {
 				
 			resultContacts = ab.findContactByName(name);
 			
-			System.out.println("Sono stati trovati i seguenti contatti con il nome simile a quello inserito: \n");
+			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti con il nome simile a quello inserito: \n" + ANSI_RESET);
 			for(Contact rc : resultContacts) {
 				System.out.println(rc.toString());
 			}
@@ -323,7 +323,7 @@ public class Menu {
 				
 			resultContacts = ab.findContactBySurname(surname);
 			
-			System.out.println("Sono stati trovati i seguenti contatti con il cognome simile a quello inserito: \n");
+			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti con il cognome simile a quello inserito: \n" + ANSI_RESET);
 			for(Contact rc : resultContacts) {
 				System.out.println(rc.toString());
 			}
@@ -339,7 +339,7 @@ public class Menu {
 				
 			resultContacts = ab.findContactByName(name, surname);
 			
-			System.out.println("Sono stati trovati i seguenti contatti con il nome e cognome simili a quelli inseriti: \n");
+			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti con il nome e cognome simili a quelli inseriti: \n" + ANSI_RESET);
 			for(Contact rc : resultContacts) {
 				System.out.println(rc.toString());
 			}
@@ -352,7 +352,7 @@ public class Menu {
 				
 			resultContacts = ab.findContactByPhone(phone);
 			
-			System.out.println("Sono stati trovati i seguenti contatti con il numero di telefono uguale a quello inserito: \n");
+			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti con il numero di telefono uguale a quello inserito: \n" + ANSI_RESET);
 			for(Contact rc : resultContacts) {
 				System.out.println(rc.toString());
 			}
@@ -365,7 +365,7 @@ public class Menu {
 				
 			resultContacts = ab.findContactByEmail(phone);
 			
-			System.out.println("Sono stati trovati i seguenti contatti con l'email uguale a quella inserita: \n");
+			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti con l'email uguale a quella inserita: \n" + ANSI_RESET);
 			for(Contact rc : resultContacts) {
 				System.out.println(rc.toString());
 			}
