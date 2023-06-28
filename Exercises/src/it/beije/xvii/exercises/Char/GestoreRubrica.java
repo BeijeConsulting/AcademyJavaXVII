@@ -7,7 +7,8 @@ public class GestoreRubrica {
 
 		Scanner scanner = new Scanner(System.in);
 		String scelta = "";
-        while(!scelta.equals("esci")) {  	
+        while(!scelta.equals("esci")) {
+        	
     		System.out.println("Scegli una tra le seguenti opzioni : ");
     		System.out.println("lista contatti");
     		System.out.println("nuovo contatto");
@@ -16,6 +17,7 @@ public class GestoreRubrica {
     		System.out.println("trova contatti duplicati");
     		System.out.println("unisci contatti duplicati");
     		System.out.println("esci");
+    		System.out.println("--------");
             scelta = scanner.nextLine();
       
          switch(scelta) {
@@ -32,7 +34,6 @@ public class GestoreRubrica {
           case "esci" : System.out.println("Arrivederci"); break;
           default : System.out.println("Non hai inserito nessuna tra le opzioni disponibili"); break;
         }
-
 	    }
         scanner.close();
 	}

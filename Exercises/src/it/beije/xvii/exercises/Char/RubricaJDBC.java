@@ -110,14 +110,28 @@ public class RubricaJDBC {
 			Scanner scanner = new Scanner(System.in);
 			System.out.print("Inserisci l'id del contatto da eliminare : ");
 			int id = scanner.nextInt();
-
+            scanner.nextLine();
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
-			
 			statement = connection.createStatement();
-		    int n = statement.executeUpdate("DELETE FROM rubrica WHERE id = " + id);
-		    System.out.println("Row deleted : " + n);
+			ResultSet res = statement.executeQuery("SELECT * FROM rubrica WHERE id = " + id);
+			res.next();
+		    Contact c = new Contact();
+		    c.setName(res.getString("name"));
+		    c.setSurname(res.getString("surname"));
+		    c.setEmail(res.getString("email"));
+		    c.setPhoneNumber(res.getString("phone"));
+		    c.setNote(res.getString("note"));
+			System.out.println("Contatto da eliminare : ");
+			System.out.println(c);
+			System.out.print("Sei sicuro di voler eliminare il contatto? (si/no) : ");
+			String scelta = scanner.nextLine();
+			if(scelta.equals("si")) {
+			    statement.executeUpdate("DELETE FROM rubrica WHERE id = " + id);
+			    System.out.println("Contatto eliminato");
+			}
+			else System.out.println("Contatto non eliminato");
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
