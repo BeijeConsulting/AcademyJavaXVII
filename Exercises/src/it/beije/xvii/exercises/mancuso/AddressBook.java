@@ -557,6 +557,7 @@ public class AddressBook {
 	}
 	
 	public List<Contact> findContactByPhone(String phone) {
+		phone = phone.trim();
 		List<Contact> conts = new ArrayList<>();
 		for(Contact c : contacts) {
 			if(c.getPhoneNumber().equals(phone)) {
