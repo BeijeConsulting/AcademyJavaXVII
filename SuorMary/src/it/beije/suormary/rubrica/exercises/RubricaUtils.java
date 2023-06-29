@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,15 +34,21 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import it.beije.suormary.rubrica.Contact;
 
 public class RubricaUtils {
-	
+	private static final String ID_FIELD = "ID";
 	private static final String SURNAME_FIELD = "COGNOME";
 	private static final String NAME_FIELD = "NOME";
 	private static final String PHONE_NUMBER_FIELD = "TELEFONO";
 	private static final String EMAIL_FIELD = "EMAIL";
 	private static final String NOTE_FIELD = "NOTE";
+	
+	private String escapeSpecialCharacters(String input) {
+	    if (input == null) {
+	        return null;
+	    }
+	    return input.replace("'", "\\'");
+	}
 	
 	public List<Contact> loadRubricaFromCSV(String pathFile, String separator) {
 		FileReader fileReader = null;
@@ -152,7 +159,7 @@ public class RubricaUtils {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
 			
 			statement = connection.createStatement();
-			System.out.println("connection open? " + !connection.isClosed());
+			//System.out.println("connection open? " + !connection.isClosed());
 			
 			//SELECT
 			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
@@ -160,6 +167,7 @@ public class RubricaUtils {
 			while (rs.next()) {
 				contatto = new Contact();
 				//rs.getInt("id")
+				contatto.setId(rs.getString(ID_FIELD));
 				contatto.setSurname(rs.getString(SURNAME_FIELD));
 				contatto.setName(rs.getString(NAME_FIELD));
 				contatto.setPhoneNumber(rs.getString(PHONE_NUMBER_FIELD));
@@ -384,6 +392,66 @@ public class RubricaUtils {
 		}
 	}
 	
+	public void writeRubricaDB(List<Contact> contatti) {
+		Connection connection = null;
+		Statement statement = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			
+			statement = connection.createStatement();
+			System.out.println("connection open? " + !connection.isClosed());
+			
+			StringBuilder query = new StringBuilder();
+			StringBuilder columnsValues = new StringBuilder("INSERT INTO rubrica (`");
+			columnsValues.append(SURNAME_FIELD).append("`, `")
+						 .append(NAME_FIELD).append("`, `")
+						 .append(PHONE_NUMBER_FIELD).append("`, `")
+						 .append(EMAIL_FIELD).append("`, `")
+						 .append(NOTE_FIELD)
+						 .append("`) VALUES ('");
+			int nRecord = -1;
+			
+			for (Contact contatto : contatti) {
+				if(contatto!=null) {
+					query.setLength(0);
+					query.append(columnsValues)
+						 .append(escapeSpecialCharacters(contatto.getSurname())).append("', '")
+						 .append(escapeSpecialCharacters(contatto.getName())).append("', '")
+						 .append(escapeSpecialCharacters(contatto.getPhoneNumber())).append("', '")
+						 .append(escapeSpecialCharacters(contatto.getEmail())).append("', '")
+						 .append(escapeSpecialCharacters(contatto.getNote()))
+						 .append("')");
+					
+					try {
+						nRecord = statement.executeUpdate(query.toString());
+						if (nRecord !=1) {
+							System.out.println("Query non inserita: " + query);
+						}
+					} catch (SQLSyntaxErrorException e) {
+						System.out.println("Query non valida: " + query);
+					}
+					
+				} else {
+					System.out.println("Contatto mancante");
+				}
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void writeRubricaXML(List<Contact> contatti, String pathFile) {
 		try {
 			/*
@@ -586,18 +654,217 @@ public class RubricaUtils {
 		
 	}
 	
+	public void addContactDB(Contact contatto) {
+		Connection connection = null;
+		Statement statement = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			
+			statement = connection.createStatement();
+			//System.out.println("connection open? " + !connection.isClosed());
+			
+			StringBuilder query = new StringBuilder();
+			StringBuilder columnsValues = new StringBuilder("INSERT INTO rubrica (`");
+			columnsValues.append(SURNAME_FIELD).append("`, `")
+						 .append(NAME_FIELD).append("`, `")
+						 .append(PHONE_NUMBER_FIELD).append("`, `")
+						 .append(EMAIL_FIELD).append("`, `")
+						 .append(NOTE_FIELD)
+						 .append("`) VALUES ('");
+			int nRecord = -1;
+			
+			if(contatto!=null) {
+				query.setLength(0);
+				query.append(columnsValues)
+					.append(escapeSpecialCharacters(contatto.getSurname())).append("', '")
+					.append(escapeSpecialCharacters(contatto.getName())).append("', '")
+					.append(escapeSpecialCharacters(contatto.getPhoneNumber())).append("', '")
+					.append(escapeSpecialCharacters(contatto.getEmail())).append("', '")
+					.append(escapeSpecialCharacters(contatto.getNote()))
+					.append("')");
+					
+					try {
+						nRecord = statement.executeUpdate(query.toString());
+						if (nRecord !=1) {
+							System.out.println("Query non inserita: " + query);
+						}
+					} catch (SQLSyntaxErrorException e) {
+						System.out.println("Query non valida: " + query);
+					}
+					
+				} else {
+					System.out.println("Contatto mancante");
+				}
+	
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateContactDB(String id, Contact contatto) {
+		Connection connection = null;
+		Statement statement = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			
+			statement = connection.createStatement();
+			//System.out.println("connection open? " + !connection.isClosed());
+			StringBuilder query = new StringBuilder();
+			StringBuilder columnsValues = new StringBuilder("UPDATE rubrica set ");
+			int nRecord = -1;
+			
+			if(contatto!=null) {
+				query.setLength(0);
+				query.append(columnsValues)
+					.append(SURNAME_FIELD).append(" = '")
+					.append(escapeSpecialCharacters(contatto.getSurname())).append("', ")
+					.append(NAME_FIELD).append(" = '")
+					.append(escapeSpecialCharacters(contatto.getName())).append("', ")
+					.append(PHONE_NUMBER_FIELD).append(" = '")
+					.append(escapeSpecialCharacters(contatto.getPhoneNumber())).append("', ")
+					.append(EMAIL_FIELD).append(" = '")
+					.append(escapeSpecialCharacters(contatto.getEmail())).append("', ")
+					.append(NOTE_FIELD).append(" = '")
+					.append(escapeSpecialCharacters(contatto.getNote()))
+					.append("' WHERE ").append(ID_FIELD).append(" = ").append(id);
+					
+					try {
+						nRecord = statement.executeUpdate(query.toString());
+						if (nRecord !=1) {
+							System.out.println("Query non aggiornata: " + query);
+						}
+					} catch (SQLSyntaxErrorException e) {
+						System.out.println("Query non valida: " + query);
+					}
+					
+				} else {
+					System.out.println("Contatto mancante");
+				}
+	
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteContactDB(String id) {
+		Connection connection = null;
+		Statement statement = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			statement = connection.createStatement();
+			//System.out.println("connection open? " + !connection.isClosed());
+			StringBuilder query = new StringBuilder("DELETE FROM rubrica WHERE id = ");
+			query.append(id);
+			
+			int nRecord = -1;
+			try {
+				nRecord = statement.executeUpdate(query.toString());
+				if (nRecord !=1) {
+					System.out.println("Query non aggiornata: " + query);
+					}
+			} catch (SQLSyntaxErrorException e) {
+				System.out.println("Query non valida: " + query);
+			}	
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteContactDB(List<Contact> contatti) {
+		Connection connection = null;
+		Statement statement = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			statement = connection.createStatement();
+			//System.out.println("connection open? " + !connection.isClosed());
+			StringBuilder query = new StringBuilder();
+			StringBuilder columnsValues = new StringBuilder("DELETE FROM rubrica WHERE id = ");
+			int nRecord = -1;
+			
+			for (Contact contatto : contatti) {
+				if(contatto!=null) {
+					query.setLength(0);
+					query.append(columnsValues).append(contatto.getId());
+					
+					try {
+						nRecord = statement.executeUpdate(query.toString());
+						if (nRecord !=1) {
+							System.out.println("Query non inserita: " + query);
+						}
+					} catch (SQLSyntaxErrorException e) {
+						System.out.println("Query non valida: " + query);
+					}
+					
+				} else {
+					System.out.println("Contatto mancante");
+				}
+			}
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public static void printContactList(List<Contact> contacts) {	    
 	    if (contacts.isEmpty()) {
 	        System.out.println("La lista dei contatti è vuota.");
 	    } else {
 	        System.out.println("Lista dei contatti:");
 	        for (Contact contact : contacts) {
-	            System.out.println("Nome: " + contact.getName()); 
-	            System.out.println("Cognome: " + contact.getSurname()); 
-	            System.out.println("Telefono: " + contact.getPhoneNumber());
-	            System.out.println("Email: " + contact.getEmail());
-	            System.out.println("Note: " + contact.getNote());
-	            System.out.println();
+//	            System.out.println("Nome: " + contact.getName()); 
+//	            System.out.println("Cognome: " + contact.getSurname()); 
+//	            System.out.println("Telefono: " + contact.getPhoneNumber());
+//	            System.out.println("Email: " + contact.getEmail());
+//	            System.out.println("Note: " + contact.getNote());
+//	            System.out.println();
+	        	System.out.println(contact.toString()); 
 	        }
 	    }
 	}
@@ -606,31 +873,33 @@ public class RubricaUtils {
 	
 	//testing
 	public static void main(String[] args)  {
-		RubricaUtils ru = new RubricaUtils();
-		String pathFile = "/Users/Padawan/git/file/rubrica.csv";
-		String pathFileW = "/Users/Padawan/git/file/rubrica_scrittura.csv";
-		
-		String pathFileXML = "/Users/Padawan/git/file/rubrica.xml";
-		String pathFileXMLW = "/Users/Padawan/git/file/rubrica_scrittura.xml";
-		
-		String pathFileDynamic = "/Users/Padawan/git/file/rubrica_dinamico_v2.csv";
-		
-		String separator = ";";
-		
-		//List<Contact> contatti = ru.loadRubricaFromCSV(pathFile, separator);
-		//ru.writeRubricaCSV(contatti, pathFileW, separator);
-		
-		List<Contact> contattiXML = ru.loadRubricaFromXML(pathFileXML);
-		ru.writeRubricaXML(contattiXML, pathFileXMLW);
-		
-		System.out.println();
-		
-		List<Contact> contattiDynamic = ru.loadRubricaFromCSV(pathFileDynamic, separator);
-		RubricaUtils.printContactList(contattiDynamic);
+//		RubricaUtils ru = new RubricaUtils();
+//		String pathFile = "/Users/Padawan/git/file/rubrica.csv";
+//		String pathFileW = "/Users/Padawan/git/file/rubrica_scrittura.csv";
+//		
+//		String pathFileXML = "/Users/Padawan/git/file/rubrica.xml";
+//		String pathFileXMLW = "/Users/Padawan/git/file/rubrica_scrittura.xml";
+//		
+//		String pathFileDynamic = "/Users/Padawan/git/file/rubrica_dinamico_v2.csv";
+//		
+//		String separator = ";";
+//		
+//		List<Contact> contatti = ru.loadRubricaFromCSV(pathFile, separator);
+//		ru.writeRubricaCSV(contatti, pathFileW, separator);
+//		
+//		List<Contact> contattiXML = ru.loadRubricaFromXML(pathFileXML);
+//		ru.writeRubricaXML(contattiXML, pathFileXMLW);
+//		
+//		System.out.println();
+//		
+//		List<Contact> contattiDynamic = ru.loadRubricaFromCSV(pathFileDynamic, separator);
+//		RubricaUtils.printContactList(contattiDynamic);
 		
 		
 		/*List<Contact> contatti = ru.loadRubricaFromJDBC();
 		RubricaUtils.printContactList(contatti)*/;
+
+		//ru.writeRubricaJDBC(contatti);
 	}
 
 }

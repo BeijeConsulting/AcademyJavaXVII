@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica.exercises;
+package it.beije.suormary.exercises;
 
 import java.io.File;
 import java.io.FileWriter;
