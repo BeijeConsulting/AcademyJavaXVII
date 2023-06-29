@@ -21,6 +21,12 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -183,7 +189,65 @@ public class MetodiListContact{
 	}
 	
 	public static void writeContactsInRubricaXML(List<Contact> contatti, String pathFile) {
-		//da rivedere
+		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder documentBuilder;
+		try {
+			documentBuilder = documentBuilderFactory.newDocumentBuilder();
+			Document document = documentBuilder.newDocument();
+			
+			Element contacts = document.createElement("contacts");
+			document.appendChild(contacts);
+			
+			Element contact = null;
+			for (Contact c : contatti) {
+				contact = document.createElement("contatto");
+				if (c.getName() != null) {
+					Element name = document.createElement("nome");
+					name.setTextContent(c.getName());
+					contact.appendChild(name);
+				}
+				if (c.getSurname() != null) {
+					Element surname = document.createElement("cognome");
+					surname.setTextContent(c.getSurname());
+					contact.appendChild(surname);
+				}
+				if (c.getPhoneNumber() != null) {
+					Element phoneNumber = document.createElement("telefono");
+					phoneNumber.setTextContent(c.getPhoneNumber());
+					contact.appendChild(phoneNumber);
+				}
+				if (c.getEmail() != null) {
+					Element email = document.createElement("email");
+					email.setTextContent(c.getEmail());
+					contact.appendChild(email);
+				}
+				if (c.getNote() != null) {
+					Element note = document.createElement("note");
+					note.setTextContent(c.getNote());
+					contact.appendChild(note);
+				}
+				
+				contacts.appendChild(contact);
+			}
+			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+			Transformer transformer = transformerFactory.newTransformer();
+			DOMSource source = new DOMSource(document);
+			
+			StreamResult result = new StreamResult(new File(pathFile));
+			transformer.transform(source, result);
+		
+			
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	
 	}
 
@@ -205,13 +269,13 @@ public class MetodiListContact{
 
 	public static void main(String[] args) throws Exception {
 		
-		List<Contact> prova = new ArrayList<>();
-		prova=loadContactListFromCSV("/Users/marty/Desktop/Marti/Beije/Esercizi Academy/FILE ESERCIZI/nuovo 1.csv", ";");
-		
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Rick&Morty63!!");
-		
-		writeContactsInRubricaDB(prova,connection);
+//		List<Contact> prova = new ArrayList<>();
+//		prova=loadContactListFromCSV("/Users/marty/Desktop/Marti/Beije/Esercizi Academy/FILE ESERCIZI/nuovo 1.csv", ";");
+//		
+//		Class.forName("com.mysql.cj.jdbc.Driver");
+//		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Rick&Morty63!!");
+//		
+//		writeContactsInRubricaDB(prova,connection);
 		
 //		prova=loadRubricaFromXML("/Users/marty/Desktop/Marti/Beije/Esercizi Academy/FILE ESERCIZI/rubrica.xml");
 //		prova=loadRubricaFromDB("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Rick&Morty63!!");

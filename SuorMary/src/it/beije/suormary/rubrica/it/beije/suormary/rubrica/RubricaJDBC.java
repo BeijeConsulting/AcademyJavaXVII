@@ -31,6 +31,7 @@ public class RubricaJDBC {
 			
 			//per inserire cont variabili in update conviene passargli string builder
 			
+			PreparedStatement preparedStatement = connection.()
 			
 			//StringBuilder query = new StringBuilder("INSERT INTO rubrica (`nome`, `cognome`, `telefono`, `email`) VALUES('")
 //					.append(nome).append("', '").append(cognome).append("', '")
