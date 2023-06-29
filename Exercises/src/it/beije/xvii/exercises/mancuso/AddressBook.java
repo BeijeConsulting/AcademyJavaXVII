@@ -26,6 +26,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,34 +41,8 @@ public class AddressBook {
 		contacts = new ArrayList<>();
 	}
 
-	private static List<String[]> readCSV(File file, String separator){
-		FileReader fReader = null;
-		List<String[]> csv = new ArrayList<>();
-		BufferedReader bReader = null;
-		try {
-			fReader = new FileReader(file);
-			bReader = new BufferedReader(fReader);
+	
 
-			while(bReader.ready()) {
-				String line = bReader.readLine();
-				String[] values = line.split(separator, -1);
-				csv.add(values);
-			}		
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				fReader.close();
-				bReader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-		}
-		return csv;
-	}
 	
 	public List<Contact> loadAddressesFromCSV(String pathFile, String separator) throws IllegalArgumentException{
 		
@@ -84,7 +59,7 @@ public class AddressBook {
 				if(filename.contains(".csv")) {
 					
 					List<Contact> newContacts = new ArrayList<Contact>();
-					List<String[]> csv = readCSV(file, separator);
+					List<String[]> csv = CSVUtils.readCSV(file, separator);
 					
 					String[] headers = csv.get(0);
 					
@@ -161,12 +136,9 @@ public class AddressBook {
 		if(file.exists()) {
 			if(!file.isDirectory()) {
 				if(filename.contains(".xml")) {
-					try {
-						
-						DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-						DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-						Document document = documentBuilder.parse(pathFile);
-						
+					try {					
+						Document document = XMLUtils.getDocument(pathFile);
+				
 						Element rootElement = document.getDocumentElement();
 						
 						List<Element> elements = getChildrenElements(rootElement);	
@@ -228,13 +200,12 @@ public class AddressBook {
 		List<Contact> contacts = null;
 		try {
 			
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "myDatabase1");
+			connection = JDBCUtils.getConnection();
 			
-			statement = connection.createStatement();
+			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM rubrica");
 			
 			//SELECT
-			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
+			ResultSet rs = preparedStatement.executeQuery();
 			Contact c = null;
 			
 			contacts = new ArrayList<Contact>();
@@ -292,65 +263,55 @@ public class AddressBook {
 	
 	public void writeAddressBookCSV(String pathFile, String separator, boolean append) {
 		
-		FileWriter writer = null;
 		
-		try {
+		StringBuilder sb = new StringBuilder();
+		
 			
-			writer = new FileWriter(pathFile, append);
-			
-			if(append) {
-				File file = new File(pathFile);
+		if(append) {
+			File file = new File(pathFile);
 				
-				if(!file.exists()) {
-					writer.write("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
-				}
-			}else {
-				writer.write("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
-			}		
-			
-			for (Contact contact : contacts) {
-				if(contact.getFirstName() != null) {
-					writer.write(contact.getFirstName());
-				}else {
-					writer.write("");
-				}
-				writer.write(separator);
-				if(contact.getLastName() != null) {
-					writer.write(contact.getLastName());
-				}else {
-					writer.write("");
-				}
-				writer.write(separator);
-				if(contact.getPhoneNumber() != null) {
-					writer.write(contact.getPhoneNumber());
-				}else {
-					writer.write("");
-				}
-				writer.write(separator);
-				if(contact.getEmail() != null) {
-					writer.write(contact.getEmail());
-				}else {
-					writer.write("");
-				}
-				writer.write(separator);
-				if(contact.getNotes() != null) {
-					writer.write(contact.getNotes());
-				}else {
-					writer.write("");
-				}
-				writer.write('\n');
+			if(!file.exists()) {
+				sb.append("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
 			}
-		}catch (IOException e) {
-			e.printStackTrace();
-		} finally {			
-			try {
-				writer.flush();
-				writer.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		}else {
+			sb.append("NAME;SURNAME;PHONE;EMAIL;NOTES\n");
+		}		
 		
+		for (Contact contact : contacts) {
+						
+			if(contact.getFirstName() != null) {
+				sb.append(contact.getFirstName());
+			}else {
+				sb.append("");
+			}
+			sb.append(separator);
+			if(contact.getLastName() != null) {
+				sb.append(contact.getLastName());
+			}else {
+				sb.append("");
+			}
+			sb.append(separator);
+			if(contact.getPhoneNumber() != null) {
+				sb.append(contact.getPhoneNumber());
+			}else {
+				sb.append("");
+			}
+			sb.append(separator);
+			if(contact.getEmail() != null) {
+				sb.append(contact.getEmail());
+			}else {
+				sb.append("");
+			}
+			sb.append(separator);
+			if(contact.getNotes() != null) {
+				sb.append(contact.getNotes());
+			}else {
+				sb.append("");
+			}
+			sb.append('\n');
+		}
+			
+		CSVUtils.writeCSV(pathFile, separator, append, sb.toString());	
 	}
 	
 	public void writeAddressBookXML(String filePath, boolean append) {
@@ -369,9 +330,7 @@ public class AddressBook {
 		
 		try {
 		
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			Document document = documentBuilder.newDocument();
+			Document document = XMLUtils.getDocument();
 			
 			Element root = document.createElement("addressBook");
 			document.appendChild(root);
@@ -411,18 +370,7 @@ public class AddressBook {
 				
 			}
 			
-			// write the content into xml file
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			DOMSource source = new DOMSource(document);
-					
-			StreamResult result = new StreamResult(file);
-	
-			// Output to console for testing
-			//StreamResult syso = new StreamResult(System.out);
-	
-			transformer.transform(source, result);
-			//transformer.transform(source, syso);
+			XMLUtils.write(document, file);
 	
 			//System.out.println("File saved!");
 		} catch (ParserConfigurationException pEx) {
@@ -435,30 +383,35 @@ public class AddressBook {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void writeAddressBookJDBC(boolean overwrite) {
 		Connection connection = null;
 		Statement statement = null;
 
 		try {
 			
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "myDatabase1");
+			connection = JDBCUtils.getConnection();
 			
 			statement = connection.createStatement();
 			
 			if(overwrite) {
 				System.out.println("Deleting all records ...");
-				statement.executeUpdate("DELETE FROM rubrica WHERE 1");
-				System.out.println("All records deleted.");
+				int deleted = statement.executeUpdate("DELETE FROM rubrica WHERE 1");
+				System.out.println(deleted + " records deleted.");
 			}
 			
 			//INSERT
-			
+			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO rubrica (id, nome, cognome, telefono, email, note) VALUES (null, ?, ?, ?, ?, ?)");
 			for (Contact c : contacts) {
-				StringBuilder query = new StringBuilder();
 				
+				preparedStatement.setString(1, c.getFirstName());
+				preparedStatement.setString(1, c.getLastName());
+				preparedStatement.setString(1, c.getPhoneNumber());
+				preparedStatement.setString(1, c.getEmail());
+				preparedStatement.setString(1, c.getNotes());
 				
+				preparedStatement.execute();
+				/*StringBuilder query = new StringBuilder();
 				
 				query.append("INSERT INTO rubrica (id, nome, cognome, telefono, email, note) VALUES (null, '");
 				
@@ -470,7 +423,7 @@ public class AddressBook {
 				
 				query.append(")");
 				
-				statement.executeUpdate(query.toString());
+				statement.executeUpdate(query.toString());*/
 				
 				System.out.println("The following contact has been added into the database : ");
 				System.out.println(c.toString());
