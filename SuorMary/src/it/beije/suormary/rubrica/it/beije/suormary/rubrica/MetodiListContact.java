@@ -267,21 +267,5 @@ public class MetodiListContact{
 		statement.close();
 	}
 
-	public static void main(String[] args) throws Exception {
-		
-//		List<Contact> prova = new ArrayList<>();
-//		prova=loadContactListFromCSV("/Users/marty/Desktop/Marti/Beije/Esercizi Academy/FILE ESERCIZI/nuovo 1.csv", ";");
-//		
-//		Class.forName("com.mysql.cj.jdbc.Driver");
-//		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Rick&Morty63!!");
-//		
-//		writeContactsInRubricaDB(prova,connection);
-		
-//		prova=loadRubricaFromXML("/Users/marty/Desktop/Marti/Beije/Esercizi Academy/FILE ESERCIZI/rubrica.xml");
-//		prova=loadRubricaFromDB("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Rick&Morty63!!");
-//		System.out.println(prova.toString());
-//		writeContactsInRubricaCSV(prova,"/Users/marty/Desktop/Marti/Beije/Esercizi Academy/FILE ESERCIZI/rubrica.csv", ";");
-
-	}
-
+	
 }
