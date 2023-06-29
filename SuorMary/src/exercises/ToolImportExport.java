@@ -22,36 +22,36 @@ public class ToolImportExport {
 		String account = "root";
 		String password = "Arlabunakti";	
 		
-		tie.fromCVStoDB(ru, nomeDB, account, password);
+		tie.fromCVStoDB(ru);
 		
 	}
 	
-	public void fromCVStoDB(RubricaUtils ru, String nomeDB, String account, String password){
+	public void fromCVStoDB(RubricaUtils ru){
 		//leggo da CSV e scrivo si DB
 				List<Contact> contatti = ru.loadRubricaFromCSV(pathFile, separator);
 				
 				if(contatti!=null && contatti.size()>0) {
 					//scrivo su DB dopo aver letto da CSV
-					ru.writeRubricaDBInsert(contatti, nomeDB, account, password);
+					ru.writeRubricaDBInsert(contatti);
 				} else {
 					System.out.println("no contatti da inserire");
 				}
 	}
 	
-	public void fromXMLtoDB(RubricaUtils ru, String nomeDB, String account, String password) {
+	public void fromXMLtoDB(RubricaUtils ru) {
 		//leggo da XML e scrivo su DB
 				List<Contact> c = ru.loadRubricaFromXML(pathFileXML);
 				
 				if(c!=null && c.size()>0) {
 					//scrivo su DB dopo aver letto da CSV
-					ru.writeRubricaDBInsert(c, nomeDB, account, password);
+					ru.writeRubricaDBInsert(c);
 				} else {
 					System.out.println("no contatti da inserire");
 				}
 	}
 	
-	public void fromDBtoCSV(RubricaUtils ru, String nomeDB, String account, String password) {
-		List<Contact> cDB = ru.loadRubricaFromDB(nomeDB, account, password);
+	public void fromDBtoCSV(RubricaUtils ru) {
+		List<Contact> cDB = ru.loadRubricaFromDB();
 				//leggo da DB e scrivo su CSV
 				if(cDB!=null && cDB.size()>0) {
 					//scrivo su DB dopo aver letto da CSV
@@ -61,8 +61,8 @@ public class ToolImportExport {
 				}			
 	}
 	
-	public void fromDBtoXML(RubricaUtils ru, String nomeDB, String account, String password) {
-		List<Contact> cDB = ru.loadRubricaFromDB(nomeDB, account, password);
+	public void fromDBtoXML(RubricaUtils ru) {
+		List<Contact> cDB = ru.loadRubricaFromDB();
 		//leggo da DB e scrivo su XML
 				if(cDB!=null && cDB.size()>0) {
 					//scrivo su DB dopo aver letto da CSV

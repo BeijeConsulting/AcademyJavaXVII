@@ -10,6 +10,7 @@ public class GestoreRubrica {
 	private String nomeDB = "jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET";
 	private String account = "root";
 	private String password = "Arlabunakti";
+	private Scanner ts = new Scanner(System.in);
 	
 	public static void main(String[] args) {
 		
@@ -24,14 +25,14 @@ public class GestoreRubrica {
 	}
 	
 	public void menu(GestoreRubrica gr) {
-		Scanner ts = new Scanner(System.in);
+		ts = new Scanner(System.in);
 		System.out.println("benvenuto nel gestore rubrica");
 		System.out.println("sono presenti le funzionalità indicate, cliccare il numero corrispondente all'azione desiderata");
 		System.out.println("per vedere la lista contatti (con possibilità di ordinare per nome e cognome a scelta) 1\r\n"
 				+ "per cercare un nuovo contatto digita 2\r\n"
 				+ "per inserire un nuovo contatto digita 3\r\n"
 				+ "per modificare un contatto digita 4\r\n"
-				+ "per cancellare un contatto digita \r\n"
+				+ "per cancellare un contatto digita 5\r\n"
 				+ "per trovare contatti duplicati digita 6\r\n"
 				+ "per unire contatti duplicati digita 7");
 		
@@ -125,11 +126,10 @@ public class GestoreRubrica {
 	
 	public void  mostraContatti(String ordine) {
 		RubricaUtils ru = new RubricaUtils();
-		List<Contact> contatti=ru.loadRubricaFromDBOrdinata(nomeDB, account, password, ordine);
+		List<Contact> contatti=ru.loadRubricaFromDBOrdinata(ordine);
+		
 		//MOSTRO QUELLI CHE HO NEL DB
-		//per restituire un elenco ordinato potrei fare una query, per ora lavoro sulla lista di contatti 
-		
-		
+		 
 		
 		for(Contact c : contatti) {
 			System.out.println(c.toString());
@@ -143,6 +143,7 @@ public class GestoreRubrica {
 	public void cercaContatto() {
 		
 		//verifica se il contatto dato per nome e cognome sia presente e ottengo nome e cognome da cercare nel db
+		//POTREI CHIEDERE DI RIFARE LA RICERCA SE IL CONTATTO NON ESISTE
 		String valori = search();
 		String [] val = valori.split(" ");
 		String nome=val[0];
@@ -162,17 +163,17 @@ public class GestoreRubrica {
 	public List<Contact> info(String name, String surname) {
 		
 		RubricaUtils ru = new RubricaUtils();
-		List<Contact> contatti=ru.loadRubricaFromDBCerca(nomeDB, account, password, name, surname);
+		List<Contact> contatti=ru.loadRubricaFromDBCerca(name, surname);
 		
 		return contatti;
 		
 	}
 	
 	public Map<Integer, String> searchMap(){
-		Scanner ts = new Scanner(System.in);
+		ts = new Scanner(System.in);
 		RubricaUtils ru = new RubricaUtils();
 		
-		Map<Integer, String> map = ru.searchID(nomeDB, account, password);
+		Map<Integer, String> map = ru.searchID();
 		
 		Set<Integer> id = map.keySet();
 		
@@ -191,10 +192,10 @@ public class GestoreRubrica {
 	}
 	
 	public String search(){
-		Scanner ts = new Scanner(System.in);
+		ts = new Scanner(System.in);
 		RubricaUtils ru = new RubricaUtils();
 		
-		Map<Integer, String> map = ru.searchID(nomeDB, account, password);
+		Map<Integer, String> map = ru.searchID();
 		
 		Set<Integer> id = map.keySet();
 		
@@ -212,8 +213,9 @@ public class GestoreRubrica {
 		return nomeCognome;
 	}
 	
+	//VOLENDO POSSO CHIEDERE SE VUOLE INSERIRE ULTERIORI CONTATTI, HO GIà UNA LIST PRONTA DA RIEMPIRE
 	public void inserisciContatto() {
-		Scanner ts = new Scanner(System.in);
+		ts = new Scanner(System.in);
 		System.out.println("inserisci nome");
 		String name = ts.nextLine();
 		System.out.println("inserisci cognome");
@@ -253,33 +255,57 @@ public class GestoreRubrica {
 		contatti.add(c);
 		
 		RubricaUtils ru = new RubricaUtils();
-		ru.writeRubricaDBInsert(contatti, nomeDB, account, password);
+		ru.writeRubricaDBInsert(contatti);
 	}
 	
 	
 	
 	public void modificaContatto() {
-		
+		//mostro a console il contatto cercato tramite nome e cognome
+		cercaContatto();
 		
 		//map.values()
+		
+		System.out.println("inserisci l'id del contatto che vuoi modificare tra quelli mostrati");
+		String id = ts.next();
 		
 		//devo ottenere
 		System.out.println("come desideri modificare? inserisci nome o cognome o telefono o email o note per modificare il"
 				+ "campo desiderato. Altre parole saranno valutate come la volontà di non effettuare alcuna modifica.");
-		//String campo = ts.next();
+		String campo = ts.next();
+		if(!campo.equalsIgnoreCase("nome") && !campo.equalsIgnoreCase("cognome") && !campo.equalsIgnoreCase("telefono")
+				&& !campo.equalsIgnoreCase("email") && !campo.equalsIgnoreCase("note")) {
+			System.out.println("hai scelto di non apportare modifiche");
+		} else {
 		
+		String valore = ts.next();
+		RubricaUtils ru = new RubricaUtils();
+		Contact c = ru.writeFromDBSet(campo, valore, id);
 		
+		if(c!=null) {
+			System.out.println("ecco le modifiche effettuate");
+			c.toString();
+		}
+		
+		}
 		
 		
 		
 	}
 	
-	//TO DO
+	//TO DO: ho modificato cercaContatto in modo che mi mostra anche l'id (l'ho aggiunto tra gli attributi di Contact
+	//così posso far scegliere di cancellare un contatto sulla base dell'id
 	public void cancellaContatto() {
 		cercaContatto();
-		Scanner ts = new Scanner(System.in);
-		System.out.println("Quelli appena mostrati sono il/i contatti che subiranno che verranno cancellati, vuoi procedere?");
-		System.out.println("scrivi si per cancellare, qualsiasi altro carattere verrà interpreto come annullamento dell'operazione");
+
+		System.out.println("Quelli appena mostrati sono il/i contatti sulla base dei tuoi parametri di ricerca");
+		System.out.println("Scrivi il numero di id del contatto che vuoi cancellare");
+		
+		//per ora non considero l'opzione per cui l'utente non selezioni uno tra gli id mostrati
+		String id = ts.next();
+		RubricaUtils ru = new RubricaUtils();
+		ru.writeFromDBDelete(id);
+		
 	}
 	
 	//decidere condizione groupby

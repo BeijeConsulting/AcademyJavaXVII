@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -53,9 +54,7 @@ public class RubricaUtils {
 		String separator = ";";
 		RubricaUtils ru = new RubricaUtils();
 		
-		String nomeDB = "jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET";
-		String account = "root";
-		String password = "Arlabunakti";
+		
 		
 		/*List<Contact> contatti = ru.loadRubricaFromCSV(pathFile, separator);
 		
@@ -87,7 +86,7 @@ public class RubricaUtils {
 			}
 		}*/
 		String ordinata="n";
-		List<Contact> co = ru.loadRubricaFromDBOrdinata(nomeDB, account, password, ordinata);
+		List<Contact> co = ru.loadRubricaFromDBOrdinata(ordinata);
 		//ru.writeRubricaDBInsert(c);
 		
 		for(Contact c : co) {
@@ -367,15 +366,21 @@ public class RubricaUtils {
 		return elements;
 	}
 	
-	public List<Contact> loadRubricaFromDB(String nomeDB, String account, String password){
+	public static Connection getConnection() throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Arlabunakti");
+	}
+	
+	//CONTIENE STATEMENT
+	public List<Contact> loadRubricaFromDB(){
 		Connection connection = null;
 		Statement statement = null;
 		List<Contact> contact = null;
 		
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			
-			connection = DriverManager.getConnection(nomeDB, account, password);
+			//buona norma delegare a un solo metodo la creazione della connessione
+			connection = RubricaUtils.getConnection();
 			
 			statement = connection.createStatement();
 			
@@ -414,17 +419,18 @@ public class RubricaUtils {
 		return contact;
 	}
 	
-	public List<Contact> loadRubricaFromDBOrdinata(String nomeDB, String account, String password, String ordine){
+	public List<Contact> loadRubricaFromDBOrdinata(String ordine){
 		Connection connection = null;
-		Statement statement = null;
+		//Statement statement = null;
+		PreparedStatement preparedStatement=null;
 		List<Contact> contact = null;
 		
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = RubricaUtils.getConnection();
 			
-			connection = DriverManager.getConnection(nomeDB, account, password);
 			
-			statement = connection.createStatement();
+			//VECCHIA SINTASSI CON STATEMENT
+			/*statement = connection.createStatement();
 			
 			System.out.println("connection open? " + !connection.isClosed());
 			
@@ -438,12 +444,29 @@ public class RubricaUtils {
 			} else {
 				rs = statement.executeQuery("SELECT * FROM rubrica");
 			}
+			*/
+			
+			StringBuilder query = new StringBuilder("SELECT * FROM rubrica");
+			
+			if(ordine.equalsIgnoreCase("c")) {
+				query.append(" ORDER BY cognome");
+			} else if(ordine.equalsIgnoreCase("n")) {
+				query.append(" ORDER BY nome");
+			}
+			
+			// crea un oggetto PreparedStatement
+			preparedStatement = connection.prepareStatement(query.toString());
+			
+			//esegue la query
+			ResultSet rs = preparedStatement.executeQuery();	
 			
 			contact = new ArrayList<>();
 			Contact c = null;
 			
+			
 			while (rs.next()) {
 				c = new Contact();
+				
 				c.setName(rs.getString("nome"));
 				c.setSurname(rs.getString("cognome"));
 				c.setEmail(rs.getString("email"));
@@ -461,7 +484,7 @@ public class RubricaUtils {
 			e.printStackTrace();
 		} finally { 
 			try {
-				statement.close();
+				preparedStatement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -470,28 +493,42 @@ public class RubricaUtils {
 		return contact;
 	}
 	
-	public List<Contact> loadRubricaFromDBCerca(String nomeDB, String account, String password, String name, String surname){
+	public List<Contact> loadRubricaFromDBCerca(String name, String surname){
 		Connection connection = null;
-		Statement statement = null;
+		//Statement statement = null;
+		
+		//PreparedStatement preparedStatement=null;: Inizializza una variabile preparedStatement di tipo PreparedStatement 
+		//e la inizializza con il valore null. Questa variabile verrà utilizzata per eseguire la query preparata.
+		PreparedStatement preparedStatement = null;
 		List<Contact> contact = null;
 		
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = RubricaUtils.getConnection();
 			
-			connection = DriverManager.getConnection(nomeDB, account, password);
-			
+			/* VERSIONE FUNZIONANTE CON STATEMENT
 			statement = connection.createStatement();
 			
 			System.out.println("connection open? " + !connection.isClosed());
 			
 			//MODIFICHE PER CAPIRE QUALE QUERY FARE
 			ResultSet rs = statement.executeQuery("SELECT DISTINCT * FROM rubrica WHERE nome = '" + name + "' AND cognome = '" + surname + "'");
+			*/
+			
+			
+			StringBuilder query=new StringBuilder("SELECT DISTINCT * FROM rubrica WHERE nome = ? AND cognome = ?");
+			preparedStatement=connection.prepareStatement(query.toString());
+			
+			preparedStatement.setString(1, name);
+			preparedStatement.setString(2, surname);
+			
+			ResultSet rs = preparedStatement.executeQuery();
 			
 			contact = new ArrayList<>();
 			Contact c = null;
 			
 			while (rs.next()) {
 				c = new Contact();
+				c.setId(rs.getInt("id"));
 				c.setName(rs.getString("nome"));
 				c.setSurname(rs.getString("cognome"));
 				c.setEmail(rs.getString("email"));
@@ -509,7 +546,7 @@ public class RubricaUtils {
 			e.printStackTrace();
 		} finally { 
 			try {
-				statement.close();
+				preparedStatement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -518,23 +555,30 @@ public class RubricaUtils {
 		return contact;
 	}
 	
-	public Map<Integer, String> searchID(String nomeDB, String account, String password){
+	public Map<Integer, String> searchID(){
 		Connection connection = null;
-		Statement statement = null;
+		//Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		List<Integer> indici = null;
 		Map<Integer, String> map = null;
 		
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = RubricaUtils.getConnection();
 			
-			connection = DriverManager.getConnection(nomeDB, account, password);
 			
+			/*QUERY FUNZIONANTE CON STATEMENT
 			statement = connection.createStatement();
 			
 			System.out.println("connection open? " + !connection.isClosed());
 			
 			//MODIFICHE PER CAPIRE QUALE QUERY FARE
 			ResultSet rs = statement.executeQuery("SELECT id, nome, cognome FROM rubrica");
+			*/
+			
+			StringBuilder query = new StringBuilder("SELECT id, nome, cognome FROM rubrica");
+			preparedStatement=connection.prepareStatement(query.toString());
+			
+			ResultSet rs = preparedStatement.executeQuery();
 			
 			map = new HashMap<>();
 			StringBuilder sb=new StringBuilder();
@@ -554,7 +598,7 @@ public class RubricaUtils {
 			e.printStackTrace();
 		} finally { 
 			try {
-				statement.close();
+				preparedStatement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -719,15 +763,15 @@ public class RubricaUtils {
 	}
 	
 	
-	public void writeRubricaDBInsert(List<Contact> contatti, String nomeDB, String account, String password) {
+	public void writeRubricaDBInsert(List<Contact> contatti) {
 		Connection connection = null;
-		Statement statement = null;
+		//Statement statement = null;
+		PreparedStatement preparedStatement=null;
 		try {
 
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = RubricaUtils.getConnection();
 			
-			connection = DriverManager.getConnection(nomeDB, account, password);
-			
+			/* 	QUERY FUNZIONANTE CON STATEMENT
 			statement = connection.createStatement();
 			System.out.println("connection open? " + !connection.isClosed());
 			
@@ -757,9 +801,31 @@ public class RubricaUtils {
 					numInserimenti=numInserimenti+statement.executeUpdate(query.toString());
 				}
 				
+			}*/
+			
+			StringBuilder query = new StringBuilder();
+			
+			
+			int numeroInseriti=0;
+			
+			for(Contact c : contatti) {
+				query.setLength(0);
+				query.append("INSERT INTO rubrica(nome, cognome, telefono, email, note)"
+					+ "VALUES (?, ?, ?, ?, ?)");
+				preparedStatement = connection.prepareStatement(query.toString());
+				if(c!=null) {
+					preparedStatement.setString(1, c.getName());
+					preparedStatement.setString(2, c.getSurname());
+					preparedStatement.setString(3, c.getPhoneNumber());
+					preparedStatement.setString(4, c.getEmail());
+					preparedStatement.setString(5, c.getNote());
+				}
+				preparedStatement.execute();
+				numeroInseriti++;
+				
 			}
 			
-			System.out.println("sono stati inseriti: "+ numInserimenti+" contatti");
+			System.out.println("sono stati inseriti: "+ numeroInseriti+" contatti");
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -767,7 +833,7 @@ public class RubricaUtils {
 			e.printStackTrace();
 		} finally {
 			try {
-				statement.close();
+				preparedStatement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -775,23 +841,29 @@ public class RubricaUtils {
 		}
 	}
 	
-	public void writeFromDBDelete(String name, String surname) {
+	public void writeFromDBDelete(String id) {
 		Connection connection = null;
-		Statement statement = null;
+		//Statement statement = null;
+		PreparedStatement ps=null;
 		try {
-
-			Class.forName("com.mysql.cj.jdbc.Driver");
 			
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Arlabunakti");
+			connection = RubricaUtils.getConnection();
 			
+			/*	QUERY FUNZIONANTE
 			statement = connection.createStatement();
 			System.out.println("connection open? " + !connection.isClosed());
-			
-			
+
 			//voglio tenere traccia di quante cancellazioni sono andate a buon fine
 			int numCancellazioni = statement.executeUpdate("DELETE FROM rubrica WHERE nome = '" + name + "' AND cognome = '" + surname + "'" );
-				
-			System.out.println("sono stati eliminati: "+ numCancellazioni+" contatti");
+			*/	
+			int numCancellazioni=0;
+			StringBuilder query = new StringBuilder();
+			query.append("DELETE FROM rubrica WHERE id = ?");
+			ps=connection.prepareStatement(query.toString());
+			ps.setString(1, id);
+			ps.execute();
+			
+			System.out.println("il tuo contatto è stato cancellato con successo!");
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -799,7 +871,7 @@ public class RubricaUtils {
 			e.printStackTrace();
 		} finally {
 			try {
-				statement.close();
+				ps.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -807,27 +879,80 @@ public class RubricaUtils {
 		}
 	}
 
-	public void writeFromDBSet() {
+	public Contact writeFromDBSet(String campo, String valore, String id) {
 		Connection connection = null;
-		Statement statement = null;
+		//Statement statement = null;
+		PreparedStatement ps = null;
+		Contact c=null;
 		try {
 
-			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection = RubricaUtils.getConnection();
 			
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Arlabunakti");
-			
+			/*CODICE FUNZIONANTE PER LE MODIFICHE CON STATEMENT
 			statement = connection.createStatement();
 			System.out.println("connection open? " + !connection.isClosed());
 			
-			
-			//CODICE FUNZIONANTE PER LE MODIFICHE
 			//voglio tenere traccia di quante modifche sono andate a buon fine
 			int numModifiche = statement.executeUpdate("UPDATE rubrica set telefono = '987654' WHERE id < 4");
 			System.out.println(numModifiche + " record modificati");
+			*/
+			//campo=campo.toLowerCase();
 			
-				
 			
-			System.out.println("sono stati modificati: "+ numModifiche+" contatti");
+			/*switch (campo) {
+		    case "nome":
+		        query.append("nome = ? ");
+		        break;
+		    case "cognome":
+		    	query.append("cognome = ? ");
+		        break;
+		    case "telefono ":
+		    	query.append("telefono = ? ");
+		        break;
+		    case "email ":
+		    	query.append("email = ? ");
+		        break;
+		    case "note ":
+		    	query.append("note = ? ");
+		        break;    
+		    default:
+		        System.out.println("valore non riconosciuto");
+		        break;
+		}*/
+			
+			StringBuilder query = new StringBuilder();
+			query.append("UPDATE rubrica SET nome = ? WHERE id=?");
+			/*if(campo.equalsIgnoreCase("nome")) {
+				query.append(" nome = ?");
+			} else if(campo.equalsIgnoreCase("cognome")) {
+				query.append(" cognome = ?");
+			} else if(campo.equalsIgnoreCase("telefono")) {
+				query.append(" telefono = ?");
+			} else if(campo.equalsIgnoreCase("email")) {
+				query.append(" email = ?");
+			} else if(campo.equalsIgnoreCase("note")) {
+				query.append(" note = ?");
+			}
+			query.append(" WHERE id = ?");*/
+			ps=connection.prepareStatement(query.toString());
+			ps.setString(1, valore);
+			ps.setString(2, id);
+			
+			ps.executeUpdate();
+			c=new Contact();
+			c.setName(valore);
+			
+			/*
+			ResultSet rs = ps.executeQuery();
+			rs.next();
+			c=new Contact();
+			c.setId(rs.getInt("id"));
+			c.setName(rs.getString("nome"));
+			c.setSurname(rs.getString("cognome"));
+			c.setPhoneNumber(rs.getString("telefono"));
+			c.setEmail(rs.getString("email"));
+			c.setNote(rs.getString("note"));*/
+		
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -835,12 +960,13 @@ public class RubricaUtils {
 			e.printStackTrace();
 		} finally {
 			try {
-				statement.close();
+				ps.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
+		return c;
 	}
 
 
@@ -850,9 +976,7 @@ public class RubricaUtils {
 		List<Contact>contact = null;
 		try {
 
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Arlabunakti");
+			connection = RubricaUtils.getConnection();
 			
 			statement = connection.createStatement();
 			System.out.println("connection open? " + !connection.isClosed());
