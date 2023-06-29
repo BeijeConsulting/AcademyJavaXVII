@@ -2,6 +2,7 @@ package it.beije.xvii.exercises.Char;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,14 +11,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 public class RubricaJDBC {
 
-	public static void main(String[] args) {
-//    List<Contact> contacts = loadRubricaJDBC();
-//	writeRubricaJDBC(contacts);
-//	EsRubrica.writeRubricaXML(contacts, "/v/jdbc.xml");
-//    EsRubrica.writeRubricaCSV(contacts, "/v/jdbc2.csv",";");
-//    deleteContactFromRubrica(4);
-
-	}
 	public static List<Contact> loadRubricaJDBC(){
 		List<Contact> contacts = new ArrayList<>();
 		Connection connection = null;
@@ -54,7 +47,7 @@ public class RubricaJDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
+			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
 		} finally {
 			try {
 				statement.close();
@@ -78,21 +71,22 @@ public class RubricaJDBC {
 			
 			statement = connection.createStatement();
 			StringBuilder str = null;
+			PreparedStatement preparedStatement= null;
 			for(Contact c : contatti) {
-				str = new StringBuilder("INSERT INTO rubrica(`name`,`surname`,`email`,`phone`,`note`) VALUES ('")
-						.append(c.getName()).append("','")
-						.append(c.getSurname()).append("','")
-						.append(c.getEmail()).append("','")
-						.append(c.getPhoneNumber()).append("','")
-						.append(c.getNote()).append("')");
-				statement.executeUpdate(str.toString());
+				 preparedStatement= connection.prepareStatement("INSERT INTO rubrica(`name`,`surname`,`email`,`phone`,`note`) VALUES (?,?,?,?,?)");
+				 preparedStatement.setString(1,c.getName());
+				 preparedStatement.setString(2,c.getSurname());
+				 preparedStatement.setString(3,c.getEmail());
+				 preparedStatement.setString(4,c.getPhoneNumber());
+				 preparedStatement.setString(5,c.getNote());
+				preparedStatement.executeUpdate();
 			}
 			System.out.println("Operazione eseguita");
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
+			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
 		} finally {
 			try {
 				statement.close();
@@ -136,7 +130,7 @@ public class RubricaJDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
+			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
 		} finally {
 			try {
 				statement.close();
@@ -148,7 +142,6 @@ public class RubricaJDBC {
 	}
 	public static void updateContactFromRubrica() {
 		Connection connection = null;
-		Statement statement = null;
 		try {
 			
 			Scanner scanner = new Scanner(System.in);
@@ -163,8 +156,10 @@ public class RubricaJDBC {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
-			statement = connection.createStatement();
-			statement.executeUpdate("UPDATE rubrica set " + field + " = " + "'" + newField  + "'" + " WHERE id = " + id);
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE rubrica set " + field + " = ? WHERE id = ?");
+			preparedStatement.setString(1, newField);
+			preparedStatement.setInt(2, id);
+			preparedStatement.executeUpdate();
 			System.out.println("Modifica eseguita");
 			System.out.print("Vuoi modificare un altro contatto? (si/no) : ");
 			String scelta = scanner.nextLine();
@@ -173,10 +168,9 @@ public class RubricaJDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
+			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
 		} finally {
 			try {
-				statement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -185,7 +179,6 @@ public class RubricaJDBC {
 	}
 	public static void createContactFromRubrica() {
 		Connection connection = null;
-		Statement statement = null;
 		try {
 			Scanner scanner = new Scanner(System.in);
 			System.out.print("Nome : ");
@@ -204,18 +197,16 @@ public class RubricaJDBC {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
-			
-			statement = connection.createStatement();
-			StringBuilder str = new StringBuilder("INSERT INTO rubrica (`name`,`surname`,`email`,`phone`,`note`) VALUES ('")
-					.append(c.getName()).append("','")
-					.append(c.getSurname()).append("','")
-					.append(c.getEmail()).append("','")
-					.append(c.getPhoneNumber()).append("','")
-					.append(c.getNote()).append("')");
-			statement.executeUpdate(str.toString());
+			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO rubrica (`name`,`surname`,`email`,`phone`,`note`) VALUES (?,?,?,?,?)");
+			 preparedStatement.setString(1,c.getName());
+			 preparedStatement.setString(2,c.getSurname());
+			 preparedStatement.setString(3,c.getEmail());
+			 preparedStatement.setString(4,c.getPhoneNumber());
+			 preparedStatement.setString(5,c.getNote());
+			 preparedStatement.executeUpdate();
 			System.out.print("Informazioni sul nuovo contatto : ");
 			System.out.println(c);
-			System.out.println("Vuoi modificare qualche informazione? (si/no) : ");
+			System.out.print("Vuoi modificare qualche informazione? (si/no) : ");
 			String scelta = scanner.nextLine();
 			if(scelta.equals("si"))  updateContactFromRubrica();
 			
@@ -223,10 +214,9 @@ public class RubricaJDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
+			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());;
 		} finally {
 			try {
-				statement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -263,8 +253,7 @@ public class RubricaJDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-//			e.printStackTrace();
-			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
+			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
 		} finally {
 			try {
 				statement.close();
@@ -278,17 +267,17 @@ public class RubricaJDBC {
 	public static List<Contact> findDuplicatedContacts() {
 		List<Contact> duplicatedContacts = new ArrayList<>();
 		List<Contact> contacts = loadRubricaJDBC();
-		for(int i = 0; i < contacts.size(); i++) {
-			for(int j = 0; j < contacts.size(); j++ ) {
-				if(contacts.get(i) == (contacts.get(j))) continue;
-				if(contacts.get(i).equals(contacts.get(j)) && (!duplicatedContacts.contains(contacts.get(i)))) {
-					duplicatedContacts.add(contacts.get(i));
-				}
-			}
-		}
 
+		 for (int i = 0; i < contacts.size(); i++) {
+		        for (int j = i + 1; j < contacts.size(); j++) {
+		            if (contacts.get(i).equals(contacts.get(j))) {
+		                duplicatedContacts.add(contacts.get(i));
+		                break; 
+		            }
+		        }
+		    }
+		System.out.println("Contatti duplicati trovati : ");
 		for(Contact c : duplicatedContacts) {
-			System.out.println("Contatti duplicati trovati : ");
 			System.out.println(c);
 		}
 		return duplicatedContacts;
@@ -297,58 +286,40 @@ public class RubricaJDBC {
 	public static void mergeDuplicatedContacts() {
 		List<Contact> duplicatedContacts = findDuplicatedContacts();
 	    
-	    List<Contact> contacts = new ArrayList<>();
-	    for (int i = 0; i < duplicatedContacts.size(); i++) {
-	        boolean isDuplicate = false;
-	        
-	        for (int j = i + 1; j < duplicatedContacts.size(); j++) {
-	            
-	            if (duplicatedContacts.get(i).equals(duplicatedContacts.get(j))) {
-	                isDuplicate = true;
-	                break;
-	            }
-	        }
-	        
-	        if (!isDuplicate) {
-	            contacts.add(duplicatedContacts.get(i));
-	        }
-	    }
 		Connection connection = null;
-		Statement statement = null;
 		try {
 
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
-			
-			statement = connection.createStatement();
-			StringBuilder str = null;
-		    for (Contact c : contacts) {
-		    	str = new StringBuilder("DELETE FROM rubrica WHERE name = '")
-						.append(c.getName()).append("' AND surname = '")
-						.append(c.getSurname()).append("' AND email = '")
-						.append(c.getEmail()).append("' AND phone = '")
-						.append(c.getPhoneNumber()).append("' AND note = '")
-						.append(c.getNote()).append("'");
-		       statement.executeUpdate(str.toString());
+
+			 PreparedStatement  preparedStatement = null;
+		    for (Contact c : duplicatedContacts) {
+		    	preparedStatement = connection.prepareStatement("DELETE FROM rubrica WHERE name = ? AND surname = ? AND email = ? AND phone = ? AND note = ?");
+		   	    preparedStatement.setString(1,c.getName());
+			    preparedStatement.setString(2,c.getSurname());
+			    preparedStatement.setString(3,c.getEmail());
+			    preparedStatement.setString(4,c.getPhoneNumber());
+			    preparedStatement.setString(5,c.getNote());
+			    preparedStatement.executeUpdate();
 		    }
-		    for (Contact c : contacts) {
-		    	 str = new StringBuilder("INSERT INTO rubrica (`name`,`surname`,`email`,`phone`,`note`) VALUES ('")
-						.append(c.getName()).append("','")
-						.append(c.getSurname()).append("','")
-						.append(c.getEmail()).append("','")
-						.append(c.getPhoneNumber()).append("','")
-						.append(c.getNote()).append("')");
-				statement.executeUpdate(str.toString());
+		    for (Contact c : duplicatedContacts) {
+		    	 preparedStatement = connection.prepareStatement("INSERT INTO rubrica (`name`,`surname`,`email`,`phone`,`note`) VALUES (?,?,?,?,?)");
+				 preparedStatement.setString(1,c.getName());
+				 preparedStatement.setString(2,c.getSurname());
+				 preparedStatement.setString(3,c.getEmail());
+				 preparedStatement.setString(4,c.getPhoneNumber());
+				 preparedStatement.setString(5,c.getNote());
+				 preparedStatement.executeUpdate();
 		    }
+		    System.out.println("I contatti duplicati sono stati uniti");
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			System.out.println("Si è verificato un errore nell`inserimento dei dati, riprova");
+			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
 		} finally {
 			try {
-				statement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();

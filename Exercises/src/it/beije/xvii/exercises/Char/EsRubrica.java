@@ -26,15 +26,6 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 public class EsRubrica {
 
-	public static void main(String[] args)  {
-		List<Contact> contatti2 = loadRubricaFromCSV("/v/rubricacsv.txt",";");
-//		List<Contact> contatti = loadRubricaFromXML("/v/rubrica.xml");
-		for(Contact c : contatti2) {
-			System.out.println(c.getName());
-		}
-//		writeRubricaXML(contatti,"/v/writeRubrica.txt");
-
-	}
 	public static List<Contact> loadRubricaFromCSV(String pathFile, String separator)  {
 		FileReader fileReader = null;
 		List<Contact> contacts = null;
