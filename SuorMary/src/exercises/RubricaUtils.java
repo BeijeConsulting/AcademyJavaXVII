@@ -921,8 +921,8 @@ public class RubricaUtils {
 		}*/
 			
 			StringBuilder query = new StringBuilder();
-			query.append("UPDATE rubrica SET nome = ? WHERE id=?");
-			/*if(campo.equalsIgnoreCase("nome")) {
+			query.append("UPDATE rubrica SET");
+			if(campo.equalsIgnoreCase("nome")) {
 				query.append(" nome = ?");
 			} else if(campo.equalsIgnoreCase("cognome")) {
 				query.append(" cognome = ?");
@@ -933,16 +933,24 @@ public class RubricaUtils {
 			} else if(campo.equalsIgnoreCase("note")) {
 				query.append(" note = ?");
 			}
-			query.append(" WHERE id = ?");*/
+			query.append(" WHERE id = ?");
 			ps=connection.prepareStatement(query.toString());
 			ps.setString(1, valore);
 			ps.setString(2, id);
 			
 			ps.executeUpdate();
-			c=new Contact();
-			c.setName(valore);
 			
-			/*
+			
+			//PER VISUALIZZARE I RISULTATI PRODOTTI DA UNA QUERY DI UPDATE è NECESSARIO EFFETTUARE UNA NUOVA QUERY
+			//QUESTA VOLTA DI SELECT PASSANDO LA CHIAVE DELLA RIGA MODIFICATA PER TROVARLA
+			
+			query.setLength(0);
+			query.append("SELECT * FROM rubrica WHERE id =?");
+			ps=connection.prepareStatement(query.toString());
+			ps.setString(1, id);
+			
+			
+			
 			ResultSet rs = ps.executeQuery();
 			rs.next();
 			c=new Contact();
@@ -951,7 +959,7 @@ public class RubricaUtils {
 			c.setSurname(rs.getString("cognome"));
 			c.setPhoneNumber(rs.getString("telefono"));
 			c.setEmail(rs.getString("email"));
-			c.setNote(rs.getString("note"));*/
+			c.setNote(rs.getString("note"));
 		
 			
 		} catch (ClassNotFoundException e) {

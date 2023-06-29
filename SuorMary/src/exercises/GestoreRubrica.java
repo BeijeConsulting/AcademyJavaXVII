@@ -278,13 +278,15 @@ public class GestoreRubrica {
 			System.out.println("hai scelto di non apportare modifiche");
 		} else {
 		
+			
+		System.out.println("inserisci il nuovo valore");
 		String valore = ts.next();
 		RubricaUtils ru = new RubricaUtils();
 		Contact c = ru.writeFromDBSet(campo, valore, id);
 		
 		if(c!=null) {
 			System.out.println("ecco le modifiche effettuate");
-			c.toString();
+			System.out.println(c.toString());
 		}
 		
 		}
