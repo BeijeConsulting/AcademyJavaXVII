@@ -145,9 +145,10 @@ public class RubricaJDBC {
 		try {
 			
 			Scanner scanner = new Scanner(System.in);
-			System.out.print("Inserisci l'id del contatto da modificare : "); 
-			int id = scanner.nextInt();
-			scanner.nextLine();
+//			System.out.print("Inserisci l'id del contatto da modificare : "); 
+//			int id = scanner.nextInt();
+//			scanner.nextLine();
+			Contact c = findByNameSurname();
 			System.out.print("Inserisci il campo che vuoi  modificare : "); 
 			String field = scanner.nextLine();
 			System.out.print("Inserisci il nuovo campo : "); 
@@ -156,9 +157,52 @@ public class RubricaJDBC {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
-			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE rubrica set " + field + " = ? WHERE id = ?");
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE rubrica set " + field + " = ? WHERE name = ? AND surname = ? AND email = ? AND phone = ? AND note = ?");
 			preparedStatement.setString(1, newField);
-			preparedStatement.setInt(2, id);
+			preparedStatement.setString(2, c.getName());
+			preparedStatement.setString(3, c.getSurname());
+			preparedStatement.setString(4, c.getEmail());
+			preparedStatement.setString(5, c.getPhoneNumber());
+			preparedStatement.setString(6, c.getNote());
+			preparedStatement.executeUpdate();
+			System.out.println("Modifica eseguita");
+			System.out.print("Vuoi modificare un altro contatto? (si/no) : ");
+			String scelta = scanner.nextLine();
+			if(scelta.equals("si")) updateContactFromRubrica();
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	public static void updateContactFromRubrica(Contact c) {
+		Connection connection = null;
+		try {
+			
+			Scanner scanner = new Scanner(System.in);
+
+			System.out.print("Inserisci il campo che vuoi  modificare : "); 
+			String field = scanner.nextLine();
+			System.out.print("Inserisci il nuovo campo : "); 
+			String newField = scanner.nextLine();
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
+			PreparedStatement preparedStatement = connection.prepareStatement("UPDATE rubrica set " + field + " = ? WHERE name = ? AND surname = ? AND email = ? AND phone = ? AND note = ?");
+			preparedStatement.setString(1, newField);
+			preparedStatement.setString(2, c.getName());
+			preparedStatement.setString(3, c.getSurname());
+			preparedStatement.setString(4, c.getEmail());
+			preparedStatement.setString(5, c.getPhoneNumber());
+			preparedStatement.setString(6, c.getNote());
 			preparedStatement.executeUpdate();
 			System.out.println("Modifica eseguita");
 			System.out.print("Vuoi modificare un altro contatto? (si/no) : ");
@@ -223,32 +267,57 @@ public class RubricaJDBC {
 			}
 		}
 	}
+	public static Contact findByNameSurname() throws ClassNotFoundException, SQLException{
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Inserisci il nome del contatto da cercare : ");
+		String name = scanner.nextLine();
+		System.out.print("Inserisci il cognome del contatto da cercare : ");
+		String surname = scanner.nextLine();
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
+		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM rubrica WHERE name = ? AND surname = ?");
+		preparedStatement.setString(1, name);
+		preparedStatement.setString(2, surname);
+		ResultSet res = preparedStatement.executeQuery();
+		List<Contact> contacts = new ArrayList<>();
+		Contact c = null;
+		while(res.next()) {
+			c = new Contact();
+			c.setName(res.getString("name"));
+			c.setSurname(res.getString("surname"));
+			c.setEmail(res.getString("email"));
+			c.setPhoneNumber(res.getString("phone"));
+			c.setNote(res.getString("note"));
+			contacts.add(c);
+		}
+		if(contacts.size() > 1) System.out.println("Sono stati trovati più contatti con quel nome e cognome : ");
+		if(contacts.size() == 0) System.out.println("Non è stato trovato nessun contatto con quel nome e cognome");
+		for(int i = 0; i< contacts.size(); i++) {
+			System.out.print(i + ". "); System.out.println(contacts.get(i));
+		}
+		System.out.print("Seleziona il numero del contatto che ti interessa : ");
+		int numCon = scanner.nextInt();
+		Contact contact = contacts.get(numCon);
+		return contact;
+	}
+
 	public static void findContactFromRubrica() {
 		Connection connection = null;
-		Statement statement = null;
 		try {
 			Scanner scanner = new Scanner(System.in);
-			System.out.print("Inserisci l`id del contatto da cercare : ");
-			int id = scanner.nextInt();
-			scanner.nextLine();
+
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
-			
-			statement = connection.createStatement();
-			ResultSet res = statement.executeQuery("SELECT * FROM rubrica WHERE ID = " + id);
-			res.next();
-			Contact c = new Contact();
-		    c.setName(res.getString("name"));
-		    c.setSurname(res.getString("surname"));
-		    c.setEmail(res.getString("email"));
-		    c.setPhoneNumber(res.getString("phone"));
-		    c.setNote(res.getString("note"));
+
+			Contact c = findByNameSurname();
+
 			System.out.println("Contatto trovato : ");
 			System.out.println(c);
 			System.out.print("Vuoi modificare il contatto? (si/no) : ");
 			String scelta = scanner.nextLine();
-			if(scelta.equals("si")) updateContactFromRubrica();
+			if(scelta.equals("si")) updateContactFromRubrica(c);
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -256,7 +325,6 @@ public class RubricaJDBC {
 			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
 		} finally {
 			try {
-				statement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();

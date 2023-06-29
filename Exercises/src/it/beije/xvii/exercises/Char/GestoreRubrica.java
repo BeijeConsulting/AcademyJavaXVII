@@ -1,9 +1,10 @@
 package it.beije.xvii.exercises.Char;
 import java.util.Scanner;
+import java.sql.SQLException;
 import java.util.List;
 public class GestoreRubrica {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 
 		Scanner scanner = new Scanner(System.in);
 		String scelta = "";
@@ -34,6 +35,7 @@ public class GestoreRubrica {
           case "cerca contatto" : RubricaJDBC.findContactFromRubrica(); break;
           case "nuovo contatto" : RubricaJDBC.createContactFromRubrica(); break;        
           case "modifica contatto" : RubricaJDBC.updateContactFromRubrica(); break;
+          case "a" : RubricaJDBC.findByNameSurname(); break;
           case "cancella contatto" : RubricaJDBC.deleteContactFromRubrica(); break;
           case "trova contatti duplicati" : RubricaJDBC.findDuplicatedContacts(); break;
           case "unisci contatti duplicati" : RubricaJDBC.mergeDuplicatedContacts(); break;
