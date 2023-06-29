@@ -256,39 +256,56 @@ public class RubricaJDBC {
 			}
 		}
 	}
-	public static Contact findByNameSurname() throws ClassNotFoundException, SQLException{
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Inserisci il nome del contatto da cercare : ");
-		String name = scanner.nextLine();
-		System.out.print("Inserisci il cognome del contatto da cercare : ");
-		String surname = scanner.nextLine();
-		Class.forName("com.mysql.cj.jdbc.Driver");
-		
-		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
-		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM rubrica WHERE name = ? AND surname = ?");
-		preparedStatement.setString(1, name);
-		preparedStatement.setString(2, surname);
-		ResultSet res = preparedStatement.executeQuery();
-		List<Contact> contacts = new ArrayList<>();
-		Contact c = null;
-		while(res.next()) {
-			c = new Contact();
-			c.setName(res.getString("name"));
-			c.setSurname(res.getString("surname"));
-			c.setEmail(res.getString("email"));
-			c.setPhoneNumber(res.getString("phone"));
-			c.setNote(res.getString("note"));
-			contacts.add(c);
+	public static Contact findByNameSurname() {
+		Contact contact = null;
+		Connection connection = null;
+		try {
+			Scanner scanner = new Scanner(System.in);
+			System.out.print("Inserisci il nome del contatto da cercare : ");
+			String name = scanner.nextLine();
+			System.out.print("Inserisci il cognome del contatto da cercare : ");
+			String surname = scanner.nextLine();
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			 connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
+			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM rubrica WHERE name = ? AND surname = ?");
+			preparedStatement.setString(1, name);
+			preparedStatement.setString(2, surname);
+			ResultSet res = preparedStatement.executeQuery();
+			List<Contact> contacts = new ArrayList<>();
+			Contact c = null;
+			while(res.next()) {
+				c = new Contact();
+				c.setName(res.getString("name"));
+				c.setSurname(res.getString("surname"));
+				c.setEmail(res.getString("email"));
+				c.setPhoneNumber(res.getString("phone"));
+				c.setNote(res.getString("note"));
+				contacts.add(c);
+			}
+			if(contacts.size() > 1) System.out.println("Sono stati trovati più contatti con quel nome e cognome : ");
+			if(contacts.size() == 0) System.out.println("Non è stato trovato nessun contatto con quel nome e cognome");
+			for(int i = 0; i< contacts.size(); i++) {
+				System.out.print(i + ". "); System.out.println(contacts.get(i));
+			}
+			System.out.print("Seleziona il numero del contatto che ti interessa : ");
+			int numCon = scanner.nextInt();
+			 contact = contacts.get(numCon);
+			 
+		} catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch(SQLException e) {
+			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
+		} finally {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		if(contacts.size() > 1) System.out.println("Sono stati trovati più contatti con quel nome e cognome : ");
-		if(contacts.size() == 0) System.out.println("Non è stato trovato nessun contatto con quel nome e cognome");
-		for(int i = 0; i< contacts.size(); i++) {
-			System.out.print(i + ". "); System.out.println(contacts.get(i));
-		}
-		System.out.print("Seleziona il numero del contatto che ti interessa : ");
-		int numCon = scanner.nextInt();
-		Contact contact = contacts.get(numCon);
 		return contact;
+
 	}
 
 	public static void findContactFromRubrica() {

@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.ArrayList;
 public class ToolsRubrica {
        public static void main(String[] args) {
-//    	   exportDbToXML("/v/jdd2.xml");
+
        }
        public static void exportDbToCSV () {
     	   Scanner scanner = new Scanner(System.in);

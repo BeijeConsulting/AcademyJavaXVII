@@ -1,10 +1,9 @@
 package it.beije.xvii.exercises.Char;
 import java.util.Scanner;
-import java.sql.SQLException;
 import java.util.List;
 public class GestoreRubrica {
 
-	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+	public static void main(String[] args)  {
 
 		Scanner scanner = new Scanner(System.in);
 		String scelta = "";
