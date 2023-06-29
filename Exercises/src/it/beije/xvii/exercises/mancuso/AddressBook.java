@@ -1,6 +1,7 @@
 package it.beije.xvii.exercises.mancuso;
 
 import java.util.List;
+import java.util.Scanner;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -35,11 +36,19 @@ public class AddressBook {
 		contacts = new ArrayList<>();
 	}
 
-	public static void print(List<Contact> conts) {
-		for(Contact rc : conts) {
-			System.out.println(rc.toString());
-			System.out.println("------------------------------------");
+	public static String print(List<Contact> conts) {
+		int i=0;
+		StringBuilder sb = new StringBuilder();
+		for(Contact c : conts) {		
+			sb.append("\nIndex : ");
+			sb.append(i);
+			sb.append("\n\n");
+			sb.append(c.toString());
+			sb.append("--------------------------\n");
+			i++;
 		}
+		
+		return sb.toString();
 	}
 	
 	public List<Contact> loadAddressesFromCSV(String pathFile, String separator) throws IllegalArgumentException{
@@ -435,18 +444,7 @@ public class AddressBook {
 	}
 	
 	public String toString() {
-		int i=0;
-		StringBuilder sb = new StringBuilder();
-		for(Contact c : contacts) {		
-			sb.append("\nIndex : ");
-			sb.append(i);
-			sb.append("\n\n");
-			sb.append(c.toString());
-			sb.append("--------------------------\n");
-			i++;
-		}
-		
-		return sb.toString();
+		return print(contacts);
 	}
 	
 	public List<Contact> orderByName(){
@@ -623,24 +621,43 @@ public class AddressBook {
 	}
 	
 	// Da mettere se possibile scelta di quale dup tenere in futuro
-	public void mergeDuplicates() {
+	public void mergeDuplicates(Scanner input) {
 		List<Contact> dups = findDuplicates();
+		List<Contact> merged = new ArrayList<>();
 		
+		//Così non va bene perchè cicla di nuovo anche dopo che è stato mergiato il primo duplicato
 		for(Contact dup : dups) {
-			int counter = 0;
-			List<Contact> toDelete = new ArrayList<>();
-			for(Contact c : contacts) {
-				if(c.equals(dup)) {
-					toDelete.add(dup);
-					counter++;
+			if(!merged.contains(dup)) {
+				//int counter = 0;
+				List<Contact> toDelete = new ArrayList<>();
+				for(Contact c : contacts) {
+					if(c.equals(dup)) {
+						toDelete.add(c);
+						//counter++;
+					}
+				}
+				int index = -1;
+				while(index<0 || index>=toDelete.size()) {
+					System.out.println("\nSelezionare tra i seguenti l'indice del contatto da tenere in memoria: ");
+					System.out.println(print(toDelete));
+					String response = input.nextLine();
+					try {
+						index = Integer.valueOf(response);
+					}catch(NumberFormatException ex) {
+						System.out.println("Inserire un indice numerico.");
+					}
+				}
+				for(int i=0;i<toDelete.size();i++) {
+					merged.add(toDelete.get(i));
+					if(i!=index) {
+						contacts.remove(toDelete.get(i));	
+					}
 				}
 			}
 			
-			System.out.println("");
-			
-			for(int i=0;i<counter-1;i++) {
+			/*for(int i=0;i<counter-1;i++) {
 				contacts.remove(dup);
-			}
+			}*/
 		}		
 		
 	}

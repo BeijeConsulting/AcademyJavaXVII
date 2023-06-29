@@ -296,10 +296,10 @@ public class Menu {
 		case "duplicates":
 			List<Contact> dups = ab.findDuplicates();
 			System.out.println("I contatti duplicati sono i seguenti: ");
-			AddressBook.print(dups);
+			System.out.println(AddressBook.print(dups)); 
 			break;
 		case "merge":
-			ab.mergeDuplicates();
+			ab.mergeDuplicates(input);
 			System.out.println("I contatti duplicati sono stati uniti.\n");
 			break;
 		case "find name":
@@ -309,7 +309,7 @@ public class Menu {
 			resultContacts = ab.findContactByName(name);
 			
 			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti con il nome simile a quello inserito: \n" + ANSI_RESET);
-			AddressBook.print(resultContacts);
+			System.out.println(AddressBook.print(resultContacts));
 				
 			break;
 		case "find surname":
@@ -320,7 +320,7 @@ public class Menu {
 			resultContacts = ab.findContactBySurname(surname);
 			System.out.println("\n");
 			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti con il cognome simile a quello inserito: \n" + ANSI_RESET);
-			AddressBook.print(resultContacts);
+			System.out.println(AddressBook.print(resultContacts));
 			
 			break;
 		case "find fullname":
@@ -334,7 +334,7 @@ public class Menu {
 			resultContacts = ab.findContactByName(name, surname);
 			System.out.println("\n");
 			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti con il nome e cognome simili a quelli inseriti: \n" + ANSI_RESET);
-			AddressBook.print(resultContacts);
+			System.out.println(AddressBook.print(resultContacts));
 			
 			break;
 		case "find phone":
@@ -345,7 +345,7 @@ public class Menu {
 			resultContacts = ab.findContactByPhone(phone);
 			System.out.println("\n");
 			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti con il numero di telefono uguale a quello inserito: \n" + ANSI_RESET);
-			AddressBook.print(resultContacts);
+			System.out.println(AddressBook.print(resultContacts));
 			
 			break;
 		case "find email":
@@ -356,7 +356,7 @@ public class Menu {
 			resultContacts = ab.findContactByEmail(phone);
 			System.out.println("\n");
 			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti con l'email uguale a quella inserita: \n" + ANSI_RESET);
-			AddressBook.print(resultContacts);
+			System.out.println(AddressBook.print(resultContacts));
 			
 			break;
 		case "exit":
