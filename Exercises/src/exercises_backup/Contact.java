@@ -1,4 +1,4 @@
-package exercises;
+package exercises_backup;
 
 public class Contact {
 	private String name;

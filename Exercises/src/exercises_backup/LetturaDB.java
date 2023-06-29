@@ -1,4 +1,4 @@
-package exercises;
+package exercises_backup;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

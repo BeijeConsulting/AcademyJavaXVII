@@ -47,12 +47,18 @@ public class RubricaUtils {
 	public static void main(String[] args) {
 		
 		
-		String pathFile = "/Users/Padawan/Desktop/fileAcademy/rubrica.csv";
+		String pathFile = "/Users/Padawan/Desktop/fileAcademy/rubrica_dinamico_v2.csv";
+		
 		
 		String separator = ";";
 		RubricaUtils ru = new RubricaUtils();
 		
+		String nomeDB = "jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET";
+		String account = "root";
+		String password = "Arlabunakti";
+		
 		/*List<Contact> contatti = ru.loadRubricaFromCSV(pathFile, separator);
+		
 		
 		String pathFile1 = "/Users/Padawan/Desktop/fileAcademy/rubricaScritta.csv";
 		
@@ -66,8 +72,33 @@ public class RubricaUtils {
 		}
 		
 		*/
-		List<Contact> c = ru.loadRubricaFromDB();
-		ru.stampaContatti(c);
+		
+		//List<Contact> contatti = ru.loadRubricaDynamicFromCSV(pathFile, separator);
+		
+		
+		
+		/*
+		List<Contact> co = ru.loadRubricaFromDB(nomeDB, account, password);
+		//ru.writeRubricaDBInsert(c);
+		
+		for(Contact c : co) {
+			if(c!=null) {
+				System.out.println(c.toString());
+			}
+		}*/
+		String ordinata="n";
+		List<Contact> co = ru.loadRubricaFromDBOrdinata(nomeDB, account, password, ordinata);
+		//ru.writeRubricaDBInsert(c);
+		
+		for(Contact c : co) {
+			if(c!=null) {
+				System.out.println(c.toString());
+			}
+		}
+		
+		//ru.writeFromDBDelete();
+		//sostituito da un toString() nel bin
+		//ru.stampaContatti(c);
 
 	}
 	
@@ -188,60 +219,61 @@ public class RubricaUtils {
 		                
 			        	line = br.readLine();
 			        	
-			        	//POSSO AGGIUNGERE CONTROLLO PER VERIFICARE CHE LA LUNGHEZZA DEI DUE ARRAY SIA
-			        	//LA STESSA, ALTRIMENTI GENERO UNA LINEA NON VALIDA
-			        	
 			        	//l'ultimo campo della riga non viene letto correttamente quando il suo valore è null
 			        	//indicando -1 nello split, manteniamo anche gli elementi vuoti alla fine della riga
 		                fields = line.split(separator, -1);
 		                
-		                c = new Contact();
-		                
-		                //controllo se nella mappa è presente la chiave (ovvero il campo cognome in questo caso)
-		                if(map.containsKey(COGNOME_FIELD)) {
-		                	//ottengo l'indice a partire dalla chiave
-		                	index=map.get(COGNOME_FIELD);
-		                	sb.setLength(0);
-		                	//l'indice di prima viene usato per ottenere il valore nell'array ottenuto dalla riga
-		                	//l'array dell'intestazione e quello delle linee avranno gli stessi campi nella stessa posizione
-		                	sb.append(fields[index].trim());
-		                	c.setSurname(sb.toString());
-		                }
-		                
-		                if(map.containsKey(NOME_FIELD)) {
-		                	index=map.get(NOME_FIELD);
-		                	sb.setLength(0);
-		                	sb.append(fields[index].trim());
-		                	c.setName(sb.toString());
-		                }
-						
-		                if(map.containsKey(EMAIL_FIELD)) {
-		                	index=map.get(EMAIL_FIELD);
-		                	sb.setLength(0);
-		                	sb.append(fields[index].trim());
-		                	c.setEmail(sb.toString());
-		                }
-		                
-		                if(map.containsKey(TELEFONO_FIELD)) {
-		                	index=map.get(TELEFONO_FIELD);
-		                	sb.setLength(0);
-		                	sb.append(fields[index].trim());
-		                	c.setPhoneNumber(sb.toString());
-		                }
-						
-		                if(map.containsKey(NOTE_FIELD)) {
-		                	index=map.get(NOTE_FIELD);
-		                	sb.setLength(0);
-		                	sb.append(fields[index].trim());
-		                	c.setNote(sb.toString());
-		                }
+		                //CONTROLLO PER VERIFICARE CHE LA LUNGHEZZA DEI DUE ARRAY SIA
+			        	//LA STESSA, ALTRIMENTI GENERO UNA LINEA NON VALIDA
+		                if(headers.length==fields.length) {
+		                	c = new Contact();
+			                
+			                //controllo se nella mappa è presente la chiave (ovvero il campo cognome in questo caso)
+			                if(map.containsKey(COGNOME_FIELD)) {
+			                	//ottengo l'indice a partire dalla chiave
+			                	index=map.get(COGNOME_FIELD);
+			                	sb.setLength(0);
+			                	//l'indice di prima viene usato per ottenere il valore nell'array ottenuto dalla riga
+			                	//l'array dell'intestazione e quello delle linee avranno gli stessi campi nella stessa posizione
+			                	sb.append(fields[index].trim());
+			                	c.setSurname(sb.toString());
+			                }
+			                
+			                if(map.containsKey(NOME_FIELD)) {
+			                	index=map.get(NOME_FIELD);
+			                	sb.setLength(0);
+			                	sb.append(fields[index].trim());
+			                	c.setName(sb.toString());
+			                }
 							
-							//DEVO AGGIUNGERE l'oggetto dopo averlo settato per poterlo avere nella mia lista che cotiene contatti
-							contatti.add(c);
-					/*	} else {
-							//è buona norma tenere una traccia di tutte le linee che sono sbagliate
-							System.out.println("La seguente linea non è corretta: "+riga);
-						}*/			
+			                if(map.containsKey(EMAIL_FIELD)) {
+			                	index=map.get(EMAIL_FIELD);
+			                	sb.setLength(0);
+			                	sb.append(fields[index].trim());
+			                	c.setEmail(sb.toString());
+			                }
+			                
+			                if(map.containsKey(TELEFONO_FIELD)) {
+			                	index=map.get(TELEFONO_FIELD);
+			                	sb.setLength(0);
+			                	sb.append(fields[index].trim());
+			                	c.setPhoneNumber(sb.toString());
+			                }
+							
+			                if(map.containsKey(NOTE_FIELD)) {
+			                	index=map.get(NOTE_FIELD);
+			                	sb.setLength(0);
+			                	sb.append(fields[index].trim());
+			                	c.setNote(sb.toString());
+			                }
+								
+								//DEVO AGGIUNGERE l'oggetto dopo averlo settato per poterlo avere nella mia lista che cotiene contatti
+								contatti.add(c);
+		                } else {
+		                	//è buona norma tenere una traccia di tutte le linee che sono sbagliate
+		                	System.out.println("riga non valida: "+line);
+		                }
+		           		
 						
 					}	
 					
@@ -264,12 +296,12 @@ public class RubricaUtils {
 				return contatti;
 			}
 
-	public List<Contact> loadRubricaFromXML(String pathFile) throws ParserConfigurationException {
+	public List<Contact> loadRubricaFromXML(String pathFile) {
 		List<Contact> contacts =null;
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			Document document = documentBuilder.parse("/Users/Padawan/Desktop/fileAcademy/rubrica.xml");
+			Document document = documentBuilder.parse(pathFile);
 			
 			Element docEl = document.getDocumentElement();
 			
@@ -335,7 +367,7 @@ public class RubricaUtils {
 		return elements;
 	}
 	
-	public List<Contact> loadRubricaFromDB(){
+	public List<Contact> loadRubricaFromDB(String nomeDB, String account, String password){
 		Connection connection = null;
 		Statement statement = null;
 		List<Contact> contact = null;
@@ -343,7 +375,7 @@ public class RubricaUtils {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Arlabunakti");
+			connection = DriverManager.getConnection(nomeDB, account, password);
 			
 			statement = connection.createStatement();
 			
@@ -360,7 +392,7 @@ public class RubricaUtils {
 				c.setSurname(rs.getString("cognome"));
 				c.setEmail(rs.getString("email"));
 				c.setPhoneNumber(rs.getString("telefono"));
-				c.setNote("note");
+				c.setNote(rs.getString("note"));
 				
 				contact.add(c);
 			}
@@ -382,8 +414,157 @@ public class RubricaUtils {
 		return contact;
 	}
 	
+	public List<Contact> loadRubricaFromDBOrdinata(String nomeDB, String account, String password, String ordine){
+		Connection connection = null;
+		Statement statement = null;
+		List<Contact> contact = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection(nomeDB, account, password);
+			
+			statement = connection.createStatement();
+			
+			System.out.println("connection open? " + !connection.isClosed());
+			
+			//MODIFICHE PER CAPIRE QUALE QUERY FARE
+			ResultSet rs=null;
+			
+			if(ordine.equalsIgnoreCase("c")) {
+				rs = statement.executeQuery("SELECT * FROM rubrica ORDER BY cognome");
+			} else if(ordine.equalsIgnoreCase("n")) {
+				rs = statement.executeQuery("SELECT * FROM rubrica ORDER BY nome");
+			} else {
+				rs = statement.executeQuery("SELECT * FROM rubrica");
+			}
+			
+			contact = new ArrayList<>();
+			Contact c = null;
+			
+			while (rs.next()) {
+				c = new Contact();
+				c.setName(rs.getString("nome"));
+				c.setSurname(rs.getString("cognome"));
+				c.setEmail(rs.getString("email"));
+				c.setPhoneNumber(rs.getString("telefono"));
+				c.setNote(rs.getString("note"));
+				
+				contact.add(c);
+			}
+			
+			rs.close();
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally { 
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return contact;
+	}
+	
+	public List<Contact> loadRubricaFromDBCerca(String nomeDB, String account, String password, String name, String surname){
+		Connection connection = null;
+		Statement statement = null;
+		List<Contact> contact = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection(nomeDB, account, password);
+			
+			statement = connection.createStatement();
+			
+			System.out.println("connection open? " + !connection.isClosed());
+			
+			//MODIFICHE PER CAPIRE QUALE QUERY FARE
+			ResultSet rs = statement.executeQuery("SELECT DISTINCT * FROM rubrica WHERE nome = '" + name + "' AND cognome = '" + surname + "'");
+			
+			contact = new ArrayList<>();
+			Contact c = null;
+			
+			while (rs.next()) {
+				c = new Contact();
+				c.setName(rs.getString("nome"));
+				c.setSurname(rs.getString("cognome"));
+				c.setEmail(rs.getString("email"));
+				c.setPhoneNumber(rs.getString("telefono"));
+				c.setNote(rs.getString("note"));
+				
+				contact.add(c);
+			}
+			
+			rs.close();
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally { 
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return contact;
+	}
+	
+	public Map<Integer, String> searchID(String nomeDB, String account, String password){
+		Connection connection = null;
+		Statement statement = null;
+		List<Integer> indici = null;
+		Map<Integer, String> map = null;
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection(nomeDB, account, password);
+			
+			statement = connection.createStatement();
+			
+			System.out.println("connection open? " + !connection.isClosed());
+			
+			//MODIFICHE PER CAPIRE QUALE QUERY FARE
+			ResultSet rs = statement.executeQuery("SELECT id, nome, cognome FROM rubrica");
+			
+			map = new HashMap<>();
+			StringBuilder sb=new StringBuilder();
+			
+			while (rs.next()) {
+				int index = rs.getInt("id");
+				sb.setLength(0);
+				sb.append(rs.getString("nome")).append(" ").append(rs.getString("cognome"));
+				map.put(index, sb.toString());
+			}
+			
+			rs.close();
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally { 
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return map;
+	}
+	
 	//SCRITTURA CSV
-	public void writeRubricaCSV(List<Contact> contatti, String pathFile, String separator) {
+ 	public void writeRubricaCSV(List<Contact> contatti, String pathFile, String separator) {
 			FileWriter fw =null;
 			try {
 				//creo un nuovo oggetto della classe File che punti al path
@@ -515,7 +696,7 @@ public class RubricaUtils {
 				
 				DOMSource source = new DOMSource(document);
 				
-				StreamResult result = new StreamResult(new File("/temp/contacts.xml"));
+				StreamResult result = new StreamResult(new File(pathFile));
 		
 				StreamResult syso = new StreamResult(System.out);
 				
@@ -537,42 +718,182 @@ public class RubricaUtils {
 		
 	}
 	
-	public void stampaContatti(List<Contact> contatti) {
-		for(Contact c1 : contatti) {
-			if(c1!=null) {
-				if(c1.getSurname()==null || c1.getSurname().isEmpty()) {
-					System.out.println("cognome mancante!");
-				} else {
-					System.out.println(c1.getSurname());
+	
+	public void writeRubricaDBInsert(List<Contact> contatti, String nomeDB, String account, String password) {
+		Connection connection = null;
+		Statement statement = null;
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection(nomeDB, account, password);
+			
+			statement = connection.createStatement();
+			System.out.println("connection open? " + !connection.isClosed());
+			
+			
+			//mi serve uno stringbuilder in cui salvare i campi dei contatti
+			StringBuilder query = new StringBuilder();
+			
+			//voglio tenere traccia di quanti inseriementi sono andati a buon fine
+			int numInserimenti=0;
+			
+
+			
+			//CODICE FUNZIONANTE CHE NON CONSIDERA GLI ESCAPE
+		
+			for(Contact c : contatti) {
+				query.setLength(0);
+				query.append(("INSERT INTO rubrica (`nome`, `cognome`, `telefono`, `email`, `note`) VALUES ('"));
+				if(c!=null) {
+					query.append(c.getName()).append("', '");
+					query.append(c.getSurname()).append("', '");
+					query.append(c.getPhoneNumber()).append("', '");
+					query.append(c.getEmail()).append("', '");
+					query.append(c.getNote()).append("')");
+				
+					
+					//inserisco la query
+					numInserimenti=numInserimenti+statement.executeUpdate(query.toString());
 				}
 				
-				if(c1.getName()==null || c1.getName().isEmpty()) {
-					System.out.println("nome mancante!");
-				} else {
-					System.out.println(c1.getName());
-				}
-				
-				if(c1.getPhoneNumber()==null || c1.getPhoneNumber().isEmpty()) {
-					System.out.println("telefono mancante!");
-				} else {
-					System.out.println(c1.getPhoneNumber());
-				}
-				
-				if(c1.getEmail()==null || c1.getEmail().isEmpty()) {
-					System.out.println("email mancante!");
-				} else {
-					System.out.println(c1.getEmail());
-				}
-				if(c1.getNote()==null || c1.getNote().isEmpty()) {
-					System.out.println("nota mancante");
-				} else {
-					System.out.println(c1.getNote());
-				}
-				
-				System.out.println("*********");
 			}
 			
+			System.out.println("sono stati inseriti: "+ numInserimenti+" contatti");
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
+	
+	public void writeFromDBDelete(String name, String surname) {
+		Connection connection = null;
+		Statement statement = null;
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Arlabunakti");
+			
+			statement = connection.createStatement();
+			System.out.println("connection open? " + !connection.isClosed());
+			
+			
+			//voglio tenere traccia di quante cancellazioni sono andate a buon fine
+			int numCancellazioni = statement.executeUpdate("DELETE FROM rubrica WHERE nome = '" + name + "' AND cognome = '" + surname + "'" );
+				
+			System.out.println("sono stati eliminati: "+ numCancellazioni+" contatti");
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void writeFromDBSet() {
+		Connection connection = null;
+		Statement statement = null;
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Arlabunakti");
+			
+			statement = connection.createStatement();
+			System.out.println("connection open? " + !connection.isClosed());
+			
+			
+			//CODICE FUNZIONANTE PER LE MODIFICHE
+			//voglio tenere traccia di quante modifche sono andate a buon fine
+			int numModifiche = statement.executeUpdate("UPDATE rubrica set telefono = '987654' WHERE id < 4");
+			System.out.println(numModifiche + " record modificati");
+			
+				
+			
+			System.out.println("sono stati modificati: "+ numModifiche+" contatti");
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+	public List<Contact> groupBy() {
+		Connection connection = null;
+		Statement statement = null;
+		List<Contact>contact = null;
+		try {
+
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Arlabunakti");
+			
+			statement = connection.createStatement();
+			System.out.println("connection open? " + !connection.isClosed());
+			
+
+			String query = "SELECT nome, cognome, telefono "
+		            + "FROM rubrica "
+		            + "GROUP BY nome, cognome, telefono "
+		            + "HAVING COUNT(*) > 1";
+			
+			//voglio tenere traccia di quante cancellazioni sono andate a buon fine
+			ResultSet rs = statement.executeQuery(query);
+			
+			contact = new ArrayList<>();
+			Contact c = null;
+			
+			while (rs.next()) {
+				c = new Contact();
+				c.setName(rs.getString("nome"));
+				c.setSurname(rs.getString("cognome"));
+				//c.setEmail(rs.getString("email"));
+				c.setPhoneNumber(rs.getString("telefono"));
+				//c.setNote(rs.getString("note"));
+				
+				contact.add(c);
+			}
+			rs.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return contact;
+	}
+
 }
 

@@ -41,5 +41,18 @@ public class Contact {
 	public void setNote(String note) {
 		this.note = note;
 	}
+	
+	//!!utile avere un metodo toString() nel bin, qui è proposto in formato json
+	public String toString() {
+		StringBuilder builder = new StringBuilder("{ ")
+				.append("name : ").append(name)
+				.append(", surname : ").append(surname)
+				.append(", phoneNumber : ").append(phoneNumber)
+				.append(", email : ").append(email)
+				.append(", note : ").append(note)
+				.append(" }");
+		
+		return builder.toString();
+	}
 
 }
