@@ -42,12 +42,23 @@ public class ContactsManager {
 		return con;
 	}
 
+	public boolean confirm() {
+		Scanner in = new Scanner(System.in);
+		System.out.println("1: Confirm"+
+				 		 "\n0: Discard");
+			int answer = in.nextInt();
+			in.close();
+			if (answer == 1) return true;
+		//in.close();
+		return false;
+	}
+	
 	public void showContacts(String orderBy) throws ClassNotFoundException, SQLException{
 		Connection connection = getConnection();
 		if (!orderBy.equals("name") && !orderBy.equals("surname")) orderBy = "id";
 		List<Contact> listOfContacts = ContactsList.loadContactListFromDB("telephone_book", orderBy);
-		for (Contact con : listOfContacts) System.out.println(con.getName());
-		//for (Contact con : listOfContacts) System.out.println(con.toString(true) + "\n");
+		//for (Contact con : listOfContacts) System.out.println(con.getName());
+		for (Contact con : listOfContacts) System.out.println(con.toString(true) + "\n");
 		connection.close();
 	}
 	
@@ -97,23 +108,29 @@ public class ContactsManager {
 	}
 	
 	public void insertContact() throws ClassNotFoundException, SQLException {
-		Scanner in = new Scanner(System.in);
-		String answer;
+		
+		
 		Contact con;
 		con = readData();
-			
-			//System.out.println(con.toString());
-			System.out.println("1: Save contact"+
-							 "\n2: Enter data again"+
-							 "\n0: Exit");
-			answer = in.nextLine();
-			if (answer.equals("1")) {
-				List<Contact> newContact = new ArrayList<>();
-				newContact.add(con);
-				ContactsList.writeContactListDB(newContact);
-			}
-			else if (answer.equals("2")) insertContact();
-		in.close();
+		
+//		if (confirm()) {
+			List<Contact> newContact = new ArrayList<>();
+			newContact.add(con);
+			ContactsList.writeContactListDB(newContact);
+//		}
+//		Scanner in = new Scanner(System.in);
+//			//System.out.println(con.toString());
+//			System.out.println("1: Save contact"+
+//							 "\n2: Enter data again"+
+//							 "\n0: Exit");
+//			String answer = in.nextLine();
+//			in.close();
+//			if (answer.equals("1")) {
+//				List<Contact> newContact = new ArrayList<>();
+//				newContact.add(con);
+//				ContactsList.writeContactListDB(newContact);
+//			}
+//			else if (answer.equals("2")) insertContact();
 	}
 	
 	public void editContact(int id) throws SQLException, ClassNotFoundException {

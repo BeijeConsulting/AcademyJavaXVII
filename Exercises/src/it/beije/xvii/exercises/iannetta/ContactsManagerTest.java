@@ -51,9 +51,9 @@ public class ContactsManagerTest {
 //			keepGoing = choice(answer);
 //			menu();
 //			answer = in.nextInt();
-//		}			
+//		}
+		
 		in.close();
-
 		
 	}
 
