@@ -26,7 +26,7 @@ public class GestioneRubrica {
 		String scelta = scan.next();
 		switch(scelta) {
 			case "1":
-				System.out.println("scelta 1");
+				//System.out.println("scelta 1");
 				mr.listContact();
 				break;
 			case "2":
@@ -51,6 +51,7 @@ public class GestioneRubrica {
 				System.exit(0);
 				break;
 		}
+		System.out.println("finito");
 	}
 
 }

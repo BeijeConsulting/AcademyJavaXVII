@@ -3,6 +3,7 @@ package it.beije.xvii.exercises.ceccarelli.DB;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import it.beije.suormary.rubrica.Contact;
 
@@ -13,6 +14,7 @@ public class MetodiRubrica {
 		db = new ExerciseswithDB();
 	}
 	
+	// list of contacts
 	public void listContact() {
 		List<Contact> names = new ArrayList<Contact>();
 		try {
@@ -23,7 +25,7 @@ public class MetodiRubrica {
 					names.add(tmp);
 					break;
 				}
-				System.out.println(tmp.getName() + contacts.get(y).getName());
+				//System.out.println(tmp.getName() + contacts.get(y).getName());
 				int comp = tmp.getName().compareToIgnoreCase(contacts.get(y).getName());
 				//System.out.println(comp);
 				if(comp<0) {
@@ -41,13 +43,44 @@ public class MetodiRubrica {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(names);
-		System.out.println(names.size());
-		//from db to csv
-		// from db to xml
-	}
+		
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Vuoi salvare il risultato su un file? ");
+		boolean rispostaValida = false;
+		while(!rispostaValida) {
+			String r = scan.next().trim();
+			if(r.equalsIgnoreCase("Si") || scan.next().trim().equalsIgnoreCase("Sì") ) {
+				System.out.print("CSV o XML? ");
+				String s = scan.next().trim();
+				if(s.equalsIgnoreCase("csv")) {
+					try {
+						rispostaValida = true;
+						db.writeRubricaFromDbToCSV(names);	
+					}catch(Exception e) {
+						System.out.println("errore");
+					}
+				}else if(s.equalsIgnoreCase("xml")){
+					try {
+						rispostaValida = true;
+						db.writeRubricaFromDbToXML(names);
+					
+					}catch(Exception e) {
+						System.out.println("errore");
+					}
+				}else {
+					System.out.println("Valore inserito non valido");
+				}
+			}else if(r.equalsIgnoreCase("No")){
+				System.out.println("Valori non salvati");
+				rispostaValida = true;
+			}else {
+				System.out.println("Valore inserito non valido");
+			};
+		}
+		System.out.println("FATTO!");
+	} 
 	
-	
+	// search contacts
 	public void searchContact() {
 		
 		

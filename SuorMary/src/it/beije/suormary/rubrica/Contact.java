@@ -43,7 +43,6 @@ public class Contact {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	
 	public String getId() {
 		return id;
 	}

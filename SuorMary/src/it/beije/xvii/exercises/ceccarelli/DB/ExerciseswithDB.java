@@ -222,7 +222,7 @@ public class ExerciseswithDB {
 		try {
 			fileWriter = new FileWriter("/Users/Padawan/eclipse-workspace/File/rubricaFromDb.csv");
 			for(Contact cr : list) {
-				System.out.println(cr.getId());
+				//System.out.println(cr.getId());
 				fileWriter.write(cr.getId());
 				fileWriter.write(';');
 				fileWriter.write(cr.getName());
@@ -301,7 +301,7 @@ public class ExerciseswithDB {
 				DOMSource source = new DOMSource(document);
 				
 				StreamResult result = new StreamResult(new File("/Users/Padawan/eclipse-workspace/File/contactFromDBtoXml.xml"));
-				// trasforma il documento in xml
+				// transform document into xml
 				transformer.transform(source, result);
 		
 		}catch (TransformerConfigurationException tcEx) {
@@ -328,7 +328,6 @@ public class ExerciseswithDB {
 		}
 	}
 	
-	
 	//writing data from CSV to DB
 	public void writeRubricaFromCSVtoDb(List<Contact> list) throws SQLException {
 		List<Contact> contacts = new ArrayList<>();
@@ -343,25 +342,26 @@ public class ExerciseswithDB {
 			}
 		}
 	}
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ExerciseswithDB db = new ExerciseswithDB();
 		try {
 			
 			// DA DB A CSV E XML
-			//List<Contact> list = db.loadRubricaFromDb();
+			List<Contact> list = db.loadRubricaFromDb();
 			//db.writeRubricaFromDbToCSV(list);
-			//db.writeRubricaFromDbToXML(list);
+			db.writeRubricaFromDbToXML(list);
 			
 			// FROM XML TO DB
 			//List<Contact> list2 = db.loadRubricaFromXML();
 			//db.writeRubricaFromXMLtoDb(list2);
 			
 			//FROM CSV TO DB
-			String path = "/Users/Padawan/eclipse-workspace/File/rubrica.csv";
-			String separator = ";";
-			List<Contact> list3 = db.loadRubricaFromCSV(path,separator);
-			db.writeRubricaFromCSVtoDb(list3);
+			//String path = "/Users/Padawan/eclipse-workspace/File/rubrica.csv";
+			//String separator = ";";
+			//List<Contact> list3 = db.loadRubricaFromCSV(path,separator);
+			//db.writeRubricaFromCSVtoDb(list3);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
