@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -343,6 +344,123 @@ public class ExerciseswithDB {
 		}
 	}
 	
+	
+	//query select contact name
+	public List<Contact> selectionName(String name){
+		List<Contact> selected= new ArrayList<Contact>();
+		try {
+			if(connectionCheck()) {
+				PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM rubrica WHERE nome = ?");
+				preparedStatement.setString(1, name);
+				ResultSet rs = preparedStatement.executeQuery();
+				Contact c = null;
+				while (rs.next()) {
+					c = new Contact();
+					c.setId(rs.getString("id"));
+					c.setName(rs.getString("nome"));
+					c.setSurname(rs.getString("cognome"));
+					c.setPhoneNumber(rs.getString("telefono"));
+					c.setEmail(rs.getString("email"));
+					c.setNote(rs.getString("note"));
+
+					System.out.println("---------------");
+					selected.add(c);
+				}
+				rs.close();
+				}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return selected;
+	}
+	
+	//query select contact surname
+	public List<Contact> selectionSurname(String surname){
+		List<Contact> selected= new ArrayList<Contact>();
+		try {
+			if(connectionCheck()) {
+				PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM rubrica WHERE cognome = ?");
+				preparedStatement.setString(1, surname);
+				ResultSet rs = preparedStatement.executeQuery();
+				Contact c = null;
+				while (rs.next()) {
+					c = new Contact();
+					c.setName(rs.getString("nome"));
+					c.setSurname(rs.getString("cognome"));
+					c.setPhoneNumber(rs.getString("telefono"));
+					c.setEmail(rs.getString("email"));
+					c.setNote(rs.getString("note"));
+
+					System.out.println("---------------");
+					selected.add(c);
+				}
+				rs.close();
+				}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return selected;
+	}
+	
+	//query select contact surname and name
+	public List<Contact> selectionNameSurname(String name, String surname){
+		List<Contact> selected= new ArrayList<Contact>();
+		try {
+			if(connectionCheck()) {
+				PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM rubrica WHERE cognome = ? AND nome = ?");
+				preparedStatement.setString(1, surname);
+				preparedStatement.setString(2, name);
+				ResultSet rs = preparedStatement.executeQuery();
+				Contact c = null;
+				while (rs.next()) {
+					c = new Contact();
+					c.setName(rs.getString("nome"));
+					c.setSurname(rs.getString("cognome"));
+					c.setPhoneNumber(rs.getString("telefono"));
+					c.setEmail(rs.getString("email"));
+					c.setNote(rs.getString("note"));
+
+					System.out.println("---------------");
+					selected.add(c);
+				}
+				rs.close();
+				}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return selected;
+	}
+	
+	//query update contact
+	public void updateContact(List<Contact> c){
+		try {
+			if(connectionCheck()) {
+				for(Contact contact: c) {
+				String nome = contact.getName();
+				String cognome = contact.getSurname();
+				String telefono = contact.getPhoneNumber();
+				String email = contact.getEmail();
+				String id = contact.getId();
+				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE rubrica "
+						+ "set name = ?,"
+						+ "set cognome = ?"
+						+ "set telefono = ?"
+						+ "set email = ?"
+						+ " WHERE id = ?");
+				
+				preparedStatement.setString(1, nome);
+				preparedStatement.setString(2, cognome);
+				preparedStatement.setString(3, telefono);
+				preparedStatement.setString(4, email);
+				preparedStatement.setString(5, id);
+		
+				preparedStatement.executeUpdate();
+			}
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		ExerciseswithDB db = new ExerciseswithDB();

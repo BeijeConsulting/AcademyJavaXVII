@@ -30,13 +30,15 @@ public class GestioneRubrica {
 				mr.listContact();
 				break;
 			case "2":
-				System.out.println("scelta 2");
+				//System.out.println("scelta 2");
+				mr.searchContact();
 				break;
 			case "3":
-				System.out.println("scelta 3");
+				//System.out.println("scelta 3");
 				break;
 			case "4":
-				System.out.println("scelta 4");
+				//System.out.println("scelta 4");
+				mr.searchContact();
 				break;
 			case "5":
 				System.out.println("scelta 5");
