@@ -196,13 +196,13 @@ public class AddressBook {
 	
 	public List<Contact> loadAddressesFromJDBC(){
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		List<Contact> contacts = null;
 		try {
 			
 			connection = JDBCUtils.getConnection();
 			
-			PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM rubrica");
+			preparedStatement = connection.prepareStatement("SELECT * FROM rubrica");
 			
 			//SELECT
 			ResultSet rs = preparedStatement.executeQuery();
@@ -251,7 +251,7 @@ public class AddressBook {
 			e.printStackTrace();
 		} finally {
 			try {
-				statement.close();
+				preparedStatement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -405,10 +405,10 @@ public class AddressBook {
 			for (Contact c : contacts) {
 				
 				preparedStatement.setString(1, c.getFirstName());
-				preparedStatement.setString(1, c.getLastName());
-				preparedStatement.setString(1, c.getPhoneNumber());
-				preparedStatement.setString(1, c.getEmail());
-				preparedStatement.setString(1, c.getNotes());
+				preparedStatement.setString(2, c.getLastName());
+				preparedStatement.setString(3, c.getPhoneNumber());
+				preparedStatement.setString(4, c.getEmail());
+				preparedStatement.setString(5, c.getNotes());
 				
 				preparedStatement.execute();
 				/*StringBuilder query = new StringBuilder();
