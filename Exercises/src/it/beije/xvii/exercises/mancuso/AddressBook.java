@@ -2,35 +2,28 @@ package it.beije.xvii.exercises.mancuso;
 
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
+
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+
 import org.xml.sax.SAXException;
 
 import java.util.ArrayList;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.io.BufferedReader;
+
 
 
 public class AddressBook {
@@ -41,6 +34,12 @@ public class AddressBook {
 		contacts = new ArrayList<>();
 	}
 
+	public static void print(List<Contact> conts) {
+		for(Contact rc : conts) {
+			System.out.println(rc.toString());
+			System.out.println("------------------------------------");
+		}
+	}
 	
 	public List<Contact> loadAddressesFromCSV(String pathFile, String separator) throws IllegalArgumentException{
 		
@@ -114,9 +113,7 @@ public class AddressBook {
 		throw new IllegalArgumentException("File does not exist.");
 		
 	}
-	
-	
-	
+
 	public List<Contact> loadAddressesFromXML(String pathFile) throws IllegalArgumentException{
 		File file = new File(pathFile);
 		String filename = file.getName();
