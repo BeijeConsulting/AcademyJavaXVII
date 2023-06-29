@@ -14,15 +14,15 @@ public class Menu {
 		System.out.println("_____________________________________________________________________\n");
 		System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\t\tMenu funzionalita' rubrica:\t\t\n" + ANSI_RESET);
 		
-		System.out.println("import csv\t\t\tIMPORTA contatti da file CSV");
-		System.out.println("import xml\t\t\tIMPORTA contatti da file XML");
-		System.out.println("import db\t\t\tIMPORTA contatti da DATABASE");
+		System.out.println("import csv\t\tIMPORTA contatti da file CSV");
+		System.out.println("import xml\t\tIMPORTA contatti da file XML");
+		System.out.println("import db\t\tIMPORTA contatti da DATABASE");
 		
 		System.out.println("--------------------------------------------------------------------");
 		
-		System.out.println("export csv\t\t\tESPORTA contatti su file CSV");
-		System.out.println("export xml\t\t\tESPORTA contatti su file XML");
-		System.out.println("export db\t\t\tESPORTA contatti su DATABASE");
+		System.out.println("export csv\t\tESPORTA contatti su file CSV");
+		System.out.println("export xml\t\tESPORTA contatti su file XML");
+		System.out.println("export db\t\tESPORTA contatti su DATABASE");
 		
 		System.out.println("---------------------------------------------------------------------");
 		
