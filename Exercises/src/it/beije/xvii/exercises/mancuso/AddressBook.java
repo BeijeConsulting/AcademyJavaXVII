@@ -42,8 +42,6 @@ public class AddressBook {
 	}
 
 	
-
-	
 	public List<Contact> loadAddressesFromCSV(String pathFile, String separator) throws IllegalArgumentException{
 		
 		File file = null;
@@ -117,17 +115,7 @@ public class AddressBook {
 		
 	}
 	
-	public static List<Element> getChildrenElements(Element el) {
-		NodeList nodeList = el.getChildNodes();
-		//System.out.println("nodeList size: " + nodeList.getLength());
-		List<Element> elements = new ArrayList<Element>();
-		for (int i = 0; i < nodeList.getLength(); i++) {
-			Node n = nodeList.item(i);
-			if (n instanceof Element) elements.add((Element) n);
-		}
-		
-		return elements;
-	}
+	
 	
 	public List<Contact> loadAddressesFromXML(String pathFile) throws IllegalArgumentException{
 		File file = new File(pathFile);
@@ -141,13 +129,13 @@ public class AddressBook {
 				
 						Element rootElement = document.getDocumentElement();
 						
-						List<Element> elements = getChildrenElements(rootElement);	
+						List<Element> elements = XMLUtils.getChildrenElements(rootElement);	
 						newContacts = new ArrayList<>();
 						List<Element> innerElements;
 						Contact c = null;
 						for(Element e : elements) {
 							
-							innerElements = getChildrenElements(e);
+							innerElements = XMLUtils.getChildrenElements(e);
 							
 							c = new Contact();
 							for(Element inEl : innerElements) {
@@ -386,22 +374,22 @@ public class AddressBook {
 
 	public void writeAddressBookJDBC(boolean overwrite) {
 		Connection connection = null;
+		PreparedStatement preparedStatement = null;
 		Statement statement = null;
-
 		try {
 			
 			connection = JDBCUtils.getConnection();
 			
-			statement = connection.createStatement();
 			
 			if(overwrite) {
 				System.out.println("Deleting all records ...");
+				statement = connection.createStatement();
 				int deleted = statement.executeUpdate("DELETE FROM rubrica WHERE 1");
 				System.out.println(deleted + " records deleted.");
 			}
 			
 			//INSERT
-			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO rubrica (id, nome, cognome, telefono, email, note) VALUES (null, ?, ?, ?, ?, ?)");
+			preparedStatement = connection.prepareStatement("INSERT INTO rubrica (id, nome, cognome, telefono, email, note) VALUES (null, ?, ?, ?, ?, ?)");
 			for (Contact c : contacts) {
 				
 				preparedStatement.setString(1, c.getFirstName());
@@ -437,7 +425,10 @@ public class AddressBook {
 		} finally {
 			try {
 				statement.close();
+				preparedStatement.close();
 				connection.close();
+			}catch (NullPointerException ex) {
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -581,7 +572,7 @@ public class AddressBook {
 	public List<Contact> findContactByEmail(String email) {
 		List<Contact> conts = new ArrayList<>();
 		for(Contact c : contacts) {
-			if(c.getEmail().toLowerCase().equals(email.toLowerCase())) {
+			if(c.getEmail().toLowerCase().contains(email.toLowerCase())) {
 				conts.add(c);
 			}
 		}

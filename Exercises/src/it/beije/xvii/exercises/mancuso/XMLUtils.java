@@ -2,6 +2,8 @@ package it.beije.xvii.exercises.mancuso;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,6 +15,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class XMLUtils {
@@ -47,6 +52,18 @@ public class XMLUtils {
 			
 		transformer.transform(source, result);
 		//transformer.transform(source, syso);
+	}
+	
+	public static List<Element> getChildrenElements(Element el) {
+		NodeList nodeList = el.getChildNodes();
+		//System.out.println("nodeList size: " + nodeList.getLength());
+		List<Element> elements = new ArrayList<Element>();
+		for (int i = 0; i < nodeList.getLength(); i++) {
+			Node n = nodeList.item(i);
+			if (n instanceof Element) elements.add((Element) n);
+		}
+		
+		return elements;
 	}
 	
 }
