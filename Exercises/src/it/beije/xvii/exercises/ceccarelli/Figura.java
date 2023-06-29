@@ -1,7 +1,7 @@
 package it.beije.xvii.exercises.ceccarelli;
 
 public class Figura {
-
+	 public int velocity = 10;
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		int num = 6;

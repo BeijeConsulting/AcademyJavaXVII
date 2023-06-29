@@ -51,38 +51,37 @@ public class MetodiRubrica {
 	// search contacts
 	public void searchContact() {
 		List<Contact> result = new ArrayList<Contact>();
-		
-			String s = selection();
-			String name;
-			String surname;
-			switch(s) {
-			case "1": 
-				System.out.print("Inserisci il nome da cercare: ");
-				Scanner scan = new Scanner(System.in);
-				name = scan.next();
-				result = db.selectionName(name);
-				break;
-			case "2":
-				System.out.print("Inserisci il cognome da cercare: ");
-				Scanner scan2 = new Scanner(System.in);
-				surname = scan2.next();
-				result = db.selectionSurname(surname);
-				break;
-			case "3":
-				System.out.println("Inserisci il nome e  il cognome da cercare: ");
-				System.out.print("Inserisci il nome: ");
-				Scanner scan3 = new Scanner(System.in);
-				name = scan3.next();
-				System.out.print("Inserisci il cognome: ");
-				surname = scan3.next();
-				result = db.selectionNameSurname(name, surname);
-				break;
-			}
+		Scanner scanSearch = new Scanner(System.in);
+		String s = selection();
+		String name;
+		String surname;
+		switch(s) {
+		case "1": 
+			System.out.print("Inserisci il nome da cercare: ");
 			
+			name = scanSearch.next();
+			result = db.selectionName(name);
+			break;
+		case "2":
+			System.out.print("Inserisci il cognome da cercare: ");
+			
+			surname = scanSearch.next();
+			result = db.selectionSurname(surname);
+			break;
+		case "3":
+			System.out.println("Inserisci il nome e  il cognome da cercare: ");
+			System.out.print("Inserisci il nome: ");
+			name = scanSearch.next();
+			System.out.print("Inserisci il cognome: ");
+			surname = scanSearch.next();
+			result = db.selectionNameSurname(name, surname);
+			break;
+		}
+		
+		
 		chooseFile(result, db);
 		System.out.println("Vuoi modificare il contatto? ");
-		Scanner scan = new Scanner(System.in);
-		String r = scan.next();
+		String r = scanSearch.next();
 		if(r.equalsIgnoreCase("Si")|| r.equalsIgnoreCase("Sì")) {
 			modifiesContact(result);
 		}else {
@@ -95,7 +94,7 @@ public class MetodiRubrica {
 	// modifies contact
 	public void modifiesContact(List<Contact> c) {
 		Contact cModifies = null;
-		Scanner s = new Scanner(System.in);
+		Scanner scanModifies = new Scanner(System.in);
 		if(c.size()==1) {
 			cModifies = c.get(0);
 		}else {
@@ -104,50 +103,86 @@ public class MetodiRubrica {
 			for(Contact contact : c) {
 				System.out.println(contact);
 				System.out.println("E' questo?");
-				String choose = s.next();
+				String choose = scanModifies.next();
 				if(choose.equalsIgnoreCase("Si")|| choose.equalsIgnoreCase("Sì")) {
 					cModifies = contact;
 					break;
 				}
 			}
 		}
-		s.close();
 		if(cModifies==null) {
 			System.out.println("Non è stato selezionato nessun contatto");
 			return;
 		}
 		
-		Scanner n = new Scanner(System.in);
+		
 		//System.out.println("ID MODIFIES" + cModifies.getId());
-		System.out.println("Inserisci i dati da modificare: ");
-		System.out.println("nome: "); 
-		String name = n.nextLine();
-		System.out.println("cognome: ");
-		String surname = n.nextLine();
-		System.out.println("telefono: "); 
-		String phoneNumber = n.next();
-		System.out.println("email: "); 
-		String email = n.next();
-		System.out.println("note: "); 
-		String note = n.nextLine();
-		if(!name.isBlank()) {
+		System.out.println("Inserisci i dati da modificare(null se non si vuole modificare): ");
+		System.out.print("nome: ");
+		String name="";
+		name = scanModifies.next();
+		System.out.print("cognome: ");
+		String surname = scanModifies.next();
+		System.out.print("telefono: "); 
+		String phoneNumber = scanModifies.next();
+		System.out.print("email: "); 
+		String email = scanModifies.next();
+		System.out.print("note: "); 
+		String note = scanModifies.nextLine();
+		
+		
+		if(name!="null") {
 			cModifies.setName(name);
-		}if(!surname.isBlank()) {
+		}if(surname!="null") {
 			cModifies.setSurname(surname);
-		}if(!phoneNumber.isBlank()) {
+		}if(phoneNumber!="null") {
 			cModifies.setPhoneNumber(phoneNumber);
-		}if(!email.isBlank()) {
+		}if(email!="null") {
 			cModifies.setEmail(email);
-		}if(!note.isBlank()) {
+		}if(note!="null") {
 			cModifies.setNote(note);
 		}
-		
+		System.out.println("il nome è: " + name);
 		List<Contact> singleContact = new ArrayList<>();
 		singleContact.add(cModifies);
+		//chooseFile(singleContact, db);
+		//saveToDb(singleContact, db);
 		
-		chooseFile(singleContact, db);
-		saveToDb(singleContact, db);
 		
+	}
+	
+	//insert contact
+	public void insertContact() {
+		Scanner scanInsert= new Scanner(System.in);
+		System.out.println("Da dove vuoi inserire(XML,CSV,DB): ");
+		String risp = scanInsert.next();
+		switch(risp) {
+		case "XML":
+			String path=scanInsert.next();
+			List<Contact> list2 = db.loadRubricaFromXML(path);
+			try {
+				db.writeRubricaFromXMLtoDb(list2);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
+		}
+		System.out.println("Inserisci il nuovo contatto:");
+		Contact contact = new Contact();
+		
+		System.out.print("nome: ");
+		contact.setName(scanInsert.next());
+		System.out.print("cognome: ");
+		contact.setSurname(scanInsert.next());
+		System.out.print("telefono: "); 
+		contact.setPhoneNumber(scanInsert.next());
+		System.out.print("email: "); 
+		contact.setEmail(scanInsert.next());
+		System.out.print("note: "); 
+		contact.setNote(scanInsert.next());
+		db.insertContact(contact);
+		//System.out.print(contact.toString());
 		
 	}
 	// selection type of search
@@ -156,22 +191,22 @@ public class MetodiRubrica {
 		System.out.println("1. Per nome");
 	    System.out.println("2. Per cognome");
 	    System.out.println("3. Per nome e cognome");
-	    Scanner scan = new Scanner(System.in);
-	    String r = scan.next();
+	    Scanner scanSelect = new Scanner(System.in);
+	    String r = scanSelect.next();
 	    return r;
 	    
 	}
 	
 	//save into one type of file
 	public static void chooseFile(List<Contact> c, ExerciseswithDB db) {
-		Scanner scan = new Scanner(System.in);
+		Scanner scanChoose = new Scanner(System.in);
 		System.out.print("Vuoi salvare il risultato su un file? ");
 		boolean rispostaValida = false;
 		while(!rispostaValida) {
-			String r = scan.next();
+			String r = scanChoose.next();
 			if(r.equalsIgnoreCase("Si") || r.equalsIgnoreCase("Sì") ) {
 				System.out.print("CSV o XML? ");
-				String s = scan.next().trim();
+				String s = scanChoose.next().trim();
 				if(s.equalsIgnoreCase("csv")) {
 					try {
 						rispostaValida = true;
@@ -200,11 +235,11 @@ public class MetodiRubrica {
 	}
 	
 	public static void saveToDb(List<Contact> c, ExerciseswithDB db) {
-		Scanner scan = new Scanner(System.in);
+		Scanner scansave = new Scanner(System.in);
 		System.out.print("Vuoi aggiornare il dato sul db? ");
 		boolean rispostaValida = false;
 		while(!rispostaValida) {
-			String r = scan.next();
+			String r = scansave.next();
 			if(r.equalsIgnoreCase("Si") || r.equalsIgnoreCase("Sì") ) {
 				rispostaValida = true;
 				try {

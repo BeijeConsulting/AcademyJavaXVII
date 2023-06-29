@@ -24,6 +24,7 @@ public class GestioneRubrica {
 		MetodiRubrica mr  = new MetodiRubrica();
 		menu();
 		String scelta = scan.next();
+		
 		switch(scelta) {
 			case "1":
 				//System.out.println("scelta 1");
@@ -35,6 +36,7 @@ public class GestioneRubrica {
 				break;
 			case "3":
 				//System.out.println("scelta 3");
+				mr.insertContact();
 				break;
 			case "4":
 				//System.out.println("scelta 4");
@@ -54,6 +56,7 @@ public class GestioneRubrica {
 				break;
 		}
 		System.out.println("finito");
+		scan.close();
 	}
 
 }

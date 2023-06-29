@@ -98,12 +98,12 @@ public class ExerciseswithDB {
 	}
 	
 	//import data from XML
-	public List<Contact> loadRubricaFromXML()  {
+	public List<Contact> loadRubricaFromXML(String path)  {
 		List<Contact> contacts = null;
 		try {
 			documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			document = documentBuilder.parse("/Users/Padawan/eclipse-workspace/File/contactFromDBtoXml.xml");
+			document = documentBuilder.parse(path);
 			
 			//prendo elemento contenitore
 			Element docEl = document.getDocumentElement();
@@ -460,6 +460,34 @@ public class ExerciseswithDB {
 		}catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	//query insert contact
+	public void insertContact(Contact contact) {
+		try {
+			if(connectionCheck()) {
+				
+				String nome = contact.getName();
+				String cognome = contact.getSurname();
+				String telefono = contact.getPhoneNumber();
+				String email = contact.getEmail();
+				String id = contact.getId();
+				String note = contact.getNote();
+				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO rubrica (`nome`, `cognome`, `telefono`, `email`, `note`) VALUES (?, ?, ?, ?,?)");
+				
+				preparedStatement.setString(1, nome);
+				preparedStatement.setString(2, cognome);
+				preparedStatement.setString(3, telefono);
+				preparedStatement.setString(4, email);
+				preparedStatement.setString(5, note);
+				
+				preparedStatement.executeUpdate();
+				System.out.println("inserimento nuovo contatto nel DB avvenuto");
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+	}
+		
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
