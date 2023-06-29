@@ -2,6 +2,7 @@ package it.beije.xvii.exercises.iannetta;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,23 +12,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ContactsManager {
-
-	static Connection connection;
-	static Statement statement;
 	
-	public static void setConnection(){
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");
-			statement = connection.createStatement();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public Connection getConnection() throws ClassNotFoundException, SQLException{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");
+		return connection;
 	}
 	
-	public static Contact readData() {
+	public Contact readData() {
 		Scanner in = new Scanner(System.in);
 		String answer;
 		Contact con = new Contact();
@@ -50,38 +42,33 @@ public class ContactsManager {
 		return con;
 	}
 
-	public static void showContacts(String orderBy) throws SQLException{
-		setConnection();
-		try {
-			if (!orderBy.equals("name") && !orderBy.equals("surname")) orderBy = "id";
-			List<Contact> listOfContacts = ContactsList.loadContactListFromDB("telephone_book", orderBy);
-			for (Contact con : listOfContacts) System.out.println(con.toString(true) + "\n");
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		statement.close();
+	public void showContacts(String orderBy) throws ClassNotFoundException, SQLException{
+		Connection connection = getConnection();
+		if (!orderBy.equals("name") && !orderBy.equals("surname")) orderBy = "id";
+		List<Contact> listOfContacts = ContactsList.loadContactListFromDB("telephone_book", orderBy);
+		for (Contact con : listOfContacts) System.out.println(con.getName());
+		//for (Contact con : listOfContacts) System.out.println(con.toString(true) + "\n");
 		connection.close();
 	}
 	
-	public static void sorting() throws SQLException {
+	public void sorting() throws SQLException, ClassNotFoundException {
 		Scanner in = new Scanner(System.in);
 		
 		System.out.println("1: Sort by name" + 
 						 "\n2: Sort by surname" + 
 						 "\n0: Sort by id (default sorting)");
-		String answer = in.nextLine();
-		
-		if (answer.equals("1")) showContacts("name");
-		else if (answer.equals("2")) showContacts("surname");
-		else showContacts("id");
-		
+		int answer = in.nextInt();
 		in.close();
+		
+		if (answer == 1) showContacts("name");
+		else if (answer == 2) showContacts("surname");
+		else showContacts("id");
 	}
+
 	
-	public static void searchContact() throws SQLException{
-		setConnection();
+	public void searchContact() throws SQLException, ClassNotFoundException{
+		Connection connection = getConnection();
+		Statement statement = connection.createStatement();
 		Scanner in = new Scanner(System.in);
 		System.out.println("Enter data (or part of it) to look for:");
 		String answer = in.nextLine();
@@ -109,28 +96,11 @@ public class ContactsManager {
 		in.close();
 	}
 	
-	public static void insertContact() throws ClassNotFoundException, SQLException {
+	public void insertContact() throws ClassNotFoundException, SQLException {
 		Scanner in = new Scanner(System.in);
 		String answer;
 		Contact con;
-		
-			con = readData();
-			
-//			System.out.print("Enter name: ");
-//			answer = in.nextLine();
-//			con.setName(answer);
-//			System.out.print("Enter surname: ");
-//			answer = in.nextLine();
-//			con.setSurname(answer);
-//			System.out.print("Enter phone number: ");
-//			answer = in.nextLine();
-//			con.setPhoneNumber(answer);
-//			System.out.print("Enter email: ");
-//			answer = in.nextLine();
-//			con.setEmail(answer);
-//			System.out.print("Enter note: ");
-//			answer = in.nextLine();
-//			con.setNote(answer);
+		con = readData();
 			
 			//System.out.println(con.toString());
 			System.out.println("1: Save contact"+
@@ -146,7 +116,10 @@ public class ContactsManager {
 		in.close();
 	}
 	
-	public static void editContact(int id) throws SQLException {
+	public void editContact(int id) throws SQLException, ClassNotFoundException {
+		Connection connection = getConnection();
+		Statement statement = connection.createStatement();
+
 		Scanner in = new Scanner(System.in);
 		
 		System.out.println("Enter new data");
@@ -171,19 +144,21 @@ public class ContactsManager {
 		in.close();
 	}
 	
-	public static int searchByID() throws SQLException {
+	public int searchByID() throws SQLException, ClassNotFoundException {
 		int id = 0;
-		setConnection();
+		getConnection();
 		Scanner in = new Scanner(System.in);
 		System.out.println("Enter id of contact to edit. Enter 0 to see all contacts:");
 		String answer = in.nextLine();
 		if (answer.equals("0")) {
-			ContactsManager.sorting();
+			sorting();
 			System.out.println("Enter id of contact to edit:");	
 			answer = in.nextLine();
 		}
 		id = Integer.parseInt(answer);
-			
+		Connection connection = getConnection();
+		Statement statement = connection.createStatement();
+		
 			ResultSet rs = statement.executeQuery("SELECT * FROM telephone_book WHERE id = " + id + ";");
 			Contact con = new Contact();
 			con.setID(rs.getInt("id"));

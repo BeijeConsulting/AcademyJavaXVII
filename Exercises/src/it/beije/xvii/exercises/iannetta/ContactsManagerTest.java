@@ -1,6 +1,6 @@
 package it.beije.xvii.exercises.iannetta;
-
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class ContactsManagerTest {
@@ -16,34 +16,42 @@ public class ContactsManagerTest {
 						 "\n0: Exit");
 	}
 	
-	private static boolean choice(String answer) throws ClassNotFoundException, SQLException {
+	private static boolean choice(int answer) throws ClassNotFoundException, SQLException {
+		ContactsManager contactsManager = new ContactsManager();
 		switch(answer) {
-		case "1": ContactsManager.sorting(); return true;
-		case "2": ContactsManager.searchContact(); return true;
-		case "3": ContactsManager.insertContact(); return true;
-		case "4": int id = ContactsManager.searchByID();
-				  ContactsManager.editContact(id); 
-					
-				//System.out.println(id);
-				  return true;
-		default: return false;
+		//case 1: contactsManager.showContacts("id");
+		case 1: contactsManager.sorting(); break; 
+		case 2: contactsManager.searchContact(); break;
+		case 3: contactsManager.insertContact(); break;
+		case 4: int id = contactsManager.searchByID();
+				  contactsManager.editContact(id); 
+				 break;
+		default: break;
 		}
+		if (answer != 0) return true;
+		return false;
 	}
-	
-	
+		
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		Scanner in = new Scanner(System.in);
 		
 		System.out.println("Welcome to Contacts Manager. What do you want to do?");
+		
+//		ContactsManager contactsManager = new ContactsManager();
+//		 contactsManager.sorting(); 
 		menu();
-		String choice = in.nextLine();
-		boolean keepGoing = choice(choice);
-
-		while (keepGoing);{
-			keepGoing = choice(choice);
-			menu();
-			choice = in.nextLine();
-		}			
+		
+		int answer=0;
+			answer = in.nextInt();
+		boolean keepGoing = choice(answer);
+		
+		
+		
+//		while (keepGoing){
+//			keepGoing = choice(answer);
+//			menu();
+//			answer = in.nextInt();
+//		}			
 		in.close();
 
 		
