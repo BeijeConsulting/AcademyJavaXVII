@@ -99,30 +99,23 @@ public class RubricaJDBC {
 	}
 	public static void deleteContactFromRubrica() {
 		Connection connection = null;
-		Statement statement = null;
 		try {
 			Scanner scanner = new Scanner(System.in);
-			System.out.print("Inserisci l'id del contatto da eliminare : ");
-			int id = scanner.nextInt();
-            scanner.nextLine();
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "12345");
-			statement = connection.createStatement();
-			ResultSet res = statement.executeQuery("SELECT * FROM rubrica WHERE id = " + id);
-			res.next();
-		    Contact c = new Contact();
-		    c.setName(res.getString("name"));
-		    c.setSurname(res.getString("surname"));
-		    c.setEmail(res.getString("email"));
-		    c.setPhoneNumber(res.getString("phone"));
-		    c.setNote(res.getString("note"));
+		    Contact c = findByNameSurname();
 			System.out.println("Contatto da eliminare : ");
 			System.out.println(c);
 			System.out.print("Sei sicuro di voler eliminare il contatto? (si/no) : ");
 			String scelta = scanner.nextLine();
 			if(scelta.equals("si")) {
-			    statement.executeUpdate("DELETE FROM rubrica WHERE id = " + id);
+				PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM rubrica WHERE name = ? AND surname = ? AND email = ? AND phone = ? AND note = ?");
+				preparedStatement.setString(1, c.getName());
+				preparedStatement.setString(2, c.getSurname());
+				preparedStatement.setString(3, c.getEmail());
+				preparedStatement.setString(4, c.getPhoneNumber());
+				preparedStatement.setString(5, c.getNote());
+				preparedStatement.executeUpdate();
 			    System.out.println("Contatto eliminato");
 			}
 			else System.out.println("Contatto non eliminato");
@@ -133,7 +126,6 @@ public class RubricaJDBC {
 			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
 		} finally {
 			try {
-				statement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -145,9 +137,6 @@ public class RubricaJDBC {
 		try {
 			
 			Scanner scanner = new Scanner(System.in);
-//			System.out.print("Inserisci l'id del contatto da modificare : "); 
-//			int id = scanner.nextInt();
-//			scanner.nextLine();
 			Contact c = findByNameSurname();
 			System.out.print("Inserisci il campo che vuoi  modificare : "); 
 			String field = scanner.nextLine();
