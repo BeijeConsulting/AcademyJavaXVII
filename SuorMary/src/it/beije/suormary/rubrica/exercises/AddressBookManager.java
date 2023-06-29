@@ -67,6 +67,7 @@ public class AddressBookManager {
 	            case "0":
 	                running = false;
 	                System.out.println("Arrivederci!");
+	                scanner.close();
 	                break;
 	            default:
 	                System.out.println("Scelta non valida.");
@@ -303,7 +304,7 @@ public class AddressBookManager {
 			    		contatto.setName("");
 			    	} else {
 			    		contatto.setName(value);
-			    	}
+			    	} 
 
 			        System.out.print("Inserisci il nuovo cognome del contatto: ");
 			        value = scanner.nextLine();
@@ -476,7 +477,7 @@ public class AddressBookManager {
 		    switch (choice) {
 		    case "1":
 		    	aggiornaRubrica();
-		    	List<Contact> duplicati = rubrica.trovaContattiDuplicati();
+		    	List<Contact> duplicati = rubrica.trovaContattiDuplicati(false);
 		    	printContactList(duplicati);
 		    	if (duplicati.isEmpty()) {
 		    		running = false;
@@ -510,13 +511,13 @@ public class AddressBookManager {
 		    switch (choice) {
 		    case "1":
 		    	aggiornaRubrica();
-		    	List<Contact> duplicati = rubrica.trovaContattiDuplicati();
+		    	List<Contact> duplicati = rubrica.trovaContattiDuplicati(false);
 		    	System.out.println("=== Contatti Duplicati ===");
 		    	printContactList(duplicati);
 		    	if (duplicati.isEmpty()) {
 		    		running = false;
 			    } else {
-			    	List<Contact> duplicatiEliminati = rubrica.unisciContattiDuplicati(duplicati);
+			    	List<Contact> duplicatiEliminati = rubrica.unisciContattiDuplicati();
 			    	System.out.println("=== Contatti Duplicati Da Eliminare===");
 			    	printContactList(duplicatiEliminati);
 			    	
@@ -537,7 +538,7 @@ public class AddressBookManager {
 					    		  System.out.println("Unione completata!");
 					    		  System.out.println("------------------------");
 					    		  runningInterno = false;
-					    		  
+					    		  running = false; //finita operazione esci al menu principale
 					    		  break;
 					    case "0": System.out.println("Hai annullato l'unione!");
 					    		  runningInterno = false; // Torna al menu esterno

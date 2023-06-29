@@ -2,7 +2,11 @@ package it.beije.suormary.rubrica.exercises;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class AddressBook {
 	private List<Contact> contatti;
@@ -73,30 +77,45 @@ public class AddressBook {
         return contattiTrovati; // Contatto non trovato
     }
     
-    public List<Contact> trovaContattiDuplicati() {
-        List<Contact> duplicati = new ArrayList<>();
-        for (int i = 0; i < contatti.size(); i++) {
-            Contact contattoCorrente = contatti.get(i);
-            for (int j = i + 1; j < contatti.size()-1; j++) {
-                Contact contattoSuccessivo = contatti.get(j);
-                if (contattoCorrente.equals(contattoSuccessivo)) {
-                    duplicati.add(contattoCorrente);
-                    duplicati.add(contattoSuccessivo);
-                }
+    public List<Contact> trovaContattiDuplicati(boolean cancellare) {
+    	List<Contact> duplicati = new ArrayList<Contact>();
+    	//List<Contact> contattiRidotti = new ArrayList<Contact>();
+        Set<String> contattiUnici = new HashSet<>();
+        
+        
+        for (Contact contatto : contatti) {
+            // Genera una stringa rappresentante il contatto senza l'ID
+            String contattoSenzaId = contatto.toStringExcludingId();
+
+            // Se la stringa esiste già nell'insieme, il contatto è un duplicato
+            if (contattiUnici.contains(contattoSenzaId)) {
+            	duplicati.add(contatto);
+            } else {
+                contattiUnici.add(contattoSenzaId);
             }
         }
+        
+        if(!cancellare) {
+        	/*for (Contact contatto : contattiRidotti) {
+                if (duplicati.stream().anyMatch(dup -> dup.contains(contatto))) {
+                    duplicati.add(contatto);
+                }
+            }*/
+        	List<Contact> contattiUnivoci = new ArrayList<>(contatti);
+        	contattiUnivoci.removeAll(duplicati);
+        	List<Contact> contattiDuplicati = new ArrayList<>(contatti);
+        	contattiDuplicati.removeAll(contattiUnivoci);
+        	duplicati = contattiDuplicati;
+           
+        }
         return duplicati;
+
     }
     
-    
-    public List<Contact> unisciContattiDuplicati(List<Contact> duplicati) {
-        List<Contact> duplicatiEliminati = new ArrayList<Contact>();
-        for (int i = 0; i < duplicati.size(); i++) {
-            Contact contatto = duplicati.get(i);
-            if (i > 0) {
-                duplicatiEliminati.add(contatto);
-                cancellaContatto(contatto);
-            }
+    public List<Contact> unisciContattiDuplicati() {
+        List<Contact> duplicatiEliminati = trovaContattiDuplicati(true);
+        for (Contact contatto : duplicatiEliminati) {
+        	cancellaContatto(contatto);
         }
         return duplicatiEliminati;
     }

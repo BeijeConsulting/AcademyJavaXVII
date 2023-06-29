@@ -1,5 +1,7 @@
 package it.beije.suormary.rubrica.exercises;
 
+import java.util.Objects;
+
 public class Contact {
 	
 	private String id;
@@ -51,6 +53,18 @@ public class Contact {
 		this.note = note.trim();
 	}
 	
+	public String toStringExcludingId() {
+		StringBuilder builder = new StringBuilder("{ ")
+				.append("name : ").append(name.toLowerCase())
+				.append(", surname : ").append(surname.toLowerCase())
+				.append(", phoneNumber : ").append(phoneNumber.toLowerCase())
+				.append(", email : ").append(email.toLowerCase())
+				.append(", note : ").append(note.toLowerCase())
+				.append(" }");
+		
+		return builder.toString();
+	}
+	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
@@ -64,8 +78,7 @@ public class Contact {
 		return builder.toString();
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
+	public boolean equalsExcludingId(Object obj) {
 	    if (this == obj) {
 	        return true;
 	    }
@@ -78,7 +91,7 @@ public class Contact {
 	        if (other.getName() != null) {
 	            return false;
 	        }
-	    } else if (!this.getName().equals(other.name)) {
+	    } else if (!this.getName().equalsIgnoreCase(other.name)) {
 	        return false;
 	    }
 
@@ -86,7 +99,7 @@ public class Contact {
 	        if (other.getSurname() != null) {
 	            return false;
 	        }
-	    } else if (!this.getSurname().equals(other.getSurname())) {
+	    } else if (!this.getSurname().equalsIgnoreCase(other.getSurname())) {
 	        return false;
 	    }
 
@@ -94,7 +107,7 @@ public class Contact {
 	        if (other.getPhoneNumber() != null) {
 	            return false;
 	        }
-	    } else if (!this.getPhoneNumber().equals(other.getPhoneNumber())) {
+	    } else if (!this.getPhoneNumber().equalsIgnoreCase(other.getPhoneNumber())) {
 	        return false;
 	    }
 
@@ -102,7 +115,7 @@ public class Contact {
 	        if (other.getEmail() != null) {
 	            return false;
 	        }
-	    } else if (!this.getEmail().equals(other.getEmail())) {
+	    } else if (!this.getEmail().equalsIgnoreCase(other.getEmail())) {
 	        return false;
 	    }
 
@@ -110,13 +123,44 @@ public class Contact {
 	        if (other.getNote() != null) {
 	            return false;
 	        }
-	    } else if (!this.getNote().equals(other.getNote())) {
+	    } else if (!this.getNote().equalsIgnoreCase(other.getNote())) {
 	        return false;
 	    }
 
 	    return true;
 	}
 	
-	
+	public boolean contains(Contact other) {
+	    if (other == null) {
+	        return false;
+	    }
+
+	    // Verifica se i campi (tranne l'ID) sono uguali
+	    if (name.equalsIgnoreCase(other.getName()) 
+	    		&& surname.equalsIgnoreCase(other.getSurname()) 
+	    		&& email.equalsIgnoreCase(other.getEmail()) 
+	    		&& phoneNumber.equalsIgnoreCase(other.getPhoneNumber())
+	    		&& note.equalsIgnoreCase(other.getNote())) {
+	        return true;
+	    }
+
+	    return false;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Contact other = (Contact) obj;
+		return name.equalsIgnoreCase(other.getName()) 
+	    		&& surname.equalsIgnoreCase(other.getSurname()) 
+	    		&& email.equalsIgnoreCase(other.getEmail()) 
+	    		&& phoneNumber.equalsIgnoreCase(other.getPhoneNumber())
+	    		&& note.equalsIgnoreCase(other.getNote());
+	}	
 
 }
