@@ -73,4 +73,20 @@ public class Contact {
 				.append("\nNote: ").append(note);
 		return builder.toString();
 	}
+	
+//	public boolean equals(Contact c) {
+//		
+//		//name && surname
+//		if (this.name.equalsIgnoreCase(c.name)) {
+//			if (this.surname.equalsIgnoreCase(c.getSurname())) return true;
+//		}
+//		
+//		//phone number
+//		if (this.phoneNumber.equals(c.getPhoneNumber())) return true;
+//		
+//		//email
+//		if (this.email.equals(c.getEmail())) return true;
+//		
+//		return false;
+//	}
 }

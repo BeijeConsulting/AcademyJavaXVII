@@ -13,6 +13,16 @@ import java.util.Scanner;
 
 public class ContactsManager {
 	
+	Scanner in;
+	
+	public void end() {
+		in.close();
+	}
+	
+	public ContactsManager() {
+		this.in = new Scanner(System.in);
+	}
+	
 	public Connection getConnection() throws ClassNotFoundException, SQLException{
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");
@@ -20,7 +30,6 @@ public class ContactsManager {
 	}
 	
 	public Contact readData() {
-		Scanner in = new Scanner(System.in);
 		String answer;
 		Contact con = new Contact();
 		System.out.print("Enter name: ");
@@ -38,11 +47,10 @@ public class ContactsManager {
 		System.out.print("Enter note: ");
 		answer = in.nextLine();
 		con.setNote(answer);
-		in.close();
 		return con;
 	}
 
-	public boolean confirm() {
+/*	public boolean confirm() {
 		Scanner in = new Scanner(System.in);
 		System.out.println("1: Confirm"+
 				 		 "\n0: Discard");
@@ -51,10 +59,11 @@ public class ContactsManager {
 			if (answer == 1) return true;
 		//in.close();
 		return false;
-	}
+	}*/
 	
 	public void showContacts(String orderBy) throws ClassNotFoundException, SQLException{
 		Connection connection = getConnection();
+		
 		if (!orderBy.equals("name") && !orderBy.equals("surname")) orderBy = "id";
 		List<Contact> listOfContacts = ContactsList.loadContactListFromDB("telephone_book", orderBy);
 		//for (Contact con : listOfContacts) System.out.println(con.getName());
@@ -62,33 +71,30 @@ public class ContactsManager {
 		connection.close();
 	}
 	
-	public void sorting() throws SQLException, ClassNotFoundException {
-		Scanner in = new Scanner(System.in);
-		
+	public void sorting() throws SQLException, ClassNotFoundException {		
 		System.out.println("1: Sort by name" + 
 						 "\n2: Sort by surname" + 
 						 "\n0: Sort by id (default sorting)");
-		int answer = in.nextInt();
-		in.close();
-		
+		int answer = in.nextInt();		
 		if (answer == 1) showContacts("name");
 		else if (answer == 2) showContacts("surname");
 		else showContacts("id");
 	}
-
 	
 	public void searchContact() throws SQLException, ClassNotFoundException{
 		Connection connection = getConnection();
-		Statement statement = connection.createStatement();
-		Scanner in = new Scanner(System.in);
+		
 		System.out.println("Enter data (or part of it) to look for:");
 		String answer = in.nextLine();
-		ResultSet rs = statement.executeQuery("SELECT * FROM telephone_book "
-				+ "WHERE name LIKE '%" + answer + "%' "
-				+ "OR surname LIKE '%" + answer + "%' "
-				+ "OR phone_number LIKE '%" + answer + "%' "
-				+ "OR email LIKE '%" + answer + "%' "
-				+ "OR note LIKE '%" + answer + "%';");
+		
+		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM telephone_book WHERE name LIKE ? OR surname LIKE ? OR phone_number LIKE ? OR email LIKE ? OR note LIKE ? ;");
+		preparedStatement.setString(1, "%" + answer + "%");
+		preparedStatement.setString(2, "%" + answer + "%");
+		preparedStatement.setString(3, "%" + answer + "%");
+		preparedStatement.setString(4, "%" + answer + "%");
+		preparedStatement.setString(5, "%" + answer + "%");
+		
+		ResultSet rs = preparedStatement.executeQuery();
 		//List<Contact> listOfContacts = new ArrayList<>();
 		Contact con = null; new Contact();
 		while (rs.next()) {
@@ -102,9 +108,8 @@ public class ContactsManager {
 			System.out.println(con.toString(true) + "\n");
 		}
 		rs.close();		
-		statement.close();
+		preparedStatement.close();
 		connection.close();
-		in.close();
 	}
 	
 	public void insertContact() throws ClassNotFoundException, SQLException {
@@ -117,27 +122,29 @@ public class ContactsManager {
 			List<Contact> newContact = new ArrayList<>();
 			newContact.add(con);
 			ContactsList.writeContactListDB(newContact);
-//		}
-//		Scanner in = new Scanner(System.in);
-//			//System.out.println(con.toString());
-//			System.out.println("1: Save contact"+
-//							 "\n2: Enter data again"+
-//							 "\n0: Exit");
-//			String answer = in.nextLine();
-//			in.close();
-//			if (answer.equals("1")) {
-//				List<Contact> newContact = new ArrayList<>();
-//				newContact.add(con);
-//				ContactsList.writeContactListDB(newContact);
-//			}
-//			else if (answer.equals("2")) insertContact();
+/*		}
+		Scanner in = new Scanner(System.in);
+			//System.out.println(con.toString());
+			System.out.println("1: Save contact"+
+							 "\n2: Enter data again"+
+							 "\n0: Exit");
+			String answer = in.nextLine();
+			in.close();
+			if (answer.equals("1")) {
+				List<Contact> newContact = new ArrayList<>();
+				newContact.add(con);
+				ContactsList.writeContactListDB(newContact);
+			}
+			else if (answer.equals("2")) insertContact();
+*/
 	}
 	
 	public void editContact(int id) throws SQLException, ClassNotFoundException {
 		Connection connection = getConnection();
-		Statement statement = connection.createStatement();
-
-		Scanner in = new Scanner(System.in);
+		PreparedStatement preparedStatement = connection.prepareStatement("UPDATE telephone_book SET "
+				+ "name = ?, surname = ?, "
+				+ "phone_number = ?, email = ?, "
+				+ "note = ? WHERE id = " + id + ";");
 		
 		System.out.println("Enter new data");
 		Contact con = readData();
@@ -146,58 +153,93 @@ public class ContactsManager {
 						 "\n2: Enter data again"+
 						 "\n0: Exit");
 		String answer = in.nextLine();
-		if (answer.equals("1")) {
-			int rs = statement.executeUpdate("UPDATE telephone_book SET "
-					+ "name = " + con.getName() + ", "
-					+ "surname = " + con.getSurname() + ", "
-					+ "phone_number = " + con.getPhoneNumber() + ", "
-					+ "email = " + con.getEmail() + ", "
-					+ "note = " + con.getNote() + ", "
-					+ "WHERE id = " + id + ";");
-		}
+		if (answer.equals("1")) {			
+			preparedStatement.setString(1, con.getName());
+			preparedStatement.setString(2, con.getSurname());
+			preparedStatement.setString(3, con.getPhoneNumber());
+			preparedStatement.setString(4, con.getEmail());
+			preparedStatement.setString(5, con.getNote());
+			preparedStatement.execute();
+			}
 		else if (answer.equals("2")) editContact(id);
-		statement.close();
+		preparedStatement.close();
 		connection.close();
-		in.close();
 	}
 	
-	public int searchByID() throws SQLException, ClassNotFoundException {
+	public int searchByID() throws ClassNotFoundException, SQLException {
 		int id = 0;
-		getConnection();
-		Scanner in = new Scanner(System.in);
-		System.out.println("Enter id of contact to edit. Enter 0 to see all contacts:");
-		String answer = in.nextLine();
+		System.out.println("Enter id of contact. Enter 0 to see all contacts:");
+		String answer = in.next();
+		in.nextLine();
 		if (answer.equals("0")) {
 			sorting();
 			System.out.println("Enter id of contact to edit:");	
-			answer = in.nextLine();
-		}
-		id = Integer.parseInt(answer);
-		Connection connection = getConnection();
-		Statement statement = connection.createStatement();
+			String a = in.next();
+			in.nextLine();
+			id = Integer.parseInt(a);
+		} else id = Integer.parseInt(answer);
 		
-			ResultSet rs = statement.executeQuery("SELECT * FROM telephone_book WHERE id = " + id + ";");
+		Connection connection;
+			connection = getConnection();
+			Statement statement = connection.createStatement();
+			
+			
+			ResultSet rs = statement.executeQuery("SELECT * FROM telephone_book WHERE id = " + id +";");
 			Contact con = new Contact();
-			con.setID(rs.getInt("id"));
-			con.setName(rs.getString("name"));
-			con.setSurname(rs.getString("surname"));
-			con.setPhoneNumber(rs.getString("phone_number"));
-			con.setEmail(rs.getString("email"));
-			con.setNote(rs.getString("note"));
-			//System.out.println(con.toString(true) + "\n");
-			System.out.println("1: Confirm" +
-					 		 "\n2: Enter id again"+
-					 		 "\n0: Exit");
-			answer = in.nextLine();
-			if (answer.equals("1"));
-			else if (answer.equals("2")) searchByID();
-			else id = 0;
-		rs.close();		
-		statement.close();
-		connection.close();
-		in.close();
+			while (rs.next()) {
+				con.setID(id);
+				con.setID(rs.getInt("id"));
+				con.setName(rs.getString("name"));
+				con.setSurname(rs.getString("surname"));
+				con.setPhoneNumber(rs.getString("phone_number"));
+				con.setEmail(rs.getString("email"));
+				con.setNote(rs.getString("note"));
+				System.out.println(con.toString(true) + "\n");
+			}
+			rs.close();		
+			statement.close();
+			connection.close();
+			
+//			if (confirm()) return id;
+//			else id = 0;
+		
 		return id;
 	}
 
+	public void deleteContact(int id) throws ClassNotFoundException, SQLException {
+		Connection connection = getConnection();
+		Statement statement = connection.createStatement();
+		statement.executeUpdate("DELETE FROM telephone_book WHERE id = " + id +";");
+		statement.close();
+		connection.close();
+		System.out.println("ID: " + id + " deleted");
+	}
 
+//	public List<Contact> findDuplicates() throws ClassNotFoundException, SQLException{
+//		Connection connection = getConnection();
+//		List<Contact> listOfDuplicates = ContactsList.loadContactListFromDB("telephone_book", "name");
+//		Contact con1 = new Contact();
+//		Contact con2 = new Contact();
+//		int count = 0;
+//		System.out.println("Duplicates");
+//		for (int i = listOfDuplicates.size() - 1; i > 0; i--) {
+//			con1 = listOfDuplicates.get(i);
+//			con2 = listOfDuplicates.get(i-1);
+//			
+//			if (isDuplicate) System.out.println(con1.toString(true) + "\n" + con1.toString(true) + "\n");
+//			else listOfDuplicates
+//		}
+//		System.out.println("//");
+//		connection.close();
+//		return listOfDuplicates;
+//	}
+	
+	public boolean areDuplicates(Contact con1, Contact con2) {
+		boolean areDuplicates = (con1.getName().equalsIgnoreCase(con2.getName()) && con1.getSurname().equalsIgnoreCase(con2.getSurname())
+				 || con1.getPhoneNumber().equals(con2.getPhoneNumber())
+				 || con1.getEmail().equalsIgnoreCase(con2.getEmail()));
+		return areDuplicates;
+	}
+	
+	public void mergeDuplicates () {}
 }

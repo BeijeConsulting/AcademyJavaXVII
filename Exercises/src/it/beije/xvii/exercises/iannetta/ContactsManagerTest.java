@@ -18,18 +18,21 @@ public class ContactsManagerTest {
 	
 	private static boolean choice(int answer) throws ClassNotFoundException, SQLException {
 		ContactsManager contactsManager = new ContactsManager();
+		int id;
 		switch(answer) {
-		//case 1: contactsManager.showContacts("id");
 		case 1: contactsManager.sorting(); break; 
 		case 2: contactsManager.searchContact(); break;
 		case 3: contactsManager.insertContact(); break;
-		case 4: int id = contactsManager.searchByID();
-				  contactsManager.editContact(id); 
-				 break;
-		default: break;
+		case 4: id = contactsManager.searchByID();
+				contactsManager.editContact(id); 
+				break;
+		case 5: id = contactsManager.searchByID();
+				contactsManager.deleteContact(id);
+				break;
+		case 0:
+		default: contactsManager.end(); return false;
 		}
-		if (answer != 0) return true;
-		return false;
+		return true;
 	}
 		
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
@@ -41,7 +44,7 @@ public class ContactsManagerTest {
 //		 contactsManager.sorting(); 
 		menu();
 		
-		int answer=0;
+		int answer;
 			answer = in.nextInt();
 		boolean keepGoing = choice(answer);
 		

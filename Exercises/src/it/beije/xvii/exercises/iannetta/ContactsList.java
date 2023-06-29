@@ -128,7 +128,7 @@ public class ContactsList {
 		
 		ResultSet rs = statement.executeQuery("SELECT * FROM " + table + " ORDER BY " + orderBy[0] + ";");
 		List<Contact> listOfContacts = new ArrayList<>();
-		Contact con = null; new Contact();
+		Contact con = null;
 		while (rs.next()) {
 			con = new Contact();
 			con.setID(rs.getInt("id"));
