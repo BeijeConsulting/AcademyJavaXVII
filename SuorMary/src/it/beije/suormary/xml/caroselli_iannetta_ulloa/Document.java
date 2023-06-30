@@ -35,26 +35,35 @@ public class Document {
 		List<Node> nodes = new ArrayList<>();
 		StringBuilder tagName = new StringBuilder();
 		StringBuilder content = new StringBuilder();
+		int j = 0;
+		Node node = null;
 		
-		char c = s.charAt(0);
+		while (j < s.length()) {
+		char c = s.charAt(j);
 		if (c == '<') {
 			
 			tagName.setLength(0);
 			char ch;
 			int i;
-			for (i = 1; i < s.length() && (ch = s.charAt(i)) != '>'; i++) {
+			for (i = j+1; i < s.length() && (ch = s.charAt(i)) != '>'; i++) {
 				ch = s.charAt(i);
 				tagName.append(ch);
 			}
 			i++;
+			
+			System.out.println("tagName" + tagName);
 			String endTagName = "</" + tagName.toString() + ">";
 			int index = s.indexOf(endTagName);
+			System.out.println("end tagName" + endTagName);
 			
+			
+			j += 2 * tagName.length() + 5 + content.toString().length();
+			System.out.println(("i" + i + "    index " + index));
 			content.append(s.substring(i, index -1));
 			System.out.println(content.toString());
 			
 			if (content.toString().contains("<")) {
-				Node node = findNodes(content.toString());
+				node = findNodes(content.toString());
 				nodes.add(node);
 			}
 			else nodes.add(new Node (tagName.toString(), content.toString()));
@@ -68,15 +77,15 @@ public class Document {
 				nodes.add(blankNode);
 				System.out.println("sono bianco");
 				}
+			j++;
 		}
 		//System.out.println(nodes.toString());
 		
-		Node node;
 		if(nodes.size() != 0){
 			node = new Node(tagName.toString(), nodes);
 		}
 		else node = new Node(tagName.toString(), content.toString());
-		
+	}
 		return node;
 	}
     public void createDocument() {
