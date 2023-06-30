@@ -120,7 +120,10 @@ public class Element extends Node{
 						}
 						
 						if(!skip) {
-							innerElementName += body.charAt(i);
+							if(body.charAt(i) != '>') {
+								innerElementName += body.charAt(i);
+							}
+							
 						}else {
 							if(!inAttributeContent) {
 								if(body.charAt(i) != ' ') {
@@ -142,12 +145,15 @@ public class Element extends Node{
 								tags.remove(tags.size()-1);
 								closingName="";
 							}else {
-								//throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+								throw new Exception("I tag del documento vengono chiusi in ordine errato.");
 							}
 							inTag = false;
 							inClosing = false;
 						}else {
-							closingName += body.charAt(i);
+							if(body.charAt(i) != '/' && body.charAt(i) != '<') {
+								closingName += body.charAt(i);
+							}
+							
 							
 						}
 					}
@@ -273,7 +279,7 @@ public class Element extends Node{
 							tags.remove(tags.size()-1);
 							closingName="";
 						}else {
-							//throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+							throw new Exception("I tag del documento vengono chiusi in ordine errato.");
 						}
 						inTag = false;
 						inClosing = false;
