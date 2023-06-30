@@ -402,7 +402,6 @@ public class Element extends Node{
 				if(node instanceof Element) elements.add((Element)node);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
