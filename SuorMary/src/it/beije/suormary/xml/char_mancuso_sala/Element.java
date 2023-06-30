@@ -32,12 +32,16 @@ public class Element extends Node{
 		return this.tagName;
 	}
 	
-	public String getAttributes(){
-		return null;
+	public List<Attribute> getAttributes(){
+		return this.attributes;
 	}
 	
-	public String getAttribute() {
-		return null;
+	public String getAttribute(String attribute) {
+		String attContent = "";
+		for(Attribute at : attributes) {
+			if(at.getName().equals(attribute))  attContent = at.getContent();
+		}
+		return attContent;
 	}
 	
 	public List<Node> getChildNodes(){
@@ -206,7 +210,13 @@ public class Element extends Node{
 	}
 	
 	public List<Element> getElementsByTagName(String tagName){
-		return null;
+		List<Element> elementList = getChildElements();
+		List<Element> elementNameList = new ArrayList<>();
+		for(Element el : elementList) {
+			if(el.getTagName().equals(tagName)) elementNameList.add(el);
+		}
+		return elementNameList;
+		
 	}
 }
 
