@@ -4,11 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
-public class XMLUtilities {
-	public static void main(String[] args) {
-		readXML("/v/test_parser1.xml");
-	}
-	
+public class XMLUtilities { 
+
 	public static Document readXML(String pathFile) {
 		StringBuilder fileStr = null;
 		FileReader fileReader = null;
@@ -37,7 +34,6 @@ public class XMLUtilities {
 				e.printStackTrace();
 			}
 		}
-		System.out.println(fileStr);
 		Document doc = new Document();
 		doc.document = fileStr.toString();
 		return doc;
