@@ -19,7 +19,7 @@ public class Main {
 			if(n instanceof Element) {
 				System.out.println("I am an element\n");
 				System.out.println(((Element)n).getTagName());
-				System.out.println(((Element)n).getAttributes());
+				System.out.println(((Element)n).attributesToString());
 			}else {
 				System.out.println("I am a node");
 			}
