@@ -1,36 +1,42 @@
 package it.beije.suormary.xml.caroselli_iannetta_ulloa;
 
+import com.sun.org.apache.xerces.internal.impl.dv.xs.SchemaDVFactoryImpl;
+
 import java.util.List;
 
 public class Document {
-	
-	
-	 private RootNode root;
-	 private List<Node> nodes;
-	 
-	 public void createDocument() {
-		 
-	 }
-	 
-	 
-//	  public void addChild(TreeNode childNode) {
+
+
+    private List<Node> nodes;
+
+//    public Document(RootNode root, List<Node> childNodes) {
+//        this.root = root;
+//        this.childNodes = childNodes;
+//    }
+//
+//	  public void addChild(Node childNode) {
 //	    this.childNodes.add(childNode);
 //	  }
-//	 
-//	  public void showTreeNodes() {
-//	    BreathFirstSearchPrintTreeNodes.printNodes(this);
-//	  }
-//	 
-//	  public String getValue() {
-//	    return value;
-//	  }
-//	 
-//	  public List<TreeNode> getChildNodes() {
-//	    return childNodes;
-//	  }
+//
+//      public List<Node> getChildNodes() {
+//        return childNodes;
+//      }
+//
+//      public void setRoot(RootNode node) {
+//        this.root = node;
+//      }
+//
+//      public RootNode getRoot() {
+//        return root;
+//      }
 
-	  
-	public Document() {	
-	}
+
+    public void createDocument() {
+
+//        RootNode rootElement = root.getRootElement();
+
+
+    }
+
 
 }
