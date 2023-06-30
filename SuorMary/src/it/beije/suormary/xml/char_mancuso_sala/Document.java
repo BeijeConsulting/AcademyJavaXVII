@@ -7,7 +7,9 @@ public class Document  {
 	public String document;
 	
 	public Element getRootElement() {
-		Element el =null;
+
+		Element el = null;
+
 		try {
 			//rimuovo eventuali commenti o spazi
 			//document=Document.removeCommentAndSpace(document);
@@ -32,7 +34,9 @@ public class Document  {
 			//tolgo <>
 			String nameRootEl = rootEl.substring(1,rootEl.length()-1);
 			
-			el = new Element(nameRootEl);
+
+			 el = new Element(nameRootEl);
+
 			
 			document=document.trim();
 			//la stringa con il corpo
@@ -43,11 +47,13 @@ public class Document  {
 			el.setBody(body);
 			
 			
-		}catch(Exception e) {
-			e.printStackTrace();
+		}catch(Exception ex) {
+			ex.printStackTrace();
 		}
 		
+
 		return el;
+
 	}
 	public static Document parse(String file) {		
 		return XMLUtilities.readXML(file);

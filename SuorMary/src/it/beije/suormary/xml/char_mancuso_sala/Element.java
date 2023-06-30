@@ -391,17 +391,25 @@ public class Element extends Node{
 		
 	}
 	
-	public List<Element> getChildElements() throws Exception{
-		List<Node> nodeList = this.getChildNodes();
-		List<Element> elements = new ArrayList<>();
-		for(int i = 0; i< nodeList.size(); i++) {
-			Node node = nodeList.get(i);
-			if(node instanceof Element) elements.add((Element)node);
+	public List<Element> getChildElements() {
+		List<Node> nodeList = null;
+		List<Element> elements =  null;
+		try {
+			nodeList = this.getChildNodes();
+			elements = new ArrayList<>();
+			for(int i = 0; i< nodeList.size(); i++) {
+				Node node = nodeList.get(i);
+				if(node instanceof Element) elements.add((Element)node);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 		return elements;
 	}
 	
-	public List<Element> getElementsByTagName(String tagName) throws Exception{
+	public List<Element> getElementsByTagName(String tagName) {
 		List<Element> elementList = getChildElements();
 		List<Element> elementNameList = new ArrayList<>();
 		for(Element el : elementList) {
@@ -412,22 +420,26 @@ public class Element extends Node{
 	}
 	
 	
-	public String getElementTextContent() throws Exception {
-		//Element e = new Element();
-		//e.setBody(this.getBody());
-		String result = "";
-		List<Node> children = this.getChildNodes();
-		if(children.size() == 0) {
-			return this.getBody();
-		}else {
-			for(Node n : children) {
-				if(n instanceof Element) {
-					result += ((Element)n).getElementTextContent();
-				}else {
-					result += n.getBody();
+	public String getElementTextContent()  {
+		String result = null;
+		try {
+			result = "";
+			List<Node> children = this.getChildNodes();
+			if(children.size() == 0) {
+				return this.getBody();
+			}else {
+				for(Node n : children) {
+					if(n instanceof Element) {
+						result += ((Element)n).getElementTextContent();
+					}else {
+						result += n.getBody();
+					}
 				}
 			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
+	
 		return result;
 	}
 	
