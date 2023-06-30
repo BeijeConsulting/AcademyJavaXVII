@@ -7,7 +7,7 @@ public class Document {
 	public List<Node> nodes;
 	
 	public List<Element> getElementsByTagName(String tagName){
-		
+		return null;
 	}
 	
 }

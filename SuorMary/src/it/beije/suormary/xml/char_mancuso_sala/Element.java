@@ -5,10 +5,14 @@ import java.util.List;
 
 public class Element extends Node{
 	
-	private String body;
+	private String textContent;
 	private String tagName;
 	public List<Attribute> attributes;
 	
+	public void setTextContent(String textContent) {
+		this.textContent = textContent;
+	}
+
 	public Element() {
 		attributes = new ArrayList<>();
 	}
@@ -33,15 +37,15 @@ public class Element extends Node{
 	}
 	
 	public String getTextContent() {
-		
+		return null;
 	}
 	
 	public String getAttributes(){
-		
+		return null;
 	}
 	
 	public String getAttribute() {
-		
+		return null;
 	}
 	
 	public List<Node> getChildNodes(){
@@ -90,7 +94,7 @@ public class Element extends Node{
 									checkName += ">";
 									innerElementBody = innerElementBody.substring(0,innerElementBody.length() - checkName.length());
 									
-									e.body = innerElementBody;
+									e.setBody(innerElementBody);
 									nodes.add(e);
 									inBody=false;
 									innerElementBody = "";
@@ -181,7 +185,7 @@ public class Element extends Node{
 			if(body.charAt(i) == '<') {
 				if(!contentNode.equals("")) {
 					n = new Node();
-					n.setTextContent(contentNode);
+					n.setBody(contentNode);
 					nodes.add(n);
 					contentNode = "";
 				}
@@ -195,12 +199,12 @@ public class Element extends Node{
 			}
 			
 		}
-		
+		return nodes;
 		
 	}
 	
 	public List<Element> getChildElements(){
-		
+		return null;
 	}
 }
 
