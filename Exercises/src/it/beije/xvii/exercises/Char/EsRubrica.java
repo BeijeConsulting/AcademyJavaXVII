@@ -25,6 +25,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.BufferedReader;
 public class EsRubrica {
+	public static void main(String[] args) {
+		loadRubricaFromXML("/v/rubrica.xml");
+	}
 
 	public static List<Contact> loadRubricaFromCSV(String pathFile, String separator)  {
 		FileReader fileReader = null;
@@ -84,6 +87,7 @@ public class EsRubrica {
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(pathFile);
 		Element el = document.getDocumentElement();
+		System.out.println(el.getTextContent());
 		contacts = new ArrayList<>();
 		List<Element> elements = getChildElements(el);
 		List<Element> els = null;
