@@ -53,7 +53,7 @@ public class Element extends Node{
 		return attContent;
 	}
 	
-	public List<Node> getChildNodes(){
+	public List<Node> getChildNodes() throws Exception{
 		
 		//StringBuilder sb = new StringBuilder(body);
 		List<Node> nodes = new ArrayList<>();
@@ -70,7 +70,7 @@ public class Element extends Node{
 		boolean inAttributeContent=false;
 		boolean inClosing = false;
 		boolean inBody = false;
-		boolean inTextContent = false;
+		//boolean inTextContent = false;
 		
 		boolean inBodyTag = false;
 		
@@ -80,16 +80,86 @@ public class Element extends Node{
 		String contentNode = "";
 		String checkName = "";
 		
+		String closingName = "";
+		
 		String textContent = "";
 		
 		String body = this.getBody();
 		
+		String innerElementName = "";
 		String innerElementBody = "";
 		
 		for(int i=0; i< body.length(); i++) {
 			
+			// Se ci troviamo nel body di un elemento figlio
 			if(inBody) {
 				innerElementBody += body.charAt(i);
+				//Se ci troviamo in un tag
+				if(inBodyTag) {			
+					
+					if(body.charAt(i) == ' ') {
+						skip = true;
+					}
+					if(body.charAt(i) == '/') {
+						if(i != 0 && body.charAt(i-1) == '<') {
+							inClosing = true;
+						}
+						
+					}
+					
+					if(!inClosing) {
+						
+						if(body.charAt(i) == '>') {
+		
+							tags.add(innerElementName);
+							innerElementName = "";					
+							inBody = true;
+							//inTextContent = true;
+							
+							skip = false;
+						}
+						
+						if(!skip) {
+							if(body.charAt(i) != '>') {
+								innerElementName += body.charAt(i);
+							}
+							
+						}else {
+							if(!inAttributeContent) {
+								if(body.charAt(i) != ' ') {
+									if(body.charAt(i) != '=') {
+										if(body.charAt(i) == '"') {
+											inAttributeContent = true;
+										}
+									}
+								}
+							}else {
+								if(body.charAt(i) == '"') {
+									inAttributeContent = false;		
+								}
+							}
+						}	
+					} else {
+						if(body.charAt(i) == '>') {
+							if(tags.get(tags.size()-1).equals(closingName)) {
+								tags.remove(tags.size()-1);
+								closingName="";
+							}else {
+								throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+							}
+							inTag = false;
+							inClosing = false;
+						}else {
+							if(body.charAt(i) != '/' && body.charAt(i) != '<') {
+								closingName += body.charAt(i);
+							}
+							
+							
+						}
+					}
+					
+					
+				}
 				if(body.charAt(i) == '<') {
 					inBodyTag = true;
 				}	
@@ -145,7 +215,9 @@ public class Element extends Node{
 					skip = true;
 				}
 				if(inTag && body.charAt(i) == '/') {
-					inClosing = true;
+					if(i != 0 && body.charAt(i-1) == '<') {
+						inClosing = true;
+					}
 				}
 				
 				if(!inClosing) {
@@ -156,10 +228,12 @@ public class Element extends Node{
 						e = new Element(name);
 						e.attributes = attributes;
 						
+						tags.add(name);
+						
 						attributes = new ArrayList<>();
 						
 						inBody = true;
-						inTextContent = true;
+						//inTextContent = true;
 						
 						skip = false;
 					}
@@ -188,7 +262,8 @@ public class Element extends Node{
 								att.setContent(attributeContent);
 								
 								attributes.add(att);
-								
+								attributeContent = "";
+								attributeName = "";
 							} else {
 								attributeContent += body.charAt(i);
 							}
@@ -198,9 +273,19 @@ public class Element extends Node{
 					
 					
 				} else {
+					
 					if(body.charAt(i) == '>') {
+						if(tags.get(tags.size()-1).equals(closingName)) {
+							tags.remove(tags.size()-1);
+							closingName="";
+						}else {
+							throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+						}
 						inTag = false;
 						inClosing = false;
+					}else {
+						closingName += body.charAt(i);
+						
 					}
 				}
 				
@@ -231,7 +316,7 @@ public class Element extends Node{
 		
 	}
 	
-	public List<Element> getChildElements(){
+	public List<Element> getChildElements() throws Exception{
 		List<Node> nodeList = this.getChildNodes();
 		List<Element> elements = new ArrayList<>();
 		for(int i = 0; i< nodeList.size(); i++) {
@@ -241,7 +326,7 @@ public class Element extends Node{
 		return elements;
 	}
 	
-	public List<Element> getElementsByTagName(String tagName){
+	public List<Element> getElementsByTagName(String tagName) throws Exception{
 		List<Element> elementList = getChildElements();
 		List<Element> elementNameList = new ArrayList<>();
 		for(Element el : elementList) {
