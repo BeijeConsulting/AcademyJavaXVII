@@ -160,14 +160,21 @@ public class Element extends Node{
 						// Quando si chiude un tag ed esso non chiude l'ultimo tag di apertura inserito significa che è
 						// presente un errore di ordine dei tag nel body quindi lancio un'eccezione
 						if(body.charAt(i) == '>') {
-							if(tags.get(tags.size()-1).equals(closingName)) {
-								tags.remove(tags.size()-1);
-								closingName="";
+							
+							if(i > 0 && body.charAt(i-1) == '/') {
+								inBodyTag = false;
+								inClosing = false;
 							}else {
-								throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+							
+								if(tags.get(tags.size()-1).equals(closingName)) {
+									tags.remove(tags.size()-1);
+									closingName="";
+								}else {
+									throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+								}
+								inBodyTag = false;
+								inClosing = false;
 							}
-							inTag = false;
-							inClosing = false;
 						}else {
 							if(body.charAt(i) != '/' && body.charAt(i) != '<') {
 								closingName += body.charAt(i);
@@ -322,14 +329,32 @@ public class Element extends Node{
 					// Quando si chiude un tag ed esso non chiude l'ultimo tag di apertura inserito significa che è
 					// presente un errore di ordine dei tag nel body quindi lancio un'eccezione
 					if(body.charAt(i) == '>') {
-						if(tags.get(tags.size()-1).equals(closingName)) {
-							tags.remove(tags.size()-1);
-							closingName="";
+						if(i > 0 && body.charAt(i-1) == '/') {
+							inTag = false;
+							
+							// creo l'elemento del tag appena letto
+							e = new Element(name);
+							
+							// devo salvare eventuali attributi letti dell'elemento
+							e.attributes = attributes;
+							
+							// infine resetto la lista di attributi
+							attributes = new ArrayList<>();
+							
+							inBody = true;
+							
+							//imposto skip = false perchè serve solo per sapere se devo leggere attributi
+							skip = false;
 						}else {
-							throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+							if(tags.get(tags.size()-1).equals(closingName)) {
+								tags.remove(tags.size()-1);
+								closingName="";
+							}else {
+								throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+							}
+							inTag = false;
+							inClosing = false;
 						}
-						inTag = false;
-						inClosing = false;
 					}else {
 						closingName += body.charAt(i);
 						

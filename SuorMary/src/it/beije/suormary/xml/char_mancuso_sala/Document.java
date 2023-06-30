@@ -39,7 +39,7 @@ public class Document  {
 			//??dovrei togliere dal fondo gli n caratteri
 			//di cui è composto il tag di chiusura??
 			String body = document.substring(endIndex+1, document.length()-rootEl.length());
-			
+			System.out.println(body);
 			el.setBody(body);
 			
 			
