@@ -12,8 +12,8 @@ public class Element {
 	public Element() {
 	}
 	
-	public Element(String tagName, List<Element> childEl, String values) {
-		this();
+	public Element(String tagName,List<Element> childEl, String values) {
+		
 		this.tagName = tagName;
 		this.attributes = new Attributes();
 		this.childEl = childEl;

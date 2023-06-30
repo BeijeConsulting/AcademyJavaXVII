@@ -10,89 +10,77 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.w3c.dom.Element;
+
 
 public class ToolsParser {
 		
-	public static FileReader fileReader = null;
-	public static BufferedReader bufferedReader = null;
-	public static List<String> rows = null;
-	public static Element el = null;
+	public  FileReader fileReader = null;
+	public  BufferedReader bufferedReader = null;
+	public  List<String> rows = null;
+	public  Element el = null;
 		
-		
-	
-	public static Element getRootElement(String pathFile) {
-
-	
-
-		
+	public List<String> readXML (String pathFile){
 		try {
 			File file = new File(pathFile);
 			fileReader = new FileReader(file);
-			
+						
 			
 			bufferedReader = new BufferedReader(fileReader);
 			rows = new ArrayList<String>();
+			String rIgnorare = bufferedReader.readLine();
+			String[] r1 = null;
 			while (bufferedReader.ready()) {
 				String r = bufferedReader.readLine();
-				
-				rows.add(r);
-			}
-//			for (String s : rows) {
-//				System.out.println(s);
-//				}
-			
-			char carattereInizio = '<';
-			char carattereFine = '>';
-			int i=0;
-			
-			el = new Element();
-			
-			for (String s : rows) {
-				
-				int indiceInizio = s.indexOf(carattereInizio)+1;
-				int indiceFine = s.indexOf(carattereFine);
-				String str = s.substring(indiceInizio, indiceFine);
-				String str2 = s.substring((s.indexOf(carattereFine)+1),s.indexOf(carattereInizio));
-				if(i==1) {
-					el.setTagName(str);
-				}				
-				i++;
-			}
-			
-			
-			
-			
-			
-			
-			
+				r1 = r.split("[<>]");			//divido file per ogni valore delimitato da '<' e '>'
+				for(String a : r1) {
 
-//					
-//			int i=0;
-//							
-//				for (String s : rows) {
-//					
-//					int indiceInizio = s.indexOf(carattereInizio)+1;
-//					int indiceFine = s.indexOf(carattereFine);
-//					String str = s.substring(indiceInizio, indiceFine);
-//					if(i!=0) {
-//						el.add(str);
-//					}				
-//					i++;
-//				}
-//				
-//			System.out.println(el.get(0));
-//				for (String s : el) {
-//					System.out.println(s);
-//				}
-//				
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}  catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+					rows.add(a.trim());  		//salvo file letto in Arraylist 
+				}
+			}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}  catch (Exception e) { 
+				e.printStackTrace();
+			}
+		
+		return rows;
+	}
+	
+	public void tree(List<String> rows) {	
+		Element root = new Element();
+		
+		String str = "/".concat(rows.get(1));
+		if(rows.get(rows.size()-1).equals(str)) {			//controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
+			root.setTagName(rows.get(1));					//setto tagName di RootElement 
+			System.out.println(root.getTagName());
+		} else {
+			System.out.println("File non valido");			//root element non chiuso, file non valido
+			return;
 		}
+//		
+//		for(int i=0 )
+
+	}
+		
+		
+		
+	
+	
+	
+	
+	
+	
+	public Element getRootElement(String pathFile) {
+
+//		try {
+//			
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}  catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		return null;
 	}
