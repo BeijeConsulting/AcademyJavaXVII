@@ -33,7 +33,11 @@ public class Element extends Node{
 	}
 	
 	public String getAttributes(){
-		return null;
+		String result = "";
+		for(Attribute a : attributes) {
+			result += a.toString();
+		}
+		return result;
 	}
 	
 	public String getAttribute() {
@@ -55,14 +59,19 @@ public class Element extends Node{
 		boolean inAttributeContent=false;
 		boolean inClosing = false;
 		boolean inBody = false;
+		boolean inTextContent = false;
+		
+		boolean inBodyTag = false;
 		
 		String name = "";
 		String attributeName = "";
 		String attributeContent = "";
 		String contentNode = "";
-		
-		String body = "";
 		String checkName = "";
+		
+		String textContent = "";
+		
+		String body = this.getBody();
 		
 		String innerElementBody = "";
 		
@@ -70,28 +79,43 @@ public class Element extends Node{
 			
 			if(inBody) {
 				innerElementBody += body.charAt(i);
+				if(body.charAt(i) == '<') {
+					inBodyTag = true;
+				}	
+				if(!inBodyTag) {
+					textContent += body.charAt(i);
+				}
+				if(body.charAt(i) == '>') {
+					inBodyTag = false;
+				}
 				if(checkName.equals("")) {
 					if(body.charAt(i) == '<') {
 						checkName += '<';
+					}else {
+						checkName = "";
 					}
 				}else {
 					if(checkName.equals("<")) {
 						if(body.charAt(i) == '/') {
 							checkName += '/';
+						}else {
+							checkName = "";
 						}
 					}else {
 						if(checkName.startsWith("</")){
-							if(body.charAt(i) != '>') {
-								if(checkName.substring(2).equals(name)) {
-									checkName += ">";
-									innerElementBody = innerElementBody.substring(0,innerElementBody.length() - checkName.length());
+							if(checkName.substring(2).equals(name) && body.charAt(i) == '>') {
+								checkName += body.charAt(i);
+								innerElementBody = innerElementBody.substring(0,innerElementBody.length() - checkName.length());
 									
-									e.setBody(innerElementBody);
-									nodes.add(e);
-									inBody=false;
-									innerElementBody = "";
-									checkName = "";
-								}
+								e.setBody(innerElementBody);
+								e.setTextContent(textContent);
+								nodes.add(e);
+								inBody=false;
+								textContent = "";
+								innerElementBody = "";
+								checkName = "";
+								name = "";
+								
 							}else {
 								checkName += body.charAt(i);
 								if(name.substring(0,checkName.length()-2).equals(checkName.substring(2))) {
@@ -105,90 +129,91 @@ public class Element extends Node{
 					}
 				}
 				
-			}
-			
-			if(inTag && body.charAt(i) == ' ') {
-				skip = true;
-			}
-			if(inTag && body.charAt(i) == '/') {
-				inClosing = true;
-			}
-			
-			if(!inClosing) {
-				
-				if(body.charAt(i) == '>') {
-					inTag = false;
-					
-					e = new Element(name);
-					e.attributes = attributes;
-					
-					attributes = new ArrayList<>();
-					
-					inBody = true;
-					
-					skip = false;
+			}else {
+				if(inTag && body.charAt(i) == ' ') {
+					skip = true;
+				}
+				if(inTag && body.charAt(i) == '/') {
+					inClosing = true;
 				}
 				
-				if(!skip) {
-					if(inTag) {
-						name += body.charAt(i);
+				if(!inClosing) {
+					
+					if(body.charAt(i) == '>') {
+						inTag = false;
+						
+						e = new Element(name);
+						e.attributes = attributes;
+						
+						attributes = new ArrayList<>();
+						
+						inBody = true;
+						inTextContent = true;
+						
+						skip = false;
 					}
-				}else {
-					if(body.charAt(i) != ' ') {
-						if(body.charAt(i) != '=') {
-							if(!inAttributeContent) {
-								attributeName += body.charAt(i);
+					
+					if(!skip) {
+						if(inTag) {
+							name += body.charAt(i);
+						}
+					}else {
+						if(!inAttributeContent) {
+							if(body.charAt(i) != ' ') {
+								if(body.charAt(i) != '=') {
+									if(body.charAt(i) == '"') {
+										inAttributeContent = true;
+									}else {
+										attributeName += body.charAt(i);
+									}
+								}
 							}
 						}else {
-							if(inAttributeContent) {
-								if(body.charAt(i) == '"') {
-									inAttributeContent = false;
-									
-									att = new Attribute();
-									att.setName(attributeName);
-									att.setContent(attributeContent);
-									
-									attributes.add(att);
-									
-								} else {
-									attributeContent += body.charAt(i);
-								}
-							}else {
-								if(body.charAt(i) == '"') {
-									inAttributeContent = true;
-								}
+							if(body.charAt(i) == '"') {
+								inAttributeContent = false;
+								
+								att = new Attribute();
+								att.setName(attributeName);
+								att.setContent(attributeContent);
+								
+								attributes.add(att);
+								
+							} else {
+								attributeContent += body.charAt(i);
 							}
-							
 						}
+					}
+					
+					
+					
+				} else {
+					if(body.charAt(i) == '>') {
+						inTag = false;
+						inClosing = false;
 					}
 				}
 				
 				
 				
-			} else {
-				if(body.charAt(i) == '>') {
-					inTag = false;
-					inClosing = false;
+				if(body.charAt(i) == '<') {
+					if(!contentNode.equals("")) {
+						n = new Node();
+						n.setBody(contentNode);
+						n.setTextContent(contentNode);
+						nodes.add(n);
+						contentNode = "";
+					}
+					inTag = true;
+				}
+				
+				if(!inTag) {
+					if(!inBody) {
+						contentNode += body.charAt(i);
+					}	
 				}
 			}
 			
 			
-			
-			if(body.charAt(i) == '<') {
-				if(!contentNode.equals("")) {
-					n = new Node();
-					n.setBody(contentNode);
-					nodes.add(n);
-					contentNode = "";
-				}
-				inTag = true;
-			}
-			
-			if(!inTag) {
-				if(!inBody) {
-					contentNode += body.charAt(i);
-				}	
-			}
 			
 		}
 		return nodes;

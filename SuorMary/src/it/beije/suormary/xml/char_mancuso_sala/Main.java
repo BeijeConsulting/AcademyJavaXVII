@@ -1,24 +1,31 @@
 package it.beije.suormary.xml.char_mancuso_sala;
 
+import java.util.List;
+
 public class Main {
 
 	public static void main(String[] args) {
 		
-		String s = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\r\n"
-				+ "<contatti>\r\n"
-				+ "	<contatto>\r\n"
-				+ "		<nome>Pippo</nome>\r\n"
-				+ "		<cognome>Pluto</cognome>\r\n"
-				+ "		<telefono>3331234567</telefono>\r\n"
-				+ "		<email>pippo@pluto.net</email>\r\n"
-				+ "	</contatto>\r\n"
-				+ "	<contatto>\r\n"
-				+ "		<nome>Paolino</nome>\r\n"
+		String s =  "<nome>Paolino</nome>\r\n"
 				+ "		<cognome>Paperino</cognome>\r\n"
-				+ "		<telefono>00423803243423</telefono>\r\n"
-				+ "	</contatto>\r\n"
-				+ "</contatti>";
+				+ "		<telefono>00423803243423\r\n";
 		
+		Element root = new Element();
+		root.setBody(s);
+		
+		List<Node> nodes = root.getChildNodes();
+		
+		for(Node n : nodes) {
+			if(n instanceof Element) {
+				System.out.println("I am an element\n");
+				System.out.println(((Element)n).getTagName());
+				System.out.println(((Element)n).getAttributes());
+			}else {
+				System.out.println("I am a node");
+			}
+			System.out.println(n.getTextContent());
+			System.out.println(n.getBody());
+		}
 		
 		
 	}

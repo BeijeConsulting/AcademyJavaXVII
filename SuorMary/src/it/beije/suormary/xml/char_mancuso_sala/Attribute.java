@@ -18,6 +18,10 @@ public class Attribute {
 		this.content = content;
 	}
 	
+	public String toString() {
+		String result = getName() + " : " + getContent() + "\n";
+		return result;
+	}
 	
 	
 }
