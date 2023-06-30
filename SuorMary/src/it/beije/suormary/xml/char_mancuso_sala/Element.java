@@ -3,7 +3,7 @@ package it.beije.suormary.xml.char_mancuso_sala;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Element extends Node{
+public class Element extends Node{ 
 	
 	
 	private String tagName;
