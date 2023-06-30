@@ -4,11 +4,19 @@ import java.util.List;
 
 public class Main {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
-		String s =  "<nome>Paolino</nome>\r\n"
+		String s =  "<contatto age=\"20\" att1=\"ciao\">\r\n"
+				+ "		<nome>Pippo</nome>\r\n"
+				+ "		<cognome>Pluto</cognome>\r\n"
+				+ "		<telefono>3331234567</telefono>\r\n"
+				+ "		<email>pippo@pluto.net</email>\r\n"
+				+ "	</contatto>\r\n"
+				+ "	<contatto age=\"30\">\r\n"
+				+ "		<nome>Paolino</nome>\r\n"
 				+ "		<cognome>Paperino</cognome>\r\n"
-				+ "		<telefono>00423803243423\r\n";
+				+ "		<telefono>00423803243423\r\n"
+				+ "	</telefono></contatto>";
 		
 		Element root = new Element();
 		root.setBody(s);
@@ -24,7 +32,7 @@ public class Main {
 				System.out.println("I am a node");
 			}
 			System.out.println(n.getTextContent());
-			System.out.println(n.getBody());
+			//System.out.println(n.getBody());
 		}
 		
 		
