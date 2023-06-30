@@ -196,7 +196,13 @@ public class Element extends Node{
 	}
 	
 	public List<Element> getChildElements(){
-		return null;
+		List<Node> nodeList = this.getChildNodes();
+		List<Element> elements = new ArrayList<>();
+		for(int i = 0; i< nodeList.size(); i++) {
+			Node node = nodeList.get(i);
+			if(node instanceof Element) elements.add((Element)node);
+		}
+		return elements;
 	}
 	
 	public List<Element> getElementsByTagName(String tagName){
