@@ -10,7 +10,10 @@ public class Document  {
 		Element el =null;
 		try {
 			//rimuovo eventuali commenti o spazi
-			document=Document.removeCommentAndSpace(document);
+			//document=Document.removeCommentAndSpace(document);
+			
+			//rimuove spazi a inizio e fine e rimuove tutti i commenti che trova nel file
+			document=Document.removeAllComment(document);
 			
 			//rimuovo il percorso
 			document=Document.removePath(document);
@@ -49,7 +52,8 @@ public class Document  {
 	public static Document parse(String file) {		
 		return XMLUtilities.readXML(file);
 	}
-	
+
+	/*SOSTITUITO DA REMOVEALLCOMMENT
 private static String removeCommentAndSpace(String document){
 	//rimuove spazi bianchi iniziali
 			document=document.trim();
@@ -63,7 +67,7 @@ private static String removeCommentAndSpace(String document){
 			}
 			return document;
 	}
-
+*/
 	private static String removePath(String document) {
 		String declaration="<?xml";
 		if(document.startsWith(declaration)) {
@@ -82,25 +86,30 @@ private static String removeCommentAndSpace(String document){
 			
 			document=document.trim();
 		    StringBuilder result = new StringBuilder();
-
+		    
+		    //trovo l'indice del commento iniziale
 		    int start = document.indexOf("<!--");
+		    //trovo l'indice di chiusura del commento iniziale
 		    int end = document.indexOf("-->");
-
+		    
+		    //la uso per tenere traccia dell'indice successivo al commento corrente
 		    int last = 0;
-
+		    
+		    //ciclo per trovare nuovi commenti
+		    //se entrambi sono a -1 non ho più commenti da trovare nel file
 		    while (start != -1 && end != -1) {
-		        // Aggiungo tutto ciò che precede il commento
+		        // aggiungo tutto ciò che precede il commento
 		        result.append(document, last, start);
 
-		        // Avanzo all'indice successivo dopo il commento
+		        // avanzo all'indice successivo dopo il commento
 		        last = end + 3;
 
-		        // Trovo il prossimo commento
+		        // cerco il prossimo commento
 		        start = document.indexOf("<!--", last);
 		        end = document.indexOf("-->", last);
 		    }
 
-		    // Aggiungi il resto del documento dopo l'ultimo commento
+		    // Aggiungo il resto del documento dopo l'ultimo commento
 		    result.append(document.substring(last));
 
 		    return result.toString();
