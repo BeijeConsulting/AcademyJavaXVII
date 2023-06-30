@@ -2,7 +2,7 @@ package it.beije.suormary.xml.char_mancuso_sala;
 
 import java.util.List;
 
-public class Document {
+public class Document  {
 	
 	public String document;
 	
@@ -44,6 +44,9 @@ public class Document {
 		}
 		
 		return null;
+	}
+	public static Document parse(String file) {		
+		return XMLUtilities.readXML(file);
 	}
 	
 private static String removeCommentAndSpace(String document){
