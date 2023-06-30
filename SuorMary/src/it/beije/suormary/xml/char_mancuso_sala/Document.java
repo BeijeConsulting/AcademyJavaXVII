@@ -37,7 +37,7 @@ public class Document  {
 				rootEl=document.substring(0, lunghezzaPrimoEl)+">";
 			}
 			
-			//tolgo <>
+			//tolgo <> 
 			String nameRootEl = rootEl.substring(1,rootEl.length()-1);
 			
 			el = new Element(nameRootEl);
