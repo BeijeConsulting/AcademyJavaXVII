@@ -32,16 +32,25 @@ public class Element extends Node{
 		return this.tagName;
 	}
 	
-	public String getAttributes(){
+
+	public String attributesToString(){
 		String result = "";
 		for(Attribute a : attributes) {
 			result += a.toString();
 		}
 		return result;
 	}
+
+	public List<Attribute> getAttributes(){
+		return this.attributes;
+	}
 	
-	public String getAttribute() {
-		return null;
+	public String getAttribute(String attribute) {
+		String attContent = "";
+		for(Attribute at : attributes) {
+			if(at.getName().equals(attribute))  attContent = at.getContent();
+		}
+		return attContent;
 	}
 	
 	public List<Node> getChildNodes(){
@@ -49,6 +58,8 @@ public class Element extends Node{
 		//StringBuilder sb = new StringBuilder(body);
 		List<Node> nodes = new ArrayList<>();
 		List<Attribute> attributes = new ArrayList<>();
+		
+		List<String> tags = new ArrayList<>();
 		
 		Element e = null;
 		Attribute att = null;
@@ -221,11 +232,23 @@ public class Element extends Node{
 	}
 	
 	public List<Element> getChildElements(){
-		return null;
+		List<Node> nodeList = this.getChildNodes();
+		List<Element> elements = new ArrayList<>();
+		for(int i = 0; i< nodeList.size(); i++) {
+			Node node = nodeList.get(i);
+			if(node instanceof Element) elements.add((Element)node);
+		}
+		return elements;
 	}
 	
 	public List<Element> getElementsByTagName(String tagName){
-		return null;
+		List<Element> elementList = getChildElements();
+		List<Element> elementNameList = new ArrayList<>();
+		for(Element el : elementList) {
+			if(el.getTagName().equals(tagName)) elementNameList.add(el);
+		}
+		return elementNameList;
+		
 	}
 }
 
