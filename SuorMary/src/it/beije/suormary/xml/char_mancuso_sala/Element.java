@@ -50,6 +50,8 @@ public class Element extends Node{
 		List<Node> nodes = new ArrayList<>();
 		List<Attribute> attributes = new ArrayList<>();
 		
+		List<String> tags = new ArrayList<>();
+		
 		Element e = null;
 		Attribute att = null;
 		Node n = null;
