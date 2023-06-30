@@ -18,12 +18,6 @@ public class Element extends Node{
 		this.setTagName(tagName);
 	}
 	
-	public Element(String tagName, String content) {
-		attributes = new ArrayList<>();
-		this.setTagName(tagName);
-		this.setTextContent(content);
-	}
-	
 	public void setTagName(String tagName) {
 		this.tagName = tagName;
 	}
@@ -189,7 +183,6 @@ public class Element extends Node{
 								innerElementBody = innerElementBody.substring(0,innerElementBody.length() - checkName.length());
 									
 								e.setBody(innerElementBody);
-								e.setTextContent(textContent);
 								nodes.add(e);
 								inBody=false;
 								textContent = "";
@@ -295,7 +288,6 @@ public class Element extends Node{
 					if(!contentNode.equals("")) {
 						n = new Node();
 						n.setBody(contentNode);
-						n.setTextContent(contentNode);
 						nodes.add(n);
 						contentNode = "";
 					}
@@ -335,5 +327,26 @@ public class Element extends Node{
 		return elementNameList;
 		
 	}
+	
+	
+	public String getElementTextContent() throws Exception {
+		//Element e = new Element();
+		//e.setBody(this.getBody());
+		String result = "";
+		List<Node> children = this.getChildNodes();
+		if(children.size() == 0) {
+			return this.getBody();
+		}else {
+			for(Node n : children) {
+				if(n instanceof Element) {
+					result += ((Element)n).getElementTextContent();
+				}else {
+					result += n.getBody();
+				}
+			}
+		}
+		return result;
+	}
+	
 }
 
