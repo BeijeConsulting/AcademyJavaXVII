@@ -1,13 +1,13 @@
 package it.beije.suormary.xml.char_mancuso_sala;
 
-import java.util.List;
-
 public class Document  {
 	
 	public String document;
 	
 	public Element getRootElement() {
-		Element el =null;
+
+		Element el = null;
+
 		try {
 			//rimuovo eventuali commenti o spazi
 			//document=Document.removeCommentAndSpace(document);
@@ -40,23 +40,28 @@ public class Document  {
 			//tolgo <> 
 			String nameRootEl = rootEl.substring(1,rootEl.length()-1);
 			
-			el = new Element(nameRootEl);
+
+			 el = new Element(nameRootEl);
+
 			
 			document=document.trim();
 			//la stringa con il corpo
 			//??dovrei togliere dal fondo gli n caratteri
 			//di cui è composto il tag di chiusura??
+
 			//HO AGGIUNTO -1
 			String body = document.substring(endIndex+1, document.length()-rootEl.length()-1);
-			
+
 			el.setBody(body);
 			
 			
-		}catch(Exception e) {
-			e.printStackTrace();
+		}catch(Exception ex) {
+			ex.printStackTrace();
 		}
 		
+
 		return el;
+
 	}
 	public static Document parse(String file) {		
 		return XMLUtilities.readXML(file);

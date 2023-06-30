@@ -160,14 +160,21 @@ public class Element extends Node{
 						// Quando si chiude un tag ed esso non chiude l'ultimo tag di apertura inserito significa che è
 						// presente un errore di ordine dei tag nel body quindi lancio un'eccezione
 						if(body.charAt(i) == '>') {
-							if(tags.get(tags.size()-1).equals(closingName)) {
-								tags.remove(tags.size()-1);
-								closingName="";
+							
+							if(i > 0 && body.charAt(i-1) == '/') {
+								inBodyTag = false;
+								inClosing = false;
 							}else {
-								throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+							
+								if(tags.get(tags.size()-1).equals(closingName)) {
+									tags.remove(tags.size()-1);
+									closingName="";
+								}else {
+									throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+								}
+								inBodyTag = false;
+								inClosing = false;
 							}
-							inTag = false;
-							inClosing = false;
 						}else {
 							if(body.charAt(i) != '/' && body.charAt(i) != '<') {
 								closingName += body.charAt(i);
@@ -322,14 +329,32 @@ public class Element extends Node{
 					// Quando si chiude un tag ed esso non chiude l'ultimo tag di apertura inserito significa che è
 					// presente un errore di ordine dei tag nel body quindi lancio un'eccezione
 					if(body.charAt(i) == '>') {
-						if(tags.get(tags.size()-1).equals(closingName)) {
-							tags.remove(tags.size()-1);
-							closingName="";
+						if(i > 0 && body.charAt(i-1) == '/') {
+							inTag = false;
+							
+							// creo l'elemento del tag appena letto
+							e = new Element(name);
+							
+							// devo salvare eventuali attributi letti dell'elemento
+							e.attributes = attributes;
+							
+							// infine resetto la lista di attributi
+							attributes = new ArrayList<>();
+							
+							inBody = true;
+							
+							//imposto skip = false perchè serve solo per sapere se devo leggere attributi
+							skip = false;
 						}else {
-							throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+							if(tags.get(tags.size()-1).equals(closingName)) {
+								tags.remove(tags.size()-1);
+								closingName="";
+							}else {
+								throw new Exception("I tag del documento vengono chiusi in ordine errato.");
+							}
+							inTag = false;
+							inClosing = false;
 						}
-						inTag = false;
-						inClosing = false;
 					}else {
 						closingName += body.charAt(i);
 						
@@ -366,17 +391,24 @@ public class Element extends Node{
 		
 	}
 	
-	public List<Element> getChildElements() throws Exception{
-		List<Node> nodeList = this.getChildNodes();
-		List<Element> elements = new ArrayList<>();
-		for(int i = 0; i< nodeList.size(); i++) {
-			Node node = nodeList.get(i);
-			if(node instanceof Element) elements.add((Element)node);
+	public List<Element> getChildElements() {
+		List<Node> nodeList = null;
+		List<Element> elements =  null;
+		try {
+			nodeList = this.getChildNodes();
+			elements = new ArrayList<>();
+			for(int i = 0; i< nodeList.size(); i++) {
+				Node node = nodeList.get(i);
+				if(node instanceof Element) elements.add((Element)node);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 		return elements;
 	}
 	
-	public List<Element> getElementsByTagName(String tagName) throws Exception{
+	public List<Element> getElementsByTagName(String tagName) {
 		List<Element> elementList = getChildElements();
 		List<Element> elementNameList = new ArrayList<>();
 		for(Element el : elementList) {
@@ -387,22 +419,26 @@ public class Element extends Node{
 	}
 	
 	
-	public String getElementTextContent() throws Exception {
-		//Element e = new Element();
-		//e.setBody(this.getBody());
-		String result = "";
-		List<Node> children = this.getChildNodes();
-		if(children.size() == 0) {
-			return this.getBody();
-		}else {
-			for(Node n : children) {
-				if(n instanceof Element) {
-					result += ((Element)n).getElementTextContent();
-				}else {
-					result += n.getBody();
+	public String getElementTextContent()  {
+		String result = null;
+		try {
+			result = "";
+			List<Node> children = this.getChildNodes();
+			if(children.size() == 0) {
+				return this.getBody();
+			}else {
+				for(Node n : children) {
+					if(n instanceof Element) {
+						result += ((Element)n).getElementTextContent();
+					}else {
+						result += n.getBody();
+					}
 				}
 			}
+		} catch(Exception e) {
+			e.printStackTrace();
 		}
+	
 		return result;
 	}
 	

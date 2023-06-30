@@ -6,11 +6,11 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		
-		String s =  "<contatto>\n\r"
+		/*String s =  "<contatto>\n\r"
 				+ "		<nome>lara</nome>\n\r"
-				+ "		<cognome>mancuso</contatto>\n\r"
+				+ "		<cognome>mancuso</c>\n\r"
 				+ "</cognome>";
-		
+		*/
 		Document doc = Document.parse("/Temp/filexml.xml");
 		
 		Element root = new Element();
@@ -28,7 +28,7 @@ public class Main {
 		
 		//System.out.println(root.getElementTextContent());
 		
-		/*List<Node> nodes = root.getChildNodes();
+		List<Node> nodes = root.getChildNodes();
 		
 		for(Node n : nodes) {
 			if(n instanceof Element) {
@@ -40,11 +40,17 @@ public class Main {
 			}
 			System.out.println(n.getBody());
 			//System.out.println(n.getBody());
-		}*/
-		System.out.println(root.getElementTextContent());
+		}
+		//System.out.println(root.getElementTextContent());
 		
 		
 		
 	}
 
+
+	
+
+
 }
+
+
