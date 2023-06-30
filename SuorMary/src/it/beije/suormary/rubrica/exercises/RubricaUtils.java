@@ -179,7 +179,6 @@ public class RubricaUtils {
 				contatto.setPhoneNumber(rs.getString(PHONE_NUMBER_FIELD));
 				contatto.setEmail(rs.getString(EMAIL_FIELD));
 				contatto.setNote(rs.getString(NOTE_FIELD));
-				
 				contatti.add(contatto);
 			}
 			rs.close();
@@ -400,22 +399,20 @@ public class RubricaUtils {
 	
 	public void writeRubricaDB(List<Contact> contatti) {
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		
 		try {
 			connection = RubricaUtils.getConnection();
-			
-			statement = connection.createStatement();
 
 			//System.out.println("connection open? " + !connection.isClosed());
 			StringBuilder query = new StringBuilder("INSERT INTO rubrica (`");
 			query.append(SURNAME_FIELD).append("`, `")
-						 .append(NAME_FIELD).append("`, `")
-						 .append(PHONE_NUMBER_FIELD).append("`, `")
-						 .append(EMAIL_FIELD).append("`, `")
-						 .append(NOTE_FIELD)
-						 .append("`) VALUES (?, ?, ?, ?, ?)");
-			PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
+				 .append(NAME_FIELD).append("`, `")
+				 .append(PHONE_NUMBER_FIELD).append("`, `")
+				 .append(EMAIL_FIELD).append("`, `")
+				 .append(NOTE_FIELD)
+				 .append("`) VALUES (?, ?, ?, ?, ?)");
+			preparedStatement = connection.prepareStatement(query.toString());
 			
 			for (Contact contatto : contatti) {
 				if(contatto!=null) {
@@ -442,7 +439,7 @@ public class RubricaUtils {
 			e.printStackTrace();
 		} finally {
 			try {
-				statement.close();
+				preparedStatement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -654,47 +651,37 @@ public class RubricaUtils {
 	
 	public void addContactDB(Contact contatto) {
 		Connection connection = null;
-		Statement statement = null;
-		
+		PreparedStatement preparedStatement = null;
+	
 		try {
 			connection = RubricaUtils.getConnection();
-			
-			statement = connection.createStatement();
 			//System.out.println("connection open? " + !connection.isClosed());
 			
-			StringBuilder query = new StringBuilder();
-			StringBuilder columnsValues = new StringBuilder("INSERT INTO rubrica (`");
-			columnsValues.append(SURNAME_FIELD).append("`, `")
+			StringBuilder query = new StringBuilder("INSERT INTO rubrica (`");
+			query.append(SURNAME_FIELD).append("`, `")
 						 .append(NAME_FIELD).append("`, `")
 						 .append(PHONE_NUMBER_FIELD).append("`, `")
 						 .append(EMAIL_FIELD).append("`, `")
 						 .append(NOTE_FIELD)
-						 .append("`) VALUES ('");
-			int nRecord = -1;
+						 .append("`) VALUES (?, ?, ?, ?, ?)");
+			preparedStatement = connection.prepareStatement(query.toString());
 			
 			if(contatto!=null) {
-				query.setLength(0);
-				query.append(columnsValues)
-					.append(escapeSpecialCharacters(contatto.getSurname())).append("', '")
-					.append(escapeSpecialCharacters(contatto.getName())).append("', '")
-					.append(escapeSpecialCharacters(contatto.getPhoneNumber())).append("', '")
-					.append(escapeSpecialCharacters(contatto.getEmail())).append("', '")
-					.append(escapeSpecialCharacters(contatto.getNote()))
-					.append("')");
-					
-					try {
-						nRecord = statement.executeUpdate(query.toString());
-						if (nRecord !=1) {
-							System.out.println("Query non inserita: " + query);
-						}
+				preparedStatement.setString(1, contatto.getSurname());
+				preparedStatement.setString(2, contatto.getName());
+				preparedStatement.setString(3, contatto.getPhoneNumber());
+				preparedStatement.setString(4, contatto.getEmail());
+				preparedStatement.setString(5, contatto.getNote());
+				
+				try {
+					preparedStatement.execute();
 					} catch (SQLSyntaxErrorException e) {
 						System.out.println("Query non valida: " + query);
 					}
-					
+				
 				} else {
 					System.out.println("Contatto mancante");
 				}
-	
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -702,7 +689,7 @@ public class RubricaUtils {
 			e.printStackTrace();
 		} finally {
 			try {
-				statement.close();
+				preparedStatement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
