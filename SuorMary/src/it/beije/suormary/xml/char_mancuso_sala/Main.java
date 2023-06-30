@@ -8,25 +8,25 @@ public class Main {
 		
 		String s =  "<contatto>\n\r"
 				+ "		<nome>lara</nome>\n\r"
-				+ "		<cognome>mancuso</cognome>\n\r"
-				+ "</contatto>";
+				+ "		<cognome>mancuso</contatto>\n\r"
+				+ "</cognome>";
 		
-		/*Document doc = Document.parse("/Temp/filexml.xml");
+		Document doc = Document.parse("/Temp/filexml.xml");
 		
 		Element root = new Element();
 		
 		root = doc.getRootElement();
 		
-		System.out.println("I am an element\n");
+		/*System.out.println("I am an element\n");
 		System.out.println(root.getTagName());
 		System.out.println(root.attributesToString());
 		System.out.println(root.getBody());*/
 		
 		
-		Element root = new Element();
-		root.setBody(s);
+		//Element root = new Element();
+		//root.setBody(s);
 		
-		System.out.println(root.getElementTextContent());
+		//System.out.println(root.getElementTextContent());
 		
 		/*List<Node> nodes = root.getChildNodes();
 		
@@ -41,7 +41,7 @@ public class Main {
 			System.out.println(n.getBody());
 			//System.out.println(n.getBody());
 		}*/
-		
+		System.out.println(root.getElementTextContent());
 		
 		
 		
