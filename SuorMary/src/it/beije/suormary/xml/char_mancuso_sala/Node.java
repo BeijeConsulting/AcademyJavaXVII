@@ -2,7 +2,6 @@ package it.beije.suormary.xml.char_mancuso_sala;
 
 public class Node {
 	private String body;
-	private String textContent;
 	
 	public String getBody() {
 		return body;
@@ -12,17 +11,5 @@ public class Node {
 		this.body = body;
 	}
 
-	public String getTextContent() {
-		return textContent;
-	}
-
-	public void setTextContent(String textContent) {
-		this.textContent = textContent;
-	}
-
-
-	
-	
-	
 	
 }

@@ -34,6 +34,7 @@ public class XMLUtilities {
 				e.printStackTrace();
 			}
 		}
+
 		Document doc = new Document();
 		doc.document = fileStr.toString();
 		return doc;

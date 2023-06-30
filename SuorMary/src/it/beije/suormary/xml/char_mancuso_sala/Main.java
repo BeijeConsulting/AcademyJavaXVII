@@ -5,32 +5,52 @@ import java.util.List;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
-
 		
-
-//		}
-		Document d = Document.parse("/v/test_parser1.xml");
-		Element e = d.getRootElement();
-		List<Node> nodelist = e.getChildNodes();
-		for(Node node : nodelist) {
-			if(node instanceof Element) {
-				Element el = (Element)node;
-				System.out.println(el.getElementsByTagName("nome"));
+		String s =  "<contatto>\n\r"
+				+ "		<nome>lara</nome>\n\r"
+				+ "		<cognome>mancuso</contatto>\n\r"
+				+ "</cognome>";
+		
+		Document doc = Document.parse("/Temp/filexml.xml");
+		
+		Element root = new Element();
+		
+		root = doc.getRootElement();
+		
+		/*System.out.println("I am an element\n");
+		System.out.println(root.getTagName());
+		System.out.println(root.attributesToString());
+		System.out.println(root.getBody());*/
+		
+		
+		//Element root = new Element();
+		//root.setBody(s);
+		
+		//System.out.println(root.getElementTextContent());
+		
+		/*List<Node> nodes = root.getChildNodes();
+		
+		for(Node n : nodes) {
+			if(n instanceof Element) {
+				System.out.println("I am an element\n");
+				System.out.println(((Element)n).getTagName());
+				System.out.println(((Element)n).attributesToString());
+			}else {
+				System.out.println("I am a node");
 			}
-		}
-//		List<Element> elementList = e.getChildElements();
-//		for(Element elem : elementList) {
-//			System.out.println(elem.getTagName());
-//			List<Attribute> listAttributes= elem.getAttributes();
-//			for(Attribute at : listAttributes) {
-//				System.out.println(at.getName());
-//				System.out.println(at.getContent());
-//
-//			}
-//		
-//		
-//		}
-   }
+			System.out.println(n.getBody());
+			//System.out.println(n.getBody());
+		}*/
+		System.out.println(root.getElementTextContent());
+		
+		
+		
+	}
+
+
+	
+
+
 }
 
 
