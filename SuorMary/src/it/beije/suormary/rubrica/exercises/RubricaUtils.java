@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLSyntaxErrorException;
@@ -42,6 +43,12 @@ public class RubricaUtils {
 	private static final String PHONE_NUMBER_FIELD = "TELEFONO";
 	private static final String EMAIL_FIELD = "EMAIL";
 	private static final String NOTE_FIELD = "NOTE";
+	
+	public static Connection getConnection() throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+	}
 	
 	private String escapeSpecialCharacters(String input) {
 	    if (input == null) {
@@ -155,8 +162,7 @@ public class RubricaUtils {
 			contatti = new ArrayList<Contact>();
 			Contact contatto = null;
 			
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			connection = RubricaUtils.getConnection();
 			
 			statement = connection.createStatement();
 			//System.out.println("connection open? " + !connection.isClosed());
@@ -397,38 +403,30 @@ public class RubricaUtils {
 		Statement statement = null;
 		
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			connection = RubricaUtils.getConnection();
 			
 			statement = connection.createStatement();
-			System.out.println("connection open? " + !connection.isClosed());
-			
-			StringBuilder query = new StringBuilder();
-			StringBuilder columnsValues = new StringBuilder("INSERT INTO rubrica (`");
-			columnsValues.append(SURNAME_FIELD).append("`, `")
+
+			//System.out.println("connection open? " + !connection.isClosed());
+			StringBuilder query = new StringBuilder("INSERT INTO rubrica (`");
+			query.append(SURNAME_FIELD).append("`, `")
 						 .append(NAME_FIELD).append("`, `")
 						 .append(PHONE_NUMBER_FIELD).append("`, `")
 						 .append(EMAIL_FIELD).append("`, `")
 						 .append(NOTE_FIELD)
-						 .append("`) VALUES ('");
-			int nRecord = -1;
+						 .append("`) VALUES (?, ?, ?, ?, ?)");
+			PreparedStatement preparedStatement = connection.prepareStatement(query.toString());
 			
 			for (Contact contatto : contatti) {
 				if(contatto!=null) {
-					query.setLength(0);
-					query.append(columnsValues)
-						 .append(escapeSpecialCharacters(contatto.getSurname())).append("', '")
-						 .append(escapeSpecialCharacters(contatto.getName())).append("', '")
-						 .append(escapeSpecialCharacters(contatto.getPhoneNumber())).append("', '")
-						 .append(escapeSpecialCharacters(contatto.getEmail())).append("', '")
-						 .append(escapeSpecialCharacters(contatto.getNote()))
-						 .append("')");
+					preparedStatement.setString(1, contatto.getSurname());
+					preparedStatement.setString(2, contatto.getName());
+					preparedStatement.setString(3, contatto.getPhoneNumber());
+					preparedStatement.setString(4, contatto.getEmail());
+					preparedStatement.setString(5, contatto.getNote());
 					
 					try {
-						nRecord = statement.executeUpdate(query.toString());
-						if (nRecord !=1) {
-							System.out.println("Query non inserita: " + query);
-						}
+						preparedStatement.execute();
 					} catch (SQLSyntaxErrorException e) {
 						System.out.println("Query non valida: " + query);
 					}
@@ -659,8 +657,7 @@ public class RubricaUtils {
 		Statement statement = null;
 		
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			connection = RubricaUtils.getConnection();
 			
 			statement = connection.createStatement();
 			//System.out.println("connection open? " + !connection.isClosed());
@@ -718,8 +715,7 @@ public class RubricaUtils {
 		Statement statement = null;
 		
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			connection = RubricaUtils.getConnection();
 			
 			statement = connection.createStatement();
 			//System.out.println("connection open? " + !connection.isClosed());
@@ -775,8 +771,8 @@ public class RubricaUtils {
 		Statement statement = null;
 		
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			connection = RubricaUtils.getConnection();
+			
 			statement = connection.createStatement();
 			//System.out.println("connection open? " + !connection.isClosed());
 			StringBuilder query = new StringBuilder("DELETE FROM rubrica WHERE id = ");
@@ -811,8 +807,8 @@ public class RubricaUtils {
 		Statement statement = null;
 		
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+			connection = RubricaUtils.getConnection();
+			
 			statement = connection.createStatement();
 			//System.out.println("connection open? " + !connection.isClosed());
 			StringBuilder query = new StringBuilder();
