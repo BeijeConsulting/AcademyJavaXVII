@@ -3,7 +3,7 @@ package it.beije.suormary.xml.caroselli_iannetta_ulloa;
 import java.util.List;
 
 public class Node {
-
+ 
 	private String tagName;
 	
 	public String getTagname () {return tagName;}

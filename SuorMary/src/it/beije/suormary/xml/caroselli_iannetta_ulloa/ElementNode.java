@@ -2,7 +2,7 @@ package it.beije.suormary.xml.caroselli_iannetta_ulloa;
 
 import java.util.List;
 
-public abstract class ElementNode extends Node{
+public abstract class ElementNode extends Node{ 
 
 	public String getTagName (ElementNode el) {return "";}
 	
