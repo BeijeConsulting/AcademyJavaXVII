@@ -4,9 +4,9 @@ import java.util.List;
 
 public class Document {
 	
-	public List<Node> nodes;
+	public String document;
 	
-	public List<Element> getElementsByTagName(String tagName){
+	public Element getRootElement() {
 		return null;
 	}
 	

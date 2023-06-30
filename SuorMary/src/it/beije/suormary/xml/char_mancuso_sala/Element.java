@@ -206,5 +206,9 @@ public class Element extends Node{
 	public List<Element> getChildElements(){
 		return null;
 	}
+	
+	public List<Element> getElementsByTagName(String tagName){
+		return null;
+	}
 }
 
