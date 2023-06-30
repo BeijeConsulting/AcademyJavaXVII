@@ -35,6 +35,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class MetodiListContact{
+		
 		//LETTURA FILE CSV/XML/DB
 	public static List<Contact> loadContactListFromCSV(String pathFile, String separator) {
 
@@ -167,6 +168,28 @@ public class MetodiListContact{
 			}
 		return contacts;
 	}
+	
+	public static List<Contact> loadContactListFromDB(Connection connection1) throws ClassNotFoundException, SQLException {
+				
+		
+		Connection connection = connection1;
+		Statement statement =connection.createStatement(); ;
+		
+		List<Contact> contacts = new ArrayList<>();
+		Contact c = null;
+		
+		ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
+			while (rs.next()) {
+				c = new Contact();
+				c.setName(rs.getString("nome"));
+				c.setSurname(rs.getString("cognome"));
+				c.setPhoneNumber(rs.getString("telefono"));
+				c.setEmail(rs.getString("email"));
+				c.setNote(rs.getString("note"));
+				contacts.add(c);
+			}
+		return contacts;
+	}
 
 		//SCRITTURA CONTATTI SU FILE CSV/XML/DB
 	public static void writeContactsInRubricaCSV(List<Contact> contatti, String pathFile, String separator) throws IOException {
@@ -267,5 +290,10 @@ public class MetodiListContact{
 		statement.close();
 	}
 
+	
+	public static void main(String[] args) {
+	
+		
+	}
 	
 }

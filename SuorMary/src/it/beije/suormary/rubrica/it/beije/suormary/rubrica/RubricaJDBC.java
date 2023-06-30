@@ -31,7 +31,7 @@ public class RubricaJDBC {
 			
 			//per inserire cont variabili in update conviene passargli string builder
 			
-			PreparedStatement preparedStatement = connection.()
+			
 			
 			//StringBuilder query = new StringBuilder("INSERT INTO rubrica (`nome`, `cognome`, `telefono`, `email`) VALUES('")
 //					.append(nome).append("', '").append(cognome).append("', '")
@@ -55,7 +55,9 @@ public class RubricaJDBC {
 			//System.out.println(a + " record eliminati");
 			
 			//SELECT
-			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");		//per select utilizzare query
+			String s = "Filippo";
+			
+			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica WHERE nome = '" );		//per select utilizzare query
 			while (rs.next()) {
 //				System.out.println("id : " + rs.getInt(1));
 //				System.out.println("nome : " + rs.getString(2));

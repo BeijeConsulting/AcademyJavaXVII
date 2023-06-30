@@ -7,7 +7,13 @@ public class Contact {
 	private String phoneNumber;
 	private String email;
 	private String note;
+	private int id;
 	
+	
+	
+	public int getId() {
+		return id;
+	}
 	public String getName() {
 		return name;
 	}
