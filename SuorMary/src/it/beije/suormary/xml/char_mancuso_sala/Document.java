@@ -7,6 +7,7 @@ public class Document {
 	public String document;
 	
 	public Element getRootElement() {
+		Element el =null;
 		try {
 			//rimuovo eventuali commenti o spazi
 			document=Document.removeCommentAndSpace(document);
@@ -26,9 +27,9 @@ public class Document {
 			String rootEl = document.substring(startIndex, endIndex+1);
 			
 			//tolgo <>
-			String nameRootEl = rootEl.substring(1,rootEl.length());
+			String nameRootEl = rootEl.substring(1,rootEl.length()-1);
 			
-			Element e = new Element(nameRootEl);
+			el = new Element(nameRootEl);
 			
 			document=document.trim();
 			//la stringa con il corpo
@@ -36,14 +37,14 @@ public class Document {
 			//di cui è composto il tag di chiusura??
 			String body = document.substring(endIndex+1, document.length()-rootEl.length());
 			
-			e.setBody(body);
+			el.setBody(body);
 			
 			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
-		return null;
+		return el;
 	}
 	
 private static String removeCommentAndSpace(String document){
@@ -71,6 +72,35 @@ private static String removeCommentAndSpace(String document){
 		}
 		
 		return document;
+		
+	}
+	
+	public static String removeAllComment(String document) {
+			
+			document=document.trim();
+		    StringBuilder result = new StringBuilder();
+
+		    int start = document.indexOf("<!--");
+		    int end = document.indexOf("-->");
+
+		    int last = 0;
+
+		    while (start != -1 && end != -1) {
+		        // Aggiungo tutto ciò che precede il commento
+		        result.append(document, last, start);
+
+		        // Avanzo all'indice successivo dopo il commento
+		        last = end + 3;
+
+		        // Trovo il prossimo commento
+		        start = document.indexOf("<!--", last);
+		        end = document.indexOf("-->", last);
+		    }
+
+		    // Aggiungi il resto del documento dopo l'ultimo commento
+		    result.append(document.substring(last));
+
+		    return result.toString();
 		
 	}
 	
