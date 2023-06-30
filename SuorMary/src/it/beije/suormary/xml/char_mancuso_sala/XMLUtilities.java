@@ -3,7 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.BufferedReader;
-public class XMLUtilities { 
+public class XMLUtilities {  
 
 	public static Document readXML(String pathFile) {
 		StringBuilder fileStr = null;
