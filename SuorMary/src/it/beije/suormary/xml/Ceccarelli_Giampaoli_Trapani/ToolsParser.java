@@ -14,10 +14,10 @@ import org.w3c.dom.Element;
 
 public class ToolsParser {
 		
-	public static  FileReader fileReader = null;
-	public static 	BufferedReader bufferedReader = null;
-	public static   List<String> rows = null;
-	public static  Element el = null;
+	public static FileReader fileReader = null;
+	public static BufferedReader bufferedReader = null;
+	public static List<String> rows = null;
+	public static Element el = null;
 		
 		
 	
