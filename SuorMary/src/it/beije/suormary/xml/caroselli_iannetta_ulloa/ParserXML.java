@@ -12,6 +12,7 @@ public class ParserXML {
 	//
 	public static Document parserXML(String pathFile) {
 		FileReader fileReader = null;
+		Document document = new Document();
 		try {
 			File file = new File(pathFile);
 			fileReader = new FileReader(file);
@@ -27,7 +28,7 @@ public class ParserXML {
 				r.append(bufferedReader.readLine() + "\n");
 			}
 			
-			Node node = findNodes(r.toString());
+			Node node = document.findNodes(r.toString());
 			System.out.println(node.toString());
 			
 	} catch (FileNotFoundException e) {
@@ -47,58 +48,11 @@ public class ParserXML {
 		return null;
 	}
 	
-	public static Node findNodes(String s) {
-		List<Node> nodes = new ArrayList<>();
-		StringBuilder tagName = new StringBuilder();
-		StringBuilder content = new StringBuilder();
-		
-		char c = s.charAt(0);
-		if (c == '<') {
-			
-			tagName.setLength(0);
-			char ch;
-			int i;
-			for (i = 1; i < s.length() && (ch = s.charAt(i)) != '>'; i++) {
-				ch = s.charAt(i);
-				tagName.append(ch);
-			}
-			i++;
-			String endTagName = "<" + tagName.toString() + ">";
-			int index = s.indexOf(endTagName);
-			
-			content.append(s.substring(i, index -1));
-			System.out.println(content.toString());
-			
-			if (content.toString().contains("<")) {
-				Node node = findNodes(content.toString());
-				nodes.add(node);
-			}
-			else nodes.add(new Node (tagName.toString(), content.toString()));
-			
-			
-			//Element el  = new Element (tagName, attributes, contents)
-		}
-		else if (c == '\n' || c == '\t' || c == '\r'){ //consider space later
-			if (nodes.isEmpty() || !nodes.get(nodes.size() - 1).isBlank()) {
-				Node blankNode = new Node();
-				nodes.add(blankNode);
-				System.out.println("sono bianco");
-				}
-		}
-		//System.out.println(nodes.toString());
-		
-		Node node;
-		if(nodes.size() != 0){
-			node = new Node(tagName.toString(), nodes);
-		}
-		else node = new Node(tagName.toString(), content.toString());
-		
-		return node;
-	}
+	
 	
 	public static void main (String[] args) {
 		
-		ParserXML.parserXML("/Users/Padawan/git/file/rubrica.xml");
+		ParserXML.parserXML("C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\xml_parser_test\\test_parser1.xml");
 	}
 
 }
