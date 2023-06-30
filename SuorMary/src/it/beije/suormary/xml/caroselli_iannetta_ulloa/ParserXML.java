@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParserXML {
@@ -19,15 +20,15 @@ public class ParserXML {
 			// = fileReader.read();
 			StringBuilder r = new StringBuilder();
 			//skip intestazione
+			
 			bufferedReader.readLine();
 			
 			while (bufferedReader.ready()) {
 				r.append(bufferedReader.readLine() + "\n");
 			}
 			
-			//Node node = 
-					findNodes(r.toString());
-			
+			Node node = findNodes(r.toString());
+			System.out.println(node.toString());
 			
 	} catch (FileNotFoundException e) {
 		e.printStackTrace();
@@ -46,10 +47,11 @@ public class ParserXML {
 		return null;
 	}
 	
-	public static void findNodes(String s) {
-		//List<Node> nodes = new ArrayList<>();
+	public static Node findNodes(String s) {
+		List<Node> nodes = new ArrayList<>();
 		StringBuilder tagName = new StringBuilder();
 		StringBuilder content = new StringBuilder();
+		
 		char c = s.charAt(0);
 		if (c == '<') {
 			
@@ -61,24 +63,37 @@ public class ParserXML {
 				tagName.append(ch);
 			}
 			i++;
-			int index = s.indexOf("</" + tagName.toString() + ">");
+			String endTagName = "<" + tagName.toString() + ">";
+			int index = s.indexOf(endTagName);
 			
 			content.append(s.substring(i, index -1));
 			System.out.println(content.toString());
-			//Node = findNode(content.toString());
 			
-			//node
-			//findNodes
-			//nodes.add(node);
+			if (content.toString().contains("<")) {
+				Node node = findNodes(content.toString());
+				nodes.add(node);
+			}
+			else nodes.add(new Node (tagName.toString(), content.toString()));
+			
+			
 			//Element el  = new Element (tagName, attributes, contents)
 		}
-		else if (c == '\n' || c == '\t' ){ //consider space later
-			// blank node
-			//nodes.add(blankNode);
-			System.out.println("sono bianco");
+		else if (c == '\n' || c == '\t' || c == '\r'){ //consider space later
+			if (nodes.isEmpty() || !nodes.get(nodes.size() - 1).isBlank()) {
+				Node blankNode = new Node();
+				nodes.add(blankNode);
+				System.out.println("sono bianco");
+				}
 		}
-		//Node node = new Node(tagName, attributes, listChildNodes>)
-		//return null;
+		//System.out.println(nodes.toString());
+		
+		Node node;
+		if(nodes.size() != 0){
+			node = new Node(tagName.toString(), nodes);
+		}
+		else node = new Node(tagName.toString(), content.toString());
+		
+		return node;
 	}
 	
 	public static void main (String[] args) {
