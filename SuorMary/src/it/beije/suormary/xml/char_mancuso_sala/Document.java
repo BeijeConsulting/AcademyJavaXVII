@@ -1,7 +1,5 @@
 package it.beije.suormary.xml.char_mancuso_sala;
 
-import java.util.List;
-
 public class Document  {
 	
 	public String document;
@@ -31,7 +29,15 @@ public class Document  {
 			//estraggo l'elemento radice con <>
 			String rootEl = document.substring(startIndex, endIndex+1);
 			
-			//tolgo <>
+			
+			String [] root = rootEl.split(" ");
+			
+			if(root.length>1) {
+				int lunghezzaPrimoEl=root.length;
+				rootEl=document.substring(0, lunghezzaPrimoEl)+">";
+			}
+			
+			//tolgo <> 
 			String nameRootEl = rootEl.substring(1,rootEl.length()-1);
 			
 
@@ -42,8 +48,10 @@ public class Document  {
 			//la stringa con il corpo
 			//??dovrei togliere dal fondo gli n caratteri
 			//di cui è composto il tag di chiusura??
-			String body = document.substring(endIndex+1, document.length()-rootEl.length());
-			
+
+			//HO AGGIUNTO -1
+			String body = document.substring(endIndex+1, document.length()-rootEl.length()-1);
+
 			el.setBody(body);
 			
 			
