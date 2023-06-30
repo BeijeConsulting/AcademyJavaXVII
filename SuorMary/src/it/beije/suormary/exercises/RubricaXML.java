@@ -28,7 +28,7 @@ public class RubricaXML {
 	
 	public static List<Element> getChildElements(Element el) {
 		NodeList nodeList = el.getChildNodes();
-		//System.out.println("nodeList size: " + nodeList.getLength());
+		System.out.println("nodeList size: " + nodeList.getLength());
 		List<Element> elements = new ArrayList<Element>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node n = nodeList.item(i);
@@ -38,7 +38,7 @@ public class RubricaXML {
 		return elements;
 	}
 
-	public static void readXML(String[] args) throws Exception {
+	public static void readXML() throws Exception {
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -47,8 +47,8 @@ public class RubricaXML {
 		Element docEl = document.getDocumentElement();
 		System.out.println(docEl.getTagName());
 		
-//		NodeList nomi = docEl.getElementsByTagName("nome");
-//		System.out.println("nodeList nomi size: " + nomi.getLength());
+		NodeList nomi = docEl.getElementsByTagName("nome");
+		System.out.println("nodeList nomi size: " + nomi.getLength());
 		
 		List<Element> elements = getChildElements(docEl);
 		System.out.println("elements size: " + elements.size());
@@ -62,7 +62,7 @@ public class RubricaXML {
 		List<Element> els = null;
 		for (Element el : elements) {
 			System.out.println("eta' contatto = " + el.getAttribute("eta"));
-			//System.out.println("contenuto contatto = " + el.getTextContent());
+			System.out.println("contenuto contatto = " + el.getTextContent());
 			els = getChildElements(el);
 			c = new Contact();
 			for (Element e : els) {
@@ -93,80 +93,80 @@ public class RubricaXML {
 
 	public static void main(String[] args) {
 		
-		try {
-		
-			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			Document document = documentBuilder.newDocument();
-			
-			Element contacts = document.createElement("contacts");
-			document.appendChild(contacts);
-			
-			Contact contact1 = new Contact();
-			contact1.setName("Pippo");
-			contact1.setSurname("Rossi");
-			contact1.setPhoneNumber("09876543");
-			contact1.setEmail("Pippo@beije.it");
-			
-			Contact contact2 = new Contact();
-			contact2.setName("Pluto");
-			contact2.setSurname("Bianchi");
-			contact2.setPhoneNumber("098767564");
-			contact2.setEmail("pluto@beije.it");
-			
-			List<Contact> contactsList = new ArrayList<Contact>();
-			contactsList.add(contact1);
-			contactsList.add(contact2);
-			
-			Element contact = null;
-			for (Contact c : contactsList) {
-				contact = document.createElement("contact");
-				contact.setAttribute("age", "50");
-				if (c.getName() != null) {
-					Element name = document.createElement("name");
-					name.setTextContent(c.getName());
-					contact.appendChild(name);
-				}
-				if (c.getSurname() != null) {
-					Element surname = document.createElement("surname");
-					surname.setTextContent(c.getSurname());
-					contact.appendChild(surname);
-				}
-				if (c.getPhoneNumber() != null) {
-					Element phoneNumber = document.createElement("phone");
-					phoneNumber.setTextContent(c.getPhoneNumber());
-					contact.appendChild(phoneNumber);
-				}
-				if (c.getEmail() != null) {
-					Element email = document.createElement("email");
-					email.setTextContent(c.getEmail());
-					contact.appendChild(email);
-				}
-				if (c.getNote() != null) {
-					Element note = document.createElement("note");
-					note.setTextContent(c.getNote());
-					contact.appendChild(note);
-				}
-				
-				contacts.appendChild(contact);
-			}
-			
-			
-			// write the content into xml file
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			Transformer transformer = transformerFactory.newTransformer();
-			DOMSource source = new DOMSource(document);
-			
-			StreamResult result = new StreamResult(new File("/Users/Padawan/git/file/contacts.xml"));
-	
-			// Output to console for testing
-			StreamResult syso = new StreamResult(System.out);
-	
-			transformer.transform(source, result);
-			transformer.transform(source, syso);
-	
-			//System.out.println("File saved!");
-		
+		try {RubricaXML.readXML();
+//		
+//			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+//			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+//			Document document = documentBuilder.newDocument();
+//			
+//			Element contacts = document.createElement("contacts");
+//			document.appendChild(contacts);
+//			
+//			Contact contact1 = new Contact();
+//			contact1.setName("Pippo");
+//			contact1.setSurname("Rossi");
+//			contact1.setPhoneNumber("09876543");
+//			contact1.setEmail("Pippo@beije.it");
+//			
+//			Contact contact2 = new Contact();
+//			contact2.setName("Pluto");
+//			contact2.setSurname("Bianchi");
+//			contact2.setPhoneNumber("098767564");
+//			contact2.setEmail("pluto@beije.it");
+//			
+//			List<Contact> contactsList = new ArrayList<Contact>();
+//			contactsList.add(contact1);
+//			contactsList.add(contact2);
+//			
+//			Element contact = null;
+//			for (Contact c : contactsList) {
+//				contact = document.createElement("contact");
+//				contact.setAttribute("age", "50");
+//				if (c.getName() != null) {
+//					Element name = document.createElement("name");
+//					name.setTextContent(c.getName());
+//					contact.appendChild(name);
+//				}
+//				if (c.getSurname() != null) {
+//					Element surname = document.createElement("surname");
+//					surname.setTextContent(c.getSurname());
+//					contact.appendChild(surname);
+//				}
+//				if (c.getPhoneNumber() != null) {
+//					Element phoneNumber = document.createElement("phone");
+//					phoneNumber.setTextContent(c.getPhoneNumber());
+//					contact.appendChild(phoneNumber);
+//				}
+//				if (c.getEmail() != null) {
+//					Element email = document.createElement("email");
+//					email.setTextContent(c.getEmail());
+//					contact.appendChild(email);
+//				}
+//				if (c.getNote() != null) {
+//					Element note = document.createElement("note");
+//					note.setTextContent(c.getNote());
+//					contact.appendChild(note);
+//				}
+//				
+//				contacts.appendChild(contact);
+//			}
+//			
+//			
+//			// write the content into xml file
+//			TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//			Transformer transformer = transformerFactory.newTransformer();
+//			DOMSource source = new DOMSource(document);
+//			
+//			StreamResult result = new StreamResult(new File("/Users/Padawan/git/file/contacts.xml"));
+//	
+//			// Output to console for testing
+//			StreamResult syso = new StreamResult(System.out);
+//	
+//			transformer.transform(source, result);
+//			transformer.transform(source, syso);
+//	
+//			//System.out.println("File saved!");
+//		
 		} catch (ParserConfigurationException pEx) {
 			pEx.printStackTrace();
 		} catch (TransformerConfigurationException tcEx) {
