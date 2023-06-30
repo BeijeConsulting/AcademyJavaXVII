@@ -5,13 +5,9 @@ import java.util.List;
 
 public class Element extends Node{
 	
-	private String textContent;
+	
 	private String tagName;
 	public List<Attribute> attributes;
-	
-	public void setTextContent(String textContent) {
-		this.textContent = textContent;
-	}
 
 	public Element() {
 		attributes = new ArrayList<>();
@@ -34,10 +30,6 @@ public class Element extends Node{
 
 	public String getTagName() {
 		return this.tagName;
-	}
-	
-	public String getTextContent() {
-		return null;
 	}
 	
 	public String getAttributes(){
