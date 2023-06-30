@@ -31,7 +31,7 @@ public class ToolsParser {
 			String[] r1 = null;
 			while (bufferedReader.ready()) {
 				String r = bufferedReader.readLine();
-				r1 = r.split("[<>]");			//divido file per ogni valore delimitato da '<' e '>'
+				r1 = r.split("]<>]");			//divido file per ogni valore delimitato da '<' e '>'
 				for(String a : r1) {
 
 					rows.add(a.trim());  		//salvo file letto in Arraylist 
@@ -49,16 +49,27 @@ public class ToolsParser {
 	public void tree(List<String> rows) {	
 		Element root = new Element();
 		
-		String str = "/".concat(rows.get(1));
-		if(rows.get(rows.size()-1).equals(str)) {			//controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
-			root.setTagName(rows.get(1));					//setto tagName di RootElement 
+		StringBuilder str = new StringBuilder();
+		str.append(rows.get(0));
+		str.insert(1, '/');		
+		
+		if(rows.get(rows.size()-1).equals(str.toString())) {			//controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
+			root.setTagName(rows.get(0));					//setto tagName di RootElement 
 			System.out.println(root.getTagName());
 		} else {
 			System.out.println("File non valido");			//root element non chiuso, file non valido
 			return;
 		}
-//		
-//		for(int i=0 )
+		
+//		for(int i=2; i<rows.size(); i++) {
+//			if(rows.get(i).isEmpty()) {
+//			String close = "/".concat(rows.get(i));
+//			if(rows.get(i).equals(str)) {			 
+//				root.setTagName(rows.get(1));					
+//				System.out.println(root.getTagName());
+//		}
+//		}
+//		}
 
 	}
 		

@@ -15,11 +15,12 @@ public class ParserXML {
 		String s1="\\Users\\marty\\Desktop\\test_parser1 riga.xml";
 		
 		ToolsParser toolsParser = new ToolsParser();
-//		List<String> s2 = new ArrayList<>();
-//		s2 = toolsParser.readXML(s);
+		List<String> s2 = new ArrayList<>();
+		s2 = toolsParser.readXML(s);
 		toolsParser.tree(toolsParser.readXML(s));
+		System.out.println("-----------------------");
 		
-//		System.out.println(s2);
+		System.out.println(s2);
 		
 //		ToolsParser toolsParser1 = new ToolsParser();
 //		toolsParser1.getRootElement(s1);
