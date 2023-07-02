@@ -13,7 +13,9 @@ public class ScanAngleBrackets {
 	}
 	
 	public Map<String, String> getAttributes() {
+		//System.out.println(this.attributes);
 		return attributes;
+		
 	}
 	
 	public ScanAngleBrackets(String s) {
@@ -36,7 +38,6 @@ public class ScanAngleBrackets {
 		int index;
 		for (String sub : content.split("\" ")) {
 			index = sub.indexOf("=");
-			System.out.println(index);
 			attributeName = sub.substring(0, index);
 			attributeValue = sub.substring(index + 1).replaceAll("\"", "");
 			attributes.put(attributeName, attributeValue);
@@ -44,11 +45,3 @@ public class ScanAngleBrackets {
 		return attributes;
 	}
 }
-
-/*
-//controlla se è un commento
-if (element.startsWith("!--") && element.endsWith("--")){
-	node = new Node("comment", null, element.substring(3, element.length() - 2));
-}
-else { //non è un commento
-*/

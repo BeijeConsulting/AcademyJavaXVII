@@ -1,75 +1,98 @@
 package it.beije.suormary.xml.caroselli_iannetta_ulloa.ProveXML;
 
 import java.io.*;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Parser {
 
+	
+	
+    public static Node parse(String xml, Node...node) {
 
-    public static Node parse(String xml) {
-
-    	Node node  = null;
+    	if (node.length == 0) {
+    		node = new Node[1];
+    	}
+    	Node child = null; 
         xml = xml.trim();
         String content = xml.trim();
+        String childContent;
+        boolean isOpen = false;
+        
         if (xml.startsWith("<") && xml.endsWith(">")) {
         	
             //prendo il tagName
-        	
             String element = xml.substring(1, xml.indexOf(">"));
             
             // controlla se è un commento
-            if (element.startsWith("!--") && element.endsWith("--")){
-            	node = new Node("comment", null, element.substring(3, element.length() - 2));
+            if (element.startsWith("!--") ){
+            	node[0] = new Node("comment", new HashMap<>(), content.substring(3, content.indexOf("--")));
             }
             
             else { //non è un commento
+            	
             	ScanAngleBrackets angleBrackets= new ScanAngleBrackets(element);
                 String tagName = angleBrackets.getTag();
+                isOpen = tagName.endsWith("/");
                 Map<String, String> attributes = angleBrackets.getAttributes();
-                node = new Node(tagName, attributes);
-
+                
+                if (isOpen) {
+                	
+                	node[0] = new Node(tagName.replace("/", ""), attributes, "");	
+                }
+                else {
+                	node[0] = new Node(tagName, attributes);
+                	
+                	 //prendi il contenuto
+                    content = xml.substring(xml.indexOf(">") + 1, xml.lastIndexOf("<")).trim();
+                                
                 //prendi il contenuto
                 content = xml.substring(xml.indexOf(">") + 1, xml.lastIndexOf("<")).trim();
-
+                               
                 //controllo se ci sono tag innestati
                 while (content.startsWith("<")) {
-                    //per i tag innestati, li metto in child
-                    int nextTagEndIndex = content.indexOf(">");
-                    String childElement = content.substring(1, nextTagEndIndex);
-                    ScanAngleBrackets childAngleBrackets= new ScanAngleBrackets(childElement);
-                    String childTagName = childAngleBrackets.getTag();
-                    
-                    int childTagCloseIndex = content.indexOf("</" + childTagName + ">");
-                    String childContent = content.substring(0, childTagCloseIndex + childTagName.length() + 3);
-
-                    //aggiungo il figlio al nodo padre
-                    Node childNode = parse(childContent);
-                    node.addChild(childNode);
-                    //node.addChild(childTagName, childNode);
-
-                    // Remove the parsed child content
-                    content = content.substring(childTagCloseIndex + childTagName.length() + 3).trim();
+                	
+                	if (content.startsWith("<!--") ){
+                		childContent = content.substring(content.indexOf("!") - 1, content.indexOf("-->") + 3);
+                    	child = new Node("comment", new HashMap<>(), childContent);
+                    	node[0].addChild(child);
+                    	content = content.substring(content.indexOf("--") + 3);
+                    }
+                    else {
+                    	//per i tag innestati, li metto in child
+                    	int nextTagEndIndex = content.indexOf(">");
+                    	String childElement = content.substring(1, nextTagEndIndex);
+                    	ScanAngleBrackets childAngleBrackets= new ScanAngleBrackets(childElement);
+                    	String childTagName = childAngleBrackets.getTag();
+                    	
+                    	isOpen = childTagName.endsWith("/");
+                    	if (isOpen) {
+                    		child = new Node(tagName.replace("/", ""), childAngleBrackets.getAttributes(), "");	
+                    	}
+                    	else {
+                    		int childTagCloseIndex = content.indexOf("</" + childTagName + ">");
+                    		childContent = content.substring(0, childTagCloseIndex + childTagName.length() + 3);
+                    		child = parse(childContent, node[0]);
+                    		node[0].addChild(child);
+                    		content = content.substring(childTagCloseIndex + childTagName.length() + 3).trim();  
+                    	}
+                    }                  
                 }
-
-                //se non ci sono tag innestati, il contenuto e' del nodo padre
-                if (content.length() > 0 && !content.startsWith("<")) {
-                    node.setValue(content);
-                }
-            }
-                      	
+                if (!content.contains("<")) node[0].setValue(content);
+            }             	
         } 
-            else {
-            	
-            //System.out.println("End file");
-        	//throw new IllegalArgumentException("Invalid XML format: " + xml);
         }
-        return node;
+        else {
+        node[0].setValue(content);
+        //throw new IllegalArgumentException("Invalid XML format: " + xml);
+        }
+        return node[0];
     }
 
 
     public static void main(String[] args) throws IOException {
 
-        String path = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\xml_parser_test\\test_parser4.xml";
+        String path = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\xml_parser_test\\test_parser6.xml";
         File file = new File(path);
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -87,13 +110,7 @@ public class Parser {
         
         Node root = parse(s.toString());
         System.out.println(root);
-        
-
-
-
     }
-
-
 }
 
 
