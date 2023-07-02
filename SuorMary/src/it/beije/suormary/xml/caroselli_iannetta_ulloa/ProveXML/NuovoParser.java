@@ -12,8 +12,8 @@ public class NuovoParser {
 		
 		String content = xml.trim();
 		boolean isSelfClosingTag = false;
-		String element;
-		ScanAngleBrackets angleBrackets;
+		String angleBrackets;
+		Element element;
 		String tagName;
 		Map<String, String> attributes;
 		
@@ -22,22 +22,22 @@ public class NuovoParser {
 		          
             // controlla se è un commento
             	if (content.startsWith("<!--") ){
-            		element = content.substring(0, content.indexOf("-->") +3);
-            		node[0] = new Node("comment", new HashMap<>(), element);
-            		start = element.length();
+            		angleBrackets = content.substring(0, content.indexOf("-->") +3);
+            		node[0] = new Node("comment", new HashMap<>(), angleBrackets);
+            		start = angleBrackets.length();
             	}
             	
             	else {
             		//prendo il tagName
-                    element = content.substring(1, content.indexOf(">"));
-                    angleBrackets = new ScanAngleBrackets(element);
-                    tagName = angleBrackets.getTag();
-                    attributes = angleBrackets.getAttributes();
+                    angleBrackets = content.substring(1, content.indexOf(">"));
+                    element = new Element(angleBrackets);
+                    tagName = element.getTag();
+                    attributes = element.getAttributes();
                     
                     isSelfClosingTag = tagName.endsWith("/");
                     if (isSelfClosingTag) {
                 		node[0] = new Node(tagName.replace("/", ""), attributes, "");
-                		start = element.length() + 2; 
+                		start = angleBrackets.length() + 2; 
                 	}
                     else {
                     	int startInnerContent = content.indexOf(">") + 1;

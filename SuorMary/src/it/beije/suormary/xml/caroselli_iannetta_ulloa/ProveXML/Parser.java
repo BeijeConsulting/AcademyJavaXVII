@@ -22,19 +22,19 @@ public class Parser {
         if (xml.startsWith("<") && xml.endsWith(">")) {
         	
             //prendo il tagName
-            String element = xml.substring(1, xml.indexOf(">"));
+            String angleBrackets = xml.substring(1, xml.indexOf(">"));
             
             // controlla se è un commento
-            if (element.startsWith("!--") ){
+            if (angleBrackets.startsWith("!--") ){
             	node[0] = new Node("comment", new HashMap<>(), content.substring(3, content.indexOf("--")));
             }
             
             else { //non è un commento
             	
-            	ScanAngleBrackets angleBrackets= new ScanAngleBrackets(element);
-                String tagName = angleBrackets.getTag();
+            	Element element = new Element(angleBrackets);
+                String tagName = element.getTag();
                 isOpen = tagName.endsWith("/");
-                Map<String, String> attributes = angleBrackets.getAttributes();
+                Map<String, String> attributes = element.getAttributes();
                 
                 if (isOpen) {
                 	
@@ -62,7 +62,7 @@ public class Parser {
                     	//per i tag innestati, li metto in child
                     	int nextTagEndIndex = content.indexOf(">");
                     	String childElement = content.substring(1, nextTagEndIndex);
-                    	ScanAngleBrackets childAngleBrackets= new ScanAngleBrackets(childElement);
+                    	Element childAngleBrackets= new Element(childElement);
                     	String childTagName = childAngleBrackets.getTag();
                     	
                     	isOpen = childTagName.endsWith("/");

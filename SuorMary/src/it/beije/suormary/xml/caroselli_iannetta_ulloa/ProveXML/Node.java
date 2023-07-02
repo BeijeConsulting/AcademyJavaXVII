@@ -63,7 +63,7 @@ public class Node {
     public String toString() {
     	return "Node: tagName = " + tagName + "\tattributes: " + Arrays.asList(attributes) + 
     											 "\nvalue: " + value +
-    											 "\nchildren: \t" + listOfChildren.toString();
+    											 "\nchildren: \t" + listOfChildren.toString() + "\n";
 
     }
     

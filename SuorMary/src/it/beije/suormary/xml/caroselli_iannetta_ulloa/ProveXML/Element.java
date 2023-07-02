@@ -3,7 +3,7 @@ package it.beije.suormary.xml.caroselli_iannetta_ulloa.ProveXML;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ScanAngleBrackets {
+public class Element {
 
 	String tag;
 	Map<String, String> attributes = new HashMap<>();
@@ -18,7 +18,7 @@ public class ScanAngleBrackets {
 		
 	}
 	
-	public ScanAngleBrackets(String s) {
+	public Element(String s) {
 		int index = s.indexOf(" ");
 		if (index == -1) {
 			this.tag = s;
