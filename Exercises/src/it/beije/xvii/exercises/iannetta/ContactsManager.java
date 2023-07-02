@@ -215,11 +215,34 @@ public class ContactsManager {
 		System.out.println("ID: " + id + " deleted");
 	}
 
-//	public List<Contact> findDuplicates() throws ClassNotFoundException, SQLException{
-//		Connection connection = getConnection();
-//		List<Contact> listOfDuplicates = ContactsList.loadContactListFromDB("telephone_book", "name");
-//		Contact con1 = new Contact();
-//		Contact con2 = new Contact();
+	public List<Contact[]> findDuplicates() throws ClassNotFoundException, SQLException{
+		Connection connection = getConnection();
+		ResultSet rs = null;
+		Statement statement;
+		List<Contact> listOfContacts = ContactsList.loadContactListFromDB("telephone_book", "name");
+		List<Contact> listOfDuplicates = new ArrayList<>();
+		Contact con1 = new Contact();
+		Contact con2 = new Contact();
+		String phoneNumber;
+		while (!listOfContacts.isEmpty()) {
+			con1 = listOfContacts.get(0);
+			phoneNumber = con1.getPhoneNumber();
+			rs = statement.executeQuery("SELECT * FROM telephone_book WHERE phone_number = '" + phoneNumber + "';");
+			while (rs.next()) {
+				con2.setID(rs.getInt("id"));
+				con2.setName(rs.getString("name"));
+				con2.setSurname(rs.getString("surname"));
+				con2.setPhoneNumber(rs.getString("phone_number"));
+				con2.setEmail(rs.getString("email"));
+				con2.setNote(rs.getString("note"));
+				listOfDuplicates.add(con2);
+				listOfContacts.remove(con2);
+			}
+			listOfContacts.remove(0);
+			
+		}
+		
+		
 //		int count = 0;
 //		System.out.println("Duplicates");
 //		for (int i = listOfDuplicates.size() - 1; i > 0; i--) {
@@ -232,12 +255,11 @@ public class ContactsManager {
 //		System.out.println("//");
 //		connection.close();
 //		return listOfDuplicates;
-//	}
+	}
 	
-	public boolean areDuplicates(Contact con1, Contact con2) {
+	public boolean areNumberDuplicates(Contact con1, Contact con2) {
 		boolean areDuplicates = (con1.getName().equalsIgnoreCase(con2.getName()) && con1.getSurname().equalsIgnoreCase(con2.getSurname())
-				 || con1.getPhoneNumber().equals(con2.getPhoneNumber())
-				 || con1.getEmail().equalsIgnoreCase(con2.getEmail()));
+				 || con1.getPhoneNumber().equals(con2.getPhoneNumber()));
 		return areDuplicates;
 	}
 	
