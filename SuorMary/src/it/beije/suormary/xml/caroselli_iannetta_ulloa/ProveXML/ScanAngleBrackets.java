@@ -43,5 +43,12 @@ public class ScanAngleBrackets {
 		}
 		return attributes;
 	}
-	
 }
+
+/*
+//controlla se è un commento
+if (element.startsWith("!--") && element.endsWith("--")){
+	node = new Node("comment", null, element.substring(3, element.length() - 2));
+}
+else { //non è un commento
+*/
