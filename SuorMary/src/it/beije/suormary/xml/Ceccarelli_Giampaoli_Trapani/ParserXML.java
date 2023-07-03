@@ -11,8 +11,8 @@ public class ParserXML {
 //	}
 
 	public static void main(String[] args) {
-		String s="\\Users\\marty\\Desktop\\test_parser1.xml";
-		String s1="\\Users\\marty\\Desktop\\test_parser1 riga.xml";
+		String s="\\Users\\marty\\Desktop\\test_parser2.xml";
+		
 		
 		 ToolsParser toolsParser = new ToolsParser();
 	        List<String> s2 = new ArrayList<>();
@@ -22,7 +22,8 @@ public class ParserXML {
 	        System.out.println("-----------------------");
 //	        System.out.println(treeTry.getChildEl());
 //	        System.out.println("-----------------------");
-	        toolsParser.getChildNode("<contatto>");
+	        //toolsParser.getChildNode("<contatti>");
+	        toolsParser.getChildElement("<contatto>");
 
 
 

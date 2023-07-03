@@ -69,7 +69,6 @@ public class ToolsParser {
         if(rows.get(rows.size()-1).equals(str.toString())) {            //controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
             root.setTagName(rows.get(0));    //setto tagName di RootElement 
             stack.push(root);
-            tree.add(root);
             //System.out.println(root.getTagName());
         } else {
             System.out.println("File non valido");            //root element non chiuso, file non valido
@@ -105,6 +104,7 @@ public class ToolsParser {
 
   }
 	
+	// prendi solo i nodi 
 	public void getChildNode(String name){
 //		List<Node> child = new ArrayList<>();
 		if(name.equals(root.getTagName())) {
@@ -123,17 +123,67 @@ public class ToolsParser {
 					
 					int ii=0;
 					if(name.equals(m.getTagName())) {
-						System.out.println("Padre: " + name);
+						//System.out.println("Padre: " + name);
+						int count =0;
 						for(Node nodeChild : m.getChildEl()) {
-							System.out.println("Figlio " + ii + ": " + nodeChild.getTagName());
+							if(!(nodeChild instanceof Element )) {
+								//System.out.println("Figlio " + ii + ": " + nodeChild.getTagName());
+								nodeChild.getTagName();
+								count++;
 							ii++;
+							};
+							
 							}
+						if(count==0) {
+							System.out.println("Padre " + name + "Non ha nodi figli");
+						}
 					}
 				}
 		}
+	}
 		
-		
+		// prende gli elementi figli
+		public void getChildElement(String name){
+//			List<Node> child = new ArrayList<>();
+			if(name.equals(root.getTagName())) {
+				if(root.getChildEl().isEmpty()) {
+				System.out.println("Non esistono Child Nodes");
+				} else {
+					int i = 0;
+					int count =0;
+					for(Node m : root.getChildEl()) {
+						
+						if((m instanceof Element )) {
+							System.out.println("Figlio " + i + ": " + m.getTagName());
+							i++;
+							count++;
+						}
+					}
+					if(count==0) {
+						System.out.println("Padre " + name + " Non ha nodi figli");
+				}
+				}
+				} else {
+					for(Node m : root.getChildEl()) {
+						
+						int ii=0;
+						if(name.equals(m.getTagName())) {
+							System.out.println("Padre: " + name);
+							//int count =0;
+							for(Node nodeChild : m.getChildEl()) {
+								if((nodeChild instanceof Element )) {
+									System.out.println("\tFiglio " + ii + ": " + nodeChild.getTagName());
+									//count++;
+								ii++;
+								};
+								
+								}
+							//if(count==0) {
+								//System.out.println("Padre " + name + "Non ha nodi figli");
+							}
+						}
+					}
+			}
+
 		
 	}
-
-}
