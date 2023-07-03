@@ -8,7 +8,6 @@ public class Node {
     private Map<String, String> attributes = new HashMap<>();
     private String value;
     private List<Node> listOfChildren = new ArrayList<>();
-    private static int level = 0;
     
     public Node(String tagName, Map<String, String> attributes) {
         this(tagName, attributes, "");
@@ -55,24 +54,15 @@ public class Node {
         this.value = value;
     }
 
-    public List<Node> getChildren(Node node) {
+    public List<Node> getChildNodes() {
         return listOfChildren;
     }
 
-    @Override
-    public String toString() {
-    	return "Node: tagName = " + tagName + "\tattributes: " + Arrays.asList(attributes) + 
-    											 "\nvalue: " + value +
-    											 "\nchildren: \t" + listOfChildren.toString() + "\n";
-
+    public static String getRootElement() {
+    	return "Tag name : " + tree.get(0).tagName  + " Attributes + " + tree.get(0).getAttributes();
     }
     
-    
-    public String getRootElement() {
-    	return "Tag name : " + tree.get(0).tagName  + " Attributes + " + Arrays.asList(attributes);
-    }
-    
-    public String getChildNodes(){
+    public String getTextContent(){
     	StringBuilder s = new StringBuilder();
     	for (Node c : listOfChildren) s.append(c.toString() + "\n");
     	return s.toString();
@@ -82,7 +72,7 @@ public class Node {
     	StringBuilder s = new StringBuilder();
     	for (Node c : listOfChildren) {
     		if (!c.tagName.equals("comment")) {
-    			s.append("Tag name : " + c.tagName  + " Attributes + " + Arrays.asList(attributes));
+    			s.append("Tag name : " + c.tagName  + " Attributes + " + Arrays.asList(c.attributes));
     		}
     	}
     	return s.toString();
@@ -92,18 +82,19 @@ public class Node {
     	StringBuilder s = new StringBuilder();
     	for (Node c : tree) {
     		if (c.tagName.equals(tagName)) {
-    			s.append("Tag name : " + c.tagName  + " Attributes + " + Arrays.asList(attributes));
+    			s.append("Tag name : " + c.tagName  + " Attributes + " + Arrays.asList(c.attributes));
     		}
     	}
     	return s.toString();
     }
     
-//    public String getTextContent(){
-//    	
-//    }
-    
-    
-    
-    
+//    @Override
+//    public String toString() {
+//    	//System.out.println("print attributes : " + listOfChildren.toString());
+//    	return "Node: tagName = " + tagName + "\nattributes: " + attributes + 
+//    											 "\nvalue: " + value +
+//    											 "\nchildren: \t" + listOfChildren + "\n";
+//
+//    } 
 
 }

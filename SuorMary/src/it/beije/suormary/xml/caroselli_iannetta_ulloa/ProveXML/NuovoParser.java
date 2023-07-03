@@ -18,8 +18,10 @@ public class NuovoParser {
 		Map<String, String> attributes;
 		
 		int start = 0;
+		
+		
 		while (content.startsWith("<") && content.endsWith(">")) {
-		          
+		          //System.out.println(content);
             // controlla se è un commento
             	if (content.startsWith("<!--") ){
             		angleBrackets = content.substring(0, content.indexOf("-->") +3);
@@ -33,28 +35,42 @@ public class NuovoParser {
                     element = new Element(angleBrackets);
                     tagName = element.getTag();
                     attributes = element.getAttributes();
-                    
+                                 
                     isSelfClosingTag = tagName.endsWith("/");
                     if (isSelfClosingTag) {
                 		node[0] = new Node(tagName.replace("/", ""), attributes, "");
                 		start = angleBrackets.length() + 2; 
                 	}
                     else {
+                    	System.out.println("sono qui");
+                    	System.out.println(content);
                     	int startInnerContent = content.indexOf(">") + 1;
                     	int endInnerContent = content.indexOf("</" + tagName + ">");
                     	node[0] = new Node(tagName, attributes);
                     	String innerContent = content.substring(startInnerContent, endInnerContent).trim();
-                    	node[0].addChild(parse(innerContent));
-                    	start = endInnerContent + tagName.length() + 3;
+                    	if (innerContent.contains("<")){
+                    		System.out.println("if");
+                    		node[0].addChild(parse(innerContent));
+                        	start = content.indexOf("<", endInnerContent +1);
+                    	}
+                    	else {
+                    		System.out.println("else");
+                    		node[0].setValue(innerContent);
+                    		start = content.length() ;
+                    	}
                     } 
             	}
             	//System.out.println("start = " + start);
-            	content = content.substring(start).trim();
-            	System.out.println(content);
-            	start = 0;
-            	if (!content.contains("<") ) node[0].setValue(content);
-            }   
-			//System.out.println("exit");
+            	if (start != -1 ) {
+            		content = content.substring(start).trim();
+            		start = 0;
+            	}
+            	else {
+            		System.out.println("fine");
+            		break;
+            	}
+            }
+			
 		return node[0];
 	}
 	
