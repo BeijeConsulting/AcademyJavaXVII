@@ -47,7 +47,7 @@ public class Document  {
 			 el = new Element(nameRootEl);
 			 
 			 
-			 //salvo gli attributi se presenti 
+			 //salvo gli attributi se presenti
 			 if(root.length>1) {
 				 Attribute a=null;
 				 for(int i=1; i<root.length; i++) {
