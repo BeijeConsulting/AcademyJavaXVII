@@ -59,7 +59,7 @@ public class Node {
     }
 
     public static String getRootElement() {
-    	return "Tag name : " + tree.get(0).tagName  + " Attributes + " + tree.get(0).getAttributes();
+    	return "Tag name : " + tree.get(0).tagName  + " Attributes " + tree.get(0).getAttributes();
     }
     
     public String getTextContent(){
@@ -68,7 +68,7 @@ public class Node {
     	return s.toString();
     }
     
-    public String getChildElement() {
+    public String getChildElements() {
     	StringBuilder s = new StringBuilder();
     	for (Node c : listOfChildren) {
     		if (!c.tagName.equals("comment")) {
@@ -82,7 +82,7 @@ public class Node {
     	StringBuilder s = new StringBuilder();
     	for (Node c : tree) {
     		if (c.tagName.equals(tagName)) {
-    			s.append("Tag name : " + c.tagName  + " Attributes + " + Arrays.asList(c.attributes));
+    			s.append("Tag name : " + c.tagName  + " Value " + c.value + "\t");
     		}
     	}
     	return s.toString();
@@ -91,9 +91,9 @@ public class Node {
     @Override
     public String toString() {
     	//System.out.println("print attributes : " + listOfChildren.toString());
-    	return "Node: tagName = " + tagName + "\nattributes: " + attributes + 
-    											 "\nvalue: " + value +
-    											 "\nchildren: \t" + listOfChildren + "\n";
+    	return "Node: tagName = " + tagName + ", attributes: " + attributes + 
+    											 ", value: " + value +
+    											 ", children: " + listOfChildren + "\n";
 
     } 
 

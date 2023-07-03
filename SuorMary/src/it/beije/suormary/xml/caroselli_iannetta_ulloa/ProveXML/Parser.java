@@ -47,11 +47,11 @@ public class Parser {
                 	
                 	//prendi il contenuto
                 	if(xml.lastIndexOf("<") <= 0) {
-                		System.out.println("Sono entrato");
+                		//System.out.println("Sono entrato");
                 		throw new StringIndexOutOfBoundsException("Invalid XML format at '" + xml + "'");
                 	}
                     content = xml.substring(xml.indexOf(">") + 1, xml.lastIndexOf("<")).trim();
-                    System.out.println(content);
+                    //System.out.println(content);
                     
                     //prendi il contenuto
                     content = xml.substring(xml.indexOf(">") + 1, xml.lastIndexOf("<")).trim();
@@ -130,7 +130,23 @@ public class Parser {
         }
         //Node root = new NuovoParser().parse(s.toString());
         Node root = parse(s.toString());
-        System.out.println(root);
+        //System.out.println(root);
+        System.out.println("METODI");
+        System.out.println("ROOT " + Node.getRootElement());
+        System.out.println("");
+        System.out.println("CHILDREN NODES " + root.getChildNodes());
+        System.out.println("");
+        System.out.println("CHILDREN ELEMENTS " + root.getChildElements());
+        System.out.println("");
+        System.out.println("ELEMENTS BY TAG NAME " + root.getElementsByTagName("cognome"));
+        System.out.println("");
+        System.out.println("GET TAG NAME " + root.getTagName());
+        System.out.println("");
+        System.out.println("TEXT CONTENT " + root.getTextContent());
+        System.out.println("");
+        System.out.println("ATTRIBUTES " + root.getAttributes());
+        System.out.println("");
+        System.out.println("ATTRIBUTE BY NAME " + root.getChildNodes().get(1).getAttribute("id"));
     }
 }
 
