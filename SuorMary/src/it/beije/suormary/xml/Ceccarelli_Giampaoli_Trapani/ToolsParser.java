@@ -78,10 +78,36 @@ public class ToolsParser {
         StringBuilder str = new StringBuilder();
         str.append(rows.get(0));
         str.insert(1, '/');
-
+        String[] splitRoot = null;
+        splitRoot = rows.get(0).split(" ",2);
+        System.out.println("PRIMA PARTE: " + splitRoot[0]);
+       
+        
         
         try {
-	        if(rows.get(rows.size()-1).equals(str.toString())) {            //controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
+        	// controllo per il file 5 
+        	if(splitRoot.length>1) {
+        		if(rows.get(rows.size()-1).substring(2,(rows.get(rows.size()-1).length())-1).equals(splitRoot[0].substring(1))){
+        			//System.out.println("STRINGA UGUALE");
+        			root.setTagName(splitRoot[0] + ">");    //setto tagName di RootElement 
+        			//System.out.println("Primo attributo: " + splitRoot[1]);
+        			
+        				
+        				String[] tmp = splitRoot[1].split("\"\\s");
+        				
+            			// inserimento attributi 
+        				setAttributesNode(tmp, root);
+	        				
+        				       				
+        				
+        			
+    	            stack.push(root);
+	        	}else {
+	        		System.out.println("File non valido");            //root element non chiuso, file non valido
+		            return null;
+	    
+	        	}
+        	}else if(rows.get(rows.size()-1).equals(str.toString())) {            //controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
 	            root.setTagName(rows.get(0));    //setto tagName di RootElement 
 	            stack.push(root);
 	            //System.out.println(root.getTagName());
@@ -91,6 +117,7 @@ public class ToolsParser {
 	        }
 	
 	        for(int i=1; i<rows.size(); i++) {
+	        	
 	        	if (rows.get(i-1).endsWith("/>")) {
 	            	stack.pop();
 	            	
@@ -114,13 +141,26 @@ public class ToolsParser {
 	            	} else {
 		                n = new Node(rows.get(i));
 		                stack.peek().getChildEl().add(n);
-		                stack.push(n);
+		                splitRoot = rows.get(i).split(" ",2);
+			        	if(splitRoot.length>1) {
+			        		String[] tmp = splitRoot[1].split("\"\\s");
+			        		setAttributesNode(tmp, n);
+		                
+			        	}
+			        	stack.push(n);
 	            	}
 	            } else {
 	                e = new Element(rows.get(i));
 	                stack.peek().getChildEl().add(e);
-	                stack.push(e);
+	                
+	                splitRoot = rows.get(i).split(" ",2);
+		        	if(splitRoot.length>1) {
+		        		String[] tmp = splitRoot[1].split("\"\\s");
+		        		setAttributesElement(tmp,e);
+		        	}
+		        	stack.push(e);
 	            }
+	        	
 	        }
 	        return root;
         } catch (ArrayIndexOutOfBoundsException ecc) {
@@ -130,6 +170,8 @@ public class ToolsParser {
         return null;
        
     }
+
+
 
 	public void getRootElement(Node root) {
 
@@ -257,6 +299,25 @@ public class ToolsParser {
 			
 		}
 
-		
-		
+		public void setAttributesNode(String[] tmp, Node node) {
+			
+			for( String stringa : tmp) {
+				Attributes att = new Attributes();
+				System.out.println("TMP: " + stringa);
+				att.setName(stringa.split("=")[0]);
+				att.setValue(stringa.split("=")[1]);
+				node.getAttributes().add(att);
+			}
+		}
+		public void setAttributesElement(String[] tmp, Element el) {
+			
+			for( String stringa : tmp) {
+				Attributes att = new Attributes();
+				System.out.println("TMP: " + stringa);
+				att.setName(stringa.split("=")[0]);
+				att.setValue(stringa.split("=")[1]);
+				el.getAttributes().add(att);
+			}
+		}
 	}
+
