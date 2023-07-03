@@ -1,21 +1,22 @@
 package it.beije.suormary.xml.char_mancuso_sala;
 
 import java.util.List;
-
+import java.util.ArrayList;
 public class Main {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception { 
 		
-		String s =  "<contatto>\n\r"
-				+ "		<nome>lara</nome>\n\r"
-				+ "		<cognome>mancuso</contatto>\n\r"
-				+ "</cognome>";
+
 		
-		Document doc = Document.parse("/Temp/filexml.xml");
+		Document doc = Document.parse("/v/test_parser1.xml");
 		
 		Element root = new Element();
 		
 		root = doc.getRootElement();
+		List<Element> el = root.getElementsByTagName("nome");
+		for(Element ele : el) {
+			System.out.println(ele.getTagName());
+		}
 		
 		/*System.out.println("I am an element\n");
 		System.out.println(root.getTagName());
@@ -41,7 +42,7 @@ public class Main {
 			System.out.println(n.getBody());
 			//System.out.println(n.getBody());
 		}*/
-		System.out.println(root.getElementTextContent());
+//		System.out.println(root.getElementTextContent());
 		
 		
 		
