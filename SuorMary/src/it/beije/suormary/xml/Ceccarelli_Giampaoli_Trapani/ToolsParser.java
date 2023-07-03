@@ -105,9 +105,9 @@ public class ToolsParser {
   }
 	
 	// prendi solo i nodi 
-	public void getChildNode(String name){
+	public void getChildNode(Node nodeProva){
 //		List<Node> child = new ArrayList<>();
-		if(name.equals(root.getTagName())) {
+		if(nodeProva.getTagName().equals(root.getTagName())) {
 			if(root.getChildEl().isEmpty()) {
 			System.out.println("Non esistono Child Nodes");
 			} else {
@@ -122,7 +122,7 @@ public class ToolsParser {
 				for(Node m : root.getChildEl()) {
 					
 					int ii=0;
-					if(name.equals(m.getTagName())) {
+					if(nodeProva.getTagName().equals(m.getTagName())) {
 						//System.out.println("Padre: " + name);
 						int count =0;
 						for(Node nodeChild : m.getChildEl()) {
@@ -135,7 +135,7 @@ public class ToolsParser {
 							
 							}
 						if(count==0) {
-							System.out.println("Padre " + name + "Non ha nodi figli");
+							System.out.println("Padre " + nodeProva.getTagName() + "Non ha nodi figli");
 						}
 					}
 				}
@@ -143,9 +143,9 @@ public class ToolsParser {
 	}
 		
 		// prende gli elementi figli
-		public void getChildElement(String name){
+		public void getChildElement(Node nodeProva){
 //			List<Node> child = new ArrayList<>();
-			if(name.equals(root.getTagName())) {
+			if(nodeProva.getTagName().equals(root.getTagName())) {
 				if(root.getChildEl().isEmpty()) {
 				System.out.println("Non esistono Child Nodes");
 				} else {
@@ -160,19 +160,19 @@ public class ToolsParser {
 						}
 					}
 					if(count==0) {
-						System.out.println("Padre " + name + " Non ha nodi figli");
+						System.out.println("Padre " + nodeProva.getTagName() + " Non ha nodi figli");
 				}
 				}
 				} else {
 					for(Node m : root.getChildEl()) {
 						
 						int ii=0;
-						if(name.equals(m.getTagName())) {
-							System.out.println("Padre: " + name);
+						if(nodeProva.getTagName().equals(m.getTagName())) {
+							System.out.println("Padre: " + nodeProva.getTagName());
 							//int count =0;
 							for(Node nodeChild : m.getChildEl()) {
 								if((nodeChild instanceof Element )) {
-									System.out.println("\tFiglio " + ii + ": " + nodeChild.getTagName());
+									System.out.println("\tElemento figlio " + ii + ": " + nodeChild.getTagName());
 									//count++;
 								ii++;
 								};
@@ -184,6 +184,45 @@ public class ToolsParser {
 						}
 					}
 			}
+		
+		public Node searchNode(String nameNode) {
+			//root = tree(readXML(path));
+			Node childOutput = null;
+			if(root.tagName.equals(nameNode)) {
+				childOutput = root;
+			}else {
+				for(Node child : root.getChildEl()) {
+			    	   if(child.getTagName().equals(nameNode)) {
+			    		   childOutput= child;
+			    	   }
+			       }
+			}
+			return childOutput;
+		}
+		
+		// prende gli elementi con un tagName specifico		
+		public void getElementsByTagName(String tagName){
+			if(!root.getChildEl().isEmpty()) {
+				for(Node n : root.getChildEl()) {
+					if(n instanceof Element) {
+						if(n.getTagName().equals(tagName)) {
+							StringBuilder sb = new StringBuilder(n.getTagName());
+							sb.insert(1,'/');
+							System.out.println(n.getTagName() + ((Element)(n)).getValues()+ sb.toString());
+						}
+					} else {
+						for(Node child : n.getChildEl()) {
+							if(child.getTagName().equals(tagName)) {
+								StringBuilder sb = new StringBuilder(child.getTagName());
+								sb.insert(1,'/');
+								System.out.println(child.getTagName() + ((Element)(child)).getValues()+ sb.toString());
+							}
+						}
+					}
+				}
+			}
+			
+		}
 
 		
 	}

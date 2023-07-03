@@ -11,20 +11,24 @@ public class ParserXML {
 //	}
 
 	public static void main(String[] args) {
-		String s="\\Users\\marty\\Desktop\\test_parser2.xml";
-		
+		String s="\\Users\\marty\\Desktop\\test_parser1.xml";
 		
 		 ToolsParser toolsParser = new ToolsParser();
 	        List<String> s2 = new ArrayList<>();
+	        // s2 contiene il file formattato
 	        s2 = toolsParser.readXML(s);
-	        Node treeTry = toolsParser.tree(toolsParser.readXML(s));
+	        // treeTry contiene l'albero da root
+	        Node treeTry = toolsParser.tree(s2);
+	        // stampa il tagName della root
 	        toolsParser.getRootElement(treeTry);
+	        String name = "<contatto>";
+	        toolsParser.getChildNode(toolsParser.searchNode(name));
 	        System.out.println("-----------------------");
-//	        System.out.println(treeTry.getChildEl());
+	        toolsParser.getChildElement(toolsParser.searchNode(name));
 //	        System.out.println("-----------------------");
-	        //toolsParser.getChildNode("<contatti>");
-	        toolsParser.getChildElement("<contatto>");
-
+	        toolsParser.getElementsByTagName("<cognome>");
+	        toolsParser.getElementsByTagName("<telefono>");
+	        toolsParser.getElementsByTagName("<email>");
 
 
 //	        ToolsParser toolsParser1 = new ToolsParser();
