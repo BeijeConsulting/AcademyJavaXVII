@@ -34,6 +34,13 @@ public class ToolsParser {
 			String[] r1 = null;
 			while (bufferedReader.ready()) {
 				String r = bufferedReader.readLine();
+				if(r.trim().startsWith("<!")) {
+					r = bufferedReader.readLine();
+					while(!r.trim().endsWith("-->")){
+						r = bufferedReader.readLine();
+						
+					}	
+				}else {
 				 r1 = r.split(">");		//divido file per ogni valore delimitato da '>'
 				 						// solo valori interni -> <([^<]*)>
 	                if(r1.length>1 && !r1[1].isEmpty()) {
@@ -45,6 +52,7 @@ public class ToolsParser {
 //	                    System.out.println("RRRRRR: " + r);
 	                    rows.add(r.trim());
 	                }
+				}
 	            }
 	            } catch (IOException e) {
 	                e.printStackTrace();
