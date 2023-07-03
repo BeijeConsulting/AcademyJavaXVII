@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Node {
 	
 	protected String tagName;
-	private Attributes attributes;
+	private List<Attributes> attributes;
 	private List<Node> childEl;
 	
 	 public Node() {
@@ -16,7 +16,7 @@ public class Node {
 	    public Node(String tagName) {
 
 	        this.tagName = tagName;
-	        this.attributes = new Attributes();
+	        this.attributes = new ArrayList<Attributes>();
 	        this.childEl = new ArrayList<Node>();
 
 	    }
@@ -27,21 +27,43 @@ public class Node {
 	    public void setTagName(String tagName) {
 	        this.tagName = tagName;
 	    }
+	    
+	    
+	 
+	    public List<Attributes> getAttributes() {
+			return attributes;
+		}
 
+		public void setAttributes(List<Attributes> attributes) {
+			this.attributes = attributes;
+		}
 
-	    public Attributes getAttributes() {
-	        return attributes;
-	    }
-
-	    public void setAttributes(Attributes attributes) {
-	        this.attributes = attributes;
-	    }
-
-	    public List<Node> getChildEl() {
+		public List<Node> getChildEl() {
 	        return childEl;
 	    }
 	    public void setChildEl(List<Node> childEl) {
 	        this.childEl = childEl;
+	    }
+	    
+	    public void printNode() {
+
+	        System.out.print(tagName);
+
+	        for (Attributes a : attributes) {
+	            System.out.print("nome: " + a.getName());
+	            System.out.print("valore: " + a.getValue());
+	        }
+
+
+//	        for (Node n : childEl) {
+//	            System.out.println(n.tagName);
+	//
+//	            if (n.childEl.size() > 0) {
+//	                for () {
+//	                System.out.println();
+//	            } }
+//	        }
+
 	    }
 
 

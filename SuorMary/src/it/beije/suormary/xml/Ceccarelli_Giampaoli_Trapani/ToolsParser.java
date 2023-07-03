@@ -40,7 +40,7 @@ public class ToolsParser {
 	                    rows.add(r1[1].split("</")[0].trim()); // Pippo
 	                    rows.add("</" + r1[1].split("</")[1].trim()+ ">"); // </nome>
 	                } else {
-	                    System.out.println("RRRRRR: " + r);
+//	                    System.out.println("RRRRRR: " + r);
 	                    rows.add(r.trim());
 	                }
 	            }
@@ -95,30 +95,24 @@ public class ToolsParser {
         return root;
     }
 
-	
 		
-		
-		
-	
-	
-	
-	
-	
-	
-	public Element getRootElement(String pathFile) {
+	public Node getRootElement(Node root) {
 
-//		try {
-//			
+//      try {
 //
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}  catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		return null;
-	}
+//
+      root.printNode();
+
+
+//      } catch (IOException e) {
+//          e.printStackTrace();
+//      }  catch (Exception e) {
+//          // TODO Auto-generated catch block
+//          e.printStackTrace();
+//      }
+
+      return null;
+  }
 	
 	
 	
