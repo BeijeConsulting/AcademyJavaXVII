@@ -69,42 +69,45 @@ public class Element extends Node{
 		// Flag which indicates if the pointer is currently inside a tag
 		boolean inTag = false;
 		
-		//Flag che indica se ho finito di leggere il nome di un tag e sto iniziando a leggere eventuali attributi
+		// Flag which indicates if the pointer has finished reading a tag's name and is starting 
+		// to read possible attributes
 		boolean skip = false;
 		
-		//Flag che indica se sto leggendo il valore di un attributo
+		// Flag which indicates if the pointer is reading an attribute's value
 		boolean inAttributeContent=false;
 		
-		//Flag che indica se sto leggendo un tag di chiusura (</tag>)
+		// Flag which indicates if the pointer is reading a closing tag (</tag>)
 		boolean inClosing = false;
 		
-		//Flag che indica se mi trovo nel body di un elemento
+		// Flag which indicates if the pointer is reading a child element's body
 		boolean inBody = false;
 
-		//Flag che indica se sto leggendo un tag all'interno del body di un altro elemento
+		// Flag which indicates if the pointer is reading a tag while inside a child element's body
 		boolean inBodyTag = false;
 		
-		
-		//Variabili di appoggio per memorizzare gli elementi e i loro attributi
+
+		// Supporting variables to memorize the elements' names as well as their attributes', and the latter's value
 		String name = "";
 		String attributeName = "";
 		String attributeContent = "";
 		
-		//Variabile dove memorizzare il contenuto dei nodi presenti tra gli elementi
+		// Supporting variable to save the content of the nodes between each element
 		String contentNode = "";
 		
-		//Variabile di appoggio per il controllo della chiusura del tag dell'elemento attuale
+		// Supporting variable used to confront the current closing tag to the current child element's one 
 		String checkName = "";
 		
-		//Variabile di appoggio che memorizza il nome dell'elemento che sto chiudendo al momento
+		// Supporting variable used to save the name of the element that's being closed to confront it later
 		String closingName = "";
 		
+		// Duplicating the body of the current object to avoid modyifing it by mistake
 		String body = this.getBody();
 		
-		//Variabile di appoggio dove memorizzare il nome di un elemento interno al body di un elemento figlio
+		// Supporting variable used to save the name of  an element that's inside the current child element, to later
+		// add it to the tag list
 		String innerElementName = "";
 		
-		//Variabile di appoggio dove memorizzare il body di un elemento figlio
+		// Supporting variable used to save the body of the current child element
 		String innerElementBody = "";
 		
 		for(int i=0; i< body.length(); i++) {
