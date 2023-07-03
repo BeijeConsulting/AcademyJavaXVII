@@ -14,17 +14,23 @@ public class ParserXML {
 		String s="\\Users\\marty\\Desktop\\test_parser1.xml";
 		String s1="\\Users\\marty\\Desktop\\test_parser1 riga.xml";
 		
-		ToolsParser toolsParser = new ToolsParser();
-		List<String> s2 = new ArrayList<>();
-		s2 = toolsParser.readXML(s);
-		toolsParser.tree(toolsParser.readXML(s));
-		System.out.println("-----------------------");
+		 ToolsParser toolsParser = new ToolsParser();
+	        List<String> s2 = new ArrayList<>();
+	        s2 = toolsParser.readXML(s);
+	        Node treeTry = toolsParser.tree(toolsParser.readXML(s));
+	        System.out.println(s2);
+	        System.out.println("-----------------------");
+	        System.out.println(treeTry.getChildEl());
+	        System.out.println("-----------------------");
+
+
+
+//	        ToolsParser toolsParser1 = new ToolsParser();
+//	        toolsParser1.getRootElement(s1);
+
 		
-		System.out.println(s2);
 		
-//		ToolsParser toolsParser1 = new ToolsParser();
-//		toolsParser1.getRootElement(s1);
-		
+	    
 		
 
 	}

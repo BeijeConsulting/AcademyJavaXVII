@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Stack;
 
 
 
@@ -31,47 +32,70 @@ public class ToolsParser {
 			String[] r1 = null;
 			while (bufferedReader.ready()) {
 				String r = bufferedReader.readLine();
-				r1 = r.split("]<>]");			//divido file per ogni valore delimitato da '<' e '>'
-				for(String a : r1) {
+				 r1 = r.split(">");		//divido file per ogni valore delimitato da '>'
+				 						// solo valori interni -> <([^<]*)>
+	                if(r1.length>1 && !r1[1].isEmpty()) {
 
-					rows.add(a.trim());  		//salvo file letto in Arraylist 
-				}
-			}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}  catch (Exception e) { 
-				e.printStackTrace();
-			}
-		
-		return rows;
-	}
+	                    rows.add(r1[0].trim() + ">"); // <nome>
+	                    rows.add(r1[1].split("</")[0].trim()); // Pippo
+	                    rows.add("</" + r1[1].split("</")[1].trim()+ ">"); // </nome>
+	                } else {
+	                    System.out.println("RRRRRR: " + r);
+	                    rows.add(r.trim());
+	                }
+	            }
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }  catch (Exception e) { 
+	                e.printStackTrace();
+	            }
+
+	        return rows;
+	    }
 	
-	public void tree(List<String> rows) {	
-		Element root = new Element();
-		
-		StringBuilder str = new StringBuilder();
-		str.append(rows.get(0));
-		str.insert(1, '/');		
-		
-		if(rows.get(rows.size()-1).equals(str.toString())) {			//controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
-			root.setTagName(rows.get(0));					//setto tagName di RootElement 
-			System.out.println(root.getTagName());
-		} else {
-			System.out.println("File non valido");			//root element non chiuso, file non valido
-			return;
-		}
-		
-//		for(int i=2; i<rows.size(); i++) {
-//			if(rows.get(i).isEmpty()) {
-//			String close = "/".concat(rows.get(i));
-//			if(rows.get(i).equals(str)) {			 
-//				root.setTagName(rows.get(1));					
-//				System.out.println(root.getTagName());
-//		}
-//		}
-//		}
+	public Node tree(List<String> rows) {
+        Node root = new Node();
+        Node n = null;
+        Element e = null;
+        Stack<Node> stack = new Stack<Node>();
 
-	}
+        StringBuilder str = new StringBuilder();
+        str.append(rows.get(0));
+        str.insert(1, '/');
+
+        if(rows.get(rows.size()-1).equals(str.toString())) {            //controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
+            root.setTagName(rows.get(0));    //setto tagName di RootElement 
+            stack.push(root);
+            //System.out.println(root.getTagName());
+        } else {
+            System.out.println("File non valido");            //root element non chiuso, file non valido
+            return null;
+        }
+
+        for(int i=1; i<rows.size(); i++) {
+            if(rows.get(i).startsWith("</")) {
+                stack.pop();
+                continue;
+            }
+            if(!rows.get(i).startsWith("<")) {
+
+                ((Element)(stack.peek())).setValues(rows.get(i));
+                continue;
+            }
+            if (rows.get(i+1).startsWith("<")) {
+                n = new Node(rows.get(i));
+                stack.peek().getChildEl().add(n);
+                stack.push(n);
+            } else {
+                e = new Element(rows.get(i));
+                stack.peek().getChildEl().add(e);
+                stack.push(e);
+            }
+    }
+        return root;
+    }
+
+	
 		
 		
 		
