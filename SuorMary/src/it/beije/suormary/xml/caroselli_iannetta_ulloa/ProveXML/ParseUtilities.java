@@ -4,9 +4,9 @@ import java.util.HashMap;
 
 public class ParseUtilities {
 
-	public boolean isSelfClosingTag(String tagName) {
-		System.out.println(tagName.endsWith("/"));
-		return tagName.endsWith("/");
+	public boolean isSelfClosingTag(String s) {
+		//System.out.println(tagName.endsWith("/"));
+		return s.endsWith("/");
 		
 	}
 	

@@ -46,8 +46,13 @@ public class Parser {
                 	node[0] = new Node(tagName, attributes);
                 	
                 	//prendi il contenuto
+                	if(xml.lastIndexOf("<") <= 0) {
+                		System.out.println("Sono entrato");
+                		throw new StringIndexOutOfBoundsException("Invalid XML format at '" + xml + "'");
+                	}
                     content = xml.substring(xml.indexOf(">") + 1, xml.lastIndexOf("<")).trim();
-                                
+                    System.out.println(content);
+                    
                     //prendi il contenuto
                     content = xml.substring(xml.indexOf(">") + 1, xml.lastIndexOf("<")).trim();
                                
@@ -65,19 +70,20 @@ public class Parser {
                     	int nextTagEndIndex = content.indexOf(">");
                     	String childAngleBrackets = content.substring(1, nextTagEndIndex);
                     	
-                    	System.out.println("<   " + childAngleBrackets + "   >");
+                    	//System.out.println("<   " + childAngleBrackets + "   >");
                     	
                     	Element childElement= new Element(childAngleBrackets);
                     	String childTagName = childElement.getTag();
                     	Map<String, String> childAttributes = childElement.getAttributes();
                     	
-                    	//System.out.println(childElement.getTag());
+                    	//System.out.println("attributi " + childAttributes);
                     	
-                    	isSelfClosingTag = parseUtilities.isSelfClosingTag(childTagName);
+                    	isSelfClosingTag = parseUtilities.isSelfClosingTag(childAngleBrackets);
                     	if (isSelfClosingTag) {
-                    		child = new Node(childTagName.replace("/", ""), childAttributes, "selfclosing");	
+                    		child = new Node(childTagName.replace("/", ""), childAttributes, "");	
                     		node[0].addChild(child);
-                    		content = content.substring(nextTagEndIndex +1).trim();
+                    		content = content.substring(nextTagEndIndex + 1).trim();
+  							//System.out.println("sono un contenuto if " + content);
                     	}
                     	else {
                     		int childTagCloseIndex = content.indexOf("</" + childTagName + ">");
@@ -85,6 +91,7 @@ public class Parser {
                     		child = parse(childContent, node[0]);
                     		node[0].addChild(child);
                     		content = content.substring(childTagCloseIndex + childTagName.length() + 3).trim();  
+                    		//System.out.println("sono un contenuto else" + content);
                     	}
                     }                  
                 }
@@ -97,8 +104,8 @@ public class Parser {
         //throw new IllegalArgumentException("Invalid XML format: " + xml);
         }
         
-        System.out.println("nome: " + node[0].getTagName());
-        for (Node c : node[0].getChildNodes()) 	System.out.println("\tfiglio: " + c.getTagName());
+//        System.out.println("nome: " + node[0].getTagName());
+//        for (Node c : node[0].getChildNodes()) 	System.out.println("\tfiglio: " + c.getTagName());
     	
         return node[0];
     }
@@ -106,7 +113,7 @@ public class Parser {
 
     public static void main(String[] args) throws IOException {
 
-        String path = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\xml_parser_test\\test_parser5.xml";
+        String path = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\xml_parser_test\\test_parser3.xml";
         File file = new File(path);
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -123,7 +130,7 @@ public class Parser {
         }
         //Node root = new NuovoParser().parse(s.toString());
         Node root = parse(s.toString());
-        //System.out.println(root);
+        System.out.println(root);
     }
 }
 

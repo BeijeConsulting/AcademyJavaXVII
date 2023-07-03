@@ -36,6 +36,7 @@ public class Element {
 		String attributeName;
 		String attributeValue;
 		int index;
+		if (content.endsWith("/")) content = content.substring(0, content.length()-1);
 		for (String sub : content.split("\" ")) {
 			index = sub.indexOf("=");
 			attributeName = sub.substring(0, index);

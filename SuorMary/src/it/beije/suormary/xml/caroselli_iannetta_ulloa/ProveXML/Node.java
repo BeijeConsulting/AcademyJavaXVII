@@ -88,13 +88,13 @@ public class Node {
     	return s.toString();
     }
     
-//    @Override
-//    public String toString() {
-//    	//System.out.println("print attributes : " + listOfChildren.toString());
-//    	return "Node: tagName = " + tagName + "\nattributes: " + attributes + 
-//    											 "\nvalue: " + value +
-//    											 "\nchildren: \t" + listOfChildren + "\n";
-//
-//    } 
+    @Override
+    public String toString() {
+    	//System.out.println("print attributes : " + listOfChildren.toString());
+    	return "Node: tagName = " + tagName + "\nattributes: " + attributes + 
+    											 "\nvalue: " + value +
+    											 "\nchildren: \t" + listOfChildren + "\n";
+
+    } 
 
 }
