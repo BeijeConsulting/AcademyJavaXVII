@@ -50,7 +50,7 @@ public class Element extends Node{
 	public boolean tagOrderIsOk(String closingName, List<String> tags) {
 		if(tags.get(tags.size()-1).equals(closingName)) {
 			tags.remove(tags.size()-1);
-			closingName="";
+			
 			return true;
 		}else {
 			return false;
@@ -196,6 +196,7 @@ public class Element extends Node{
 								}
 								
 							}
+							closingName="";
 							inBodyTag = false;
 							inClosing = false;
 						}else {
@@ -380,6 +381,7 @@ public class Element extends Node{
 							if(!tagOrderIsOk(closingName, tags)) {
 								throw new Exception("I tag del documento vengono chiusi in ordine errato.");
 							}
+							closingName="";
 							inTag = false;
 							inClosing = false;
 						}

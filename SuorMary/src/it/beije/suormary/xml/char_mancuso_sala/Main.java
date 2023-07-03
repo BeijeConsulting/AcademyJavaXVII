@@ -18,9 +18,9 @@ public class Main {
 		Element root = new Element();
 		
 		root = doc.getRootElement();
-		List<Element> elements = root.getElementsByTagName("nome");
+		List<Element> elements = root.getElementsByTagName("class");
 		for(Element el : elements) {
-			System.out.println(el.getTagName());
+			System.out.println(el.toString());
 		}
 		
 		/*System.out.println("I am an element\n");
