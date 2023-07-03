@@ -26,22 +26,43 @@ public class Document  {
 				throw new IllegalArgumentException("Nessun elemento radice trovato");
 			}
 			
+			
 			//estraggo l'elemento radice con <>
 			String rootEl = document.substring(startIndex, endIndex+1);
 			
-			
+			//controllo se ho attributi
 			String [] root = rootEl.split(" ");
 			
 			if(root.length>1) {
 				int lunghezzaPrimoEl=root[0].length();
-				rootEl=document.substring(0, lunghezzaPrimoEl)+">";
+				rootEl=document.substring(0, lunghezzaPrimoEl+1)+">";
 			}
+			
+			
 			
 			//tolgo <> 
 			String nameRootEl = rootEl.substring(1,rootEl.length()-1);
 			
 
 			 el = new Element(nameRootEl);
+			 
+			 
+			 //salvo gli attributi se presenti
+			 if(root.length>1) {
+				 Attribute a=null;
+				 for(int i=1; i<root.length; i++) {
+					 //salvo la parte prima dell'uguale
+					 int end=root[i].indexOf("=");
+					 String name=root[i].substring(end);
+					 //salvo la parte dopo l'uguale senza le virgolette
+					 String content=root[i].substring(end+2, root[i].length());
+					 //imposto i valori dell'attributo corrente
+					 a=new Attribute();
+					 a.setName(name);
+					 a.setContent(content);
+					 el.attributes.add(a);
+				 }
+			 }
 
 			
 			document=document.trim();
