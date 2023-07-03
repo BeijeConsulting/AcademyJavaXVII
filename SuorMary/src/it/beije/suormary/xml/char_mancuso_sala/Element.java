@@ -413,6 +413,7 @@ public class Element extends Node{
 		List<Element> elementNameList = new ArrayList<>();
 		for(Element el : elementList) {
 			if(el.getTagName().equals(tagName)) elementNameList.add(el);
+			elementNameList.addAll(el.getElementsByTagName(tagName));
 		}
 		return elementNameList;
 		
