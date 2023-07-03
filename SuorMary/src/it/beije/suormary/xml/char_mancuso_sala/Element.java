@@ -47,6 +47,16 @@ public class Element extends Node{
 		return attContent;
 	}
 	
+	public boolean tagOrderIsOk(String closingName, List<String> tags) {
+		if(tags.get(tags.size()-1).equals(closingName)) {
+			tags.remove(tags.size()-1);
+			closingName="";
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	public List<Node> getChildNodes() throws Exception{
 		
 		// List of nodes to be returned at the end
@@ -180,13 +190,11 @@ public class Element extends Node{
 							
 							if(i > 0 && body.charAt(i-1) == '/') {
 							}else {
-							
-								if(tags.get(tags.size()-1).equals(closingName)) {
-									tags.remove(tags.size()-1);
-									closingName="";
-								}else {
+								
+								if(!tagOrderIsOk(closingName, tags)) {
 									throw new Exception("I tag del documento vengono chiusi in ordine errato.");
 								}
+								
 							}
 							inBodyTag = false;
 							inClosing = false;
@@ -346,32 +354,30 @@ public class Element extends Node{
 					
 					
 				} else {
-					// Quando si chiude un tag ed esso non chiude l'ultimo tag di apertura inserito significa che è
-					// presente un errore di ordine dei tag nel body quindi lancio un'eccezione
-					
-					// 
+
+					// When a tag is closed its name is added to the tags list, unless it's a self-closing tag
+					// If the tag being closed does not correspond with the previous opened tag an exception is
+					// thrown as it means the document is not correct
 					if(body.charAt(i) == '>') {
 						if(i > 0 && body.charAt(i-1) == '/') {
 							inTag = false;
 							
-							// creo l'elemento del tag appena letto
+							// create element from the tag name
 							e = new Element(name);
 							
-							// devo salvare eventuali attributi letti dell'elemento
+							// set its attributes
 							e.attributes = attributes;
 							
-							// infine resetto la lista di attributi
+							// reset the attributes list
 							attributes = new ArrayList<>();
 							
 							inBody = true;
 							
-							//imposto skip = false perchè serve solo per sapere se devo leggere attributi
+							// set skip to false because it's just to read attributes
 							skip = false;
 						}else {
-							if(tags.get(tags.size()-1).equals(closingName)) {
-								tags.remove(tags.size()-1);
-								closingName="";
-							}else {
+							
+							if(!tagOrderIsOk(closingName, tags)) {
 								throw new Exception("I tag del documento vengono chiusi in ordine errato.");
 							}
 							inTag = false;
@@ -383,22 +389,22 @@ public class Element extends Node{
 					}
 				}
 				
-				
-				//Se non sono in un body e trovo un tag di apertura controllo se contentNode ha dentro qualcosa
+				// If not in a body, a '<' means a new tag
 				if(body.charAt(i) == '<') {
-					//Se non è vuoto significa che tra i due elementi figlio c'è un nodo
+					// If contentNode is not empty it means there is a node between the elements
 					if(!contentNode.equals("")) {
 						n = new Node();
 						n.setBody(contentNode);
 						
-						// Aggiungo il nodo alla lista e resetto la variabile di appoggio
+						// Add the node to the list and reset the supporting variable
 						nodes.add(n);
 						contentNode = "";
 					}
 					inTag = true;
 				}
-				
-				// Se leggo un carattere mentre non sono né in un tag né in un body significa che sto leggendo un nodo
+			
+				// If we are reading a character that is not a tag nor a body we are reading a node.
+				// It is important we check the opening < first to not add it to the node content.
 				if(!inTag) {
 					if(!inBody) {
 						contentNode += body.charAt(i);
