@@ -11,11 +11,15 @@ public class Main {
 				+ "		<cognome>mancuso</c>\n\r"
 				+ "</cognome>";
 		*/
-		Document doc = Document.parse("/Temp/filexml.xml");
+		Document doc = Document.parse("/v/test_parser1.xml");
 		
 		Element root = new Element();
 		
 		root = doc.getRootElement();
+		List<Element> elements = root.getElementsByTagName("nome");
+		for(Element el : elements) {
+			System.out.println(el.getTagName());
+		}
 		
 		/*System.out.println("I am an element\n");
 		System.out.println(root.getTagName());
@@ -28,19 +32,19 @@ public class Main {
 		
 		//System.out.println(root.getElementTextContent());
 		
-		List<Node> nodes = root.getChildNodes();
+//		List<Node> nodes = root.getChildNodes();
 		
-		for(Node n : nodes) {
-			if(n instanceof Element) {
-				System.out.println("I am an element\n");
-				System.out.println(((Element)n).getTagName());
-				System.out.println(((Element)n).attributesToString());
-			}else {
-				System.out.println("I am a node");
-			}
-			System.out.println(n.getBody());
-			//System.out.println(n.getBody());
-		}
+//		for(Node n : nodes) {
+//			if(n instanceof Element) {
+//				System.out.println("I am an element\n");
+//				System.out.println(((Element)n).getTagName());
+//				System.out.println(((Element)n).attributesToString());
+//			}else {
+//				System.out.println("I am a node");
+//			}
+//			System.out.println(n.getBody());
+//			//System.out.println(n.getBody());
+//		}
 		//System.out.println(root.getElementTextContent());
 		
 		
