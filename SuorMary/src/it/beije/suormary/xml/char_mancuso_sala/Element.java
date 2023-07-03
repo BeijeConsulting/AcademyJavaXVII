@@ -112,39 +112,49 @@ public class Element extends Node{
 		
 		for(int i=0; i< body.length(); i++) {
 			
-			// Se ci troviamo nel body di un elemento figlio ne va letto il contenuto
+			// If the cursor is currently inside the body of a child element 
 			if(inBody) {
 				innerElementBody += body.charAt(i);
-				//Se ci troviamo in un tag interno al body
+				// If the cursor is currently inside a tag, also inside the body
 				if(inBodyTag) {			
 					
+					// The space character inside the tag indicates the end of the tag name
 					if(body.charAt(i) == ' ') {
 						skip = true;
 					}
+					// The slash character inside the tag indicates it is a closing tag, unless it's found inside
+					// an attribute's content
 					if(body.charAt(i) == '/') {
-						//Controllo di non essere nel valore di un attributo
 						if(!inAttributeContent) {
 							inClosing = true;
 						}
 						
 					}
-					// a differenza del controllo inClosing fuori dal body, qui non è necessario creare un nuovo
-					// elemento nè memorizzare i suoi attributi.
+
+					// Differently from the inClosing check outside the inBody flow, here it's not necessary to 
+					// create a new element nor its attributes if a tag is closed, as the elements here 
+					// are not direct children of the element calling the method.
+					// It is necessary to monitor the tags that are opened and closed and their order.
 					if(!inClosing) {
 						
+						// If the current character is a '>' it indicates the end of a tag
 						if(body.charAt(i) == '>') {
 		
 							tags.add(innerElementName);
 							innerElementName = "";					
-							inBody = true;
+							//inBody = true;
 							skip = false;
 						}
 						
+						// If the skip tag is false it means we are not reading attributes
 						if(!skip) {
+							// The '>' character is not part of the tag name so we check for that
 							if(body.charAt(i) != '>') {
 								innerElementName += body.charAt(i);
 							}
-							
+						// If we are reading an attribute we just need to track if we're reading its name or value
+						// We need it to know at all times where the cursor is as this information is necessary in other
+						// cases.
 						}else {
 							if(!inAttributeContent) {
 								if(body.charAt(i) != ' ') {
@@ -161,8 +171,11 @@ public class Element extends Node{
 							}
 						}	
 					} else {
-						// Quando si chiude un tag ed esso non chiude l'ultimo tag di apertura inserito significa che è
-						// presente un errore di ordine dei tag nel body quindi lancio un'eccezione
+						// Here we are in a closing tag
+						
+						// When a tag is closed its name is added to the tags list, unless it's a self-closing tag
+						// If the tag being closed does not correspond with the previous opened tag an exception is
+						// thrown as it means the document is not correct
 						if(body.charAt(i) == '>') {
 							
 							if(i > 0 && body.charAt(i-1) == '/') {
