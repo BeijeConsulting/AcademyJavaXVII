@@ -49,22 +49,24 @@ public class Element extends Node{
 	
 	public List<Node> getChildNodes() throws Exception{
 		
-		//Lista di nodi da ritornare alla fine
+		// List of nodes to be returned at the end
 		List<Node> nodes = new ArrayList<>();
 		
-		//Lista di attributi di un elemento
+		// List of an element's attributes
 		List<Attribute> attributes = new ArrayList<>();
 		
-		//lista dove sono memorizzati i tag nell'ordine in cui sono aperti nel documento:
-		//usata per lanciare eccezioni nel caso di formattazione errata
+		// List of all the tags' names that are encountered while reading the whole body.
+		// They are saved in order of appearance and removed when the corresponding tag is closed.
+		// It is used to recognize an attempt to close a tag which name does not correspond 
+		// with the last one appended
 		List<String> tags = new ArrayList<>();
 		
-		// Variabili di appoggio per la creazione di nodi, elementi e attributi da aggiungere alle liste
+		// Supporting variables used to create new nodes, elements and attributes to add to their lists
 		Element e = null;
 		Attribute att = null;
 		Node n = null;
-		
-		//Flag che indica se sto leggendo all'interno di un tag
+
+		// Flag which indicates if the pointer is currently inside a tag
 		boolean inTag = false;
 		
 		//Flag che indica se ho finito di leggere il nome di un tag e sto iniziando a leggere eventuali attributi
@@ -99,10 +101,10 @@ public class Element extends Node{
 		
 		String body = this.getBody();
 		
-		//Variabile di appoggio dove memorizzare il nome di un elemento interno al body di un altro elemento maggiore
+		//Variabile di appoggio dove memorizzare il nome di un elemento interno al body di un elemento figlio
 		String innerElementName = "";
 		
-		//Variabile di appoggio dove memorizzare il body di un elemento interno al body di un altro elemento maggiore
+		//Variabile di appoggio dove memorizzare il body di un elemento figlio
 		String innerElementBody = "";
 		
 		for(int i=0; i< body.length(); i++) {
@@ -123,7 +125,8 @@ public class Element extends Node{
 						}
 						
 					}
-					
+					// a differenza del controllo inClosing fuori dal body, qui non è necessario creare un nuovo
+					// elemento nè memorizzare i suoi attributi.
 					if(!inClosing) {
 						
 						if(body.charAt(i) == '>') {
@@ -131,8 +134,6 @@ public class Element extends Node{
 							tags.add(innerElementName);
 							innerElementName = "";					
 							inBody = true;
-							//inTextContent = true;
-							
 							skip = false;
 						}
 						
