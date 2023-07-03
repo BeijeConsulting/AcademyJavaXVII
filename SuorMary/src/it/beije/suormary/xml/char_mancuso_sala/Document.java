@@ -33,7 +33,7 @@ public class Document  {
 			String [] root = rootEl.split(" ");
 			
 			if(root.length>1) {
-				int lunghezzaPrimoEl=root.length;
+				int lunghezzaPrimoEl=root[0].length();
 				rootEl=document.substring(0, lunghezzaPrimoEl)+">";
 			}
 			
