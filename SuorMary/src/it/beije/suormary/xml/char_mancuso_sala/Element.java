@@ -179,8 +179,6 @@ public class Element extends Node{
 						if(body.charAt(i) == '>') {
 							
 							if(i > 0 && body.charAt(i-1) == '/') {
-								inBodyTag = false;
-								inClosing = false;
 							}else {
 							
 								if(tags.get(tags.size()-1).equals(closingName)) {
@@ -189,29 +187,28 @@ public class Element extends Node{
 								}else {
 									throw new Exception("I tag del documento vengono chiusi in ordine errato.");
 								}
-								inBodyTag = false;
-								inClosing = false;
 							}
+							inBodyTag = false;
+							inClosing = false;
 						}else {
 							if(body.charAt(i) != '/' && body.charAt(i) != '<') {
 								closingName += body.charAt(i);
 							}
-							
-							
 						}
 					}			
 					
 				}
-				//Qui capisco se dopo aver letto il nuovo carattere sono entrato in un tag o ne sono uscito
-				//Il controllo viene messo dopo l'if(inBodyTag) precedente per non contare ">" o "<" come parte
-				//di eventuale tag o body
+
+				// Here we check if the cursor has entered a tag or left one. The check is placed here to avoid
+				// saving ">" or "<" as part of the element's name/body
 				if(body.charAt(i) == '<') {
 					inBodyTag = true;
 				}	
 				if(body.charAt(i) == '>') {
 					inBodyTag = false;
 				}
-				//Qui inizio il controllo per vedere se sto chiudendo il tag dell'elemento di cui sto leggendo il body
+				
+				// This if sequence keeps checking if the tag being closed is the element's i'm reading the body of
 				if(checkName.equals("")) {
 					if(body.charAt(i) == '<') {
 						checkName += '<';
@@ -219,41 +216,46 @@ public class Element extends Node{
 						checkName = "";
 					}
 				}else {
-					//Se checkName non è vuoto significa che sono in un tag, devo controllare se è il corretto tag di chiusura
+	
+					// If checkName is not empty it means the cursor is reading a tag, we must check if it's the one
+					// that closes the primary child element or reset the variable if it's an inner tag
 					if(checkName.equals("<")) {
 						if(body.charAt(i) == '/') {
 							checkName += '/';
 						}else {
-							// Se non è un tag di chiusura resetto checkName
+							// If it's not a closing tag reset checkName
 							checkName = "";
 						}
 					}else {
-						//Se è un tag di chiusura devo controllare che ciascun carattere successivo corrisponda
-						//col tag che devo chiudere
+
+						// If we are in a closing tag we must check every next character  corresponds with the tag
+						// we are checking
 						if(checkName.startsWith("</")){
+							// If the tag fully corresponds
 							if(checkName.substring(2).equals(name) && body.charAt(i) == '>') {
-								// Se alla fine il tag corrispondeva
+								
+								// add the > to the checkName
 								checkName += body.charAt(i);
 								
-								// Rimuovo il tag di chiusura dal body
+								// Remove the closing tag from the element's body
 								innerElementBody = innerElementBody.substring(0,innerElementBody.length() - checkName.length());
 								
-								// imposto il body dell'elemento con quello che ho letto
+								// set the element's body with the one we read and saved in innerElementBody
 								e.setBody(innerElementBody);
 								
-								// aggiungo l'elemento letto a nodes
+								// add the element to the nodes list
 								nodes.add(e);
 								
-								// imposto il flag inBody a false perchè ho finito di leggerlo
+								// Set the inBody flag to false because we finished reading it
 								inBody=false;
 								
-								// Resetto le variabili di appoggio
+								// Resetting supporting variables
 								innerElementBody = "";
 								checkName = "";
 								name = "";
 								
 							}else {
-								// Se il tag che sto leggendo non corrisponde resetto checkName
+								// If the tag we are reading does not correspond we reset checkName
 								checkName += body.charAt(i);
 								if(!name.substring(0,checkName.length()-2).equals(checkName.substring(2))) {
 									checkName = "";
@@ -263,17 +265,19 @@ public class Element extends Node{
 						}
 					}
 				}
-				//Se invece non siamo nel body di un elemento bisogna distinguere tra interno di un tag
-				//ed esterno
+
+			// If we are not reading a child's element body we need to 
+			// distinguish between being INSIDE a tag or OUTSIDE
 			}else {
-				//Se siamo all'interno di un tag e incontriamo un carattere spazio significa che abbiamo
-				//finito di leggere il nome e passiamo agli attributi
+				
+				// If INSIDE a tag, a space character means we have finished reading the tag name and start
+				// reading attributes
 				if(inTag && body.charAt(i) == ' ') {
 					skip = true;
 				}
-				//Se siamo all'interno di un tag e troviamo un / significa che stiamo leggendo un tag di chiusura
+				// The slash character inside the tag indicates it is a closing tag, unless it's found inside
+				// an attribute's content
 				if(inTag && body.charAt(i) == '/') {
-					//Controllo di non essere nel valore di un attributo
 					if(!inAttributeContent) {
 						inClosing = true;
 					}
