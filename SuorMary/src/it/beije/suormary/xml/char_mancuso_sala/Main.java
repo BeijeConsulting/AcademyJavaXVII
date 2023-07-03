@@ -11,7 +11,7 @@ public class Main {
 				+ "		<cognome>mancuso</c>\n\r"
 				+ "</cognome>";
 		*/
-		Document doc = Document.parse("/v/test_parser1.xml");
+		Document doc = Document.parse("/Temp/filexml.xml");
 		
 		Element root = new Element();
 		
