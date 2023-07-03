@@ -53,14 +53,24 @@ public class Document  {
 				 for(int i=1; i<root.length; i++) {
 					 //salvo la parte prima dell'uguale
 					 int end=root[i].indexOf("=");
-					 String name=root[i].substring(end);
-					 //salvo la parte dopo l'uguale senza le virgolette
-					 String content=root[i].substring(end+2, root[i].length());
-					 //imposto i valori dell'attributo corrente
-					 a=new Attribute();
-					 a.setName(name);
-					 a.setContent(content);
-					 el.attributes.add(a);
+					 if(end!=-1) {
+						 String name=root[i].substring(0,end);
+						 //salvo la parte dopo l'uguale senza le virgolette
+						 
+						 String content=trimEnd(root[i].substring(end+2, root[i].length()));
+						 
+						 //imposto i valori dell'attributo corrente
+						 a=new Attribute();
+						 a.setName(name);
+						 a.setContent(content);
+						 el.attributes.add(a);
+					 } else {
+						 String content=trimEnd(root[i].substring(end+2, root[i].length()));
+						 String nextPart=content;
+						 content =root[i-1]+nextPart;
+						 el.attributes.get(el.attributes.size()-1).setContent(content);
+					 }
+					 
 				 }
 			 }
 
@@ -84,6 +94,20 @@ public class Document  {
 		return el;
 
 	}
+	
+	public static String trimEnd(String s) {
+		boolean tagClosing= s.endsWith(">");
+		 if(tagClosing) {
+			 s=s.substring(0, s.length()-1); 
+		 }
+		 
+		 boolean quotationMarkClosing=s.endsWith("\"");
+		 if(quotationMarkClosing) {
+			 s=s.substring(0, s.length()-1);
+		 }
+		 return s;
+	}
+	
 	public static Document parse(String file) {		
 		return XMLUtilities.readXML(file);
 	}
