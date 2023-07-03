@@ -11,16 +11,16 @@ public class ParserXML {
 //	}
 
 	public static void main(String[] args) {
-		String s="\\Users\\marty\\Desktop\\test_parser2.xml";
+		String s="\\Users\\marty\\Desktop\\test_parser3.xml";
 		
 		 ToolsParser toolsParser = new ToolsParser();
 	        List<String> s2 = new ArrayList<>();
 	        // s2 contiene il file formattato
 	        s2 = toolsParser.readXML(s);
 	        // treeTry contiene l'albero da root
-	        for(String s1:s2) {
-	        	System.out.println(s1);
-	        }
+//	        for(String s1:s2) {
+//	        	System.out.println(s1);
+//	        }
 	        
 //	        Node treeTry = toolsParser.tree(s2);
 //	        toolsParser.getRootElement(treeTry);

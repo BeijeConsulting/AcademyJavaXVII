@@ -47,9 +47,14 @@ public class ToolsParser {
 
 	                    rows.add(r1[0].trim() + ">"); // <nome>
 	                    rows.add(r1[1].split("</")[0].trim()); // Pippo
-	                    rows.add("</" + r1[1].split("</")[1].trim()+ ">"); // </nome>
+	                    try {
+	                    	rows.add("</" + r1[1].split("</")[1].trim()+ ">"); // </nome>
+	                    } catch (ArrayIndexOutOfBoundsException ecc) {
+	                    	System.out.println("XML formattato non correttamente");
+	        	        	ecc.fillInStackTrace();
+	        	        	return null;
+	            	    } 
 	                } else {
-//	                    System.out.println("RRRRRR: " + r);
 	                    rows.add(r.trim());
 	                }
 				}
@@ -74,48 +79,56 @@ public class ToolsParser {
         str.append(rows.get(0));
         str.insert(1, '/');
 
-        if(rows.get(rows.size()-1).equals(str.toString())) {            //controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
-            root.setTagName(rows.get(0));    //setto tagName di RootElement 
-            stack.push(root);
-            //System.out.println(root.getTagName());
-        } else {
-            System.out.println("File non valido");            //root element non chiuso, file non valido
-            return null;
-        }
-
-        for(int i=1; i<rows.size(); i++) {
-        	if (rows.get(i-1).endsWith("/>")) {
-            	stack.pop();
-            	
-            }
-            if(rows.get(i).startsWith("</")) {
-                stack.pop();
-                continue;
-            }
-            
-            if(!rows.get(i).startsWith("<")) {
-
-                ((Element)(stack.peek())).setValues(rows.get(i));
-                continue;
-            }
-
-            if (rows.get(i+1).startsWith("<")) {
-            	if(rows.get(i).endsWith("/>")) {
-            		e = new Element(rows.get(i));
-                    stack.peek().getChildEl().add(e);
-                    stack.push(e);
-            	} else {
-	                n = new Node(rows.get(i));
-	                stack.peek().getChildEl().add(n);
-	                stack.push(n);
-            	}
-            } else {
-                e = new Element(rows.get(i));
-                stack.peek().getChildEl().add(e);
-                stack.push(e);
-            }
-    }
-        return root;
+        
+        try {
+	        if(rows.get(rows.size()-1).equals(str.toString())) {            //controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
+	            root.setTagName(rows.get(0));    //setto tagName di RootElement 
+	            stack.push(root);
+	            //System.out.println(root.getTagName());
+	        } else {
+	            System.out.println("File non valido");            //root element non chiuso, file non valido
+	            return null;
+	        }
+	
+	        for(int i=1; i<rows.size(); i++) {
+	        	if (rows.get(i-1).endsWith("/>")) {
+	            	stack.pop();
+	            	
+	            }
+	            if(rows.get(i).startsWith("</")) {
+	                stack.pop();
+	                continue;
+	            }
+	            
+	            if(!rows.get(i).startsWith("<")) {
+	
+	                ((Element)(stack.peek())).setValues(rows.get(i));
+	                continue;
+	            }
+	
+	            if (rows.get(i+1).startsWith("<")) {
+	            	if(rows.get(i).endsWith("/>")) {
+	            		e = new Element(rows.get(i));
+	                    stack.peek().getChildEl().add(e);
+	                    stack.push(e);
+	            	} else {
+		                n = new Node(rows.get(i));
+		                stack.peek().getChildEl().add(n);
+		                stack.push(n);
+	            	}
+	            } else {
+	                e = new Element(rows.get(i));
+	                stack.peek().getChildEl().add(e);
+	                stack.push(e);
+	            }
+	        }
+	        return root;
+        } catch (ArrayIndexOutOfBoundsException ecc) {
+	        	ecc.fillInStackTrace();
+	        	
+	    } 
+        return null;
+       
     }
 
 	public void getRootElement(Node root) {
