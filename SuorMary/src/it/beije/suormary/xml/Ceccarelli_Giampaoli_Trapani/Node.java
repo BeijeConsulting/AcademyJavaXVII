@@ -11,6 +11,7 @@ public class Node {
 	
 	 public Node() {
 	        this.childEl = new ArrayList<Node>();
+	        this.attributes = new ArrayList<Attributes>();
 	    }
 
 	    public Node(String tagName) {
@@ -47,11 +48,13 @@ public class Node {
 	    
 	    public void printNode() {
 
-	        System.out.print(tagName);
+	        System.out.println(tagName);
 
-	        for (Attributes a : attributes) {
-	            System.out.print("nome: " + a.getName());
-	            System.out.print("valore: " + a.getValue());
+	        if(!attributes.isEmpty()) {
+		        for (Attributes a : attributes) {
+		            System.out.println("nome: " + a.getName());
+		            System.out.println("valore: " + a.getValue());
+		        }
 	        }
 
 

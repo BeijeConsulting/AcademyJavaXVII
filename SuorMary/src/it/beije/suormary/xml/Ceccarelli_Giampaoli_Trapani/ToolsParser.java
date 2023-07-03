@@ -19,6 +19,8 @@ public class ToolsParser {
 	public  BufferedReader bufferedReader = null;
 	public  List<String> rows = null;
 	public  Element el = null;
+	public List<Node> tree = null;
+	public  Node root = null;
 		
 	public List<String> readXML (String pathFile){
 		try {
@@ -54,10 +56,11 @@ public class ToolsParser {
 	    }
 	
 	public Node tree(List<String> rows) {
-        Node root = new Node();
+        root = new Node();
         Node n = null;
         Element e = null;
         Stack<Node> stack = new Stack<Node>();
+        tree = new ArrayList<Node>();
 
         StringBuilder str = new StringBuilder();
         str.append(rows.get(0));
@@ -66,6 +69,7 @@ public class ToolsParser {
         if(rows.get(rows.size()-1).equals(str.toString())) {            //controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
             root.setTagName(rows.get(0));    //setto tagName di RootElement 
             stack.push(root);
+            tree.add(root);
             //System.out.println(root.getTagName());
         } else {
             System.out.println("File non valido");            //root element non chiuso, file non valido
@@ -94,27 +98,42 @@ public class ToolsParser {
     }
         return root;
     }
+	
+	public void getRootElement(Node root) {
 
-		
-	public Node getRootElement(Node root) {
-
-//      try {
-//
-//
       root.printNode();
 
-
-//      } catch (IOException e) {
-//          e.printStackTrace();
-//      }  catch (Exception e) {
-//          // TODO Auto-generated catch block
-//          e.printStackTrace();
-//      }
-
-      return null;
   }
 	
+	public void getChildNode(String name){
+//		List<Node> child = new ArrayList<>();
+		if(name.equals(root.getTagName())) {
+			if(root.getChildEl().isEmpty()) {
+			System.out.println("Non esistono Child Nodes");
+			} else {
+				int i = 0;
+				for(Node m : root.getChildEl()) {
 	
-	
+					System.out.println("Figlio " + i + ": " + m.getTagName());
+					i++;
+				}
+			}
+			} else {
+				for(Node m : root.getChildEl()) {
+					
+					int ii=0;
+					if(name.equals(m.getTagName())) {
+						System.out.println("Padre: " + name);
+						for(Node nodeChild : m.getChildEl()) {
+							System.out.println("Figlio " + ii + ": " + nodeChild.getTagName());
+							ii++;
+							}
+					}
+				}
+		}
+		
+		
+		
+	}
 
 }

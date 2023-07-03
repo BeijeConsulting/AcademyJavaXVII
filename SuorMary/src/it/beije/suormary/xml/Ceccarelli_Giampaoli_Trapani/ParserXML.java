@@ -18,10 +18,11 @@ public class ParserXML {
 	        List<String> s2 = new ArrayList<>();
 	        s2 = toolsParser.readXML(s);
 	        Node treeTry = toolsParser.tree(toolsParser.readXML(s));
-	        System.out.println(toolsParser.getRootElement(treeTry));
+	        toolsParser.getRootElement(treeTry);
 	        System.out.println("-----------------------");
 //	        System.out.println(treeTry.getChildEl());
 //	        System.out.println("-----------------------");
+	        toolsParser.getChildNode("<contatto>");
 
 
 
