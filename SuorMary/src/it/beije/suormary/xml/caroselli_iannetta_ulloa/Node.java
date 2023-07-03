@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Node {
 	
+	//se non è statico si può fare il parse di più documenti allo stesso tempo
 	public static List<Node> tree =  new ArrayList<>();
 	
     private String tagName;
@@ -47,10 +48,6 @@ public class Node {
 	public String getAttribute(String attribute) {
 		return attributes.get(attribute);
 	}
-	
-/*	public String getValue() {
-//        return value;
-    }*/
 
     public void setValue(String value) {
         this.value = value;
@@ -67,7 +64,6 @@ public class Node {
     	for (Node c : listOfChildren) {
     		s.append(c.getTextContent() + "\n");
     	}
-    	
     	return s.toString();
     }
     
@@ -84,7 +80,6 @@ public class Node {
     
     @Override
     public String toString() {
-    	//System.out.println("print attributes : " + listOfChildren.toString());
     	return "Node: tagName = " + tagName + ", attributes: " + attributes + 
     											 ", value: " + value +
     											 ", children: " + listOfChildren + "\n";

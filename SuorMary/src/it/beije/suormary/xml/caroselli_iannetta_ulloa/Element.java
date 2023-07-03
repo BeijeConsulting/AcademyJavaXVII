@@ -1,3 +1,5 @@
+//in futuro: deve estendere nodes, per avere metodi getChildNodes, getChildlements
+
 package it.beije.suormary.xml.caroselli_iannetta_ulloa;
 
 import java.util.HashMap;
@@ -13,9 +15,7 @@ public class Element {
 	}
 	
 	public Map<String, String> getAttributes() {
-		//System.out.println(this.attributes);
 		return attributes;
-		
 	}
 	
 	public Element(String tag, Map<String, String> attributes) {
@@ -33,7 +33,6 @@ public class Element {
 			String content = s.substring(index +1);
 			this.attributes = splitAttributes(content);
 		}
-		
 	}
 	
 	public Map<String, String> splitAttributes(String content) {

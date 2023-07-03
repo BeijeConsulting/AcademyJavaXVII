@@ -43,7 +43,6 @@ public class Document {
         xml = xml.trim();
         String content = xml.trim();
         String childContent;
-        ParseUtilities parseUtilities= new ParseUtilities();
         boolean isSelfClosingTag = false;
         
         if (xml.startsWith("<") && xml.endsWith(">")) {
@@ -60,7 +59,7 @@ public class Document {
             	
             	Element element = new Element(angleBrackets);
                 String tagName = element.getTag();
-                isSelfClosingTag = parseUtilities.isSelfClosingTag(tagName);
+                isSelfClosingTag = isSelfClosingTag(tagName);
                 Map<String, String> attributes = element.getAttributes();
                 
                 //se la root è selfclosing tag
@@ -72,69 +71,56 @@ public class Document {
                 	
                 	//prendi il contenuto
                 	if(xml.lastIndexOf("<") <= 0) {
-                		//System.out.println("Sono entrato");
                 		throw new StringIndexOutOfBoundsException("Invalid XML format at '" + xml + "'");
                 	}
                     content = xml.substring(xml.indexOf(">") + 1, xml.lastIndexOf("<")).trim();
-                    //System.out.println(content);
-                    
-                    //prendi il contenuto
-                    content = xml.substring(xml.indexOf(">") + 1, xml.lastIndexOf("<")).trim();
-                               
+                                                   
                     //controllo se ci sono tag innestati
-                while (content.startsWith("<")) {
+                    while (content.startsWith("<")) {
                 	
-                	if (content.startsWith("<!--") ){
-                		childContent = content.substring(content.indexOf("!") - 1, content.indexOf("-->") + 3);
-                    	child = new Node("comment", new HashMap<>(), childContent);
-                    	node[0].addChild(child);
-                    	content = content.substring(content.indexOf("--") + 3);
-                    }
-                    else {
-                    	//per i tag innestati, li metto in child
-                    	int nextTagEndIndex = content.indexOf(">");
-                    	String childAngleBrackets = content.substring(1, nextTagEndIndex);
-                    	
-                    	//System.out.println("<   " + childAngleBrackets + "   >");
-                    	
-                    	Element childElement= new Element(childAngleBrackets);
-                    	String childTagName = childElement.getTag();
-                    	Map<String, String> childAttributes = childElement.getAttributes();
-                    	
-                    	//System.out.println("attributi " + childAttributes);
-                    	
-                    	isSelfClosingTag = parseUtilities.isSelfClosingTag(childAngleBrackets);
-                    	if (isSelfClosingTag) {
-                    		child = new Node(childTagName.replace("/", ""), childAttributes, "");	
+                    	if (content.startsWith("<!--") ){
+                    		childContent = content.substring(content.indexOf("!") - 1, content.indexOf("-->") + 3);
+                    		child = new Node("comment", new HashMap<>(), childContent);
                     		node[0].addChild(child);
-                    		content = content.substring(nextTagEndIndex + 1).trim();
-  							//System.out.println("sono un contenuto if " + content);
+                    		content = content.substring(content.indexOf("--") + 3);
                     	}
                     	else {
-                    		int childTagCloseIndex = content.indexOf("</" + childTagName + ">");
-                    		childContent = content.substring(0, childTagCloseIndex + childTagName.length() + 3);
-                    		child = createNode(childContent, node[0]);
-                    		node[0].addChild(child);
-                    		content = content.substring(childTagCloseIndex + childTagName.length() + 3).trim();  
-                    		//System.out.println("sono un contenuto else" + content);
-                    	}
-                    }                  
-                }
-                if (!content.contains("<")) node[0].setValue(content);
-            }             	
-        } 
+                    		//per i tag innestati, li metto in child
+                    		int nextTagEndIndex = content.indexOf(">");
+                    		String childAngleBrackets = content.substring(1, nextTagEndIndex);
+                    	
+                    		Element childElement= new Element(childAngleBrackets);
+                    		String childTagName = childElement.getTag();
+                    		Map<String, String> childAttributes = childElement.getAttributes();
+                    	
+                    		isSelfClosingTag = isSelfClosingTag(childAngleBrackets);
+                    		if (isSelfClosingTag) {
+                    			child = new Node(childTagName.replace("/", ""), childAttributes, "");	
+                    			node[0].addChild(child);
+                    			content = content.substring(nextTagEndIndex + 1).trim();
+                    		}
+                    		else {
+                    			int childTagCloseIndex = content.indexOf("</" + childTagName + ">");
+                    			childContent = content.substring(0, childTagCloseIndex + childTagName.length() + 3);
+                    			child = createNode(childContent, node[0]);
+                    			node[0].addChild(child);
+                    			content = content.substring(childTagCloseIndex + childTagName.length() + 3).trim();
+                    		}
+                    	}                  
+                    }
+                    if (!content.contains("<")) node[0].setValue(content);
+                }             	
+            } 
         }
-        else {
-        node[0].setValue(content);
-        //throw new IllegalArgumentException("Invalid XML format: " + xml);
-        }
-        
-//        System.out.println("nome: " + node[0].getTagName());
-//        for (Node c : node[0].getChildNodes()) 	System.out.println("\tfiglio: " + c.getTagName());
-    	
+        else node[0].setValue(content);
+
         return node[0];
     }
     
+	private boolean isSelfClosingTag(String s) {
+		return s.endsWith("/");
+		
+	}
 }
 
 
