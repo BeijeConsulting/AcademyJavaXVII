@@ -65,9 +65,9 @@ public class Document  {
 						 a.setContent(content);
 						 el.attributes.add(a);
 					 } else {
-						 String content=trimEnd(root[i].substring(end+2, root[i].length()));
+						 String content=trimEnd(root[i].substring(0, root[i].length()));
 						 String nextPart=content;
-						 content =root[i-1]+nextPart;
+						 content = el.attributes.get(el.attributes.size()-1).getContent()+ " " +nextPart;
 						 el.attributes.get(el.attributes.size()-1).setContent(content);
 					 }
 					 

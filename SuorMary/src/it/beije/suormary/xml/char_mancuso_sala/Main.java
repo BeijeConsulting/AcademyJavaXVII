@@ -19,8 +19,14 @@ public class Main {
 		
 		root = doc.getRootElement();
 		List<Element> elements = root.getElementsByTagName("class");
-		for(Element el : elements) {
+		/*for(Element el : elements) {
 			System.out.println(el.toString());
+		}*/
+		
+		List<Attribute> att= root.attributes;
+		
+		for(Attribute a : att) {
+			System.out.println(a.getContent());
 		}
 		
 		/*System.out.println("I am an element\n");
