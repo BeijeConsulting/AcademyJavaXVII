@@ -282,40 +282,38 @@ public class Element extends Node{
 						inClosing = true;
 					}
 				}
-				// Controllo di non essere in un tag di chiusura
+				// Check if in a closing tag or not
 				if(!inClosing) {
-					//Se incontro un ">" e non sono in un tag di chiusura significa che ho appena finito di leggere un tag
-					// di apertura
+
+					// If in a not closing tag and reading ">" it means the end of an opening tag
 					if(body.charAt(i) == '>') {
 						
-						// Quindi sto uscendo dal tag -> in tag = false
 						inTag = false;
 						
-						// creo l'elemento del tag appena letto
+						// create a new element and set its name and attributes
 						e = new Element(name);
 						
-						// devo salvare eventuali attributi letti dell'elemento
 						e.attributes = attributes;
 						
-						//Inserisco il nome del tag appena letto nella lista tags che tiene traccia dei tag aperti
+						// Save the name of the tag that just opened in the tags list
 						tags.add(name);
 						
-						// infine resetto la lista di attributi
+						// reset attribute list
 						attributes = new ArrayList<>();
 						
 						inBody = true;
 						
-						//imposto skip = false perchè serve solo per sapere se devo leggere attributi
+						// set skip to false because it's just to read attributes
 						skip = false;
 					}
-					
+					// If the skip tag is false it means we are not reading attributes
 					if(!skip) {
 						if(inTag) {
 							name += body.charAt(i);
 						}
 					}else {
-						//Qui so che devo leggere attributi perchè skip è true
-						//Se inAttributeContent è falso devo leggere il nome dell'attributo finchè non incontro ="
+
+						// Here we are reading attributes because skip is true
 						if(!inAttributeContent) {
 							if(body.charAt(i) != ' ') {
 								if(body.charAt(i) != '=') {
@@ -327,7 +325,8 @@ public class Element extends Node{
 								}
 							}
 						}else {
-							// Se inAttributeContent è vero significa che devo leggere il contenuto finchè non incontro "
+					
+							// If inAttributeContent is true we read attribute content until we read the character "
 							if(body.charAt(i) == '"') {
 								inAttributeContent = false;
 								
@@ -349,6 +348,8 @@ public class Element extends Node{
 				} else {
 					// Quando si chiude un tag ed esso non chiude l'ultimo tag di apertura inserito significa che è
 					// presente un errore di ordine dei tag nel body quindi lancio un'eccezione
+					
+					// 
 					if(body.charAt(i) == '>') {
 						if(i > 0 && body.charAt(i-1) == '/') {
 							inTag = false;
