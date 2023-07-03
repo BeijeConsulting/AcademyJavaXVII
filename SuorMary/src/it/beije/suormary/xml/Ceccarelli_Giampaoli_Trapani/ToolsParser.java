@@ -19,7 +19,7 @@ public class ToolsParser {
 	public  BufferedReader bufferedReader = null;
 	public  List<String> rows = null;
 	public  Element el = null;
-	public List<Node> tree = null;
+	public  List<Node> tree = null;
 	public  Node root = null;
 		
 	public List<String> readXML (String pathFile){
@@ -76,19 +76,31 @@ public class ToolsParser {
         }
 
         for(int i=1; i<rows.size(); i++) {
+        	if (rows.get(i-1).endsWith("/>")) {
+            	stack.pop();
+            	
+            }
             if(rows.get(i).startsWith("</")) {
                 stack.pop();
                 continue;
             }
+            
             if(!rows.get(i).startsWith("<")) {
 
                 ((Element)(stack.peek())).setValues(rows.get(i));
                 continue;
             }
+
             if (rows.get(i+1).startsWith("<")) {
-                n = new Node(rows.get(i));
-                stack.peek().getChildEl().add(n);
-                stack.push(n);
+            	if(rows.get(i).endsWith("/>")) {
+            		e = new Element(rows.get(i));
+                    stack.peek().getChildEl().add(e);
+                    stack.push(e);
+            	} else {
+	                n = new Node(rows.get(i));
+	                stack.peek().getChildEl().add(n);
+	                stack.push(n);
+            	}
             } else {
                 e = new Element(rows.get(i));
                 stack.peek().getChildEl().add(e);
@@ -224,5 +236,6 @@ public class ToolsParser {
 			
 		}
 
+		
 		
 	}
