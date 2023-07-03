@@ -1,4 +1,4 @@
-package it.beije.suormary.xml.caroselli_iannetta_ulloa.ProveXML;
+package it.beije.suormary.xml.caroselli_iannetta_ulloa;
 
 import java.util.HashMap;
 

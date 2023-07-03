@@ -1,99 +1,141 @@
 package it.beije.suormary.xml.caroselli_iannetta_ulloa;
 
-import com.sun.org.apache.xerces.internal.impl.dv.xs.SchemaDVFactoryImpl;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Document {
-
-
-    private List<Node> nodes;
-
-//    public Document(RootNode root, List<Node> childNodes) {
-//        this.root = root;
-//        this.childNodes = childNodes;
-//    }
-//
-//	  public void addChild(Node childNode) {
-//	    this.childNodes.add(childNode);
-//	  }
-//
-//      public List<Node> getChildNodes() {
-//        return childNodes;
-//      }
-//
-//      public void setRoot(RootNode node) {
-//        this.root = node;
-//      }
-//
-//      public RootNode getRoot() {
-//        return root;
-//      }
-
-    public static Node findNodes(String s) {
-		List<Node> nodes = new ArrayList<>();
-		StringBuilder tagName = new StringBuilder();
-		StringBuilder content = new StringBuilder();
-		int j = 0;
-		Node node = null;
+	
+	private Node root;
+	private List<Node> tree;
 		
-		while (j < s.length()) {
-		char c = s.charAt(j);
-		if (c == '<') {
-			
-			tagName.setLength(0);
-			char ch;
-			int i;
-			for (i = j+1; i < s.length() && (ch = s.charAt(i)) != '>'; i++) {
-				ch = s.charAt(i);
-				tagName.append(ch);
-			}
-			i++;
-			
-			System.out.println("tagName" + tagName);
-			String endTagName = "</" + tagName.toString() + ">";
-			int index = s.indexOf(endTagName);
-			System.out.println("end tagName" + endTagName);
-			
-			
-			j += 2 * tagName.length() + 5 + content.toString().length();
-			System.out.println(("i" + i + "    index " + index));
-			content.append(s.substring(i, index -1));
-			System.out.println(content.toString());
-			
-			if (content.toString().contains("<")) {
-				node = findNodes(content.toString());
-				nodes.add(node);
-			}
-			else nodes.add(new Node (tagName.toString(), content.toString()));
-			
-			
-			//Element el  = new Element (tagName, attributes, contents)
-		}
-		else if (c == '\n' || c == '\t' || c == '\r'){ //consider space later
-			if (nodes.isEmpty() || !nodes.get(nodes.size() - 1).isBlank()) {
-				Node blankNode = new Node();
-				nodes.add(blankNode);
-				System.out.println("sono bianco");
-				}
-			j++;
-		}
-		//System.out.println(nodes.toString());
-		
-		if(nodes.size() != 0){
-			node = new Node(tagName.toString(), nodes);
-		}
-		else node = new Node(tagName.toString(), content.toString());
+	public Node getRoot() {return root;}
+	
+	public List<Node> getTree () { return tree;}
+	
+	public Document(String xml) {
+		root = createNode(xml);
+		tree = Node.getTree();
 	}
-		return node;
-	}
-    public void createDocument() {
-
-//        RootNode rootElement = root.getRootElement();
-
-
+	
+	// public List<Nodes>
+	public List<Element> getElementsByTagName(String tagName) {
+    	List<Element> listOfElements = new ArrayList<>();
+    	for (Node c : tree) {
+    		if (c.getTagName().equals(tagName)) {
+    			listOfElements.add(new Element(c.getTagName(), c.getAttributes()));
+    		}
+    	}
+    	return listOfElements;
     }
-
-
+	
+	public Element getRootElement() {
+    	return tree.get(0).getElement();
+    }
+	
+	private Node createNode(String xml, Node...node) {
+    	if (node.length == 0) {
+    		node = new Node[1];
+    	}
+    	
+    	Node child = null; 
+        xml = xml.trim();
+        String content = xml.trim();
+        String childContent;
+        ParseUtilities parseUtilities= new ParseUtilities();
+        boolean isSelfClosingTag = false;
+        
+        if (xml.startsWith("<") && xml.endsWith(">")) {
+        	
+            //prendo il tagName
+            String angleBrackets = xml.substring(1, xml.indexOf(">"));
+            
+            // controlla se è un commento
+            if (angleBrackets.startsWith("!--") ){
+            	node[0] = new Node("comment", new HashMap<>(), content.substring(0, content.indexOf("--") + 3));
+            }
+            
+            else { //non è un commento
+            	
+            	Element element = new Element(angleBrackets);
+                String tagName = element.getTag();
+                isSelfClosingTag = parseUtilities.isSelfClosingTag(tagName);
+                Map<String, String> attributes = element.getAttributes();
+                
+                //se la root è selfclosing tag
+                if (isSelfClosingTag) { 
+                	node[0] = new Node(tagName.replace("/", ""), attributes, "");	
+                }
+                else {
+                	node[0] = new Node(tagName, attributes);
+                	
+                	//prendi il contenuto
+                	if(xml.lastIndexOf("<") <= 0) {
+                		//System.out.println("Sono entrato");
+                		throw new StringIndexOutOfBoundsException("Invalid XML format at '" + xml + "'");
+                	}
+                    content = xml.substring(xml.indexOf(">") + 1, xml.lastIndexOf("<")).trim();
+                    //System.out.println(content);
+                    
+                    //prendi il contenuto
+                    content = xml.substring(xml.indexOf(">") + 1, xml.lastIndexOf("<")).trim();
+                               
+                    //controllo se ci sono tag innestati
+                while (content.startsWith("<")) {
+                	
+                	if (content.startsWith("<!--") ){
+                		childContent = content.substring(content.indexOf("!") - 1, content.indexOf("-->") + 3);
+                    	child = new Node("comment", new HashMap<>(), childContent);
+                    	node[0].addChild(child);
+                    	content = content.substring(content.indexOf("--") + 3);
+                    }
+                    else {
+                    	//per i tag innestati, li metto in child
+                    	int nextTagEndIndex = content.indexOf(">");
+                    	String childAngleBrackets = content.substring(1, nextTagEndIndex);
+                    	
+                    	//System.out.println("<   " + childAngleBrackets + "   >");
+                    	
+                    	Element childElement= new Element(childAngleBrackets);
+                    	String childTagName = childElement.getTag();
+                    	Map<String, String> childAttributes = childElement.getAttributes();
+                    	
+                    	//System.out.println("attributi " + childAttributes);
+                    	
+                    	isSelfClosingTag = parseUtilities.isSelfClosingTag(childAngleBrackets);
+                    	if (isSelfClosingTag) {
+                    		child = new Node(childTagName.replace("/", ""), childAttributes, "");	
+                    		node[0].addChild(child);
+                    		content = content.substring(nextTagEndIndex + 1).trim();
+  							//System.out.println("sono un contenuto if " + content);
+                    	}
+                    	else {
+                    		int childTagCloseIndex = content.indexOf("</" + childTagName + ">");
+                    		childContent = content.substring(0, childTagCloseIndex + childTagName.length() + 3);
+                    		child = createNode(childContent, node[0]);
+                    		node[0].addChild(child);
+                    		content = content.substring(childTagCloseIndex + childTagName.length() + 3).trim();  
+                    		//System.out.println("sono un contenuto else" + content);
+                    	}
+                    }                  
+                }
+                if (!content.contains("<")) node[0].setValue(content);
+            }             	
+        } 
+        }
+        else {
+        node[0].setValue(content);
+        //throw new IllegalArgumentException("Invalid XML format: " + xml);
+        }
+        
+//        System.out.println("nome: " + node[0].getTagName());
+//        for (Node c : node[0].getChildNodes()) 	System.out.println("\tfiglio: " + c.getTagName());
+    	
+        return node[0];
+    }
+    
 }
+
+
+

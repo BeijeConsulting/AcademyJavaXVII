@@ -1,4 +1,4 @@
-package it.beije.suormary.xml.caroselli_iannetta_ulloa.ProveXML;
+package it.beije.suormary.xml.caroselli_iannetta_ulloa;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +16,11 @@ public class Element {
 		//System.out.println(this.attributes);
 		return attributes;
 		
+	}
+	
+	public Element(String tag, Map<String, String> attributes) {
+		this.tag = tag;
+		this.attributes = attributes;
 	}
 	
 	public Element(String s) {
@@ -45,4 +50,12 @@ public class Element {
 		}
 		return attributes;
 	}
+
+	
+	@Override
+	public String toString() {
+		return "Element [tag=" + tag + ", attributes=" + attributes + "]";
+	}
+
+
 }

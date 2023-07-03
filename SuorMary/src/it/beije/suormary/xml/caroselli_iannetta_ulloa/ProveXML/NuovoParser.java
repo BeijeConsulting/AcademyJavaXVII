@@ -3,6 +3,9 @@ package it.beije.suormary.xml.caroselli_iannetta_ulloa.ProveXML;
 import java.util.HashMap;
 import java.util.Map;
 
+import it.beije.suormary.xml.caroselli_iannetta_ulloa.Element;
+import it.beije.suormary.xml.caroselli_iannetta_ulloa.Node;
+
 public class NuovoParser {
 	
 	public Node parse(String xml, Node...node) {
