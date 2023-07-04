@@ -91,7 +91,6 @@ public class RubricaXML {
 	}
 
 	public static void main(String[] args) {
-		readXML();
 		
 //		try {
 //		

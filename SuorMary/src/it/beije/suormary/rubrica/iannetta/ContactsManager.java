@@ -1,4 +1,4 @@
-package it.beije.xvii.exercises.iannetta;
+package it.beije.suormary.rubrica.iannetta;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
