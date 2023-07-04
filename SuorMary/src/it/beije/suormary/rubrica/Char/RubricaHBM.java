@@ -146,6 +146,30 @@ public class RubricaHBM {
 		}
 		
 	}
+	public static void deleteContact() {
+		Scanner scanner = new Scanner(System.in);
+		Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
+   	    SessionFactory sessionFactory = configuration.buildSessionFactory();
+   	    Session session = null;
+		try {
+			 Contact c = findContactByNameSurname();
+			session = sessionFactory.openSession();
+			Transaction transaction = session.beginTransaction();
+			System.out.print("Sei sicuro di voler eliminare il contatto? (si/no) : ");
+			String del = scanner.nextLine();
+			if(del.equals("si")) {
+				session.delete(c);
+				transaction.commit();
+				System.out.println("Contatto eliminato");
+			}
+			else System.out.println("Contatto non eliminato");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+			sessionFactory.close();
+		}
+	}
 
      
 }
