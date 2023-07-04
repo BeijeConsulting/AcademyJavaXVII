@@ -1,4 +1,4 @@
-package it.beije.xvii.exercises.Char;
+package it.beije.suormary.rubrica.Char;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
