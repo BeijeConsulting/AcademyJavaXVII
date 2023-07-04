@@ -160,39 +160,56 @@ public class MetodiRubrica {
 	//insert contact
 	public void insertContact() {
 		Scanner scanInsert= new Scanner(System.in);
-		System.out.println("Da dove vuoi inserire(XML,CSV,DB): ");
+		System.out.println("Da dove vuoi inserire(XML,CSV): ");
 		String risp = scanInsert.next();
+		String path="";
+		List<Contact> list2 = null;
 		switch(risp) {
-		case "XML":
-			String path=scanInsert.next();
-			List<Contact> list2 = db.loadRubricaFromXML(path);
-			try {
-				db.writeRubricaFromXMLtoDb(list2);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			break;
+			case "XML":
+				path=scanInsert.next();
+				list2 = db.loadRubricaFromXML(path);
+				try {
+					db.writeRubricaFromXMLtoDb(list2);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case "CSV":
+				path=scanInsert.next();
+				list2 = db.loadRubricaFromCSV(path,";");
+				try {
+					db.writeRubricaFromCSVtoDb(list2);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;	
+			default:
+				System.out.println("Inserisci il nuovo contatto:");
+				Contact contact = new Contact();
+				
+				System.out.print("nome: ");
+				contact.setName(scanInsert.next());
+				System.out.print("cognome: ");
+				contact.setSurname(scanInsert.next());
+				System.out.print("telefono: "); 
+				contact.setPhoneNumber(scanInsert.next());
+				System.out.print("email: "); 
+				contact.setEmail(scanInsert.next());
+				System.out.print("note: "); 
+				contact.setNote(scanInsert.next());
+				db.insertContact(contact);
+				//System.out.print(contact.toString());
+				break;
 		}
-		System.out.println("Inserisci il nuovo contatto:");
-		Contact contact = new Contact();
 		
-		System.out.print("nome: ");
-		contact.setName(scanInsert.next());
-		System.out.print("cognome: ");
-		contact.setSurname(scanInsert.next());
-		System.out.print("telefono: "); 
-		contact.setPhoneNumber(scanInsert.next());
-		System.out.print("email: "); 
-		contact.setEmail(scanInsert.next());
-		System.out.print("note: "); 
-		contact.setNote(scanInsert.next());
-		db.insertContact(contact);
-		//System.out.print(contact.toString());
+		
 		
 	}
+	
 	// selection type of search
-	public String selection() {
+	public static String selection() {
 		System.out.println("Scegli che tipo di ricerca vuoi fare: ");
 		System.out.println("1. Per nome");
 	    System.out.println("2. Per cognome");
