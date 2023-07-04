@@ -97,7 +97,7 @@ public class Menu {
 			}
 			break;
 		case "import db":
-			ab.contacts = ab.loadAddressesFromJDBC();
+			ab.contacts = ab.loadAddressesHBM();
 			break;
 		case "export csv":
 			System.out.println("\nInserisci il path del file CSV su cui esportare i dati: ");
@@ -146,9 +146,9 @@ public class Menu {
 				overwrite = input.nextLine().toLowerCase();
 			}
 			if(overwrite.equals("y")) {
-				ab.writeAddressBookJDBC(true);
+				ab.writeAddressBookHBM(true);
 			} else {
-				ab.writeAddressBookJDBC(false);
+				ab.writeAddressBookHBM(false);
 			}
 			
 			break;

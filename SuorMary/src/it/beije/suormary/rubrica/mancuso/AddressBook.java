@@ -8,7 +8,11 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
-
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -49,6 +53,17 @@ public class AddressBook {
 		}
 		
 		return sb.toString();
+	}
+	
+	public static Session getSession() {
+		Configuration configuration = new Configuration().configure()
+				.addAnnotatedClass(Contact.class);
+		
+		SessionFactory factory = configuration.buildSessionFactory();
+		
+		Session session = factory.openSession();
+		
+		return session;
 	}
 	
 	public List<Contact> loadAddressesFromCSV(String pathFile, String separator) throws IllegalArgumentException{
@@ -256,6 +271,28 @@ public class AddressBook {
 		return contacts;
 	}
 	
+	public List<Contact> loadAddressesHBM(){
+		
+		Session session = null;
+		
+		List<Contact> contacts = null;
+		
+		try {
+			
+			session = getSession();
+			
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
+			contacts = query.getResultList();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		
+		return contacts;
+	}
+	
 	public void writeAddressBookCSV(String pathFile, String separator, boolean append) {
 		
 		
@@ -440,6 +477,39 @@ public class AddressBook {
 				e.printStackTrace();
 			}
 			
+		}
+	}
+	
+	public void writeAddressBookHBM(boolean overwrite) {
+		Session session = null;
+		
+		try {
+			
+			session = getSession();
+			
+			
+			
+			if(overwrite) {
+				Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
+				List<Contact> conts = query.getResultList();
+				for (Contact c : conts) {
+					Transaction transaction = session.beginTransaction();
+					session.delete(c);
+					transaction.commit();
+				}
+			}
+			
+			for(Contact ct : contacts) {
+				Transaction transaction = session.beginTransaction();
+				session.save(ct);
+				transaction.commit();
+			}
+			
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
 		}
 	}
 	
