@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
+
 public class RubricaCSV {
 
 	public static void main(String[] args) {
@@ -36,7 +37,7 @@ public class RubricaCSV {
 		BufferedReader bufferedReader = null;
 		List<String> rows = null;
 		try {
-			File file = new File("/temp/prova.txt");
+//			File file = new File("/temp/prova.txt");
 			System.out.println("exists? " + file.exists());
 			System.out.println("isDirectory? " + file.isDirectory());
 			
@@ -58,10 +59,10 @@ public class RubricaCSV {
 //		}
 		
 //		BufferedReader bufferedReader = new BufferedReader(fileReader);
-		List<String> rows = new ArrayList<String>();
-		while (bufferedReader.ready()) {
-			String r = bufferedReader.readLine();
-			rows.add(r);
+//		List<String> rows = new ArrayList<String>();
+//		while (bufferedReader.ready()) {
+//			String r = bufferedReader.readLine();
+//			rows.add(r);
 //			System.out.println(r);
 
 			
@@ -89,16 +90,16 @@ public class RubricaCSV {
 		
 		System.out.println("rows number: " + rows.size());
 		
-
-		
-		FileWriter fileWriter = new FileWriter("/temp/appoggio/prova.csv");
+//
+//		
+//		FileWriter fileWriter = new FileWriter("/temp/appoggio/prova.csv");
 	
 		for (String row : rows) {
-			StringTokenizer tokenizer = new StringTokenizer(row, ";");
-			while (tokenizer.hasMoreElements()) {
-				System.out.println(tokenizer.nextToken());
-			}
-			System.out.println("---");
+//			StringTokenizer tokenizer = new StringTokenizer(row, ";");
+//			while (tokenizer.hasMoreElements()) {
+//				System.out.println(tokenizer.nextToken());
+//			}
+//			System.out.println("---");
      		FileWriter fileWriter = null;
 		try {
 			fileWriter = new FileWriter("/temp/appoggio/prova.csv");
@@ -138,5 +139,4 @@ public class RubricaCSV {
 }
 
 
-}
 }
