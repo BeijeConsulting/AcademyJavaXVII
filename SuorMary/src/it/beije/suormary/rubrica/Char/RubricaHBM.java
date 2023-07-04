@@ -116,6 +116,36 @@ public class RubricaHBM {
     		 sessionFactory.close();
     	 }
 	}
+	public static void updateContact() {
+		 Scanner scanner = new Scanner(System.in);
+		 Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
+    	 SessionFactory sessionFactory = configuration.buildSessionFactory();
+    	 Session session = null;
+		try {
+			 Contact c = findContactByNameSurname();
+			session = sessionFactory.openSession();
+			Transaction transaction = session.beginTransaction();
+			System.out.print("Inserisci il campo che vuoi modificare : ");
+			String campo = scanner.nextLine();
+			System.out.print("Inserisci il nuovo valore del campo : ");
+			String valore = scanner.nextLine();
+			Query<Contact> query = session.createQuery("UPDATE Contact SET " +  campo + " = :valore WHERE id = :id");
+	         query.setParameter("valore", valore);
+	         query.setParameter("id", c.getId());
+	         query.executeUpdate();
+		    transaction.commit();
+		    System.out.println("Modifica eseguita");
+		    System.out.print("Vuoi effettuare un'altra modifica? (si/no) : ");
+		    String mod = scanner.nextLine();
+		    if(mod.equals("si")) updateContact();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+			sessionFactory.close();
+		}
+		
+	}
 
      
 }
