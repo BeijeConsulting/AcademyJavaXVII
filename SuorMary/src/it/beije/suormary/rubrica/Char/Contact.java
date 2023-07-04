@@ -1,11 +1,37 @@
 package it.beije.suormary.rubrica.Char;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "rubrica")
 public class Contact {
-    private String name;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column
+	private int id;
+	@Column
+	private String name;
+	@Column
     private String surname;
+    @Column
     private String email;
+    @Column(name = "phone")
     private String phoneNumber;
+    @Column
     private String note;
+    
+    public int getId() {
+ 		return id;
+ 	}
+
+ 	public void setId(int id) {
+ 		this.id = id;
+ 	}
 	public String getName() {
 		return name;
 	}
