@@ -385,6 +385,7 @@ public class ExerciseswithDB {
 				Contact c = null;
 				while (rs.next()) {
 					c = new Contact();
+					c.setId(rs.getString("id"));
 					c.setName(rs.getString("nome"));
 					c.setSurname(rs.getString("cognome"));
 					c.setPhoneNumber(rs.getString("telefono"));
