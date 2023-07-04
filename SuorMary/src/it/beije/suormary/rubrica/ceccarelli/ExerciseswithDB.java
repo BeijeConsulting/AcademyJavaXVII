@@ -1,4 +1,4 @@
-package it.beije.xvii.exercises.ceccarelli.DB;
+package it.beije.suormary.rubrica.ceccarelli;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -80,7 +80,7 @@ public class ExerciseswithDB {
 			while (rs.next()) {
 				c = new Contact();
 				//System.out.println(rs.getInt("id"));
-				c.setId(rs.getString("id"));
+				c.setId(rs.getInt("id"));
 				c.setName(rs.getString("nome"));
 				c.setSurname(rs.getString("cognome"));
 				c.setPhoneNumber(rs.getString("telefono"));
@@ -121,7 +121,7 @@ public class ExerciseswithDB {
 				for(Element e : els) {
 					//System.out.println(e.getTagName() + " = " + e.getTextContent());
 					switch (e.getTagName()) {
-					case "id": c.setId(e.getTextContent());
+					case "id": c.setId(Integer.parseInt(e.getTextContent()));
 						break;
 					case "name": c.setName(e.getTextContent());
 						break;
@@ -265,7 +265,7 @@ public class ExerciseswithDB {
 				contact = document.createElement("contact");
 				
 				Element id = document.createElement("id");
-				id.setTextContent(c.getId());
+				id.setTextContent(String.valueOf(c.getId()));
 				contact.appendChild(id);
 				if (c.getName() != null) {
 					Element name = document.createElement("name");
@@ -356,7 +356,7 @@ public class ExerciseswithDB {
 				Contact c = null;
 				while (rs.next()) {
 					c = new Contact();
-					c.setId(rs.getString("id"));
+					c.setId(rs.getInt("id"));
 					c.setName(rs.getString("nome"));
 					c.setSurname(rs.getString("cognome"));
 					c.setPhoneNumber(rs.getString("telefono"));
@@ -385,7 +385,7 @@ public class ExerciseswithDB {
 				Contact c = null;
 				while (rs.next()) {
 					c = new Contact();
-					c.setId(rs.getString("id"));
+					c.setId(rs.getInt("id"));
 					c.setName(rs.getString("nome"));
 					c.setSurname(rs.getString("cognome"));
 					c.setPhoneNumber(rs.getString("telefono"));
@@ -441,19 +441,19 @@ public class ExerciseswithDB {
 				String cognome = contact.getSurname();
 				String telefono = contact.getPhoneNumber();
 				String email = contact.getEmail();
-				String id = contact.getId();
+				int id = contact.getId();
 				PreparedStatement preparedStatement = connection.prepareStatement("UPDATE rubrica "
-						+ "set name = ?,"
-						+ "set cognome = ?"
-						+ "set telefono = ?"
-						+ "set email = ?"
+						+ "set nome = ?,"
+						+ "cognome = ?,"
+						+ "telefono = ?,"
+						+ "email = ?"
 						+ " WHERE id = ?");
 				
 				preparedStatement.setString(1, nome);
 				preparedStatement.setString(2, cognome);
 				preparedStatement.setString(3, telefono);
 				preparedStatement.setString(4, email);
-				preparedStatement.setString(5, id);
+				preparedStatement.setInt(5, id);
 		
 				preparedStatement.executeUpdate();
 			}
@@ -472,7 +472,7 @@ public class ExerciseswithDB {
 				String cognome = contact.getSurname();
 				String telefono = contact.getPhoneNumber();
 				String email = contact.getEmail();
-				String id = contact.getId();
+				int id = contact.getId();
 				String note = contact.getNote();
 				PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO rubrica (`nome`, `cognome`, `telefono`, `email`, `note`) VALUES (?, ?, ?, ?,?)");
 				
@@ -484,6 +484,30 @@ public class ExerciseswithDB {
 				
 				preparedStatement.executeUpdate();
 				System.out.println("inserimento nuovo contatto nel DB avvenuto");
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+	}
+		
+	}
+	
+	// query delete contact
+	public void deleteContact(Contact contact) {
+		try {
+			if(connectionCheck()) {
+				int id = contact.getId();
+//				String nome = contact.getName();
+//				String cognome = contact.getSurname();
+//				String telefono = contact.getPhoneNumber();
+//				String email = contact.getEmail();
+//				String note = contact.getNote();
+				
+				PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM rubrica WHERE id = ?");
+				
+				preparedStatement.setInt(1, id);
+				
+				preparedStatement.executeUpdate();
+				System.out.println("cancellazione contatto nel DB avvenuto");
 			}
 		}catch (SQLException e) {
 			e.printStackTrace();

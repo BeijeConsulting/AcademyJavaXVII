@@ -32,7 +32,7 @@ public class Contact {
 	
 	@Column(name = "note")
 	private String note;
-	private String id;
+	//private String id;
 	
 //	@Transient
 //	private String note2;
@@ -78,12 +78,12 @@ public class Contact {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
+//	public String getId() {
+//		return id;
+//	}
+//	public void setId(int id) {
+//		this.id = id;
+//	}
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")

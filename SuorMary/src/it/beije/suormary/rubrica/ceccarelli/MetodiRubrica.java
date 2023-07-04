@@ -1,4 +1,4 @@
-package it.beije.xvii.exercises.ceccarelli.DB;
+package it.beije.suormary.rubrica.ceccarelli;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -49,7 +49,7 @@ public class MetodiRubrica {
 	} 
 	
 	// search contacts
-	public void searchContact() {
+	public List<Contact> searchContact() {
 		List<Contact> result = new ArrayList<Contact>();
 		Scanner scanSearch = new Scanner(System.in);
 		String s = selection();
@@ -78,21 +78,26 @@ public class MetodiRubrica {
 			break;
 		}
 		
+		for(Contact contact : result) {
+			System.out.println(contact.toString());
+		}
 		
 		chooseFile(result, db);
-		System.out.println("Vuoi modificare il contatto? ");
-		String r = scanSearch.next();
-		if(r.equalsIgnoreCase("Si")|| r.equalsIgnoreCase("Sì")) {
-			modifiesContact(result);
-		}else {
-			System.out.println("Si è scelto di non modificare il contatto");
-			return;
-		}
+		return result;
+//		System.out.println("Vuoi modificare il contatto? ");
+//		String r = scanSearch.next();
+//		if(r.equalsIgnoreCase("Si")|| r.equalsIgnoreCase("Sì")) {
+//			modifiesContact(result);
+//		}else {
+//			System.out.println("Si è scelto di non modificare il contatto");
+//			return;
+//		}
 		
 	}
 	
 	// modifies contact
-	public void modifiesContact(List<Contact> c) {
+	public void modifiesContact() {
+		List<Contact> c = searchContact();
 		Contact cModifies = null;
 		Scanner scanModifies = new Scanner(System.in);
 		if(c.size()==1) {
@@ -127,26 +132,27 @@ public class MetodiRubrica {
 		String phoneNumber = scanModifies.next();
 		System.out.print("email: "); 
 		String email = scanModifies.next();
-		System.out.print("note: "); 
-		String note = scanModifies.nextLine();
+		//System.out.print("note: "); 
+		//String note = scanModifies.next();
 		
 		
-		if(name!="null") {
+		if(!name.equals("null")) {
 			cModifies.setName(name);
-		}if(surname!="null") {
+		}if(!surname.equals("null")) {
 			cModifies.setSurname(surname);
-		}if(phoneNumber!="null") {
+		}if(!phoneNumber.equals("null")) {
 			cModifies.setPhoneNumber(phoneNumber);
-		}if(email!="null") {
+		}if(!email.equals("null")) {
 			cModifies.setEmail(email);
-		}if(note!="null") {
-			cModifies.setNote(note);
 		}
-		System.out.println("il nome è: " + name);
+//		}if(note!="null") {
+//			cModifies.setNote(note);
+//		}
+		//System.out.println("il nome è: " + name);
 		List<Contact> singleContact = new ArrayList<>();
 		singleContact.add(cModifies);
 		//chooseFile(singleContact, db);
-		//saveToDb(singleContact, db);
+		saveToDb(singleContact, db);
 		
 		
 	}
@@ -195,6 +201,43 @@ public class MetodiRubrica {
 	    String r = scanSelect.next();
 	    return r;
 	    
+	}
+	
+	//delete contact
+	public void deleteContact() {
+		List<Contact> c = searchContact();
+		Contact cDelete = null;
+		Scanner scanDelete = new Scanner(System.in);
+		if(c.size()==1) {
+			cDelete = c.get(0);
+		}else {
+			System.out.println("seleziona il contatto da eliminare: ");
+			
+			for(Contact contact : c) {
+				System.out.println(contact);
+				System.out.println("E' questo?");
+				String choose = scanDelete.next();
+				if(choose.equalsIgnoreCase("Si")|| choose.equalsIgnoreCase("Sì")) {
+					cDelete = contact;
+					break;
+				}
+			}
+		}
+		if(cDelete==null) {
+			System.out.println("Non è stato selezionato nessun contatto");
+			return;
+		}
+		
+		System.out.println("Sicuro di voler eliminare il contatto?");
+		String response = scanDelete.next();
+		if(response.equalsIgnoreCase("Si")|| response.equalsIgnoreCase("Sì")) {
+			db.deleteContact(cDelete);
+		}else {
+			System.out.println("Si è deciso di NON eliminare il contatto");
+			return;
+		}
+		
+		
 	}
 	
 	//save into one type of file

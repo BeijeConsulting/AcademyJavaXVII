@@ -1,4 +1,4 @@
-package it.beije.xvii.exercises.ceccarelli.DB;
+package it.beije.suormary.rubrica.ceccarelli;
 
 import java.util.Scanner;
 
@@ -40,10 +40,11 @@ public class GestioneRubrica {
 				break;
 			case "4":
 				//System.out.println("scelta 4");
-				mr.searchContact();
+				mr.modifiesContact();
 				break;
 			case "5":
-				System.out.println("scelta 5");
+				//System.out.println("scelta 5");
+				mr.deleteContact();
 				break;
 			case "6":
 				System.out.println("scelta 6");
