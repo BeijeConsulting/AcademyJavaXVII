@@ -19,6 +19,8 @@ public class ToolsParser {
 	public  BufferedReader bufferedReader = null;
 	public  List<String> rows = null;
 	public  Element el = null;
+	public  List<Node> tree = null;
+	public  Node root = null;
 		
 	public List<String> readXML (String pathFile){
 		try {
@@ -32,85 +34,292 @@ public class ToolsParser {
 			String[] r1 = null;
 			while (bufferedReader.ready()) {
 				String r = bufferedReader.readLine();
-				
-				r1 = r.split(">");//divido file per ogni valore delimitato da '<' e '>'
-				// solo valori interni -> <([^<]*)>
-				if(r1.length>1 && !r1[1].isEmpty()) {
-					rows.add(r1[0].trim() + ">");
-					rows.add(r1[1].split("</")[0].trim());
-					rows.add("</" + r1[1].split("</")[1].trim()+ ">");
-				} else {
-					rows.add(r.trim());
+
+				if(r.trim().startsWith("<!")) {
+					r = bufferedReader.readLine();
+					while(!r.trim().endsWith("-->")){
+						r = bufferedReader.readLine();
+						
+					}	
+				}else {
+				 r1 = r.split(">");		//divido file per ogni valore delimitato da '>'
+				 						// solo valori interni -> <([^<]*)>
+	                if(r1.length>1 && !r1[1].isEmpty()) {
+
+	                    rows.add(r1[0].trim() + ">"); // <nome>
+	                    rows.add(r1[1].split("</")[0].trim()); // Pippo
+	                    try {
+	                    	rows.add("</" + r1[1].split("</")[1].trim()+ ">"); // </nome>
+	                    } catch (ArrayIndexOutOfBoundsException ecc) {
+	                    	System.out.println("XML formattato non correttamente");
+	        	        	ecc.fillInStackTrace();
+	        	        	return null;
+	            	    } 
+	                } else {
+	                    rows.add(r.trim());
+	                }
+				}
+	            }
+	            } catch (IOException e) {
+	                e.printStackTrace();
+	            }  catch (Exception e) { 
+	                e.printStackTrace();
+	            }
+
+	        return rows;
+	    }
+	
+	public Node tree(List<String> rows) {
+        root = new Node();
+        Node n = null;
+        Element e = null;
+        Stack<Node> stack = new Stack<Node>();
+        tree = new ArrayList<Node>();
+
+        StringBuilder str = new StringBuilder();
+        str.append(rows.get(0));
+        str.insert(1, '/');
+        String[] splitRoot = null;
+        splitRoot = rows.get(0).split(" ",2);
+        System.out.println("PRIMA PARTE: " + splitRoot[0]);
+       
+        
+        
+        try {
+        	// controllo per il file 5 
+        	if(splitRoot.length>1) {
+        		if(rows.get(rows.size()-1).substring(2,(rows.get(rows.size()-1).length())-1).equals(splitRoot[0].substring(1))){
+        			//System.out.println("STRINGA UGUALE");
+        			root.setTagName(splitRoot[0] + ">");    //setto tagName di RootElement 
+        			//System.out.println("Primo attributo: " + splitRoot[1]);
+        			
+        				
+        				String[] tmp = splitRoot[1].split("\"\\s");
+        				
+            			// inserimento attributi 
+        				setAttributesNode(tmp, root);
+	        				
+        				       				
+        				
+        			
+    	            stack.push(root);
+	        	}else {
+	        		System.out.println("File non valido");            //root element non chiuso, file non valido
+		            return null;
+	    
+	        	}
+        	}else if(rows.get(rows.size()-1).equals(str.toString())) {            //controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
+	            root.setTagName(rows.get(0));    //setto tagName di RootElement 
+	            stack.push(root);
+	            //System.out.println(root.getTagName());
+	        } else {
+	            System.out.println("File non valido");            //root element non chiuso, file non valido
+	            return null;
+	        }
+	
+	        for(int i=1; i<rows.size(); i++) {
+	        	
+	        	if (rows.get(i-1).endsWith("/>")) {
+	            	stack.pop();
+	            	
+	            }
+	            if(rows.get(i).startsWith("</")) {
+	                stack.pop();
+	                continue;
+	            }
+	            
+	            if(!rows.get(i).startsWith("<")) {
+	
+	                ((Element)(stack.peek())).setValues(rows.get(i));
+	                continue;
+	            }
+	
+	            if (rows.get(i+1).startsWith("<")) {
+	            	if(rows.get(i).endsWith("/>")) {
+	            		e = new Element(rows.get(i));
+	                    stack.peek().getChildEl().add(e);
+	                    stack.push(e);
+	            	} else {
+		                n = new Node(rows.get(i));
+		                stack.peek().getChildEl().add(n);
+		                splitRoot = rows.get(i).split(" ",2);
+			        	if(splitRoot.length>1) {
+			        		String[] tmp = splitRoot[1].split("\"\\s");
+			        		setAttributesNode(tmp, n);
+		                
+			        	}
+			        	stack.push(n);
+	            	}
+	            } else {
+	                e = new Element(rows.get(i));
+	                stack.peek().getChildEl().add(e);
+	                
+	                splitRoot = rows.get(i).split(" ",2);
+		        	if(splitRoot.length>1) {
+		        		String[] tmp = splitRoot[1].split("\"\\s");
+		        		setAttributesElement(tmp,e);
+		        	}
+		        	stack.push(e);
+	            }
+	        	
+	        }
+	        return root;
+        } catch (ArrayIndexOutOfBoundsException ecc) {
+	        	ecc.fillInStackTrace();
+	        	
+	    } 
+        return null;
+       
+    }
+
+
+
+	public void getRootElement(Node root) {
+
+      root.printNode();
+
+  }
+	
+	// prendi solo i nodi 
+	public void getChildNode(Node nodeProva){
+//		List<Node> child = new ArrayList<>();
+		if(nodeProva.getTagName().equals(root.getTagName())) {
+			if(root.getChildEl().isEmpty()) {
+			System.out.println("Non esistono Child Nodes");
+			} else {
+				int i = 0;
+				for(Node m : root.getChildEl()) {
+	
+					System.out.println("Figlio " + i + ": " + m.getTagName());
+					i++;
 				}
 			}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}  catch (Exception e) { 
-				e.printStackTrace();
+			} else {
+				for(Node m : root.getChildEl()) {
+					
+					int ii=0;
+					if(nodeProva.getTagName().equals(m.getTagName())) {
+						//System.out.println("Padre: " + name);
+						int count =0;
+						for(Node nodeChild : m.getChildEl()) {
+							if(!(nodeChild instanceof Element )) {
+								//System.out.println("Figlio " + ii + ": " + nodeChild.getTagName());
+								nodeChild.getTagName();
+								count++;
+							ii++;
+							};
+							
+							}
+						if(count==0) {
+							System.out.println("Padre " + nodeProva.getTagName() + "Non ha nodi figli");
+						}
+					}
+				}
+		}
+	}
+		
+		// prende gli elementi figli
+		public void getChildElement(Node nodeProva){
+//			List<Node> child = new ArrayList<>();
+			if(nodeProva.getTagName().equals(root.getTagName())) {
+				if(root.getChildEl().isEmpty()) {
+				System.out.println("Non esistono Child Nodes");
+				} else {
+					int i = 0;
+					int count =0;
+					for(Node m : root.getChildEl()) {
+						
+						if((m instanceof Element )) {
+							System.out.println("Figlio " + i + ": " + m.getTagName());
+							i++;
+							count++;
+						}
+					}
+					if(count==0) {
+						System.out.println("Padre " + nodeProva.getTagName() + " Non ha nodi figli");
+				}
+				}
+				} else {
+					for(Node m : root.getChildEl()) {
+						
+						int ii=0;
+						if(nodeProva.getTagName().equals(m.getTagName())) {
+							System.out.println("Padre: " + nodeProva.getTagName());
+							//int count =0;
+							for(Node nodeChild : m.getChildEl()) {
+								if((nodeChild instanceof Element )) {
+									System.out.println("\tElemento figlio " + ii + ": " + nodeChild.getTagName());
+									//count++;
+								ii++;
+								};
+								
+								}
+							//if(count==0) {
+								//System.out.println("Padre " + name + "Non ha nodi figli");
+							}
+						}
+					}
 			}
 		
-		return rows;
-	}
-	
-	
-	public Node tree(List<String> rows) {	
-		Node root = new Node();
-		Node n = null;
-		Element e = null;
-		Stack<Node> stack = new Stack<Node>();
-		
-		StringBuilder str = new StringBuilder();
-		str.append(rows.get(0));
-		str.insert(1, '/');		
-		
-		if(rows.get(rows.size()-1).equals(str.toString())) {			//controllo formattazione file e se primo elemento utile e chiuso come ultimo elemento 
-			root.setTagName(rows.get(0));	//setto tagName di RootElement 
-			stack.push(root);
-			System.out.println(root.getTagName());
-		} else {
-			System.out.println("File non valido");			//root element non chiuso, file non valido
-			return null;
+
+		public Node searchNode(String nameNode) {
+			//root = tree(readXML(path));
+			Node childOutput = null;
+			if(root.tagName.equals(nameNode)) {
+				childOutput = root;
+			}else {
+				for(Node child : root.getChildEl()) {
+			    	   if(child.getTagName().equals(nameNode)) {
+			    		   childOutput= child;
+			    	   }
+			       }
+			}
+			return childOutput;
 		}
 		
-		for(int i=1; i<rows.size(); i++) {
-			if(rows.get(i).startsWith("</")) {
-				stack.pop();
-				continue;
+		// prende gli elementi con un tagName specifico		
+		public void getElementsByTagName(String tagName){
+			if(!root.getChildEl().isEmpty()) {
+				for(Node n : root.getChildEl()) {
+					if(n instanceof Element) {
+						if(n.getTagName().equals(tagName)) {
+							StringBuilder sb = new StringBuilder(n.getTagName());
+							sb.insert(1,'/');
+							System.out.println(n.getTagName() + ((Element)(n)).getValues()+ sb.toString());
+						}
+					} else {
+						for(Node child : n.getChildEl()) {
+							if(child.getTagName().equals(tagName)) {
+								StringBuilder sb = new StringBuilder(child.getTagName());
+								sb.insert(1,'/');
+								System.out.println(child.getTagName() + ((Element)(child)).getValues()+ sb.toString());
+							}
+						}
+					}
+				}
 			}
-			if(!rows.get(i).startsWith("<")) {
-				
-				((Element)(stack.peek())).setValues((rows.get(i)));
-				continue;
-			}
-			if (rows.get(i+1).startsWith("<")) {
-				n = new Node(rows.get(i));
-				stack.peek().getChildEl().add(n);
-				stack.push(n);
-			} else {
-				e = new Element(rows.get(i));
-				stack.peek().getChildEl().add(e);
-				stack.push(e);
-			}
-	}
-		return root;
-	}
-		
-	public Element getRootElement(String pathFile) {
+			
+		}
 
-//		try {
-//			
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}  catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-		return null;
+		public void setAttributesNode(String[] tmp, Node node) {
+			
+			for( String stringa : tmp) {
+				Attributes att = new Attributes();
+				System.out.println("TMP: " + stringa);
+				att.setName(stringa.split("=")[0]);
+				att.setValue(stringa.split("=")[1]);
+				node.getAttributes().add(att);
+			}
+		}
+		public void setAttributesElement(String[] tmp, Element el) {
+			
+			for( String stringa : tmp) {
+				Attributes att = new Attributes();
+				System.out.println("TMP: " + stringa);
+				att.setName(stringa.split("=")[0]);
+				att.setValue(stringa.split("=")[1]);
+				el.getAttributes().add(att);
+			}
+		}
 	}
-	
-	
-	
 
-}
