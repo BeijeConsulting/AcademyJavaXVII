@@ -235,31 +235,31 @@ public class RubricaUtils {
 		}
 	}
 
-//	public static List<Contact> readContactsFromDb() {
-//
-//		List<Contact> newList = new ArrayList<>();
-//
-//		System.out.println("Vuoi cecare i contatti per nome o per cognome?");
-//		String yesOrNo = useScanner();
-//		if (yesOrNo.equalsIgnoreCase("si")) {
-//			System.out.println(
-//					"Scrivi 'nome' per cercare i contatti per nome, altrimenti 'cognome' per cercare i contatti per cognome");
-//			String value = useScanner();
-//			orderContactsByNameOrSurname(value);
-//
-//		} else {
-//
-//			Query<Contact> query = session().createQuery("SELECT c FROM Contact as c");
-//			List<Contact> contacts = query.getResultList();
-//			for (Contact c : contacts)
-//				System.out.println(c);
-//
-//			session().close();
-//
-//		}
-//
-//		return newList;
-//	}
+	public static List<Contact> readContactsFromDb() {
+
+		List<Contact> newList = new ArrayList<>();
+
+		String choice = ScannerUtil
+				.readStringValue("Vuoi cecare i contatti per nome o per cognome? Scegli 'si' o 'no'");
+		if (choice.equalsIgnoreCase("si")) {
+
+			String value = ScannerUtil.readStringValue(
+					"Scrivi 'nome' per cercare i contatti per nome, altrimenti 'cognome' per cercare i contatti per cognome");
+			orderContactsByNameOrSurname(value);
+
+		} else {
+
+			Query<Contact> query = session().createQuery("SELECT c FROM Contact as c");
+			List<Contact> contacts = query.getResultList();
+			for (Contact c : contacts)
+				System.out.println(c);
+
+			session().close();
+
+		}
+
+		return newList;
+	}
 
 	public static List<Contact> orderContactsByNameOrSurname(String nameOrSurname) {
 
@@ -287,49 +287,49 @@ public class RubricaUtils {
 		return result;
 	}
 
-//	public static void exportContactsFromDbToCSV() {
-//		try {
-//			connection("suor_mary", "root");
-//			List<Contact> contacts = readContactsFromDb();
-////            System.out.println(contacts);
-//			writeRubricaCSV(contacts, "/home/flaviana/fromDbToCSV.csv", ";");
-//
-//		} catch (ClassNotFoundException e) {
-//			throw new RuntimeException(e);
-//		}
-//	}
+	public static void exportContactsFromDbToCSV() {
+		try {
+			connection("suor_mary", "root");
+			List<Contact> contacts = readContactsFromDb();
+//            System.out.println(contacts);
+			writeRubricaCSV(contacts, "/home/flaviana/fromDbToCSV.csv", ";");
 
-//	public static void exportContactsFromDbToXML() {
-//
-//		List<Contact> contacts = readContactsFromDb();
-//		writeRubricaToXML(contacts, "/home/flaviana/fromDbToXML.xml");
-//
-//	}
-//
-//	public static void importContactsToDbFromCSV() {
-//
-//		Contact contact = new Contact();
-//
-//		Transaction transaction = session().beginTransaction();
-//
-//		List<Contact> contactListFromCSV = loadRubricaFromCSV(
-//				"/home/flaviana/dev/beije/AcademyJavaXVII/Exercises/src/it/beije/xvii/exercises/Caroselli/myRubrica/rubrica.csv",
-//				";");
-//		for (Contact c : contactListFromCSV) {
-//			contact.setName(c.getName());
-//			contact.setSurname(c.getSurname());
-//			contact.setPhone(c.getPhone());
-//			contact.setEmail(c.getEmail());
-//			contact.setNote(c.getNote());
-//
-//			session().save(contact);
-//
-//			transaction.commit();
-//		}
-//
-//		session().close();
-//
-//	}
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void exportContactsFromDbToXML() {
+
+		List<Contact> contacts = readContactsFromDb();
+		writeRubricaToXML(contacts, "/home/flaviana/fromDbToXML.xml");
+
+	}
+
+	public static void importContactsToDbFromCSV() {
+
+		Contact contact = new Contact();
+
+		Transaction transaction = session().beginTransaction();
+
+		List<Contact> contactListFromCSV = loadRubricaFromCSV(
+				"/home/flaviana/dev/beije/AcademyJavaXVII/Exercises/src/it/beije/xvii/exercises/Caroselli/myRubrica/rubrica.csv",
+				";");
+		for (Contact c : contactListFromCSV) {
+			contact.setName(c.getName());
+			contact.setSurname(c.getSurname());
+			contact.setPhone(c.getPhone());
+			contact.setEmail(c.getEmail());
+			contact.setNote(c.getNote());
+
+			session().save(contact);
+
+			transaction.commit();
+		}
+
+		session().close();
+
+	}
 
 	public static void importContactsToDbFromXML() {
 
@@ -357,173 +357,148 @@ public class RubricaUtils {
 
 	}
 
-//    public static List<Contact> findContacts(String name, String surname, String email, String phone) {
-//
-//        List<Contact> contactsFounded = new ArrayList<>();
-//        String query = "SELECT * FROM rubrica WHERE ";
-//
-//        if (name != null && !name.isEmpty()) {
-//            query = query + " name = '" + name + "';";
-//
-//        } else if (surname != null && !surname.isEmpty()) {
-//            query = query + " surname = '" + surname + "';";
-//
-//        } else if (email != null && !email.isEmpty()) {
-//            query = query + " email = '" + email + "';";
-//
-//        } else if (phone != null && !phone.isEmpty()) {
-//            query = query + " phone = '" + phone + "';";
-//
-//        }
-//
-//        try {
-//            Statement statement = connection("suor_mary", "root");
-//            ResultSet rs = statement.executeQuery(query);
-//
-//            while (rs.next()) {
-//                contactsFounded.add(new Contact(rs.getString("name"), rs.getString("surname"), rs.getString("phone"), rs.getString("email"), rs.getString("note")));
-//            }
-//
-//            rs.close();
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        return contactsFounded;
-//    }
+	public static void insertContact() {
 
-//	public static void insertContact() {
-//
-//		System.out.println("Inserisci i campi del contatto che vuoi aggiungere alla rubrica");
-//		System.out.println("Inserisci il nome");
-//		String name = useScanner();
-//		System.out.println("Inserisci il cognome");
-//		String surname = useScanner();
-//		System.out.println("Inserisci il telefono");
-//		String phone = useScanner();
-//		System.out.println("Inserisci l'email");
-//		String email = useScanner();
-//		System.out.println("Inserisci la nota");
-//		String note = useScanner();
-//
-//		Contact contact = new Contact(name, surname, phone, email, note);
-//
-//		Transaction transaction = session().beginTransaction();
-//		session().save(contact);
-//		System.out.println("Contatto aggiunto alla rubrica");
-//
-//		System.out.println(contact);
-//		session().close();
-//	}
-//
-//	public static void deleteContact() {
-//
-//		System.out.println("Inserisci il valore (esempio mario) per trovare i contatti e cancellarne uno");
-//		String value = useScanner();
-//
-//		List<Contact> contacts = findContactFromInsertedValue(value);
-//
-//		printContacts(contacts);
-//
-//		// chiedo all'utente di selezionare il contatto da eliminare
-//		System.out.print("Inserisci l'id del numero del contatto da eliminare: ");
-//		Scanner scanner = new Scanner(System.in);
-//		int choice = scanner.nextInt();
-//		Contact contactToDelete = returnAContact(contacts, choice);
-//
-//		if (areYouSure()) {
-//
-//			try {
-//				Statement statement = connection("suor_mary", "root");
-//
-//				String deleteQuery = "DELETE FROM rubrica WHERE id = '" + contactToDelete.getId() + "';";
-//				statement.executeUpdate(deleteQuery);
-//
-//				System.out.println("Contatto eliminato con successo.");
-//				System.out.println(contactToDelete);
-//
-//			} catch (Exception e) {
-//				throw new RuntimeException(e);
-//			}
-//		}
-//
-//	}
+		System.out.println("Inserisci i campi del contatto che vuoi aggiungere alla rubrica");
 
-//	public static void changeContact() {
-//
-//		System.out.println("Inserisci il valore del contatto che vuoi trovare (esempio mario) per poi cambiarlo");
-//		String value = useScanner();
-//		List<Contact> contacts = findContactFromInsertedValue(value);
-//		printContacts(contacts);
-//		System.out.print("Inserisci l'id numero del contatto da cambiare: ");
-//
-//		Scanner scanner = new Scanner(System.in);
-//		int choice = scanner.nextInt();
-//		scanner.nextLine();
-//		Contact contactToChange = returnAContact(contacts, choice);
-//		System.out.println("Contatto selezionato:");
-//		System.out.println(contactToChange);
-//		String name = contactToChange.getName();
-//		String surname = contactToChange.getSurname();
-//		String phone = contactToChange.getPhone();
-//		String email = contactToChange.getEmail();
-//		String note = contactToChange.getNote();
-//
-//		try {
-//
-//			Statement statement = connection("suor_mary", "root");
-//
-//			System.out.print("Inserisci il nuovo nome (o premi Invio per mantenere lo stesso valore): ");
-//			String newName = scanner.nextLine();
-//			if (!newName.isEmpty()) {
-//				name = newName;
-//			}
-//
-//			System.out.print("Inserisci il nuovo cognome (o premi Invio per mantenere lo stesso valore): ");
-//			String newSurname = scanner.nextLine();
-//			if (!newSurname.isEmpty()) {
-//				surname = newSurname;
-//			}
-//
-//			System.out.print("Inserisci il nuovo telefono (o premi Invio per mantenere lo stesso valore): ");
-//			String newPhone = scanner.nextLine();
-//			if (!newPhone.isEmpty()) {
-//				phone = newPhone;
-//			}
-//
-//			System.out.print("Inserisci la nuova email (o premi Invio per mantenere lo stesso valore): ");
-//			String newEmail = scanner.nextLine();
-//			if (!newEmail.isEmpty()) {
-//				email = newEmail;
-//			}
-//
-//			System.out.print("Inserisci le nuove note (o premi Invio per mantenere lo stesso valore): ");
-//			String newNote = scanner.nextLine();
-//			if (!newNote.isEmpty()) {
-//				note = newNote;
-//			}
-//
-//			if (areYouSure()) {
-//
+		System.out.println("Inserisci il nome");
+		String name = RubricaManager.scanner.nextLine();
+		System.out.println("Inserisci il cognome");
+		String surname = RubricaManager.scanner.nextLine();
+		System.out.println("Inserisci il telefono");
+		String phone = RubricaManager.scanner.nextLine();
+		System.out.println("Inserisci l'email");
+		String email = RubricaManager.scanner.nextLine();
+		System.out.println("Inserisci la nota");
+		String note = RubricaManager.scanner.nextLine();
+		;
+
+		Contact contact = new Contact(name, surname, phone, email, note);
+
+		Transaction transaction = session().beginTransaction();
+		session().save(contact);
+		transaction.commit();
+		
+		System.out.println("Contatto aggiunto alla rubrica");
+
+		System.out.println(contact);
+		session().close();
+	}
+
+	public static void deleteContact() {
+
+		List<Contact> contacts = findContactFromInsertedValue();
+
+		if (contacts == null) {
+			return;
+		}
+
+		printContacts(contacts);
+
+		// chiedo all'utente di selezionare il contatto da eliminare
+		int choice = ScannerUtil.readIntValue("Inserisci l'id del numero del contatto da eliminare: ");
+		Contact contactToDelete = returnAContact(contacts, choice);
+
+		if (areYouSure()) {
+
+			Transaction transaction = session().beginTransaction();
+
+			Query<Contact> query = session().createQuery("DELETE c FROM Contact as c");
+			Contact contact = query.getSingleResult();
+			session().delete(contact);
+			transaction.commit();
+			
+			session().close();
+		}
+
+	}
+
+	public static void changeContact() {
+
+		List<Contact> contacts = findContactFromInsertedValue();
+		if (contacts == null) {
+			return;
+		}
+		printContacts(contacts);
+
+		int choice = ScannerUtil.readIntValue("Inserisci l'id numero del contatto da cambiare: ");
+
+		Contact contactToChange = returnAContact(contacts, choice);
+		System.out.println("Contatto selezionato:");
+		System.out.println(contactToChange);
+		String name = contactToChange.getName();
+		String surname = contactToChange.getSurname();
+		String phone = contactToChange.getPhone();
+		String email = contactToChange.getEmail();
+		String note = contactToChange.getNote();
+
+		System.out.print("Inserisci il nuovo nome (o premi Invio per mantenere lo stesso valore): ");
+		String newName = RubricaManager.scanner.nextLine();
+		if (!newName.isEmpty()) {
+			name = newName;
+		}
+
+		System.out.print("Inserisci il nuovo cognome (o premi Invio per mantenere lo stesso valore): ");
+		String newSurname = RubricaManager.scanner.nextLine();
+		if (!newSurname.isEmpty()) {
+			surname = newSurname;
+		}
+
+		System.out.print("Inserisci il nuovo telefono (o premi Invio per mantenere lo stesso valore): ");
+		String newPhone = RubricaManager.scanner.nextLine();
+		if (!newPhone.isEmpty()) {
+			phone = newPhone;
+		}
+
+		System.out.print("Inserisci la nuova email (o premi Invio per mantenere lo stesso valore): ");
+		String newEmail = RubricaManager.scanner.nextLine();
+		if (!newEmail.isEmpty()) {
+			email = newEmail;
+		}
+
+		System.out.print("Inserisci le nuove note (o premi Invio per mantenere lo stesso valore): ");
+		String newNote = RubricaManager.scanner.nextLine();
+		if (!newNote.isEmpty()) {
+			note = newNote;
+		}
+
+		if (areYouSure()) {
+
 //				String updateQuery = "UPDATE rubrica SET name = '" + name + "', surname = '" + surname + "', phone = '"
 //						+ phone + "', email = '" + email + "', note = '" + note + "' WHERE id = "
 //						+ contactToChange.getId();
 //				statement.executeUpdate(updateQuery);
-//
-////                    System.out.println(updateQuery);
-//				System.out.println("Contatto cambiato correttamente:");
-//
-//			}
-//
-//		} catch (Exception e) {
-//			throw new RuntimeException(e);
-//		}
-//
-//	}
 
-	public static List<Contact> findContactFromInsertedValue(String value) {
+			Transaction transaction = session().beginTransaction();
+
+			Query<Contact> query = session().createQuery("UPDATE c from Contact SET name = '" + name + "', surname = '" + surname + "', phone = '" 
+			+ phone + "', email = '" + email + "', note = '" + note + "' WHERE id = " + contactToChange.getId());
+			Contact contact = query.getSingleResult();
+			contact.setName(name);
+			contact.setSurname(surname);
+			contact.setPhone(phone);
+			contact.setEmail(email);
+			contact.setNote(note);
+
+			session().save(contact);
+			
+			transaction.commit();
+			
+			session().close();
+
+			System.out.println("Contatto cambiato correttamente:");
+
+		}
+
+	}
+
+	
+	//da pensare
+	public static List<Contact> findContactFromInsertedValue() {
 
 		List<Contact> contacts = new ArrayList<>();
+		String value = ScannerUtil.readStringValue("Inserisci il valore (esempio Mario o Rossi) per cercare i contatti desiderati");
+
 		StringBuilder query = new StringBuilder("SELECT * FROM rubrica WHERE ");
 
 		Field[] fields = Contact.class.getDeclaredFields();
@@ -546,44 +521,31 @@ public class RubricaUtils {
 		}
 		query.append(";");
 
-		try {
-			Statement statement = connection("suor_mary", "root");
-			ResultSet rs = statement.executeQuery(query.toString());
-			while (rs.next()) {
-				contacts.add(new Contact(rs.getInt("id"), rs.getString("name"), rs.getString("surname"),
-						rs.getString("phone"), rs.getString("email"), rs.getString("note")));
-			}
-
-			rs.close();
-
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+//		try {
+//			Statement statement = connection("suor_mary", "root");
+//			ResultSet rs = statement.executeQuery(query.toString());
+//			while (rs.next()) {
+//				contacts.add(new Contact(rs.getInt("id"), rs.getString("name"), rs.getString("surname"),
+//						rs.getString("phone"), rs.getString("email"), rs.getString("note")));
+//			}
 //
-//        System.out.println(query);
+//			rs.close();
 //
+//		} catch (Exception e) {
+//			throw new RuntimeException(e);
+//		}
+		
+	
+
 		System.out.println(contacts);
 
 		return contacts;
 	}
 
-//    public static List<Contact> findDuplicatesContactByValue() {
-//
-//        System.out.println("Inserisci il valore (esempio mario) per vedere i duplicati del contatto in rubrica");
-//        String value = useScanner();
-//
-////        return getContacts(value);
-//
-//    }
-
+	
+	//da pensare
 	public static List<Contact> findDuplicatesContactByValue() throws Exception {
-//		System.out.println("Inserisci il valore(esempio mario) di cui vuoi cercare i duplicati");
-//		String value = null;
-//		try (Scanner sc = new Scanner(System.in)) {
-//			if(sc.hasNext()) {
-//				value = sc.nextLine();
-//			}
-//		}
+
 		String value = ScannerUtil
 				.readStringValue("Inserisci il valore(esempio mario) di cui vuoi cercare i duplicati");
 
@@ -610,7 +572,7 @@ public class RubricaUtils {
 
 		List<Contact> duplicateContacts = findDuplicatesContactByValue();
 		printContacts(duplicateContacts);
-		if(duplicateContacts.isEmpty()) {
+		if (duplicateContacts.isEmpty()) {
 			return;
 		}
 
@@ -621,12 +583,23 @@ public class RubricaUtils {
 			// elimino i contatti duplicati
 			for (Contact c : duplicateContacts) {
 				if (c.getId() != choice) {
+					
+					Transaction transaction = session().beginTransaction();
 
-					Statement statement = connection("suor_mary", "root");
-					String deleteQuery = "DELETE FROM rubrica\n" + "WHERE id NOT IN ('" + choice + "');";
+					Query<Contact> query = session().createQuery("SELECT c FROM Contact as c WHERE id NOT IN ('" + choice + "')");
+					Contact contact = query.getSingleResult();
+					session().delete(contact);
+					
+					transaction.commit();
+					
+					session().close();
 
-					statement.executeUpdate(deleteQuery);
-					statement.close();
+
+//					Statement statement = connection("suor_mary", "root");
+//					String deleteQuery = "DELETE FROM rubrica\n" + "WHERE id NOT IN ('" + choice + "');";
+//
+//					statement.executeUpdate(deleteQuery);
+//					statement.close();
 				}
 
 			}
@@ -634,39 +607,6 @@ public class RubricaUtils {
 
 		} else {
 			System.out.println("Operazione annullata");
-		}
-	}
-
-	public static void deleteContactById(int id) {
-		try {
-			Statement statement = connection("suor_mary", "root");
-			String deleteQuery = "DELETE FROM rubrica WHERE id = " + id;
-			statement.executeUpdate(deleteQuery);
-
-			statement.close();
-
-			System.out.println("Contatto eliminato con successo.");
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void updateContact(Contact contact) {
-
-		try {
-
-			Statement statement = connection("suor_mary", "root");
-			String updateQuery = "UPDATE rubrica SET " + "name = '" + contact.getName() + "', " + "surname = '"
-					+ contact.getSurname() + "', " + "phone = '" + contact.getPhone() + "', " + "email = '"
-					+ contact.getEmail() + "', " + "note = '" + contact.getNote() + "' " + "WHERE id = "
-					+ contact.getId();
-			statement.executeUpdate(updateQuery);
-
-			statement.close();
-
-			System.out.println("Contatto aggiornato con successo.");
-		} catch (Exception e) {
-			throw new RuntimeException(e);
 		}
 	}
 
@@ -708,12 +648,6 @@ public class RubricaUtils {
 		String choice = scanner.next();
 		return choice.equalsIgnoreCase("si");
 	}
-
-//	public static String useScanner() {
-//		try(Scanner scanner = new Scanner(System.in)) {
-//			return scanner.nextLine();
-//		}
-//	}
 
 	// per distinguere i tag effettivi da elementi a capo o tab
 	public static List<Element> getChildElements(Element el) {

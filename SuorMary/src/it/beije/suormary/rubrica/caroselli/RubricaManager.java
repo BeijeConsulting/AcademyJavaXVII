@@ -22,20 +22,19 @@ public class RubricaManager {
 
         switch(choice) {
             case 1 :
-//                System.out.println(RubricaUtils.readContactsFromDb());
+                System.out.println(RubricaUtils.readContactsFromDb());
                 break;
             case 2 :
-                System.out.println("Inserisci il valore (esempio Mario o Rossi) per cercare i contatti desiderati");
-//                RubricaUtils.findContactFromInsertedValue(RubricaUtils.useScanner());
+                RubricaUtils.findContactFromInsertedValue();
                 break;
             case 3 :
-//                RubricaUtils.insertContact();
+                RubricaUtils.insertContact();
                 break;
             case 4 :
-//                RubricaUtils.changeContact();
+                RubricaUtils.changeContact();
                 break;
             case 5 :
-//                RubricaUtils.deleteContact();
+                RubricaUtils.deleteContact();
                 break;
             case 6 :
                 System.out.println(RubricaUtils.findDuplicatesContactByValue());   
