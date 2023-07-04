@@ -1,19 +1,52 @@
 package it.beije.suormary.rubrica;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+
+@Entity
+@Table(name = "rubrica")
 public class Contact {
 	
-	private String name;
-	private String surname;
-	private String phoneNumber;
-	private String email;
-	private String note;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private int id;
+
+	@Column(name = "nome")
+	private String name;
 	
+	@Column(name = "cognome")
+	private String surname;
 	
+	@Column(name = "telefono")
+	private String phoneNumber;
+	
+	@Column(name = "email")
+	private String email;
+	
+	@Column(name = "note")
+	private String note;
+	
+
+	
+
+//	@Transient
+//	private String note2;
 	
 	public int getId() {
 		return id;
 	}
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
 	public String getName() {
 		return name;
 	}
@@ -50,17 +83,18 @@ public class Contact {
 	}
 	
 	//nei bin conviene mettere metodo toString() per stampare tutto il bin
+
 	
 	public String toString() {
-		StringBuilder builder = new StringBuilder(" { ")
-				.append("nome: ").append(name)
-				.append("cognome: ").append(surname)
-				.append("phoneNumber: ").append(phoneNumber)
-				.append("email: ").append(email)
-				.append("note: ").append(note)
-				.append("} ");
+		StringBuilder builder = new StringBuilder("{ ")
+				.append("id : ").append(id)
+				.append(", name : ").append(name)
+				.append(", surname : ").append(surname)
+				.append(", phoneNumber : ").append(phoneNumber)
+				.append(", email : ").append(email)
+				.append(", note : ").append(note)
+				.append(" }");
 		
 		return builder.toString();
 	}
-
 }

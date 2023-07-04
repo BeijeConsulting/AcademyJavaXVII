@@ -2,25 +2,61 @@ package it.beije.suormary.rubrica;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 public class RubricaJDBC {
+	
+	public static Connection getConnection() throws SQLException, ClassNotFoundException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		return DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "beije");
+	}
 
 	public static void main(String[] args) {
 		
 		Connection connection = null;
 		Statement statement = null;
+		
 		try {
+			
+			connection = RubricaJDBC.getConnection();
 
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "beije");
-			
 			statement = connection.createStatement();
 			System.out.println("connection open? " + !connection.isClosed());
 			
+			String nome = "Alessandro";
+			String cognome = "Sala";
+			String telefono = "3223334842";
+			String email = "alessandro.sala@beije.it";
+			
+			PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO rubrica (`nome`, `cognome`, `telefono`, `email`) VALUES (?, ?, ?, ?)");
+
+			preparedStatement.setString(1, nome);
+			preparedStatement.setString(2, cognome);
+			preparedStatement.setString(3, telefono);
+			preparedStatement.setString(4, email);
+	
+			preparedStatement.execute();
+						
+			
+//			StringBuilder query = new StringBuilder("INSERT INTO rubrica (`nome`, `cognome`, `telefono`, `email`) VALUES ('")
+//					.append(nome).append("', '").append(cognome).append("', '")
+//					.append(telefono).append("', '").append(email).append("')");
+			//INSERT
+			//statement.executeUpdate("INSERT INTO rubrica VALUES (null, 'Marco', 'Gialli', '0432555311', 'marco.gialli@beije.it', 'sono un contatto');");
+			//statement.executeUpdate(query.toString());
+			
+			//UPDATE
+//			int u = statement.executeUpdate("UPDATE rubrica set telefono = '987654' WHERE id < 4");
+//			System.out.println(u + " record modificati");
+
+			//DELETE
+//			int u = statement.executeUpdate("DELETE FROM rubrica WHERE id = 5");
+//			System.out.println(u + " record eliminati");
+
 			//SELECT
 			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
 			while (rs.next()) {
@@ -55,8 +91,6 @@ public class RubricaJDBC {
 			}
 		}
 		
-
-
 	}
 
 }

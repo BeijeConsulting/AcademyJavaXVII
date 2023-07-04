@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica;
+package it.beije.suormary.rubrica.trapani;
 
 import java.io.IOException;
 import java.sql.SQLException;

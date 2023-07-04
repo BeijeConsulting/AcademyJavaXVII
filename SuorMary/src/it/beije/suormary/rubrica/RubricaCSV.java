@@ -20,7 +20,7 @@ public class RubricaCSV {
 		System.out.println("exists? " + file.exists());
 		System.out.println("isDirectory? " + file.isDirectory());
 		
-		FileReader fileReader = new FileReader(file);
+//		FileReader fileReader = new FileReader(file);
 //		char c;// = fileReader.read();
 //		StringBuilder r = new StringBuilder(); 
 //		while (fileReader.ready()) {
@@ -57,7 +57,7 @@ public class RubricaCSV {
 
 //		}
 		
-		BufferedReader bufferedReader = new BufferedReader(fileReader);
+//		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		List<String> rows = new ArrayList<String>();
 		while (bufferedReader.ready()) {
 			String r = bufferedReader.readLine();
@@ -135,4 +135,8 @@ public class RubricaCSV {
 		
 		System.out.println("FINE");
 	}
+}
+
+
+}
 }
