@@ -1,13 +1,48 @@
 package it.beije.suormary.rubrica;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+
+@Entity
+@Table(name = "rubrica")
 public class Contact {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
+	private int id;
+
+	@Column(name = "nome")
 	private String name;
+	
+	@Column(name = "cognome")
 	private String surname;
+	
+	@Column(name = "telefono")
 	private String phoneNumber;
+	
+	@Column(name = "email")
 	private String email;
+	
+	@Column(name = "note")
 	private String note;
 	
+//	@Transient
+//	private String note2;
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -46,7 +81,8 @@ public class Contact {
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
-				.append("name : ").append(name)
+				.append("id : ").append(id)
+				.append(", name : ").append(name)
 				.append(", surname : ").append(surname)
 				.append(", phoneNumber : ").append(phoneNumber)
 				.append(", email : ").append(email)
