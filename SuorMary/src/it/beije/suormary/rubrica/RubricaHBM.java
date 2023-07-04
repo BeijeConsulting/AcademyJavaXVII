@@ -29,7 +29,7 @@ public class RubricaHBM {
 			
 			Contact contact = null;
 			
-			//INSERT
+//			//INSERT
 //			contact = new Contact();
 //			//contact.setId(20);
 //			contact.setName("Pippo");
@@ -50,7 +50,7 @@ public class RubricaHBM {
 			List<Contact> contacts = query.getResultList();
 			for (Contact c : contacts) System.out.println(c);
 
-			//UPDATE
+//			UPDATE
 			contact = contacts.get(contacts.size()-1);
 			System.out.println("contact PRE UPDATE: " + contact);
 //			contact.setId(10);
