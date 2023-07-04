@@ -28,13 +28,13 @@ public class GestoreRubrica {
             scelta = scanner.nextLine();
       
          switch(scelta) {
-          case "lista contatti" : RubricaHBM.loadRubricaHBM(); break;
+          case "lista contatti" :List<Contact> contacts =  RubricaHBM.loadRubricaHBM(); for(Contact c : contacts) System.out.println(c); break;
           case "cerca contatto" : RubricaHBM.findContact(); break;
           case "nuovo contatto" : RubricaHBM.createContact(); break;        
           case "modifica contatto" : RubricaHBM.updateContact(); break;
          case "cancella contatto" : RubricaHBM.deleteContact(); break;
-//          case "trova contatti duplicati" : RubricaJDBC.findDuplicatedContacts(); break;
-//          case "unisci contatti duplicati" : RubricaJDBC.mergeDuplicatedContacts(); break;
+          case "trova contatti duplicati" : RubricaHBM.findDuplicatedContacts(); break;
+          case "unisci contatti duplicati" : RubricaHBM.mergeDuplicatedContacts(); break;
 //          case "esporta contatti in file CSV" : ToolsRubrica.exportDbToCSV(); break;
 //          case "esporta contatti in file XML" : ToolsRubrica.exportDbToXML(); break;
 //          case "importa contatti da file CSV" : ToolsRubrica.exportCSVToDb(); break;

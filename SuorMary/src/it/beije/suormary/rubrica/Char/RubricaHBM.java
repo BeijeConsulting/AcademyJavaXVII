@@ -5,28 +5,40 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class RubricaHBM {
-	public static void loadRubricaHBM() {
+	public static List<Contact> loadRubricaHBM() {
+		Scanner scanner = new Scanner(System.in);
 	 	 Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
     	 SessionFactory sessionFactory = configuration.buildSessionFactory();
+    	 List<Contact> listContacts = null;
     	 Session session = null;
     	 try {
     		 session = sessionFactory.openSession();
-    		 Query<Contact> query = session.createQuery("SELECT c FROM Contact as c");
-    		 List<Contact> listContacts = query.getResultList();
-    		 for(Contact c : listContacts) {
-    			 System.out.println(c);
-    		 }
+    		 System.out.print("Vuoi ordinare i contatti per nome e cognome? (si/no) : ");
+    		 String ord = scanner.nextLine();
+    		 Query<Contact> query = null;
+    		 if(ord.equals("si")) query = session.createQuery("SELECT c FROM Contact as c ORDER BY c.name,c.surname");
+    		 
+    		 else query = session.createQuery("SELECT c FROM Contact as c");
+    		 
+    		  listContacts = query.getResultList();
     		 
     	 } catch(Exception e) {
-    		 e.printStackTrace();
+    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
     	 } finally {
     		 session.close();
     		 sessionFactory.close();
     	 }
+    	 return listContacts;
 	}
 	public static Contact findContactByNameSurname() throws Exception {
 		 Scanner scanner = new Scanner(System.in);
@@ -46,7 +58,7 @@ public class RubricaHBM {
     		 listContacts = query.getResultList();
     		 
     	 } catch(Exception e) {
-    		 e.printStackTrace();
+    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
     	 } finally {
     		 session.close();
     		 sessionFactory.close();
@@ -69,8 +81,7 @@ public class RubricaHBM {
 			System.out.println("Informazioni riguardo al contatto selezionato...");
 			System.out.println(c);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			 System.out.println("Si è verificato un errore  : " + e.getMessage());
 		}
 	}
 	public static void createContact() {
@@ -110,7 +121,7 @@ public class RubricaHBM {
     		 else System.out.println("Contatto non salvato");
     		 
     	 } catch(Exception e) {
-    		 e.printStackTrace();
+    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
     	 } finally {
     		 session.close();
     		 sessionFactory.close();
@@ -139,7 +150,7 @@ public class RubricaHBM {
 		    String mod = scanner.nextLine();
 		    if(mod.equals("si")) updateContact();
 		} catch (Exception e) {
-			e.printStackTrace();
+			 System.out.println("Si è verificato un errore  : " + e.getMessage());
 		} finally {
 			session.close();
 			sessionFactory.close();
@@ -164,11 +175,68 @@ public class RubricaHBM {
 			}
 			else System.out.println("Contatto non eliminato");
 		} catch (Exception e) {
-			e.printStackTrace();
+			 System.out.println("Si è verificato un errore  : " + e.getMessage());
 		} finally {
 			session.close();
 			sessionFactory.close();
 		}
+	}
+	public static List<Contact> findDuplicatedContacts() {
+		List<Contact> duplicatedContacts = new ArrayList<>();
+		List<Contact> contacts = loadRubricaHBM();
+
+		 for (int i = 0; i < contacts.size(); i++) {
+		        for (int j = i + 1; j < contacts.size(); j++) {
+		            if (contacts.get(i).equals(contacts.get(j))) {
+		                duplicatedContacts.add(contacts.get(i));
+		                break; 
+		            }
+		        }
+		    }
+		System.out.println("Contatti duplicati trovati : ");
+		for(Contact c : duplicatedContacts) {
+			System.out.println(c);
+		}
+		return duplicatedContacts;
+		
+	}
+	public static void mergeDuplicatedContacts() {
+		List<Contact> duplicatedContacts = findDuplicatedContacts();
+		Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
+   	    SessionFactory sessionFactory = configuration.buildSessionFactory();
+   	    Session session = null;
+		try {
+			
+			session = sessionFactory.openSession();
+			Transaction transaction = session.beginTransaction();
+			//elimino tutti i contatti duplicati
+		    for (Contact c : duplicatedContacts) {
+		    	Query<Contact> query = session.createQuery("DELETE FROM Contact WHERE name = :name AND surname = :surname AND email = :email AND note = :note AND phone = :phone");
+		    	query.setParameter("name", c.getName());
+		    	query.setParameter("surname", c.getSurname());
+		    	query.setParameter("email", c.getEmail());
+		    	query.setParameter("phone", c.getPhoneNumber());
+		    	query.setParameter("note", c.getNote());
+		    	query.executeUpdate();
+		    	transaction.commit();
+		    	
+		   	
+		    }
+            //aggiungo 1 contatto
+		    for (Contact c : duplicatedContacts) {
+		    	 session.save(c);
+		    }
+		    System.out.println("I contatti duplicati sono stati uniti");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
+		} finally {
+			session.close();
+			sessionFactory.close();
+		}
+
+
 	}
 
      
