@@ -1,1 +1,0 @@
-package it.beije.suormary.rubrica.mancuso;
