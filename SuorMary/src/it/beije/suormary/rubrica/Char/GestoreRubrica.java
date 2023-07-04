@@ -32,13 +32,13 @@ public class GestoreRubrica {
           case "cerca contatto" : RubricaHBM.findContact(); break;
           case "nuovo contatto" : RubricaHBM.createContact(); break;        
           case "modifica contatto" : RubricaHBM.updateContact(); break;
-         case "cancella contatto" : RubricaHBM.deleteContact(); break;
+          case "cancella contatto" : RubricaHBM.deleteContact(); break;
           case "trova contatti duplicati" : RubricaHBM.findDuplicatedContacts(); break;
           case "unisci contatti duplicati" : RubricaHBM.mergeDuplicatedContacts(); break;
-//          case "esporta contatti in file CSV" : ToolsRubrica.exportDbToCSV(); break;
-//          case "esporta contatti in file XML" : ToolsRubrica.exportDbToXML(); break;
-//          case "importa contatti da file CSV" : ToolsRubrica.exportCSVToDb(); break;
-//          case "importa contatti da file XML" : ToolsRubrica.exportXMLToDb(); break;
+          case "esporta contatti in file CSV" : RubricaHBM.exportDbToCSV(); break;
+          case "esporta contatti in file XML" : RubricaHBM.exportDbToXML(); break;
+          case "importa contatti da file CSV" : RubricaHBM.exportCSVToDb(); break;
+          case "importa contatti da file XML" : RubricaHBM.exportXMLToDb(); break;
           case "esci" : System.out.println("Arrivederci"); break;
           default : System.out.println("Non hai inserito nessuna tra le opzioni disponibili"); break;
         }

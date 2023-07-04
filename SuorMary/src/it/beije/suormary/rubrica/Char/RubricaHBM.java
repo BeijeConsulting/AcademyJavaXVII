@@ -6,10 +6,6 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -39,6 +35,23 @@ public class RubricaHBM {
     		 sessionFactory.close();
     	 }
     	 return listContacts;
+	}
+	public static void writeRubricaHBM(List<Contact> contacts) {
+		Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
+   	 SessionFactory sessionFactory = configuration.buildSessionFactory();
+   	 List<Contact> listContacts = null;
+   	 Session session = null;
+   	 try {
+   		 session = sessionFactory.openSession();
+   		 for(Contact c : contacts) {
+   			 session.save(c);
+   		 }
+   	 }catch(Exception e) {
+   		 e.printStackTrace();
+   	 } finally {
+   		 session.close();
+   		 sessionFactory.close();
+   	 }
 	}
 	public static Contact findContactByNameSurname() throws Exception {
 		 Scanner scanner = new Scanner(System.in);
@@ -238,6 +251,38 @@ public class RubricaHBM {
 
 
 	}
+	 public static void exportDbToCSV () {
+  	   Scanner scanner = new Scanner(System.in);
+  	   System.out.print("Indica il path del file CSV : ");
+  	   String pathCSV = scanner.nextLine();
+  	   System.out.print("Indica il tipo di separatore per i campi : ");
+  	   String separator = scanner.nextLine();
+  	  List<Contact> contacts = loadRubricaHBM();
+  	  EsRubrica.writeRubricaCSV(contacts, pathCSV, separator);
+     }
+     public static void exportDbToXML () {
+  	   Scanner scanner = new Scanner(System.in);
+  	   System.out.print("Indica il path del file XML : ");
+  	   String pathXML = scanner.nextLine();
+  	  List<Contact> contacts = loadRubricaHBM();
+  	  EsRubrica.writeRubricaXML(contacts,pathXML);
+     }
+     public static void exportCSVToDb() {
+  	   Scanner scanner = new Scanner(System.in);
+  	   System.out.print("Indica il path del file CSV : ");
+  	   String pathFile = scanner.nextLine();
+  	   System.out.print("Indica il tipo di separatore per i campi : ");
+  	   String separator = scanner.nextLine();
+  	  List<Contact> contacts = EsRubrica.loadRubricaFromCSV(pathFile, separator);
+  	  writeRubricaHBM(contacts);
+     }
+     public static void exportXMLToDb() {
+  	   Scanner scanner = new Scanner(System.in);
+  	   System.out.print("Indica il path del file CSV : ");
+  	   String pathFile = scanner.nextLine();
+   	  List<Contact> contacts = EsRubrica.loadRubricaFromXML(pathFile);
+   	  writeRubricaHBM(contacts);
+      }
 
      
 }
