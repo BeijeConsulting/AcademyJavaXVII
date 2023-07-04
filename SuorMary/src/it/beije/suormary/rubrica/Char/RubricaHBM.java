@@ -41,8 +41,8 @@ public class RubricaHBM {
     		 String surname = scanner.nextLine();
     		 session = sessionFactory.openSession();
     		 Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.name = :name AND c.surname = :surname");
-    		 query.setParameter(1, name);
-    		 query.setParameter(2, surname);
+    		 query.setParameter("name", name);
+    		 query.setParameter("surname", surname);
     		 listContacts = query.getResultList();
     		 
     	 } catch(Exception e) {
@@ -72,6 +72,49 @@ public class RubricaHBM {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public static void createContact() {
+		 Scanner scanner = new Scanner(System.in);
+		 Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
+    	 SessionFactory sessionFactory = configuration.buildSessionFactory();
+    	 Session session = null;
+    	 List<Contact> listContacts = null;
+    	 try {
+    		 System.out.print("Inserisci il nome : ");
+    		 String name = scanner.nextLine();
+    		 System.out.print("Inserisci il cognome : ");
+    		 String surname = scanner.nextLine();
+    		 System.out.print("Inserisci l'email : ");
+    		 String email = scanner.nextLine();
+    		 System.out.print("Inserisci il numero di telefono : ");
+    		 String phone = scanner.nextLine();
+    		 System.out.print("Inserisci delle note : ");
+    		 String note = scanner.nextLine();
+    		 session = sessionFactory.openSession();
+    		 Transaction transaction = session.beginTransaction();
+    		 Contact c = new Contact();
+    		 c.setName(name);
+    		 c.setSurname(surname);
+    		 c.setEmail(email);
+    		 c.setPhoneNumber(phone);
+    		 c.setNote(note);
+    		 System.out.println("Informazioni riguardo al nuovo contatto");
+    		 System.out.println(c);
+    		 System.out.print("Vuoi salvare il contatto? (si/no) : ");
+    		 String salva = scanner.nextLine();
+    		 if(salva.equals("si")) {
+    			 session.save(c);
+    			 transaction.commit();
+    			 System.out.println("Contatto salvato correttamente");
+    		 }
+    		 else System.out.println("Contatto non salvato");
+    		 
+    	 } catch(Exception e) {
+    		 e.printStackTrace();
+    	 } finally {
+    		 session.close();
+    		 sessionFactory.close();
+    	 }
 	}
 
      

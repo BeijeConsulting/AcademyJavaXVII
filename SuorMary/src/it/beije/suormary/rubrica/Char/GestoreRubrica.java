@@ -30,7 +30,7 @@ public class GestoreRubrica {
          switch(scelta) {
           case "lista contatti" : RubricaHBM.loadRubricaHBM(); break;
           case "cerca contatto" : RubricaHBM.findContact(); break;
-//          case "nuovo contatto" : RubricaJDBC.createContactFromRubrica(); break;        
+          case "nuovo contatto" : RubricaHBM.createContact(); break;        
 //          case "modifica contatto" : RubricaJDBC.updateContactFromRubrica(); break;
 //          case "cancella contatto" : RubricaJDBC.deleteContactFromRubrica(); break;
 //          case "trova contatti duplicati" : RubricaJDBC.findDuplicatedContacts(); break;
