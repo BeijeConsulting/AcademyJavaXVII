@@ -1,4 +1,6 @@
-package stringhe;
+package it.beije.xvii.exercises.Caroselli.stringhe;
+
+
 
 import java.util.Scanner;
 

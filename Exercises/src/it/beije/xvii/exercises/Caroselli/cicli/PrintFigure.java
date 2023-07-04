@@ -1,4 +1,4 @@
-package cicli;
+package it.beije.xvii.exercises.Caroselli.cicli;
 
 //  Stampare a video la seguente figura:
 //******

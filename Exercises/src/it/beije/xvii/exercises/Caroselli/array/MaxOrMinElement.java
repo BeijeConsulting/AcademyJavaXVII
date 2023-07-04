@@ -1,11 +1,14 @@
-package array;
+package it.beije.xvii.exercises.Caroselli.array;
 
-import utils.TestCase;
+
 
 import java.util.Arrays;
 import java.util.List;
 
-import static utils.ArrayIsEmpty.arrayIsEmpty;
+import it.beije.xvii.exercises.Caroselli.utils.ArrayIsEmpty;
+import it.beije.xvii.exercises.Caroselli.utils.TestCase;
+
+
 
 //Trovare il massimo elemento in un array (o il minimo)
 
@@ -15,7 +18,7 @@ public class MaxOrMinElement {
         int max = 0;
 
 
-        if (!arrayIsEmpty(array)) {
+        if (!ArrayIsEmpty.arrayIsEmpty(array)) {
             for (Integer integer : array) {
                 if (max < integer) {
                     max = integer;
@@ -31,7 +34,7 @@ public class MaxOrMinElement {
 
         int min = 0;
 
-        if (!arrayIsEmpty(array)) {
+        if (!ArrayIsEmpty.arrayIsEmpty(array)) {
 
 
             for (Integer integer : array) {

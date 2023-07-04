@@ -1,4 +1,5 @@
-package utils;
+package it.beije.xvii.exercises.Caroselli.utils;
+
 
 //classe generica per fare i test e provare vari casi di array
 public class TestCase<T, R> {

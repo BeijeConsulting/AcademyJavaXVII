@@ -1,4 +1,5 @@
-package cicli;
+package it.beije.xvii.exercises.Caroselli.cicli;
+
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

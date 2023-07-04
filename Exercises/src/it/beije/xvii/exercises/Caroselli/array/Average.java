@@ -1,6 +1,6 @@
-package array;
+package it.beije.xvii.exercises.Caroselli.array;
 
-import static utils.ArrayIsEmpty.arrayIsEmpty;
+import it.beije.xvii.exercises.Caroselli.utils.ArrayIsEmpty;
 
 // Scrivere un programma MediaMultipliDiTre che calcoli la media di un array
 // di numeri interi, considerando i soli numeri divisibili per tre.
@@ -19,7 +19,7 @@ public class Average {
         int sum = 0;
         int count = 0;
 
-        if (!arrayIsEmpty(array)) {
+        if (!ArrayIsEmpty.arrayIsEmpty(array)) {
             for (int i = 0; i < array.length; i++) {
                 if ((array[i] % 3) == 0) {
                     sum = sum + array[i];
@@ -28,7 +28,7 @@ public class Average {
                 }
             }
         } else {
-            System.out.println(arrayIsEmpty(array));
+            System.out.println(ArrayIsEmpty.arrayIsEmpty(array));
         }
         return sum / count;
     }
@@ -38,13 +38,13 @@ public class Average {
         int sum = 0;
         int count = 0;
 
-        if (!arrayIsEmpty(array)) {
+        if (!ArrayIsEmpty.arrayIsEmpty(array)) {
             for (int i = 0; i < array.length; i++) {
                 sum = sum + array[i];
                 count = count + 1;
             }
         } else {
-            System.out.println(arrayIsEmpty(array));
+            System.out.println(ArrayIsEmpty.arrayIsEmpty(array));
         }
         return sum / count;
     }

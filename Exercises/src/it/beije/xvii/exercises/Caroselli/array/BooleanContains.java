@@ -1,7 +1,6 @@
-package array;
+package it.beije.xvii.exercises.Caroselli.array;
 
-import static utils.ArrayIsEmpty.arrayIsEmpty;
-import static utils.ArrayIsEmpty.objIsEmpty;
+import it.beije.xvii.exercises.Caroselli.utils.ArrayIsEmpty;
 
 public class BooleanContains {
 
@@ -21,7 +20,7 @@ public class BooleanContains {
     //scrivere un metodo “boolean contains(int e, int[] array)” che restituisca true se l’elemento e è presente nell’array, false altrimenti
     public void booleanContains(int e, int[] array) {
         boolean isPresent = false;
-        if (!arrayIsEmpty(array)) {
+        if (!ArrayIsEmpty.arrayIsEmpty(array)) {
             for (int j : array) {
                 if (j == e) {
                     isPresent = true;
@@ -30,14 +29,14 @@ public class BooleanContains {
             }
             System.out.println(isPresent);
         } else {
-            System.out.println(arrayIsEmpty(array));
+            System.out.println(ArrayIsEmpty.arrayIsEmpty(array));
         }
     }
 
     //scrivere un metodo “boolean contains(Object e, Object[] array)” che restituisca true se l’elemento e è presente nell'oggetto , false altrimenti
     public void booleanContainsObj(Object e, Object[] objects) {
         boolean isPresent = false;
-        if (!objIsEmpty(objects)) {
+        if (!ArrayIsEmpty.objIsEmpty(objects)) {
             for (Object o : objects) {
                 if (o.equals(e)) {
                     isPresent = true;
@@ -46,7 +45,7 @@ public class BooleanContains {
             }
             System.out.println(isPresent);
         } else {
-            System.out.println(objIsEmpty(objects));
+            System.out.println(ArrayIsEmpty.objIsEmpty(objects));
         }
     }
 

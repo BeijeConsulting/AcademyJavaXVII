@@ -1,4 +1,5 @@
-package cicli;
+package it.beije.xvii.exercises.Caroselli.cicli;
+
 
 //Scrivere un programma che stampi a video i primi dieci interi pari compresi fra 20 e 0, partendo da 20.
 

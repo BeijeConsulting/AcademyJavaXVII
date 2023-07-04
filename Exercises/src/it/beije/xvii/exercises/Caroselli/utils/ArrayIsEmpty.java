@@ -1,6 +1,7 @@
-package utils;
+package it.beije.xvii.exercises.Caroselli.utils;
 
 public class ArrayIsEmpty {
+	
     public static boolean arrayIsEmpty(int[] array) {
         boolean isEmpty = false;
         if (array.length == 0) {

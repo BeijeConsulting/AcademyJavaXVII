@@ -1,4 +1,4 @@
-package cicli;
+package it.beije.xvii.exercises.Caroselli.cicli;
 
 //first 10 elements of Fibonacci's series
 public class Fibonacci2 {

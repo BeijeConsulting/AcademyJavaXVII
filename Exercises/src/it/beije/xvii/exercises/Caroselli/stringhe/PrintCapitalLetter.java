@@ -1,4 +1,6 @@
-package stringhe;
+package it.beije.xvii.exercises.Caroselli.stringhe;
+
+
 
 //Scrivere un programma StampaMaiuscole che, dato un array di stringhe, ne stampa solo quelle con la prima lettera maiuscola
 public class PrintCapitalLetter {

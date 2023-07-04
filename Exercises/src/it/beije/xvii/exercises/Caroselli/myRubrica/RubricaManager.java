@@ -1,13 +1,17 @@
 package it.beije.xvii.exercises.Caroselli.myRubrica;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 //gestore della rubrica
 public class RubricaManager {
+	
+	public static final Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
 
         System.out.println("Inserisci 1 per vedere la lista dei contatti,");
         System.out.println("Inserisci 2 per cercare un contatto,");
@@ -26,7 +30,7 @@ public class RubricaManager {
                 break;
             case 2 :
                 System.out.println("Inserisci il valore (esempio Mario o Rossi) per cercare i contatti desiderati");
-                RubricaUtils.findContactFromInsertedValue(RubricaUtils.useScanner());
+                RubricaUtils.findContactFromInsertedValue();
                 break;
             case 3 :
                 RubricaUtils.insertContact();

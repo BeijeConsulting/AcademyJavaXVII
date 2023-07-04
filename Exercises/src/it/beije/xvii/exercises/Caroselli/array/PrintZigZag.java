@@ -1,11 +1,13 @@
-package array;
+package it.beije.xvii.exercises.Caroselli.array;
 
-import utils.TestCase;
+
 
 import java.util.Arrays;
 import java.util.List;
 
-import static utils.ArrayIsEmpty.arrayIsEmpty;
+import it.beije.xvii.exercises.Caroselli.utils.ArrayIsEmpty;
+import it.beije.xvii.exercises.Caroselli.utils.TestCase;
+
 
 public class PrintZigZag {
 
@@ -15,7 +17,7 @@ public class PrintZigZag {
 
     public static void printZigZag(int[] array) {
 
-        if (!arrayIsEmpty(array)) {
+        if (!ArrayIsEmpty.arrayIsEmpty(array)) {
             for (int i = 0; i < array.length / 2; i++) {
                 System.out.println(array[i] + " : " + array[(array.length - 1) - i]);
 

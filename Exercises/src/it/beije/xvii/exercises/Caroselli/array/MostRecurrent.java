@@ -1,10 +1,13 @@
-package array;
+package it.beije.xvii.exercises.Caroselli.array;
 
-import utils.TestCase;
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+import it.beije.xvii.exercises.Caroselli.utils.TestCase;
 
 public class MostRecurrent {
 
@@ -18,7 +21,8 @@ public class MostRecurrent {
     //Scrivere il metodo: “public int mostRecurrent(int [] array)” ,
     // che trova l’elemento più ricorrente in un array. Il metodo restituisce l’elemento trovato.
 
-    public static List<Integer> mostRecurrent(int[] array) {
+
+	public static List<Integer> mostRecurrent(int[] array) {
         if (array.length == 0) {
             return null;
         }

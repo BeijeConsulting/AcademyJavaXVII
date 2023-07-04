@@ -1,4 +1,4 @@
-package cicli;
+package it.beije.xvii.exercises.Caroselli.cicli;
 
 import java.util.Scanner;
 

@@ -1,8 +1,12 @@
-package array;
+package it.beije.xvii.exercises.Caroselli.array;
+
+
 
 import java.util.Arrays;
 
-import static utils.ArrayIsEmpty.arrayIsEmpty;
+import it.beije.xvii.exercises.Caroselli.utils.ArrayIsEmpty;
+
+
 
 //Verificare la sequenza crescente di un array. Il metodo “boolean isCrescente(int [] array)”
 // restituisce true se tutti gli elementi dell’array passato sono in ordine crescente, false altrimenti.
@@ -17,7 +21,7 @@ public class AreIncreasing {
     public boolean areIncreasing(int[] array) {
         boolean areIncreasing = false;
         int[] sortedArray = Arrays.stream(array).sorted().toArray();
-        if (!arrayIsEmpty(array)) {
+        if (!ArrayIsEmpty.arrayIsEmpty(array)) {
             for (int k : array) {
                 for (int i : sortedArray) {
                     if (k == i) {
@@ -26,7 +30,7 @@ public class AreIncreasing {
                 }
             }
         } else {
-            System.out.println(arrayIsEmpty(array));
+            System.out.println(ArrayIsEmpty.arrayIsEmpty(array));
         }
         return areIncreasing;
     }
