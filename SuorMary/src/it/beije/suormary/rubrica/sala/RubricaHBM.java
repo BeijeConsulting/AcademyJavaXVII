@@ -1,7 +1,5 @@
-package it.beije.suormary.rubrica;
+package it.beije.suormary.rubrica.sala;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -13,11 +11,9 @@ import org.hibernate.query.Query;
 
 public class RubricaHBM {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		
-		
-		
-		Configuration configuration = new Configuration().configure()
+		Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
 				.addAnnotatedClass(Contact.class);
 		
 		SessionFactory factory = configuration.buildSessionFactory();
@@ -51,12 +47,23 @@ public class RubricaHBM {
 
 			//SELECT HQL
 			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
+			//Query<Contact> query = session.createQuery("FROM Contact"); //fa la stessa cosa di quella sopra 
+			//Query<String> query = session.createQuery("SELECT c.name FROM Contact as c");
 			List<Contact> contacts = query.getResultList();
-			for (Contact c : contacts) System.out.println(c);
+			//List<String> names = query.getResultList();
+			//for (Contact c : contacts) System.out.println(c);
+			//for (Contact c : contacts) System.out.println(c);
+			
+			for(Contact c : contacts) {
+				System.out.println(c);
+			}
+			
+			
+			
 
 			//UPDATE
-			contact = contacts.get(contacts.size()-1);
-			System.out.println("contact PRE UPDATE: " + contact);
+			//contact = contacts.get(contacts.size()-1);
+			//System.out.println("contact PRE UPDATE: " + contact);
 //			contact.setId(10);
 //			contact.setName("Chiara");
 //			contact.setSurname("Sala");

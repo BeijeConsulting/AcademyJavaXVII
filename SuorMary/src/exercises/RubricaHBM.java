@@ -1,7 +1,5 @@
-package it.beije.suormary.rubrica;
+package exercises;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -13,9 +11,7 @@ import org.hibernate.query.Query;
 
 public class RubricaHBM {
 
-	public static void main(String[] args) throws IOException {
-		
-		
+	public static void main(String[] args) {
 		
 		Configuration configuration = new Configuration().configure()
 				.addAnnotatedClass(Contact.class);
