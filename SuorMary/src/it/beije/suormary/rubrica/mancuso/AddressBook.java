@@ -731,4 +731,59 @@ public class AddressBook {
 		}		
 		
 	}
+
+	public void addContactHBM(Contact c) {
+		Session session = null;
+
+		try {
+			
+			session = getSession();			
+			session.save(c);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+
+	}
+	
+	public void editContactHBM(Contact c, String name, String surname, String email, String phone, String notes) {
+		
+		Session session = null;
+
+		try {
+			
+			session = getSession();
+			c.setFirstName(name);
+			c.setLastName(surname);
+			c.setEmail(email);
+			c.setPhoneNumber(phone);
+			c.setNotes(notes);
+			session.save(c);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		
+	}
+	
+	public List<Contact> getContactByNameHBM(String name){
+		Session session = null;
+		List<Contact> conts = new ArrayList<Contact>();
+		try {
+			
+			session = getSession();			
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.firstName LIKE :name"); //SELECT * FROM rubrica
+			conts = query.getResultList();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return conts;
+	}
 }
