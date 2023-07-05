@@ -10,17 +10,11 @@ import javax.persistence.Query;
 
 public class JPAUtils {
 	
-	public static EntityManager getEntityManager() {
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		return entityManager;
-	}
-	
 	public static List<Object> selectColumn(String column, String value) {
 		EntityManager entityManager = null;
 		List<Object> contacts = null;
 		try {
-			entityManager = getEntityManager();
+			entityManager = JPAManagerFactory.getEntityManager();
 			
 			Query query = entityManager.createQuery("SELECT c FROM Contact as c WHERE c." + column + " = :value ");
 			query.setParameter("value", value);
@@ -38,7 +32,7 @@ public class JPAUtils {
 		EntityManager entityManager = null;
 		List<Object> contacts = null;
 		try {
-			entityManager = getEntityManager();
+			entityManager = JPAManagerFactory.getEntityManager();
 			
 			Query query = entityManager.createQuery("SELECT c FROM Contact as c ");
 			
@@ -56,7 +50,7 @@ public class JPAUtils {
 		EntityManager entityManager = null;
 		List<Object> contacts = null;
 		try {
-			entityManager = getEntityManager();
+			entityManager = JPAManagerFactory.getEntityManager();
 			
 			c.setFirstName(name);
 			c.setLastName(surname);
