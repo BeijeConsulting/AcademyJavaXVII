@@ -1,12 +1,34 @@
 package it.beije.suormary.rubrica.iannetta;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "rubrica")
 public class Contact {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private int id;
+	
+	@Column(name = "nome")
 	private String name;
+	
+	@Column(name = "cognome")
 	private String surname;
+	
+	@Column(name = "telefono")
 	private String phoneNumber;
+	
+	@Column(name = "email")
 	private String email;
+	
+	@Column(name = "note")	
 	private String note;
 	
 	public int getID() {
@@ -52,18 +74,8 @@ public class Contact {
 		this.note = note;
 	}
 
-	public String toString() {
-		StringBuilder builder = new StringBuilder("")
-				.append("Name: ").append(name)
-				.append("\nSurname: ").append(surname)
-				.append("\nPhone number: ").append(phoneNumber)
-				.append("\nEmail: ").append(email)
-				.append("\nNote: ").append(note);
-		return builder.toString();
-	}
 	
-	public String toString(boolean showID) {
-		if(!showID) return toString();
+	public String toString() {
 		StringBuilder builder = new StringBuilder("")
 				.append("ID: ").append(id)
 				.append("\nName: ").append(name)
@@ -74,19 +86,4 @@ public class Contact {
 		return builder.toString();
 	}
 	
-//	public boolean equals(Contact c) {
-//		
-//		//name && surname
-//		if (this.name.equalsIgnoreCase(c.name)) {
-//			if (this.surname.equalsIgnoreCase(c.getSurname())) return true;
-//		}
-//		
-//		//phone number
-//		if (this.phoneNumber.equals(c.getPhoneNumber())) return true;
-//		
-//		//email
-//		if (this.email.equals(c.getEmail())) return true;
-//		
-//		return false;
-//	}
 }

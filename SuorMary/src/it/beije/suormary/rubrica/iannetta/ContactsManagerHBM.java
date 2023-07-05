@@ -25,15 +25,11 @@ import org.xml.sax.SAXException;
 
 public class ContactsManagerHBM {
 
-	Scanner in;
+	private Scanner in;
+	private SessionFactory factory;
 	private final String[] contactFields = {"id", "name", "surname", "telephone number", "email", "note"};
 	
- 	public void end() {
-		in.close();
-	}
-	private SessionFactory factory;
- 	
-	public ContactsManagerHBM() {
+ 	public ContactsManagerHBM() {
 		this.in = new Scanner(System.in);
 		Configuration configuration = new Configuration().configure()
 				.addAnnotatedClass(Contact.class);
@@ -41,7 +37,11 @@ public class ContactsManagerHBM {
 		this.factory = configuration.buildSessionFactory();
 	}
 	
-	public Session openSession() {
+	public void end() {
+		in.close();
+	}
+ 	
+ 	public Session openSession() {
 		Session session = factory.openSession();
 		return session;
 	}
@@ -88,7 +88,6 @@ public class ContactsManagerHBM {
 		session.close();
 	}
 	
-	
 	public void sorting() throws SQLException, ClassNotFoundException {		
 		System.out.println("1: Sort by name" + 
 						 "\n2: Sort by surname" + 
@@ -98,7 +97,6 @@ public class ContactsManagerHBM {
 		else if (answer == 2) showContacts("surname");
 		else showContacts("id");
 	}
-
 	
 	public void searchContact() throws SQLException, ClassNotFoundException{
 		Session session = openSession();
@@ -107,8 +105,7 @@ public class ContactsManagerHBM {
 		System.out.println("Enter data (or part of it) to look for:");
 		String answer = in.nextLine();
 		
-		Query<
-		Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE name LIKE '%" + answer + "%'  OR " + 
+		Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE name LIKE '%" + answer + "%'  OR " + 
 																				 "surname LIKE '%" + answer + "%' OR " + 
 																		 	 "phoneNumber LIKE '%" + answer + "%' OR " +
 																				   "email LIKE '%" + answer + "%' OR " +
@@ -126,7 +123,7 @@ public class ContactsManagerHBM {
 		
 		Contact contact = new Contact();
 		String [] newContactData = readData(new boolean[]{false, true, true, true, true, true});
-		System.out.println(Arrays.toString(newContactData));
+		//System.out.println(Arrays.toString(newContactData));
 		contact.setName(newContactData[1]);
 		contact.setSurname(newContactData[2]);
 		contact.setPhoneNumber(newContactData[3]);
