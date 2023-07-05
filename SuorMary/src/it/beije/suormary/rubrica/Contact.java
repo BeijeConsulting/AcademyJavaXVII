@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 
-@Entity
-@Table(name = "rubrica")
+//@Entity(name = "Modified")
+//@Table(name = "rubrica")
 public class Contact {
 	
 	@Id
