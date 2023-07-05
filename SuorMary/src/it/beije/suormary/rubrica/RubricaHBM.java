@@ -22,7 +22,8 @@ public class RubricaHBM {
 		Session session = null;
 		
 		try {
-			session = factory.openSession();
+//			session = factory.openSession();
+			session = HBMsessionFactory.openSession();
 			
 //			Transaction transaction = session.getTransaction();
 //			transaction.begin();
