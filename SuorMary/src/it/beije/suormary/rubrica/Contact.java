@@ -10,7 +10,7 @@ import javax.persistence.Table;
 
 //@Entity(name = "Modified")
 //@Table(name = "rubrica")
-public class Contact {
+/*public class Contact {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -90,4 +90,4 @@ public class Contact {
 		
 		return builder.toString();
 	}
-}
+}*/
