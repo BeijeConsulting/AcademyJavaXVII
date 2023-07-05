@@ -1,5 +1,6 @@
 package it.beije.suormary.rubrica;
 
+import java.io.File;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -13,7 +14,7 @@ public class RubricaHBM {
 
 	public static void main(String[] args) {
 		
-		Configuration configuration = new Configuration().configure()
+		Configuration configuration = new Configuration().configure(new File("./src/hibernate.cfg.xml"))
 				.addAnnotatedClass(Contact.class);
 		
 		SessionFactory factory = configuration.buildSessionFactory();

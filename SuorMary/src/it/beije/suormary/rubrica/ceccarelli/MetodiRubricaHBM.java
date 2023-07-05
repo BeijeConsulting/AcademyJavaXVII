@@ -1,6 +1,5 @@
 package it.beije.suormary.rubrica.ceccarelli;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -8,14 +7,12 @@ import java.util.Scanner;
 import it.beije.suormary.rubrica.Contact;
 
 public class MetodiRubricaHBM {
-	
-	// variabili 
+	 
 	public DbWithHBM hbm;
-	public ExerciseswithDB db;
 	
 	public MetodiRubricaHBM() {
 		hbm = new DbWithHBM();
-		db = new ExerciseswithDB();
+		
 	}
 	
 	//list of contacts
@@ -23,6 +20,10 @@ public class MetodiRubricaHBM {
 		
 		List<Contact> contacts = new ArrayList<Contact>();
 		contacts = hbm.listContactHBM();
+		if(contacts.isEmpty()) {
+			System.out.println("Non ci sono risultati");
+			return;
+		}
 		List<Contact> names = new ArrayList<Contact>();
 		
 		Contact tmp = contacts.get(0);
@@ -44,18 +45,19 @@ public class MetodiRubricaHBM {
 				tmp = contacts.get(y);
 			}
 		}
+		
 		System.out.println("Di seguito la lista dei contatti: ");
 		for(Contact contact : names) {
 			System.out.println(contact.toString());
 		}
-		MetodiRubrica.chooseFile(contacts, db);
+		chooseFile(contacts, hbm);
 	}
 	
 	//search contact
 	public List<Contact> searchContacts() {
 		List<Contact> result = new ArrayList<Contact>();
 		Scanner scanSearch = new Scanner(System.in);
-		String s = MetodiRubrica.selection();
+		String s = selection();
 		String name;
 		String surname;
 		switch(s) {
@@ -81,25 +83,30 @@ public class MetodiRubricaHBM {
 			break;
 		}
 		
+		if(result.isEmpty()) {
+			System.out.println("Non ci sono risultati");
+			return null;
+		}
 		for(Contact contact : result) {
 			System.out.println(contact.toString());
 		}
 		
-		MetodiRubrica.chooseFile(result, db);
+		chooseFile(result, hbm);
 		return result;
 	}
 	
 	//insert contacts
 	public void insertContacts() {
 		Scanner scanInsert= new Scanner(System.in);
-		System.out.println("Da dove vuoi inserire(XML,CSV): ");
+		System.out.println("Da dove vuoi inserire(XML,CSV, default): ");
 		String risp = scanInsert.next();
 		String path="";
 		List<Contact> list2 = null;
 		switch(risp) {
 			case "XML":
+				System.out.println("Inserisci il path del file");
 				path=scanInsert.next();
-				list2 = db.loadRubricaFromXML(path);
+				list2 = hbm.loadRubricaFromXML(path);
 				try {
 					for(Contact c : list2) {
 						hbm.insertContacts(c);
@@ -110,8 +117,9 @@ public class MetodiRubricaHBM {
 				}
 				break;
 			case "CSV":
+				System.out.println("Inserisci il path del file");
 				path=scanInsert.next();
-				list2 = db.loadRubricaFromCSV(path,";");
+				list2 = hbm.loadRubricaFromCSV(path,";");
 				try {
 					for(Contact c : list2) {
 						hbm.insertContacts(c);
@@ -157,6 +165,7 @@ public class MetodiRubricaHBM {
 				System.out.println(contact);
 				System.out.println("E' questo?");
 				String choose = scanModifies.next();
+				scanModifies.next();
 				if(choose.equalsIgnoreCase("Si")|| choose.equalsIgnoreCase("Sì")) {
 					cModifies = contact;
 					break;
@@ -172,17 +181,20 @@ public class MetodiRubricaHBM {
 		//System.out.println("ID MODIFIES" + cModifies.getId());
 		System.out.println("Inserisci i dati da modificare(null se non si vuole modificare): ");
 		System.out.print("nome: ");
-		String name="";
-		name = scanModifies.next();
+		//String name="";
+		String name = scanModifies.nextLine();
+		scanModifies.next();
 		System.out.print("cognome: ");
-		String surname = scanModifies.next();
+		String surname = scanModifies.nextLine();
+		scanModifies.next();
 		System.out.print("telefono: "); 
-		String phoneNumber = scanModifies.next();
+		String phoneNumber = scanModifies.nextLine();
+		scanModifies.next();
 		System.out.print("email: "); 
 		String email = scanModifies.next();
-		//System.out.print("note: "); 
-		//String note = scanModifies.next();
-		
+		scanModifies.next();
+		System.out.print("note: "); 
+		String note = scanModifies.nextLine();
 		
 		if(!name.equals("null")) {
 			cModifies.setName(name);
@@ -193,10 +205,10 @@ public class MetodiRubricaHBM {
 		}if(!email.equals("null")) {
 			cModifies.setEmail(email);
 		}
-//		}if(note!="null") {
-//			cModifies.setNote(note);
-//		}
-		//System.out.println("il nome è: " + name);
+		if(note!="null") {
+			cModifies.setNote(note);
+		}
+		//System.out.println("contact POST : " + cModifies);
 		System.out.println("Il dato viene aggiornato sul db");
 		hbm.updateContact(cModifies);
 		
@@ -238,4 +250,77 @@ public class MetodiRubricaHBM {
 		
 		
 	}
-}	
+	
+	// selection type of search
+		public static String selection() {
+			System.out.println("Scegli che tipo di ricerca vuoi fare: ");
+			System.out.println("1. Per nome");
+		    System.out.println("2. Per cognome");
+		    System.out.println("3. Per nome e cognome");
+		    Scanner scanSelect = new Scanner(System.in);
+		    String r = scanSelect.next();
+		    return r;
+		    
+		}
+		
+		
+		//save into one type of file
+		public static void chooseFile(List<Contact> c, DbWithHBM h) {
+			Scanner scanChoose = new Scanner(System.in);
+			System.out.print("Vuoi salvare il risultato su un file? ");
+			boolean rispostaValida = false;
+			while(!rispostaValida) {
+				String r = scanChoose.next();
+				if(r.equalsIgnoreCase("Si") || r.equalsIgnoreCase("Sì") ) {
+					System.out.print("CSV o XML? ");
+					String s = scanChoose.next().trim();
+					if(s.equalsIgnoreCase("csv")) {
+						try {
+							rispostaValida = true;
+							h.writeRubricaFromDbToCSV(c);	
+						}catch(Exception e) {
+							System.out.println("errore");
+						}
+					}else if(s.equalsIgnoreCase("xml")){
+						try {
+							rispostaValida = true;
+							h.writeRubricaFromDbToXML(c);
+						
+						}catch(Exception e) {
+							System.out.println("errore");
+						}
+					}else {
+						System.out.println("Valore inserito non valido");
+					}
+				}else if(r.equalsIgnoreCase("No")){
+					System.out.println("Valori non salvati");
+					rispostaValida = true;
+				}else {
+					System.out.println("Valore inserito non valido");
+				};
+			}
+		}
+		
+		public static void saveToDb(List<Contact> c, ExerciseswithDB db) {
+			Scanner scansave = new Scanner(System.in);
+			System.out.print("Vuoi aggiornare il dato sul db? ");
+			boolean rispostaValida = false;
+			while(!rispostaValida) {
+				String r = scansave.next();
+				if(r.equalsIgnoreCase("Si") || r.equalsIgnoreCase("Sì") ) {
+					rispostaValida = true;
+					try {
+						db.updateContact(c);
+					}catch(Exception e) {
+						e.fillInStackTrace();
+					}
+					
+				}else if(r.equalsIgnoreCase("No")){
+					System.out.println("Contatto non aggiornato");
+					rispostaValida = true;
+				}else{
+					System.out.println("Valore inserito non valido");
+				}
+			}
+}
+}

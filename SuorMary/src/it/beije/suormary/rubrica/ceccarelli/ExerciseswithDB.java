@@ -167,7 +167,16 @@ public class ExerciseswithDB {
 			
 			contacts = new ArrayList<Contact>();
 			Contact c = null;
-			for(int i=1;i<rows.size();i++) {
+			String[] confronto = {"nome","cognome","telefono","email","note"};
+			for(int i=0;i<rows.size();i++) {
+				if(i==0) {
+					for(String s : confronto) {
+						if(rows.get(i).contains(s)) {
+							continue;
+						}
+					}
+				}
+				
 				String[] contact = rows.get(i).split(separator);
 				System.out.println(Arrays.toString(contact));
 					c = new Contact();
