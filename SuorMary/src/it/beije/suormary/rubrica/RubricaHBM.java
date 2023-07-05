@@ -17,15 +17,16 @@ public class RubricaHBM {
 		
 		
 		
-		Configuration configuration = new Configuration().configure()
-				.addAnnotatedClass(Contact.class);
-		
-		SessionFactory factory = configuration.buildSessionFactory();
+//		Configuration configuration = new Configuration().configure()
+//				.addAnnotatedClass(Contact.class);
+//		
+//		SessionFactory factory = configuration.buildSessionFactory();
 		
 		Session session = null;
 		
 		try {
-			session = factory.openSession();
+//			session = factory.openSession();
+			session = HBMsessionFactory.openSession();
 			
 //			Transaction transaction = session.getTransaction();
 //			transaction.begin();
