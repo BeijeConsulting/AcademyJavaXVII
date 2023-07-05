@@ -11,14 +11,14 @@ import java.util.List;
 import java.util.Scanner;
 
 public class RubricaHBM {
-	public static List<Contact> loadRubricaHBM() {
+	public static List<Contact> loadRubricaHBM(Session session) {
 		Scanner scanner = new Scanner(System.in);
-	 	 Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
-    	 SessionFactory sessionFactory = configuration.buildSessionFactory();
+//	 	 Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
+//    	 SessionFactory sessionFactory = configuration.buildSessionFactory();
     	 List<Contact> listContacts = null;
-    	 Session session = null;
+//    	 Session session = null;
     	 try {
-    		 session = sessionFactory.openSession();
+//    		 session = sessionFactory.openSession();
     		 System.out.print("Vuoi ordinare i contatti per nome e cognome? (si/no) : ");
     		 String ord = scanner.nextLine();
     		 Query<Contact> query = null;
@@ -30,41 +30,27 @@ public class RubricaHBM {
     		 
     	 } catch(Exception e) {
     		 System.out.println("Si è verificato un errore  : " + e.getMessage());
-    	 } finally {
-    		 session.close();
-    		 sessionFactory.close();
-    	 }
+    	 } 
     	 return listContacts;
 	}
-	public static void writeRubricaHBM(List<Contact> contacts) {
-		Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
-   	 SessionFactory sessionFactory = configuration.buildSessionFactory();
+	public static void writeRubricaHBM(List<Contact> contacts, Session session) {
    	 List<Contact> listContacts = null;
-   	 Session session = null;
    	 try {
-   		 session = sessionFactory.openSession();
    		 for(Contact c : contacts) {
    			 session.save(c);
    		 }
    	 }catch(Exception e) {
    		 e.printStackTrace();
-   	 } finally {
-   		 session.close();
-   		 sessionFactory.close();
-   	 }
+   	 } 
 	}
-	public static Contact findContactByNameSurname() throws Exception {
+	public static Contact findContactByNameSurname(Session session) throws Exception {
 	     Scanner scanner = new Scanner(System.in);
-		 Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
-    	 SessionFactory sessionFactory = configuration.buildSessionFactory();
-    	 Session session = null;
     	 List<Contact> listContacts = null;
     	 try {
     		 System.out.print("Inserisci il nome : ");
     		 String name = scanner.nextLine();
     		 System.out.print("Inserisci il cognome : ");
     		 String surname = scanner.nextLine();
-    		 session = sessionFactory.openSession();
     		 Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.name = :name AND c.surname = :surname");
     		 query.setParameter("name", name);
     		 query.setParameter("surname", surname);
@@ -72,10 +58,7 @@ public class RubricaHBM {
     		 
     	 } catch(Exception e) {
     		 System.out.println("Si è verificato un errore  : " + e.getMessage());
-    	 } finally {
-    		 session.close();
-    		 sessionFactory.close();
-    	 }
+    	 } 
 		 for(int i = 0; i < listContacts.size(); i++) {
 			 System.out.println(i + ". " + listContacts.get(i));
 		 }
@@ -88,20 +71,17 @@ public class RubricaHBM {
 		
 		
 	}
-	public static void findContact() {
+	public static void findContact(Session session) {
 		try {
-			Contact c = findContactByNameSurname();
+			Contact c = findContactByNameSurname(session);
 			System.out.println("Informazioni riguardo al contatto selezionato...");
 			System.out.println(c);
 		} catch (Exception e) {
 			 System.out.println("Si è verificato un errore  : " + e.getMessage());
 		}
 	}
-	public static void createContact() {
+	public static void createContact(Session session) {
 		 Scanner scanner = new Scanner(System.in);
-		 Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
-    	 SessionFactory sessionFactory = configuration.buildSessionFactory();
-    	 Session session = null;
     	 List<Contact> listContacts = null;
     	 try {
     		 System.out.print("Inserisci il nome : ");
@@ -114,7 +94,6 @@ public class RubricaHBM {
     		 String phone = scanner.nextLine();
     		 System.out.print("Inserisci delle note : ");
     		 String note = scanner.nextLine();
-    		 session = sessionFactory.openSession();
     		 Transaction transaction = session.beginTransaction();
     		 Contact c = new Contact();
     		 c.setName(name);
@@ -135,19 +114,13 @@ public class RubricaHBM {
     		 
     	 } catch(Exception e) {
     		 System.out.println("Si è verificato un errore  : " + e.getMessage());
-    	 } finally {
-    		 session.close();
-    		 sessionFactory.close();
     	 }
 	}
-	public static void updateContact() {
+	public static void updateContact(Session session) {
 		 Scanner scanner = new Scanner(System.in);
-		 Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
-    	 SessionFactory sessionFactory = configuration.buildSessionFactory();
-    	 Session session = null;
+
 		try {
-			 Contact c = findContactByNameSurname();
-			session = sessionFactory.openSession();
+			 Contact c = findContactByNameSurname(session);
 			Transaction transaction = session.beginTransaction();
 			System.out.print("Inserisci il campo che vuoi modificare : ");
 			String campo = scanner.nextLine();
@@ -161,23 +134,15 @@ public class RubricaHBM {
 		    System.out.println("Modifica eseguita");
 		    System.out.print("Vuoi effettuare un'altra modifica? (si/no) : ");
 		    String mod = scanner.nextLine();
-		    if(mod.equals("si")) updateContact();
+		    if(mod.equals("si")) updateContact(session);
 		} catch (Exception e) {
 			 System.out.println("Si è verificato un errore  : " + e.getMessage());
-		} finally {
-			session.close();
-			sessionFactory.close();
-		}
-		
+		} 
 	}
-	public static void deleteContact() {
+	public static void deleteContact(Session session) {
 		Scanner scanner = new Scanner(System.in);
-		Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
-   	    SessionFactory sessionFactory = configuration.buildSessionFactory();
-   	    Session session = null;
 		try {
-			 Contact c = findContactByNameSurname();
-			session = sessionFactory.openSession();
+			 Contact c = findContactByNameSurname(session);
 			Transaction transaction = session.beginTransaction();
 			System.out.print("Sei sicuro di voler eliminare il contatto? (si/no) : ");
 			String del = scanner.nextLine();
@@ -189,14 +154,11 @@ public class RubricaHBM {
 			else System.out.println("Contatto non eliminato");
 		} catch (Exception e) {
 			 System.out.println("Si è verificato un errore  : " + e.getMessage());
-		} finally {
-			session.close();
-			sessionFactory.close();
-		}
+		} 
 	}
-	public static List<Contact> findDuplicatedContacts() {
+	public static List<Contact> findDuplicatedContacts(Session session) {
 		List<Contact> duplicatedContacts = new ArrayList<>();
-		List<Contact> contacts = loadRubricaHBM();
+		List<Contact> contacts = loadRubricaHBM(session);
 
 		 for (int i = 0; i < contacts.size(); i++) {
 		        for (int j = i + 1; j < contacts.size(); j++) {
@@ -206,21 +168,29 @@ public class RubricaHBM {
 		            }
 		        }
 		    }
-		System.out.println("Contatti duplicati trovati : ");
-		for(Contact c : duplicatedContacts) {
-			System.out.println(c);
-		}
+		 if(duplicatedContacts.size() == 0) {
+			 System.out.println("Non sono stati trovati contatti duplicati"); 
+		 }
+		 else {
+			 System.out.println("Contatti duplicati trovati : ");
+				for(Contact c : duplicatedContacts) {
+					System.out.println(c);
+				} 
+		 }
 		return duplicatedContacts;
 		
 	}
-	public static void mergeDuplicatedContacts() {
-		List<Contact> duplicatedContacts = findDuplicatedContacts();
-		Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
-   	    SessionFactory sessionFactory = configuration.buildSessionFactory();
-   	    Session session = null;
+	public static void mergeDuplicatedContacts(Session session) {
+		List<Contact> duplicatedContacts = findDuplicatedContacts(session);
+	
+//		Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
+//   	    SessionFactory sessionFactory = configuration.buildSessionFactory();
+//   	    Session session = null;
 		try {
+			if(duplicatedContacts.size() > 0) {
+				
 			
-			session = sessionFactory.openSession();
+//			session = sessionFactory.openSession();
 			Transaction transaction = session.beginTransaction();
 			//elimino tutti i contatti duplicati
 		    for (Contact c : duplicatedContacts) {
@@ -240,48 +210,49 @@ public class RubricaHBM {
 		    	 session.save(c);
 		    }
 		    System.out.println("I contatti duplicati sono stati uniti");
+		}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
 		} finally {
 			session.close();
-			sessionFactory.close();
+//			sessionFactory.close();
 		}
 
 
 	}
-	 public static void exportDbToCSV () {
+	 public static void exportDbToCSV (Session session) {
   	   Scanner scanner = new Scanner(System.in);
   	   System.out.print("Indica il path del file CSV : ");
   	   String pathCSV = scanner.nextLine();
   	   System.out.print("Indica il tipo di separatore per i campi : ");
   	   String separator = scanner.nextLine();
-  	  List<Contact> contacts = loadRubricaHBM();
+  	  List<Contact> contacts = loadRubricaHBM(session);
   	  EsRubrica.writeRubricaCSV(contacts, pathCSV, separator);
      }
-     public static void exportDbToXML () {
+     public static void exportDbToXML (Session session) {
   	   Scanner scanner = new Scanner(System.in);
   	   System.out.print("Indica il path del file XML : ");
   	   String pathXML = scanner.nextLine();
-  	  List<Contact> contacts = loadRubricaHBM();
+  	  List<Contact> contacts = loadRubricaHBM(session);
   	  EsRubrica.writeRubricaXML(contacts,pathXML);
      }
-     public static void exportCSVToDb() {
+     public static void exportCSVToDb(Session session) {
   	   Scanner scanner = new Scanner(System.in);
   	   System.out.print("Indica il path del file CSV : ");
   	   String pathFile = scanner.nextLine();
   	   System.out.print("Indica il tipo di separatore per i campi : ");
   	   String separator = scanner.nextLine();
   	  List<Contact> contacts = EsRubrica.loadRubricaFromCSV(pathFile, separator);
-  	  writeRubricaHBM(contacts);
+  	  writeRubricaHBM(contacts,session );
      }
-     public static void exportXMLToDb() {
+     public static void exportXMLToDb(Session session) {
   	   Scanner scanner = new Scanner(System.in);
   	   System.out.print("Indica il path del file CSV : ");
   	   String pathFile = scanner.nextLine();
    	  List<Contact> contacts = EsRubrica.loadRubricaFromXML(pathFile);
-   	  writeRubricaHBM(contacts);
+   	  writeRubricaHBM(contacts,session);
       }
 
      
