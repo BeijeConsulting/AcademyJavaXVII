@@ -59,10 +59,10 @@ public class RubricaUtils {
 	public static void main(String[] args) {
 		
 		
-		String pathFile = "/Users/Padawan/Desktop/fileAcademy/rubrica_dinamico_v2.csv";
+		//String pathFile = "/Users/Padawan/Desktop/fileAcademy/rubrica_dinamico_v2.csv";
 		
 		
-		String separator = ";";
+		//String separator = ";";
 		RubricaUtils ru = new RubricaUtils();
 		
 		
@@ -587,15 +587,25 @@ public class RubricaUtils {
 				
 				for(Contact c : contatti) {
 					if(c!=null) {
-						fw.write(c.getSurname());
-						fw.write(separator);	
-						fw.write(c.getName());
+						if(c.getSurname()!=null) {
+							fw.write(c.getSurname());
+						}
 						fw.write(separator);
-						fw.write(c.getPhoneNumber());
+						if(c.getName()!=null) {
+							fw.write(c.getName());
+						}
 						fw.write(separator);
-						fw.write(c.getEmail());
+						if(c.getPhoneNumber()!=null) {
+							fw.write(c.getPhoneNumber());
+						}
 						fw.write(separator);
-						fw.write(c.getNote());
+						if(c.getEmail()!=null) {
+							fw.write(c.getEmail());
+						} 
+						fw.write(separator);
+						if(c.getNote()!=null) {
+							fw.write(c.getNote());
+						}
 						fw.write('\n');
 						fw.flush();
 					} else {
@@ -908,6 +918,11 @@ public class RubricaUtils {
 		return contacts;
 		
 		
+	}
+	
+	public Contact merge(String nome, String cognome, String telefono) {
+		Contact c=null;
+		return c;
 	}
 
 }

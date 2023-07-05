@@ -12,6 +12,10 @@ public class GestoreRubrica {
 	private String password = "Arlabunakti";
 	private Scanner ts = new Scanner(System.in);
 	
+	private String pathXML="/Users/Padawan/Desktop/fileAcademy/rubrica.xml";
+	private String pathCSV="/Users/Padawan/Desktop/fileAcademy/rubrica.csv";
+	private String separator=";";
+	
 	public static void main(String[] args) {
 		
 		GestoreRubrica gr = new GestoreRubrica();
@@ -135,7 +139,25 @@ public class GestoreRubrica {
 			System.out.println(c.toString());
 		}
 		
-				
+		System.out.println("vuoi copiare su file la tua rubrica? scrivi si se vuoi. qualsiasi altra combinazione"
+				+ " di caratteri verrà interpretata come no");
+		String risposta=ts.next();
+		if(risposta.equalsIgnoreCase("si")) {
+			System.out.println("scrivi csv o xml");
+			risposta=ts.next();
+			if(risposta.equalsIgnoreCase("csv")) {
+				ru.writeRubricaCSV(contatti, pathCSV, separator);
+				System.out.println("file aggiornato!");
+			} else if(risposta.equalsIgnoreCase("xml")) {
+				ru.writeRubricaXML(contatti, pathXML);;
+				System.out.println("file aggiornato!");
+			} else {
+				System.out.println("hai inserito un comando non riconosciuto");
+				System.exit(0);
+			}
+		}else {
+			System.out.println("Ho terminato!");
+		}
 		
 		
 	}
@@ -213,49 +235,78 @@ public class GestoreRubrica {
 		return nomeCognome;
 	}
 	
+	//POTREI FAR VEDERE QUALI INSERISCO NEL CASO
+	public void insertFromFile() {
+		List<Contact> c=null;
+		RubricaUtils ru=new RubricaUtils();
+		System.out.println("scrivi csv o xml");
+		String risposta=ts.next();
+		if(risposta.equalsIgnoreCase("csv")) {
+			c=ru.loadRubricaFromCSV(pathCSV, separator);
+			ru.writeRubricaDBInsert(c);
+		} else if(risposta.equalsIgnoreCase("xml")) {
+			c=ru.loadRubricaFromXML(pathXML);
+			ru.writeRubricaDBInsert(c);
+		} else {
+			System.out.println("hai inserito un comando non riconosciuto");
+			System.exit(0);
+		}
+	}
+	
 	//VOLENDO POSSO CHIEDERE SE VUOLE INSERIRE ULTERIORI CONTATTI, HO GIà UNA LIST PRONTA DA RIEMPIRE
 	public void inserisciContatto() {
-		ts = new Scanner(System.in);
-		System.out.println("inserisci nome");
-		String name = ts.nextLine();
-		System.out.println("inserisci cognome");
-		String surname = ts.nextLine();
-		System.out.println("inserisci numero telefono");
-		String phoneNumber = ts.nextLine();
-		System.out.println("vuoi inserire una mail? rispondi si per inserire mail, qualsiasi altra combinazione di caratteri sarà"
-				+ "valutata come no");
-		String risposta = ts.nextLine();
-		String email;
+		List<Contact> c=null;
+		RubricaUtils ru=new RubricaUtils();
+		//ts = new Scanner(System.in);
+		System.out.println("vuoi sincronizzare i contatti da file? Digita si, qualsiasi altra combinazione di caratteri"
+				+ " verrà interpretata come no");
+		String risposta=ts.next();
 		if(risposta.equalsIgnoreCase("si")) {
-			System.out.println("inserisci la mail!");
-			email=ts.nextLine();
+			insertFromFile();		
 		} else {
-			email=null;
+			System.out.println("inserisci nome");
+			String name = ts.next();
+			System.out.println("inserisci cognome");
+			String surname = ts.next();
+			System.out.println("inserisci numero telefono");
+			String phoneNumber = ts.next();
+			System.out.println("vuoi inserire una mail? rispondi si per inserire mail, qualsiasi altra combinazione di caratteri sarà"
+					+ "valutata come no");
+			risposta = ts.next();
+			String email;
+			if(risposta.equalsIgnoreCase("si")) {
+				System.out.println("inserisci la mail!");
+				email=ts.next();
+			} else {
+				email=null;
+			}
+			System.out.println("vuoi inserire una nota? rispondi si per inserire mail, qualsiasi altra combinazione di caratteri sarà"
+					+ "valutata come no");
+			risposta = ts.next();
+			String note;
+			if(risposta.equalsIgnoreCase("si")) {
+				System.out.println("inserisci la nota!");
+				note=ts.next();
+			} else {
+				note=null;
+			}
+			
+			//creo il contatto
+			Contact c1 = new Contact();
+			c1.setName(name);
+			c1.setSurname(surname);
+			c1.setPhoneNumber(phoneNumber);
+			c1.setEmail(email);
+			c1.setNote(note);
+			
+			List<Contact> contatti = new ArrayList<>();
+			contatti.add(c1);
+			
+			
+			ru.writeRubricaDBInsert(contatti);
+			
 		}
-		System.out.println("vuoi inserire una nota? rispondi si per inserire mail, qualsiasi altra combinazione di caratteri sarà"
-				+ "valutata come no");
-		risposta = ts.nextLine();
-		String note;
-		if(risposta.equalsIgnoreCase("si")) {
-			System.out.println("inserisci la nota!");
-			note=ts.nextLine();
-		} else {
-			note=null;
-		}
 		
-		//creo il contatto
-		Contact c = new Contact();
-		c.setName(name);
-		c.setSurname(surname);
-		c.setPhoneNumber(phoneNumber);
-		c.setEmail(email);
-		c.setNote(note);
-		
-		List<Contact> contatti = new ArrayList<>();
-		contatti.add(c);
-		
-		RubricaUtils ru = new RubricaUtils();
-		ru.writeRubricaDBInsert(contatti);
 	}
 	
 	
@@ -298,7 +349,7 @@ public class GestoreRubrica {
 	//TO DO: ho modificato cercaContatto in modo che mi mostra anche l'id (l'ho aggiunto tra gli attributi di Contact
 	//così posso far scegliere di cancellare un contatto sulla base dell'id
 	public void cancellaContatto() {
-		//cercaContatto();
+		cercaContatto();
 
 		//System.out.println("Quelli appena mostrati sono il/i contatti sulla base dei tuoi parametri di ricerca");
 		System.out.println("Scrivi il numero di id del contatto che vuoi cancellare");
@@ -321,5 +372,15 @@ public class GestoreRubrica {
 		}
 	}
 	
+	public void unisciDuplicati() {
+		RubricaUtils ru=new RubricaUtils();
+		System.out.println("Questi sono i contatti duplicati nella tua rubrica");
+		cercaDuplicati();
+		System.out.println("inserisci nome, cognome e telefono del contatto di cui vuoi eliminare i duplicati");
+		String nome=ts.next();
+		String cognome=ts.next();
+		String telefono=ts.next();
+		Contact c=ru.merge(nome, cognome, telefono);
+	}
 	
 }
