@@ -1,9 +1,6 @@
 package it.beije.suormary.rubrica.trapani;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 
 public class Contact {
 
@@ -65,7 +62,7 @@ public class Contact {
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
-//				.append("id : ").append(id)
+				.append("id : ").append(id)
 				.append(", name : ").append(name)
 				.append(", surname : ").append(surname)
 				.append(", phoneNumber : ").append(phoneNumber)

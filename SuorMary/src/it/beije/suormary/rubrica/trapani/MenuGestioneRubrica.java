@@ -48,8 +48,12 @@ public class MenuGestioneRubrica {
 				
 			case "2": 
 				List<Contact> contacts = AzioniGestore.findContact();
-				for(Contact s : contacts) {
-					System.out.println(s);
+				if(contacts.isEmpty()) {
+					System.out.println("errore");
+				}
+				
+				for(Contact a : contacts) {
+					System.out.println(a);
 				}
 				System.out.println();
 				break;

@@ -26,7 +26,6 @@ public class AzioniGestore extends MenuGestioneRubrica{
 	
 	public static Scanner in = new Scanner(System.in);
 	
-	
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Rick&Morty63!!");
@@ -34,6 +33,8 @@ public class AzioniGestore extends MenuGestioneRubrica{
 		return connection;
 	}
 
+	
+	//1
 	public static List<Contact> listContact(){		
 		
 		Statement statement= null;
@@ -105,22 +106,28 @@ public class AzioniGestore extends MenuGestioneRubrica{
 		return contacts;
 	}
 	
+	//2
 	public static List<Contact> findContact(){
 		
 		PreparedStatement preparedStatement= null;
 
-		List<Contact> contacts = new ArrayList<>();
+		List<Contact> contacts = new ArrayList<Contact>();
 		Contact c = null;
 			
 		try {
 				
 				preparedStatement = getConnection().prepareStatement
-						("SELECT * FROM rubrica WHERE ? = ?");
+						("SELECT * FROM rubrica WHERE nome = ? OR cognome = ? OR telefono = ? OR email = ? OR note = ?");
 				
-				System.out.println("Seleziona campo da cercare: ");
-				preparedStatement.setString(1, in.nextLine());
-				System.out.println("Valore da cercare: ");			
-				preparedStatement.setString(2, in.nextLine());		
+//				System.out.println("Seleziona campo da cercare: ");
+//				preparedStatement.setString(1, in.nextLine());
+				System.out.println("Valore da cercare: ");	
+				String search = in.nextLine();
+				preparedStatement.setString(1, search);		
+				preparedStatement.setString(2, search);	
+				preparedStatement.setString(3, search);	
+				preparedStatement.setString(4, search);	
+				preparedStatement.setString(5, search);	
 					
 				ResultSet rs = preparedStatement.executeQuery();
 				while (rs.next()) {
@@ -145,6 +152,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 		return contacts;
 	}
 
+	//3
 	public static void insertContact() {
 
 		PreparedStatement preparedStatement = null;
@@ -177,6 +185,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 		
 	}
 
+	//4
 	public static void updetContact() {
 
 		PreparedStatement preparedStatement = null;
@@ -209,6 +218,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 		}
 	}
 
+	//5
 	public static void deleteContact() {
 		
 		Connection connection = null;
@@ -242,6 +252,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 		
 	}
 
+	//6
 	public static void findDuplicateContact() {
 		
 		Connection connection = null;
@@ -282,6 +293,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 		
 	}
 
+	//7
 	public static void mergeDuplicateContac() {
 		
 		
