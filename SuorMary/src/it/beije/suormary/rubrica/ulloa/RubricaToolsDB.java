@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica.jdbc;
+package it.beije.suormary.rubrica.ulloa;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class RubricaToolsDB {
 		 List<Contact> contatti = rubricaUtils.loadRubricaFromCSV(csvFilePath,separator);
 		 
 		 // Utilizza il metodo esistente per l'inserimento dei record (lista contatti) nel database
-		 rubricaUtils.writeRubricaDB(contatti);
+		 rubricaUtils.writeRubricaJDBC(contatti);
 	 }
 	 
 	 public void exportToCSV(String csvFilePath, String separator) {
@@ -27,7 +27,7 @@ public class RubricaToolsDB {
 		 List<Contact> contatti = rubricaUtils.loadRubricaFromXML(xmlFilePath);
 
 		 // Utilizza il metodo esistente per l'inserimento dei record (lista contatti) nel database
-		 rubricaUtils.writeRubricaDB(contatti);
+		 rubricaUtils.writeRubricaJDBC(contatti);
 	 }
 	 
 	 public void exportToXML(String xmlFilePath) {

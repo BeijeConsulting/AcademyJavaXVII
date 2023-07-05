@@ -1,21 +1,21 @@
-package it.beije.suormary.rubrica.jdbc;
+package it.beije.suormary.rubrica.ulloa;
 
 import java.util.Objects;
 
 public class Contact {
 	
-	private String id;
+	private int id;
 	private String name;
 	private String surname;
 	private String phoneNumber;
 	private String email;
 	private String note;
 	
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
-		this.id = id.trim();
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 	public String getName() {

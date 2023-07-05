@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica.jdbc;
+package it.beije.suormary.rubrica.ulloa;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,11 +29,19 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import it.beije.suormary.rubrica.Contact;
+import it.beije.suormary.rubrica.jdbc.RubricaUtils;
 
 
 public class RubricaUtils {
@@ -48,6 +56,12 @@ public class RubricaUtils {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		
 		return DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "cereza");
+	}
+	
+	public static Configuration getConfiguration() {
+		Configuration configuration = new Configuration().configure(new File("./src/hibernate.cfg.xml")) // "/hibernate.cfg.xml"
+				.addAnnotatedClass(Contact.class);
+		return configuration;
 	}
 	
 	private String escapeSpecialCharacters(String input) {
@@ -173,7 +187,7 @@ public class RubricaUtils {
 			while (rs.next()) {
 				contatto = new Contact();
 				//rs.getInt("id")
-				contatto.setId(rs.getString(ID_FIELD));
+				contatto.setId(rs.getInt(ID_FIELD));
 				contatto.setSurname(rs.getString(SURNAME_FIELD));
 				contatto.setName(rs.getString(NAME_FIELD));
 				contatto.setPhoneNumber(rs.getString(PHONE_NUMBER_FIELD));
@@ -198,79 +212,58 @@ public class RubricaUtils {
 		return contatti;
 	}
 	
+	public List<Contact> loadRubricaFromHBN(){
+		Session session = null;
+		
+		List<Contact> contatti = null;
+		
+		try {
+			Configuration configuration = RubricaUtils.getConfiguration();
+			SessionFactory factory = configuration.buildSessionFactory();
+			session = factory.openSession();
+			//Transaction transaction = session.beginTransaction();
+			
+			//SELECT HQL
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
+			contatti = query.getResultList();
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return contatti;
+	}
+	
 	public List<Contact> loadRubricaFromXML(String pathFile) {
 		List<Contact> contacts = null;
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			/*Questa linea di codice grazie al metodo parse carica il file XML specificato, 
-			 *lo analizza e crea un oggetto Document che rappresenta il contenuto del file XML.
-			 *Successivamente, questo oggetto Document viene utilizzato per l'elaborazione del documento XML
-			 */
 			Document document = documentBuilder.parse(pathFile);
-			
-			/*
-			 * Questa linea di codice recupera l'elemento radice del documento XML, 
-			 * che è l'elemento principale che racchiude tutti gli altri elementi nel documento. 
-			 * Questo elemento radice può essere utilizzato per avviare la navigazione e
-			 * l'elaborazione del documento XML. Infatti in questo codice, 
-			 * l'elemento radice viene utilizzato successivamente per ottenere gli elementi figlio
-			 * e accedere ai loro contenuti.
-			 * <?xml version="1.0" encoding="UTF-8"?>
-			 * <rubrica> <---- l'elemento radice!
-			 * ...
-			 * </rubrica> 
-			 *  */
+
 			Element docEl = document.getDocumentElement();
-			
-			//Stampa il nome del tag in questo caso l'elemento radice che è stato memorizzato nell'istanza di oggetto docEl
-			//System.out.println(docEl.getTagName());
-			
-			/*
-			 * Utilizza il metodo getChildElements per ottenere una lista di elementi 
-			 * figlio dell'elemento radice ovvero docEl
-			 * */
+
 			List<Element> elements = getChildElements(docEl);
-			
-			//Viene inizializzata una lista di oggetti Contact per memorizzare 
-			//i contatti estratti dal documento XML.
+
 			contacts = new ArrayList<Contact>();
 			
 			Contact c = null;
 			
 			List<Element> els = null;
-			
-			//Viene eseguito un ciclo for-each sulla lista di elementi figlio della radice
-			//per elaborare ciascun elemento (elementi contatto)
+
 			for (Element el : elements) {
 				
-				//Posso accedere al valore dell'attributo tramite il metodo getAttribute 
-				//passando il tag come stringa: per tag si intende il nome dell'attributo
-				//System.out.println("eta' contatto = " + el.getAttribute("eta"));
-				
-				//mi fa vedere tutti i nodi di testo presenti all'interno di un elemento.
-				//non è un metodo molto utile qui, meglio estrarre gli elementi figli da quello corrente
-				//e da li' fare il getTextContent(), ovvero quando sono nel livello più interno
-				//System.out.println("contenuto contatto = " + el.getTextContent());
-				
-				//Viene chiamato il metodo getChildElements() passando l'elemento corrente 
-				//come argomento, che restituisce una lista di elementi figlio diretti dell'elemento corrente.
 				els = getChildElements(el);
 				
-				//Viene creato un nuovo oggetto Contact per memorizzare i dettagli del contatto.
 				c = new Contact();
-				
-				//Viene eseguito un ciclo for-each sulla lista di elementi figlio dell'elemento 
-				//corrente per elaborare ciascun elemento.
+
 				for (Element e : els) {
-					
-					//Per ogni elemento, viene stampato il nome dell'elemento utilizzando il
-					//metodo getTagName() sull'oggetto Element, e viene stampato il contenuto 
-					//del nodo utilizzando il metodo getTextContent() sull'oggetto Element.
-					//System.out.println(e.getTagName() + " = " + e.getTextContent());
-					
-					//Viene utilizzato un costrutto switch-case per assegnare il valore appropriato 
-					//al campo corrispondente nell'oggetto Contact, in base al nome dell'elemento.
 					switch (e.getTagName().toUpperCase()) {
 						case NAME_FIELD: c.setName(e.getTextContent());
 							break;
@@ -286,7 +279,6 @@ public class RubricaUtils {
 							break;
 					}
 				}
-				//L'oggetto Contact (riferimento oggetto c) viene aggiunto alla lista dei contatti.
 				contacts.add(c);
 			}
 		} catch (ParserConfigurationException pEx) {
@@ -304,37 +296,13 @@ public class RubricaUtils {
 		return contacts;
 	}
 	
-	//Prende in input l'elemento che riceve in parametro d'ingresso e 
-	//restituisce una lista di elementi figlio di quell'elemento
 	public static List<Element> getChildElements(Element el) {
-		//Restituisce la lista dei nodi figlio di un elemento specifico
-		//che in questo caso è el (parametro in ingresso)
-		//La lista di nodi conterrà: nodi elementi e nodi spazi bianchi, 
-		//le altre tipologie di nodi non vengono contate 
 		NodeList nodeList = el.getChildNodes();
-		
-		//System.out.println("nodeList size: " + nodeList.getLength());
-		
-		//E' una lista vuota che andrà a contenere gli elementi figli dell'
-		//elemento fornito come parametro in ingresso "Element el"
+
 		List<Element> elements = new ArrayList<Element>();
-		
-		//Viene eseguito un ciclo for per iterare attraverso tutti i nodi 
-		//presenti nella nodeList.
+
 		for (int i = 0; i < nodeList.getLength(); i++) {
-			//Per ogni nodo nell'iterazione corrente...
-			
-			//dalla lista tramite questo metodo specifico item restuisce il nodo
-			//a posizione i.
 			Node n = nodeList.item(i);
-			
-			//viene verificato se è un'istanza di Element utilizzando l'operatore 
-			//instanceof. 
-			//In pratica, questo controlla se il nodo è un elemento XML. 
-			//Se è un elemento, viene aggiunto alla lista elements dopo essere
-			//stato castato esplicitamente --> perche la classe NodeList contiene
-			//nodi e noi vogliamo in specifico solo gli elementi che si trattano di una
-			//tipologia di nodi.
 			if (n instanceof Element) elements.add((Element) n);
 		}
 		
@@ -345,14 +313,8 @@ public class RubricaUtils {
 		FileWriter fileWriter = null;
 		try {
 			File file = new File(pathFile);
-			boolean append = file.exists(); // Controlla se il file esiste
+			boolean append = file.exists();
 			
-			//PrintWriter serve solo a fare formatazzioni.
-			//Se hai solo bisogno di scrivere caratteri o stringhe di testo semplici nel file, 
-			//FileWriter può essere sufficiente
-			//Se il file esiste, il valore di append è true e quindi i nuovi contatti verranno aggiunti
-			//in coda al file.
-			//Altrimenti, append viene impostato su false e i nuovi contatti sovrascriveranno il file.
 			fileWriter = new FileWriter(pathFile,append);
 			
 			if(!append) {
@@ -397,7 +359,7 @@ public class RubricaUtils {
 		}
 	}
 	
-	public void writeRubricaDB(List<Contact> contatti) {
+	public void writeRubricaJDBC(List<Contact> contatti) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 		
@@ -445,100 +407,75 @@ public class RubricaUtils {
 				e.printStackTrace();
 			}
 		}
+	}	
+
+	public void writeRubricaHBN(List<Contact> contatti) {
+		Session session = null;
+		
+		try {
+			Configuration configuration = RubricaUtils.getConfiguration();
+			SessionFactory factory = configuration.buildSessionFactory();
+			session = factory.openSession();
+			Transaction transaction = session.beginTransaction();
+			Contact contact = null;
+			
+			for (Contact contatto : contatti) {
+				if(contatto!=null) {
+					try {
+						contact.setSurname(contatto.getSurname());
+						contact.setName(contatto.getName());
+						contact.setPhoneNumber(contatto.getPhoneNumber());
+						contact.setEmail(contatto.getEmail());
+						contact.setNote(contatto.getNote());
+						session.save(contact);
+						transaction.commit();
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out.println("Insert non valido: " + contatto.toString());
+						//transaction.rollback();
+					} 
+					
+				} else {
+					System.out.println("Contatto mancante");
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void writeRubricaXML(List<Contact> contatti, String pathFile) {
 		try {
-			/*
-			 * crea un'istanza di DocumentBuilderFactory, che rappresenta 
-			 * una factory per oggetti DocumentBuilder. La factory è 
-			 * utilizzata per configurare e creare istanze di DocumentBuilder, 
-			 * che a sua volta verrà utilizzato per creare documenti XML.
-			 */
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-			
-			/*
-			 * crea un oggetto DocumentBuilder utilizzando la DocumentBuilderFactory 
-			 * precedentemente creata. L'oggetto DocumentBuilder è responsabile della 
-			 * creazione e della manipolazione del documento XML.
-			 */
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-			
-			/*
-			 * crea un nuovo oggetto Document, che rappresenta il documento XML vuoto. 
-			 * L'oggetto Document sarà utilizzato come punto di partenza per costruire 
-			 * la struttura del documento XML.
-			 * Document document = documentBuilder.newDocument();
-			 */
-			
 			Document document;
 			File file = new File(pathFile);
-			
-			//viene creato un elemento radice chiamato "contacts"
-			//utilizzando il metodo createElement
-			//Element contacts = document.createElement("contacts");
-			
-			//questo sarebbe l'elemento contacts ma ho deciso di cambiare il nome 
-			//per una migliore lettura
+
 			Element rootElement;
 			
 			if(file.exists()){
-				// Il file esiste già, carica il contenuto esistente
                 document = documentBuilder.parse(file);
                 rootElement = document.getDocumentElement();
 			} else {
-				// Il file non esiste, crea un nuovo documento
                 document = documentBuilder.newDocument();
                 rootElement = document.createElement("rubrica");
                 document.appendChild(rootElement);
 			}
 			
-			//l'elemento radice chiamato "contacts" e viene impostato come 
-			//elemento radice del documento XML
-			//document.appendChild(rootElement);
-			
-			//creo dei nuovi contatti da aggiungere
-			/*
-			 * MioContact contact1 = new MioContact();
-			contact1.setName("Pippo");
-			contact1.setSurname("Rossi");
-			contact1.setPhoneNumber("09876543");
-			contact1.setEmail("Pippo@beije.it");
-			
-			MioContact contact2 = new MioContact();
-			contact2.setName("Pluto");
-			contact2.setSurname("Bianchi");
-			contact2.setPhoneNumber("098767564");
-			contact2.setEmail("pluto@beije.it");
-			 */
-			
-			//il metodo mi passa una lista quindi non mi serve
-			//creare nuovi contatti, ma li estrapolo da questa lista
-			
-			//mi serve creare un riferimento a un oggetto di tipo
-			//Element settato a null per ottimizzare l'uso della memoria
-			//tale riferimento verrà usato nel for each loop
 			Element contact = null;
 			
 			for (Contact c : contatti) {
 				
 				if (c != null) {
-					//Per ogni contatto, viene creato un nuovo elemento "contact"
 					contact = document.createElement("contatto");
 					
-					/*
-					 *  impostato un attributo "age" con il valore "50" per ogni elemento 
-					 *  "contact" utilizzando il metodo setAttribute()
-					 *  contact.setAttribute("age", "50");
-					 */
-					
-					/*
-					 * i dati del contatto (nome, cognome, numero di telefono, email e note) 
-					 * vengono controllati e, se non sono nulli, vengono creati gli elementi 
-					 * corrispondenti utilizzando document.createElement() e vengono impostati 
-					 * i loro contenuti utilizzando setTextContent().
-					 * ogni elemento figlio viene aggiunto all'elemento "contact" usando appendChild()
-					 */
 					if (c.getName() != null) {
 						Element name = document.createElement(NAME_FIELD);
 						name.setTextContent(c.getName());
@@ -564,79 +501,27 @@ public class RubricaUtils {
 						note.setTextContent(c.getNote());
 						contact.appendChild(note);
 					}
-					
-					/*
-					 * dopo aver aggiunto i vari elementi all'elemento madre
-					 * nuovoContatto, questo viene aggiunto alla radice 
-					 * (ovvero contacts)
-					 */
+
 					rootElement.appendChild(contact);
 				}else {
                     System.out.println("Contatto mancante");
                 }
 			}
-			
-			/*
-			 * SINTESI
-			 * Le righe di codice che seguono si occupano di trasformare il 
-			 * documento XML in una forma leggibile utilizzando un oggetto 
-			 * Transformer e quindi scrivere il contenuto del documento su un file XML 
-			 * e sulla console.
-			 */
-			
-			/*
-			 * crea un'istanza di TransformerFactory, che rappresenta una factory per 
-			 * oggetti Transformer. La factory viene utilizzata per ottenere un oggetto 
-			 * Transformer che può essere utilizzato per trasformare il documento XML.
-			 */
-			// write the content into xml file
+
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			
-			/*
-			 * crea un oggetto Transformer utilizzando la TransformerFactory 
-			 * precedentemente creata. L'oggetto Transformer è responsabile di 
-			 * trasformare il documento XML in una forma leggibile.
-			 */
 			Transformer transformer = transformerFactory.newTransformer();
-			
-			/*
-			 * crea un oggetto DOMSource utilizzando il documento XML (document) come 
-			 * sorgente dei dati per la trasformazione. L'oggetto DOMSource rappresenta 
-			 * il contenuto del documento XML da trasformare.
-			 */
+
 			DOMSource source = new DOMSource(document);
-			
-			/*
-			 * OUTPUT PER FILE XML
-			 * crea un oggetto StreamResult utilizzando un oggetto File per specificare 
-			 * il percorso e il nome del file XML in cui verrà scritto il contenuto 
-			 * trasformato
-			 */
+
 			StreamResult result = new StreamResult(new File(pathFile));
 
-			// Output to console for testing
-			/*
-			 * crea un oggetto StreamResult utilizzando System.out come argomento. 
-			 * In questo modo, il risultato della trasformazione del documento XML 
-			 * verrà scritto sulla console.
-			 */
 			StreamResult syso = new StreamResult(System.out);
-			
-			/*
-			 * esegue la trasformazione del documento XML utilizzando l'oggetto 
-			 * Transformer. Il risultato della trasformazione viene scritto nel 
-			 * file specificato dall'oggetto StreamResult result.
-			 */
+
 			transformer.transform(source, result);
-			
-			/*
-			 * esegue un'altra trasformazione del documento XML utilizzando lo stesso 
-			 * oggetto Transformer. Tuttavia, il risultato della trasformazione viene 
-			 * scritto sulla console utilizzando l'oggetto StreamResult syso
-			 */
+
 			transformer.transform(source, syso);
 
-			//System.out.println("File saved!");
 		} catch (ParserConfigurationException pEx) {
 			pEx.printStackTrace();
 		} catch (TransformerConfigurationException tcEx) {
@@ -649,7 +534,7 @@ public class RubricaUtils {
 		
 	}
 	
-	public void addContactDB(Contact contatto) {
+	public void addContactJDBC(Contact contatto) {
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 	
@@ -697,9 +582,103 @@ public class RubricaUtils {
 		}
 	}
 	
-	public void updateContactDB(String id, Contact contatto) {
+	public void addContactHBN(Contact contatto) {
+		Session session = null;
+		
+		try {
+			Configuration configuration = RubricaUtils.getConfiguration();
+			SessionFactory factory = configuration.buildSessionFactory();
+			session = factory.openSession();
+			Transaction transaction = session.beginTransaction();
+			Contact contact = null;
+			
+			if(contatto!=null) {
+				try {
+					contact.setSurname(contatto.getSurname());
+					contact.setName(contatto.getName());
+					contact.setPhoneNumber(contatto.getPhoneNumber());
+					contact.setEmail(contatto.getEmail());
+					contact.setNote(contatto.getNote());
+					session.save(contact);
+					transaction.commit();
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.out.println("Insert non valido: " + contatto.toString());
+					//transaction.rollback();
+				} 
+					
+			} else {
+				System.out.println("Contatto mancante");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateContactJDBC(int id, Contact contatto) {
 		Connection connection = null;
 		Statement statement = null;
+		
+		try {
+			connection = RubricaUtils.getConnection();
+			
+			statement = connection.createStatement();
+			//System.out.println("connection open? " + !connection.isClosed());
+			StringBuilder query = new StringBuilder();
+			StringBuilder columnsValues = new StringBuilder("UPDATE rubrica set ");
+			int nRecord = -1;
+			
+			if(contatto!=null) {
+				query.setLength(0);
+				query.append(columnsValues)
+					.append(SURNAME_FIELD).append(" = '")
+					.append(escapeSpecialCharacters(contatto.getSurname())).append("', ")
+					.append(NAME_FIELD).append(" = '")
+					.append(escapeSpecialCharacters(contatto.getName())).append("', ")
+					.append(PHONE_NUMBER_FIELD).append(" = '")
+					.append(escapeSpecialCharacters(contatto.getPhoneNumber())).append("', ")
+					.append(EMAIL_FIELD).append(" = '")
+					.append(escapeSpecialCharacters(contatto.getEmail())).append("', ")
+					.append(NOTE_FIELD).append(" = '")
+					.append(escapeSpecialCharacters(contatto.getNote()))
+					.append("' WHERE ").append(ID_FIELD).append(" = ").append(id);
+					
+					try {
+						nRecord = statement.executeUpdate(query.toString());
+						if (nRecord !=1) {
+							System.out.println("Query non aggiornata: " + query);
+						}
+					} catch (SQLSyntaxErrorException e) {
+						System.out.println("Query non valida: " + query);
+					}
+					
+				} else {
+					System.out.println("Contatto mancante");
+				}
+		
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void updateContactHBN(int id, Contact contatto) {
+		Session sesion = null;
 		
 		try {
 			connection = RubricaUtils.getConnection();
@@ -753,7 +732,7 @@ public class RubricaUtils {
 		}
 	}
 	
-	public void deleteContactDB(String id) {
+	public void deleteContactJDBC(int id) {
 		Connection connection = null;
 		Statement statement = null;
 		
@@ -789,7 +768,7 @@ public class RubricaUtils {
 		}
 	}
 	
-	public void deleteContactDB(List<Contact> contatti) {
+	public void deleteContactJDBC(List<Contact> contatti) {
 		Connection connection = null;
 		Statement statement = null;
 		
@@ -851,8 +830,6 @@ public class RubricaUtils {
 	        }
 	    }
 	}
-	
-	
 	
 	//testing
 	public static void main(String[] args)  {

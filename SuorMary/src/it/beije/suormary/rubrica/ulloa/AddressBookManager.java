@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica.jdbc;
+package it.beije.suormary.rubrica.ulloa;
 
 import java.util.List;
 import java.util.Scanner;
@@ -236,7 +236,7 @@ public class AddressBookManager {
 			        
 				    switch (choice) {
 				    case "1": rubrica.aggiungiContatto(contatto);
-				    		  rUtils.addContactDB(contatto);
+				    		  rUtils.addContactJDBC(contatto);
 				    		  System.out.println("Contatto inserito!");
 				    		  System.out.println("------------------------");
 				    		  runningInterno = false;
@@ -285,7 +285,7 @@ public class AddressBookManager {
 		    	printContactList(rubrica.getContatti());
 		    	
 		    	System.out.print("Inserisci l'ID o l'identificatore del contatto da modificare: ");
-		    	String id = scanner.nextLine();
+		    	int id = scanner.nextInt();
 		    	Contact contattoDaModificare = rubrica.getContattoById(id);
 		    	
 		    	if (contattoDaModificare != null) {
@@ -361,7 +361,7 @@ public class AddressBookManager {
 				        
 					    switch (choice) {
 					    case "1": rubrica.modificaContatto(contattoDaModificare, contatto);
-					    		  rUtils.updateContactDB(id, contatto);
+					    		  rUtils.updateContactJDBC(id, contatto);
 					    		  System.out.println("Contatto modificato!");
 					    		  System.out.println("------------------------");
 					    		  runningInterno = false;
@@ -411,7 +411,7 @@ public class AddressBookManager {
 		    	printContactList(rubrica.getContatti());
 		    	
 		    	System.out.print("Inserisci l'ID o l'identificatore del contatto da cancellare: ");
-		    	String id = scanner.nextLine();
+		    	int id = scanner.nextInt();
 		    	Contact contattoDaCancellare = rubrica.getContattoById(id);
 		    	
 		    	if (contattoDaCancellare != null) {
@@ -431,7 +431,7 @@ public class AddressBookManager {
 				        
 					    switch (choice) {
 					    case "1": rubrica.cancellaContatto(contattoDaCancellare);
-					    		  rUtils.deleteContactDB(id);
+					    		  rUtils.deleteContactJDBC(id);
 					    		  System.out.println("Contatto cancellato!");
 					    		  System.out.println("------------------------");
 					    		  runningInterno = false;
@@ -534,7 +534,7 @@ public class AddressBookManager {
 				        
 					    switch (choice) {
 					    case "1": 
-					    		  rUtils.deleteContactDB(duplicatiEliminati);
+					    		  rUtils.deleteContactJDBC(duplicatiEliminati);
 					    		  System.out.println("Unione completata!");
 					    		  System.out.println("------------------------");
 					    		  runningInterno = false;

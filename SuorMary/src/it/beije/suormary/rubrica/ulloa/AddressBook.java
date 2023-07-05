@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica.jdbc;
+package it.beije.suormary.rubrica.ulloa;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,9 +58,9 @@ public class AddressBook {
         return contatti;
     }
     
-    public Contact getContattoById(String id) {
+    public Contact getContattoById(int id) {
         for (Contact contact : contatti) {
-            if (contact.getId().equals(id)) {
+            if (contact.getId() == id) {
                 return contact; // Restituisce il contatto corrispondente all'ID
             }
         }
