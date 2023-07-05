@@ -54,7 +54,7 @@ public class RubricaHBM {
    	 }
 	}
 	public static Contact findContactByNameSurname() throws Exception {
-		 Scanner scanner = new Scanner(System.in);
+	     Scanner scanner = new Scanner(System.in);
 		 Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
     	 SessionFactory sessionFactory = configuration.buildSessionFactory();
     	 Session session = null;
