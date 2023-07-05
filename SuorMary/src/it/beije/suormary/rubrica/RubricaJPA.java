@@ -22,7 +22,7 @@ public class RubricaJPA {
 		Contact contact = null;
 		
 		//SELECT di contatto specifico
-		contact = entityManager.find(Contact.class, 21);
+		contact = entityManager.find(Contact.class, 79);
 //		System.out.println(contact);
 		
 		

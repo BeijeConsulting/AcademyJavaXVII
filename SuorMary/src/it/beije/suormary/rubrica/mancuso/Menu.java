@@ -369,7 +369,13 @@ public class Menu {
 			System.out.println(ab.toString("cognome"));
 			break;
 		case "easter egg":
-			System.out.println(ab.getContactByNameHBM("Lara"));
+			List<Object> conts = JPAUtils.selectColumn("firstName", "Lara");
+			for(Object o : conts) {
+				if(o instanceof Contact) {
+					System.out.println((Contact)o);
+				}
+			}
+			
 		default:
 			System.out.println(ANSI_RED + "Comando non riconosciuto.\n" + ANSI_RESET);
 			break;
