@@ -1,5 +1,6 @@
 package it.beije.suormary.rubrica.mancuso;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -48,6 +49,10 @@ public class Menu {
 		System.out.println("find fullname\t\tRICERCA contatto per nome e cognome");
 		System.out.println("find phone\t\tRICERCA contatto per numero di telefono");
 		System.out.println("find email\t\tRICERCA contatto per email");
+		
+		System.out.println("--------------------------------------------------------------------");
+		
+		System.out.println("find by field\t\tRICERCA su DATABASE per campo e valore");
 		
 		System.out.println("--------------------------------------------------------------------");
 		
@@ -368,14 +373,62 @@ public class Menu {
 		case "sort by surname":
 			System.out.println(ab.toString("cognome"));
 			break;
-		case "easter egg":
-			List<Object> conts = JPAUtils.selectColumn("firstName", "Lara");
+		case "find by field":
+			
+			String column = "";
+			boolean okInput = false;
+			
+
+			while(!okInput) {
+				System.out.println("Inserire il campo su cui effettuare la ricerca selezionando uno dei seguenti: ");
+				System.out.println("--- nome ---");
+				System.out.println("--- cognome ---");
+				System.out.println("--- email ---");
+				System.out.println("--- telefono ---");
+				System.out.println("--- note ---");
+				System.out.println("--- exit (annulla operazione) ---");
+				command = input.nextLine();
+				if(AddressBook.getOkColumns().contains(command) || command.equals("exit")) {
+					okInput = true;
+				}
+			}
+			
+			if(command.equals("exit")) {
+				break;
+			}
+			
+			System.out.println("Inserire il valore da cercare: ");
+			String value = input.nextLine();
+			List<Object> conts = new ArrayList<>();
+			switch(command) {
+				case "nome":
+					column = "firstName";
+					break;
+				case "cognome":
+					column = "lastName";
+					break;
+				case "email":
+					column = "email";
+					break;
+				case "telefono":
+					column = "phoneNumber";
+					break;
+				case "note":
+					column = "notes";
+					break;
+			}
+			
+			conts = JPAUtils.selectColumn(column, value);
+			
+			System.out.println("\n");
+			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti: \n" + ANSI_RESET);
+			
 			for(Object o : conts) {
 				if(o instanceof Contact) {
 					System.out.println((Contact)o);
 				}
 			}
-			
+			break;
 		default:
 			System.out.println(ANSI_RED + "Comando non riconosciuto.\n" + ANSI_RESET);
 			break;

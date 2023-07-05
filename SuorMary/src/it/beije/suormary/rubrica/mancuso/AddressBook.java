@@ -36,8 +36,19 @@ public class AddressBook {
 	
 	public List<Contact> contacts;
 	
+	private static List<String> okColumns = new ArrayList<>();
+		
+	public static List<String> getOkColumns() {
+		return okColumns;
+	}
+
 	public AddressBook() {
 		contacts = new ArrayList<>();
+		okColumns.add("nome");
+		okColumns.add("cognome");
+		okColumns.add("email");
+		okColumns.add("telefono");
+		okColumns.add("note");
 	}
 
 	public static String print(List<Contact> conts) {

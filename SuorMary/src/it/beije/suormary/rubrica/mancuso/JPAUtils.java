@@ -10,20 +10,21 @@ import javax.persistence.Query;
 
 public class JPAUtils {
 	
+	
 	public static List<Object> selectColumn(String column, String value) {
 		EntityManager entityManager = null;
 		List<Object> contacts = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
 			
-			Query query = entityManager.createQuery("SELECT c FROM Contact as c WHERE c." + column + " = :value ");
+			Query query = entityManager.createQuery("SELECT c FROM Contact as c WHERE c." + column + " LIKE CONCAT('%', :value,'%')");
 			query.setParameter("value", value);
 			
 			contacts = query.getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			entityManager.close();
+			//entityManager.close();
 		}
 		return contacts;
 	}
@@ -40,7 +41,7 @@ public class JPAUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			entityManager.close();
+			//entityManager.close();
 		}
 		return contacts;
 	}
@@ -64,7 +65,7 @@ public class JPAUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			entityManager.close();
+			//entityManager.close();
 		}
 		return contacts;
 	}
@@ -79,7 +80,7 @@ public class JPAUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			entityManager.close();
+			//entityManager.close();
 		}
 	}
 	
@@ -93,7 +94,7 @@ public class JPAUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			entityManager.close();
+			//entityManager.close();
 		}
 	}
 	

@@ -31,6 +31,7 @@ public class Rubrica {
 			e.printStackTrace();
 		} finally {
 			input.close();
+			JPAManagerFactory.getEntityManager().close();
 		}
 		
 	}
