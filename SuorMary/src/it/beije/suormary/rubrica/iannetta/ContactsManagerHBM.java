@@ -1,5 +1,8 @@
 package it.beije.suormary.rubrica.iannetta;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,11 +12,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.internal.build.AllowSysOut;
 import org.hibernate.query.Query;
+import org.xml.sax.SAXException;
 
 import it.beije.suormary.rubrica.Contact;
 
@@ -180,6 +187,7 @@ public class ContactsManagerHBM {
 		
 		transaction.commit();
 		session.close();
+		System.out.println("Contact deleted");
 	}
 
 	public List<List<Contact>> findDuplicates() {
@@ -217,7 +225,7 @@ public class ContactsManagerHBM {
 
 	public void mergeDuplicates() {
 		Session session = getSession();
-		Transaction transaction = session.beginTransaction();
+		Transaction transaction;
 		
 		List<List<Contact>> listOfDuplicates = findDuplicates();
 		
@@ -228,36 +236,66 @@ public class ContactsManagerHBM {
 		String surname;
 		String email;
 		String note;
+		String checkName;
+		String checkSurname;
+		String checkEmail;
+		String checkNote;
 		
 		String answer;
 //		boolean[] enterData = new boolean[contactFields.length];
 //		Arrays.fill(enterData, false);
 		
 		for (List<Contact> duplicates: listOfDuplicates) {
+			transaction = session.beginTransaction();
 			keepThisContact = duplicates.get(0);
 			
 			id = keepThisContact.getId();
+			
 			name = keepThisContact.getName();
+			if (name == null) {
+				name = "";
+				keepThisContact.setName(name);
+			}
+			
 			surname = keepThisContact.getSurname();
+			if (surname == null) {
+				surname = "";
+				keepThisContact.setName(surname);
+			}
+			
+			//non dovrebbe essere null in generale
+			if (keepThisContact.getPhoneNumber() == null) keepThisContact.setPhoneNumber("");
+			
 			email = keepThisContact.getEmail();
+			if (email == null) {
+				email = "";
+				keepThisContact.setEmail(email);
+			}
+			
 			note = keepThisContact.getNote();
+			if (note == null) {
+				note = "";
+				keepThisContact.setNote(note);
+			}
 			
 			for (int i = 1; i < duplicates.size(); i++) {
 				checkThisContact = duplicates.get(i);
 				//conflitti
 				
 				//nome
-				if (name.equals("")) keepThisContact.setName(checkThisContact.getName());
+				checkName = checkThisContact.getName();
+				if (checkName == null || checkName.contentEquals("") || name.equals(checkName));
 				else {
 					System.out.println("Conflict: Which name do you want to keep?");
 					System.out.println("0: " + name);
-					System.out.println("1: " + checkThisContact.getName());
+					System.out.println("1: " + checkName);
 					answer = in.nextLine();
-					if (answer.equals("1")) keepThisContact.setName(checkThisContact.getName());
+					if (answer.equals("1")) keepThisContact.setName(checkName);
 				}
 				
 				//cognome
-				if (surname.equals("")) keepThisContact.setSurname(checkThisContact.getSurname());
+				checkSurname = checkThisContact.getSurname();
+				if (checkSurname == null || checkSurname.contentEquals("") || surname.equals(checkSurname));
 				else {
 					System.out.println("Conflict: Which surname do you want to keep?");
 					System.out.println("0: " + surname);
@@ -267,7 +305,8 @@ public class ContactsManagerHBM {
 				}
 				
 				//email
-				if (email.equals("")) keepThisContact.setEmail(checkThisContact.getEmail());
+				checkEmail = checkThisContact.getEmail();
+				if (checkEmail == null || checkEmail.contentEquals("") || email.equals(checkEmail));
 				else {
 					System.out.println("Conflict: Which email do you want to keep?");
 					System.out.println("0: " + email);
@@ -277,8 +316,8 @@ public class ContactsManagerHBM {
 				}
 				
 				//note
-				if (note == null);/* || note.equals("") && checkThisContact.getNote() != null) keepThisContact.setNote(checkThisContact.getNote());
-				else if (note.equals(checkThisContact.getNote()));*/
+				checkNote = checkThisContact.getNote();
+				if (checkNote == null || checkNote.contentEquals("") || note.equals(checkNote));
 				else {
 					System.out.println("Conflict: Which note do you want to keep?");
 					System.out.println("0: " + note);
@@ -289,10 +328,53 @@ public class ContactsManagerHBM {
 				
 				deleteContact(checkThisContact.getId());
 			}
-			keepThisContact.setId(id);
 			session.save(keepThisContact);
+			deleteContact(id);
 			transaction.commit();
-			//RICONTROLLA IL COMMIT PERCHè Dà ERRORE QUI
 		}
+		session.close();
+		System.out.println("Contacts merged");
+	}
+
+	public boolean checkFile (String path) {
+		File file = new File(path);
+		if (!file.exists()) {
+			System.out.println("File does not exist");
+			return false;
+		}
+		if (!path.endsWith(".xml") && !path.endsWith(".csv")) {
+			System.out.println("Invalid format");
+			return false;
+		}
+		return true;
+	}
+	
+	public void importFrom() throws ParserConfigurationException, SAXException, IOException {
+		System.out.println("Enter path of file of contacrts to add (.xml or .csv) : ");
+		String path = in.nextLine();
+		List<it.beije.suormary.rubrica.iannetta.Contact> listOfContacts = null;
+		Session session = getSession();
+		Transaction transaction = session.beginTransaction();
+		ContactsList contactList = new ContactsList();
+		
+		if (!file.exists()) throw new NoSuchFileException("File does not exist");
+		if (path.endsWith(".xml")) {
+			listOfContacts = ContactsList.loadContactListFromXML(path);
+			for (it.beije.suormary.rubrica.iannetta.Contact con : listOfContacts) {
+				Session session = getSession();
+				Transaction transaction = session.beginTransaction();
+
+				session.save(con);
+				
+				transaction.commit();
+				session.close();
+			}
+		}
+		else if (path.endsWith(".csv")) {
+			System.out.println("Enter separator: ");
+			String separator = in.nextLine();
+			ContactsList.loadContactListFromXML(path);
+		}
+		else System.out.println("Invalid format");
 	}
 }
