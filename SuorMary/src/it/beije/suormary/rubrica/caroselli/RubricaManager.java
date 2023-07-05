@@ -25,7 +25,7 @@ public class RubricaManager {
                 System.out.println(RubricaUtils.readContactsFromDb());
                 break;
             case 2 :
-                RubricaUtils.findContactFromInsertedValue();
+                RubricaUtils.findContactsFromInsertedValue();
                 break;
             case 3 :
                 RubricaUtils.insertContact();

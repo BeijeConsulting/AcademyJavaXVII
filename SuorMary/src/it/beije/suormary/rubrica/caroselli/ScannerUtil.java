@@ -39,17 +39,32 @@ public class ScannerUtil {
 		System.out.println(message);
 		Scanner sc = RubricaManager.scanner;
 		while (true) {
+//			try {
+//				if (sc.hasNext()) {
+//                    return sc.nextLine();
+//				} else {
+//					System.out.println(invalidInputMessage);
+//				}
+//			} catch (Exception e) {
+//				System.out.println(invalidInputMessage);
+//			}
+//			sc.nextLine();
+//		}
 			try {
-				if (sc.hasNext()) {
-                    return sc.nextLine();
-				} else {
-					System.out.println(invalidInputMessage);
-				}
-			} catch (Exception e) {
-				System.out.println(invalidInputMessage);
-			}
-			sc.nextLine();
-		}
+	            if (sc.hasNextLine()) {
+	                String input = sc.nextLine();
+	                if (input.isEmpty()) {
+	                    continue; // Se l'input è vuoto, continua con il ciclo
+	                } else {
+	                    return input;
+	                }
+	            } else {
+	                System.out.println(invalidInputMessage);
+	            }
+	        } catch (Exception e) {
+	            System.out.println(invalidInputMessage);
+	        }
+	    }
 	}
 
 }
