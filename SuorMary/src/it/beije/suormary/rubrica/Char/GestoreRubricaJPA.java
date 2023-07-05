@@ -1,13 +1,16 @@
 package it.beije.suormary.rubrica.Char;
 
+import java.util.List;
 import java.util.Scanner;
+
+import javax.persistence.EntityManager;
 
 import org.hibernate.Session;
 
-import java.util.List;
-public class GestoreRubricaHBM {
+public class GestoreRubricaJPA {
 
 	public static void main(String[] args)  {
+		  EntityManager entityManager = null;
 		Scanner scanner = new Scanner(System.in);
 		String scelta = "";
         while(!scelta.equals("esci")) {
@@ -27,31 +30,30 @@ public class GestoreRubricaHBM {
     		System.out.println("esci");
     		System.out.println("--------");
             scelta = scanner.nextLine();
-            Session session = null;
+           
       try {
-    	   session = HBMsessionFactory.openSession();
+    	   entityManager = JPAmanagerFactory.createEntityManager();
     	   switch(scelta) {
-          case "lista contatti" :List<Contact> contacts =  RubricaHBM.loadRubricaHBM(session); for(Contact c : contacts) System.out.println(c); break;
-          case "cerca contatto" : RubricaHBM.findContact(session); break;
-          case "nuovo contatto" : RubricaHBM.createContact(session); break;        
-          case "modifica contatto" : RubricaHBM.updateContact(session); break;
-          case "cancella contatto" : RubricaHBM.deleteContact(session); break;
-          case "trova contatti duplicati" : RubricaHBM.findDuplicatedContacts(session); break;
-          case "unisci contatti duplicati" : RubricaHBM.mergeDuplicatedContacts(session); break;
-          case "esporta contatti in file CSV" : RubricaHBM.exportDbToCSV(session); break;
-          case "esporta contatti in file XML" : RubricaHBM.exportDbToXML(session); break;
-          case "importa contatti da file CSV" : RubricaHBM.exportCSVToDb(session); break;
-          case "importa contatti da file XML" : RubricaHBM.exportXMLToDb(session); break;
+          case "lista contatti" :List<Contact> contacts =  RubricaJPA.loadRubricaJPA(entityManager); for(Contact c : contacts) System.out.println(c); break;
+          case "cerca contatto" : RubricaJPA.findContact(entityManager); break;
+          case "nuovo contatto" : RubricaJPA.createContact(entityManager); break;        
+//          case "modifica contatto" : RubricaHBM.updateContact(session); break;
+//          case "cancella contatto" : RubricaHBM.deleteContact(session); break;
+//          case "trova contatti duplicati" : RubricaHBM.findDuplicatedContacts(session); break;
+//          case "unisci contatti duplicati" : RubricaHBM.mergeDuplicatedContacts(session); break;
+//          case "esporta contatti in file CSV" : RubricaHBM.exportDbToCSV(session); break;
+//          case "esporta contatti in file XML" : RubricaHBM.exportDbToXML(session); break;
+//          case "importa contatti da file CSV" : RubricaHBM.exportCSVToDb(session); break;
+//          case "importa contatti da file XML" : RubricaHBM.exportXMLToDb(session); break;
           case "esci" : System.out.println("Arrivederci"); break;
           default : System.out.println("Non hai inserito nessuna tra le opzioni disponibili"); break;
         }
       } catch(Exception e) {
     	  e.printStackTrace();
-      } finally {
-    	  session.close();
-      }
+      } 
         
 	    }
+        entityManager.close();
         scanner.close();
 	}
 
