@@ -165,7 +165,7 @@ public class MetodiRubricaHBM {
 				System.out.println(contact);
 				System.out.println("E' questo?");
 				String choose = scanModifies.next();
-				scanModifies.next();
+				scanModifies.nextLine();
 				if(choose.equalsIgnoreCase("Si")|| choose.equalsIgnoreCase("Sì")) {
 					cModifies = contact;
 					break;
@@ -183,16 +183,16 @@ public class MetodiRubricaHBM {
 		System.out.print("nome: ");
 		//String name="";
 		String name = scanModifies.nextLine();
-		scanModifies.next();
+		//scanModifies.nextLine();
 		System.out.print("cognome: ");
 		String surname = scanModifies.nextLine();
-		scanModifies.next();
+		//scanModifies.nextLine();
 		System.out.print("telefono: "); 
 		String phoneNumber = scanModifies.nextLine();
-		scanModifies.next();
+		//scanModifies.nextLine();
 		System.out.print("email: "); 
 		String email = scanModifies.next();
-		scanModifies.next();
+		scanModifies.nextLine();
 		System.out.print("note: "); 
 		String note = scanModifies.nextLine();
 		
