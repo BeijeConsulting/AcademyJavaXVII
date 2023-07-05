@@ -23,9 +23,9 @@ public class RubricaManagerJPA {
 		case 1:
 			System.out.println(RubricaUtilsJPA.readContactsFromDb());
 			break;
-//		case 2:
-//			System.out.println(RubricaUtilsJPA.findContactsFromInsertedValue());
-//			break;
+		case 2:
+			System.out.println(RubricaUtilsJPA.findContactsFromInsertedValue());
+			break;
 //		case 3:
 //			RubricaUtilsJPA.insertContact();
 //			break;

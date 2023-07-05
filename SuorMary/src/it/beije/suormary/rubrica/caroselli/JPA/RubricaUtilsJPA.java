@@ -12,6 +12,7 @@ import org.hibernate.Session;
 
 import it.beije.suormary.rubrica.caroselli.Contact;
 import it.beije.suormary.rubrica.caroselli.ScannerUtil;
+import it.beije.suormary.rubrica.caroselli.HBM.HBMSessionFactory;
 
 
 
@@ -105,5 +106,41 @@ public class RubricaUtilsJPA {
 
 		return result;
 	}
+	
+	public static List<Contact> findContactsFromInsertedValue() {
+		
+		PersistenceManagerJPA persistenceManager = PersistenceManagerJPA.getInstance();
+		EntityManager entityManager = persistenceManager.getEntityManager();
+		EntityTransaction transaction = null;
+		
+
+		String value = ScannerUtil
+				.readStringValue("Inserisci il valore (esempio Mario o Rossi) per cercare i contatti desiderati");
+
+		Session session = null;
+		List<Contact> contacts = new ArrayList<>();
+
+		try {
+			
+			transaction = entityManager.getTransaction();
+			transaction.begin();
+			Query query = entityManager.createQuery("SELECT c from Contact as c WHERE name = '" + value + "' OR surname = '" + value
+							+ "' OR phone = '" + value + "' OR email = '" + value + "' OR note = '" + value + "'");
+
+			contacts = query.getResultList();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+			persistenceManager.close();
+
+		}
+
+		return contacts;
+	}
+
+	
+	
 
 }
