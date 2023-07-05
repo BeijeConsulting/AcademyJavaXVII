@@ -53,16 +53,16 @@ public class RubricaHBM {
 			//UPDATE
 			contact = contacts.get(contacts.size()-1);
 			System.out.println("contact PRE UPDATE: " + contact);
-//			contact.setId(10);
-//			contact.setName("Chiara");
-//			contact.setSurname("Sala");
-//			contact.setPhoneNumber("09876543");
-//			contact.setEmail("lara.sala@beije.it");
-//			contact.setNote("contatto modificato con Hibernate");
-//			
-//			System.out.println("contact PRE : " + contact);
-//			session.save(contact);
-//			System.out.println("contact POST : " + contact);
+			contact.setId(10);
+			contact.setName("Chiara");
+			contact.setSurname("Sala");
+			contact.setPhoneNumber("09876543");
+			contact.setEmail("lara.sala@beije.it");
+			contact.setNote("contatto modificato con Hibernate");
+			
+			System.out.println("contact PRE : " + contact);
+			session.save(contact);
+			System.out.println("contact POST : " + contact);
 			
 			
 			//DELETE

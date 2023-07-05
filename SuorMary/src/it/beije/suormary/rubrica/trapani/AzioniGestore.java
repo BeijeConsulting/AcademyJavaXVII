@@ -26,23 +26,23 @@ public class AzioniGestore extends MenuGestioneRubrica{
 	
 	public static Scanner in = new Scanner(System.in);
 	
+	
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Rick&Morty63!!");
 		
-		return DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "Rick&Morty63!!");
+		return connection;
 	}
 
 	public static List<Contact> listContact(){		
 		
-		Connection connection = null;
 		Statement statement= null;
 
 		List<Contact> contacts = new ArrayList<>();
 		Contact c = null;
 			
 		try {
-				connection = getConnection();
-				statement = connection.createStatement();
+				statement = getConnection().createStatement();
 				
 				System.out.println("Lista contatti ordinata? (y/n): ");
 				String answ = in.nextLine().toLowerCase();
@@ -92,7 +92,8 @@ public class AzioniGestore extends MenuGestioneRubrica{
 									contacts.add(c);
 								}
 								break;
-					default: System.out.println("Comando non riconosciuto"); 					
+					default:	System.out.println("Comando non riconosciuto"); 
+								break;
 					}
 				}
 		
@@ -106,22 +107,19 @@ public class AzioniGestore extends MenuGestioneRubrica{
 	
 	public static List<Contact> findContact(){
 		
-		Connection connection = null;
 		PreparedStatement preparedStatement= null;
 
 		List<Contact> contacts = new ArrayList<>();
 		Contact c = null;
 			
 		try {
-				connection = getConnection();
-				preparedStatement = connection.prepareStatement
+				
+				preparedStatement = getConnection().prepareStatement
 						("SELECT * FROM rubrica WHERE ? = ?");
 				
 				System.out.println("Seleziona campo da cercare: ");
-				String searchKey = in.nextLine().toLowerCase().trim();
 				preparedStatement.setString(1, in.nextLine());
-				System.out.println("Valore da cercare: ");
-				String search = in.nextLine().trim();
+				System.out.println("Valore da cercare: ");			
 				preparedStatement.setString(2, in.nextLine());		
 					
 				ResultSet rs = preparedStatement.executeQuery();
@@ -135,24 +133,25 @@ public class AzioniGestore extends MenuGestioneRubrica{
 					c.setNote(rs.getString("note"));
 					contacts.add(c);
 					} 					
-					
+			getConnection().close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-			
+		
+		
 		return contacts;
 	}
 
 	public static void insertContact() {
-		
-		Connection connection = null;
+
 		PreparedStatement preparedStatement = null;
 			
 		try {
-			connection = getConnection();
-			preparedStatement = connection.prepareStatement
+			
+			preparedStatement = getConnection().prepareStatement
 					("INSERT INTO rubrica (`nome`, `cognome`, `telefono`, `email`, `note`) VALUES (?, ?, ?, ?, ?)");
 			
 			System.out.println("Nome:");
@@ -166,24 +165,26 @@ public class AzioniGestore extends MenuGestioneRubrica{
 			System.out.println("Note:");
 			preparedStatement.setString(5, in.nextLine());
 	
-			preparedStatement.execute();			
+			preparedStatement.execute();
+			
+			getConnection().close();
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	public static void updetContact() {
-		
-		Connection connection = null;
+
 		PreparedStatement preparedStatement = null;
 			
 		try {
-			connection = getConnection();
+			
 			List<Contact> found = findContact();
-			preparedStatement = connection.prepareStatement
+			preparedStatement = getConnection().prepareStatement
 					("UPDATE rubrica SET ? = ? WHERE id = ?");
 			
 			for (Contact c : found) {
@@ -199,10 +200,8 @@ public class AzioniGestore extends MenuGestioneRubrica{
 
 			preparedStatement.execute();	
 			
-			if(preparedStatement.execute()) {
-				System.out.println("Contatto aggiornato correttamente");
-			}
-		
+			getConnection().close();
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -233,6 +232,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 			if(preparedStatement.execute()) {
 				System.out.println("Contatto eliminato correttamente");
 			}
+			getConnection().close();
 		
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
