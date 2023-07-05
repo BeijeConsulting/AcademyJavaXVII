@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica;
+package it.beije.suormary.rubrica.Char;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ public class RubricaJPA {
 
 	public static void main(String[] args) {
 		
-//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
-//		EntityManager entityManager = entityManagerFactory.createEntityManager();
-//		
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		
 //		EntityTransaction transaction = entityManager.getTransaction();
 //		transaction.begin();
 
@@ -54,13 +54,13 @@ public class RubricaJPA {
 //		transaction.commit();
 
 		//SELECT JPQL
-//		Query query = entityManager.createQuery("SELECT c from Contact as c"); //SELECT * FROM rubrica
-////		Query query = entityManager.createQuery("SELECT c from Contact as c WHERE c.surname = :cognome");
-////		query.setParameter("cognome", "Rossi");
-//		List<Contact> contacts = query.getResultList();
-//		for (Contact c : contacts) System.out.println(c);
+		Query query = entityManager.createQuery("SELECT c from Contact as c"); //SELECT * FROM rubrica
+//		Query query = entityManager.createQuery("SELECT c from Contact as c WHERE c.surname = :cognome");
+//		query.setParameter("cognome", "Rossi");
+		List<Contact> contacts = query.getResultList();
+		for (Contact c : contacts) System.out.println(c);
 		
-//		entityManager.close();
+		entityManager.close();
 	}
 	
 }
