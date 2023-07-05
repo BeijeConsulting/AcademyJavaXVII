@@ -34,4 +34,43 @@ public class JPAUtils {
 		return contacts;
 	}
 	
+	public static List<Object> getAllContacts() {
+		EntityManager entityManager = null;
+		List<Object> contacts = null;
+		try {
+			entityManager = getEntityManager();
+			
+			Query query = entityManager.createQuery("SELECT c FROM Contact as c ");
+			
+			contacts = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
+		return contacts;
+	}
+	
+	// c must have been previously read by the db
+	public static List<Object> editContact(Contact c, String name, String surname, String phone, String email, String notes) {
+		EntityManager entityManager = null;
+		List<Object> contacts = null;
+		try {
+			entityManager = getEntityManager();
+			
+			c.setFirstName(name);
+			c.setLastName(surname);
+			c.setEmail(email);
+			c.setPhoneNumber(phone);
+			c.setNotes(notes);
+			
+			entityManager.persist(c);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
+		return contacts;
+	}
+	
 }
