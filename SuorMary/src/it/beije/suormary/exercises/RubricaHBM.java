@@ -13,11 +13,11 @@ import org.hibernate.query.Query;
 import it.beije.suormary.rubrica.Contact;
 
 
-public class RubricaHBN {
+public class RubricaHBM {
 
 	public static void main(String[] args) {
 		
-		Configuration configuration = new Configuration().configure(new File("./src/hibernate.cfg.xml")) // "/hibernate.cfg.xml"
+		Configuration configuration = new Configuration().configure()
 				.addAnnotatedClass(Contact.class);
 		
 		SessionFactory factory = configuration.buildSessionFactory();

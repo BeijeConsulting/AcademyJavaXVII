@@ -212,7 +212,7 @@ public class RubricaUtils {
 		return contatti;
 	}
 	
-	public List<Contact> loadRubricaFromHBN(){
+	public List<Contact> loadRubricaFromHBM(){
 		Session session = null;
 		
 		List<Contact> contatti = null;
@@ -409,7 +409,7 @@ public class RubricaUtils {
 		}
 	}	
 
-	public void writeRubricaHBN(List<Contact> contatti) {
+	public void writeRubricaHBM(List<Contact> contatti) {
 		Session session = null;
 		
 		try {
@@ -582,7 +582,7 @@ public class RubricaUtils {
 		}
 	}
 	
-	public void addContactHBN(Contact contatto) {
+	public void addContactHBM(Contact contatto) {
 		Session session = null;
 		
 		try {
@@ -677,7 +677,7 @@ public class RubricaUtils {
 		}
 	}
 
-	public void updateContactHBN(int id, Contact contatto) {
+	public void updateContactHBM(int id, Contact contatto) {
 		Session sesion = null;
 		
 		try {
