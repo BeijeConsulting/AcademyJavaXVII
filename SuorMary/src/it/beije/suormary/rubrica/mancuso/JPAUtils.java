@@ -11,9 +11,9 @@ import javax.persistence.Query;
 public class JPAUtils {
 	
 	
-	public static List<Object> selectColumn(String column, String value) {
+	public static List<Contact> selectColumn(String column, String value) {
 		EntityManager entityManager = null;
-		List<Object> contacts = null;
+		List<Contact> contacts = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
 			
@@ -29,9 +29,9 @@ public class JPAUtils {
 		return contacts;
 	}
 	
-	public static List<Object> getAllContacts() {
+	public static List<Contact> getAllContacts() {
 		EntityManager entityManager = null;
-		List<Object> contacts = null;
+		List<Contact> contacts = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
 			
@@ -47,9 +47,9 @@ public class JPAUtils {
 	}
 	
 	// c must have been previously read by the db
-	public static List<Object> editContact(Contact c, String name, String surname, String phone, String email, String notes) {
+	public static List<Contact> editContact(Contact c, String name, String surname, String phone, String email, String notes) {
 		EntityManager entityManager = null;
-		List<Object> contacts = null;
+		List<Contact> contacts = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();

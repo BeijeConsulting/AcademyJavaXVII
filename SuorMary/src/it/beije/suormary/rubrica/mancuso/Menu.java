@@ -399,7 +399,7 @@ public class Menu {
 			
 			System.out.println("Inserire il valore da cercare: ");
 			String value = input.nextLine();
-			List<Object> conts = new ArrayList<>();
+
 			switch(command) {
 				case "nome":
 					column = "firstName";
@@ -418,17 +418,21 @@ public class Menu {
 					break;
 			}
 			
-			conts = JPAUtils.selectColumn(column, value);
+			resultContacts = JPAUtils.selectColumn(column, value);
 			
 			System.out.println("\n");
 			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti: \n" + ANSI_RESET);
 			
-			for(Object o : conts) {
-				if(o instanceof Contact) {
-					System.out.println((Contact)o);
-				}
+			for(Contact ct : resultContacts) {
+				System.out.println(ct);
 			}
 			break;
+		case "read all":
+			resultContacts = JPAUtils.getAllContacts();
+			for(Contact ct : resultContacts) {
+				System.out.println(ct);
+			}
+			
 		default:
 			System.out.println(ANSI_RED + "Comando non riconosciuto.\n" + ANSI_RESET);
 			break;
