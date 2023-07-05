@@ -368,6 +368,8 @@ public class Menu {
 		case "sort by surname":
 			System.out.println(ab.toString("cognome"));
 			break;
+		case "easter egg":
+			System.out.println(ab.getContactByNameHBM("Lara"));
 		default:
 			System.out.println(ANSI_RED + "Comando non riconosciuto.\n" + ANSI_RESET);
 			break;
