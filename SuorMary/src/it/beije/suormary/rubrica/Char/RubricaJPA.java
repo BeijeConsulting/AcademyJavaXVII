@@ -13,8 +13,9 @@ public class RubricaJPA {
 
 	public static void main(String[] args) {
 		
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
+//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+//		EntityManager entityManager = entityManagerFactory.createEntityManager();
+		EntityManager entityManager = JPAmanagerFactory.createEntityManager();
 		
 //		EntityTransaction transaction = entityManager.getTransaction();
 //		transaction.begin();
