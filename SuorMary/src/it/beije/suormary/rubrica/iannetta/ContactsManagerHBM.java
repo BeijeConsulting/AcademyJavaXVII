@@ -73,8 +73,7 @@ public class ContactsManagerHBM {
 		return result;
 	}
 	
- 	
-	public void showContacts(String orderBy) {
+ 	public void showContacts(String orderBy) {
 		
 		Session session = openSession();
 		Transaction transaction = session.beginTransaction();

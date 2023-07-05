@@ -25,24 +25,24 @@ public class ContactsManagerTest {
 	}
 	
 	private static boolean choice(int answer) throws ClassNotFoundException, SQLException {
-		ContactsManager contactsManager = new ContactsManager();
+		ContactsManagerJDBC contactsManagerJDBC = new ContactsManagerJDBC();
 		int id;
 		switch(answer) {
-		case 1: contactsManager.sorting(); break; 
-		case 2: contactsManager.searchContact(); break;
-		case 3: contactsManager.insertContact(); break;
-		case 4: id = contactsManager.searchByID();
-				contactsManager.editContact(id); 
+		case 1: contactsManagerJDBC.sorting(); break; 
+		case 2: contactsManagerJDBC.searchContact(); break;
+		case 3: contactsManagerJDBC.insertContact(); break;
+		case 4: id = contactsManagerJDBC.searchByID();
+				contactsManagerJDBC.editContact(id); 
 				break;
-		case 5: id = contactsManager.searchByID();
-				contactsManager.deleteContact(id);
+		case 5: id = contactsManagerJDBC.searchByID();
+				contactsManagerJDBC.deleteContact(id);
 				break;
-//		case 6: find duplicates
-//		case 7: merge duplicates
-//		case 8: import from
-//		case 9: export to
+		case 6: contactsManagerJDBC.findDuplicates(); break;
+		case 7: contactsManagerJDBC.mergeDuplicates(); break;
+		case 8: contactsManagerJDBC.importFrom(); break;
+		case 9: contactsManagerJDBC.exportTo(); break;
 		case 0:
-		default: contactsManager.end(); return false;
+		default: contactsManagerJDBC.end(); return false;
 		}
 		return true;
 	}
