@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica.caroselli;
+package it.beije.suormary.rubrica.caroselli.HBM;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,31 +29,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import it.beije.suormary.rubrica.caroselli.Contact;
+import it.beije.suormary.rubrica.caroselli.ScannerUtil;
+
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-public class RubricaUtils {
-
-	public static Session session() {
-
-		SessionFactory factory = null;
-
-		try {
-
-			Configuration config = new Configuration().configure().addAnnotatedClass(Contact.class);
-
-			factory = config.buildSessionFactory();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return factory.openSession();
-
-	}
+public class RubricaUtilsHBM {
 
 	public static List<Contact> loadRubricaFromCSV(String pathFile, String separator) {
 
@@ -238,6 +220,7 @@ public class RubricaUtils {
 	public static List<Contact> readContactsFromDb() {
 
 		List<Contact> newList = new ArrayList<>();
+		Session session = null;
 
 		String choice = ScannerUtil
 				.readStringValue("Vuoi cecare i contatti per nome o per cognome? Scegli 'si' o 'no'");
@@ -248,13 +231,19 @@ public class RubricaUtils {
 			orderContactsByNameOrSurname(value);
 
 		} else {
+			try {
 
-			Query<Contact> query = session().createQuery("SELECT c FROM Contact as c");
-			List<Contact> contacts = query.getResultList();
-			for (Contact c : contacts)
-				System.out.println(c);
+				session = HBMSessionFactory.openSession();
+				Query<Contact> query = session.createQuery("SELECT c FROM Contact as c");
+				List<Contact> contacts = query.getResultList();
+				for (Contact c : contacts)
+					System.out.println(c);
 
-			session().close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				session.close();
+			}
 
 		}
 
@@ -264,130 +253,188 @@ public class RubricaUtils {
 	public static List<Contact> orderContactsByNameOrSurname(String nameOrSurname) {
 
 		List<Contact> result = new ArrayList<>();
+		Session session = null;
 
 		if (nameOrSurname.equals("nome")) {
 
-			Query<Contact> query = session().createQuery("SELECT c FROM Contact as c ORDER BY name ASC");
-			List<Contact> contacts = query.getResultList();
-			for (Contact c : contacts)
-				System.out.println(c);
-
-			session().close();
+			try {
+				session = HBMSessionFactory.openSession();
+				Query<Contact> query = session.createQuery("SELECT c FROM Contact as c ORDER BY name ASC");
+				List<Contact> contacts = query.getResultList();
+				for (Contact c : contacts) {
+					System.out.println(c);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				session.close();
+			}
 
 		} else if (nameOrSurname.equals("cognome")) {
 
-			Query<Contact> query = session().createQuery("SELECT c FROM Contact as c ORDER BY surname ASC");
-			List<Contact> contacts = query.getResultList();
-			for (Contact c : contacts)
-				System.out.println(c);
-
-			session().close();
+			try {
+				session = HBMSessionFactory.openSession();
+				Query<Contact> query = session.createQuery("SELECT c FROM Contact as c ORDER BY surname ASC");
+				List<Contact> contacts = query.getResultList();
+				for (Contact c : contacts)
+					System.out.println(c);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				session.close();
+			}
 		}
 
 		return result;
 	}
 
-	public static void exportContactsFromDbToCSV() {
-		try {
-			connection("suor_mary", "root");
-			List<Contact> contacts = readContactsFromDb();
-//            System.out.println(contacts);
-			writeRubricaCSV(contacts, "/home/flaviana/fromDbToCSV.csv", ";");
+	public static void importExportFromToCSV() {
+		System.out.println("scrivi 'importa' per importare i contatti dal db al csv, 'esporta' per esportare i contatti dal cvs al db");
+		String choice = RubricaManagerHBM.scanner.nextLine();
+		if(choice != "importa" || choice != "esporta") {
+			System.out.println("Scelte non corrette");
+		} else if(choice == "importa") {
+			importContactsToDbFromCSV("/home/flaviana/git/AcademyJavaXVII/SuorMary/src/it/beije/suormary/rubrica/caroselli/rubrica.csv");
+			System.out.println("Contatti importati correttamente");
+		} else {
+			exportContactsFromDbToCSV("/home/flaviana/fromDbToCSV.csv");
+		}
+	}
+	
+	public static void importExportFromToXML() {
+		System.out.println("scrivi 'importa' per importare i contatti dal db all'xml, 'esporta' per esportare i contatti dal cvs all'xml");
+		String choice = RubricaManagerHBM.scanner.nextLine();
+		if(choice != "importa" || choice != "esporta") {
+			System.out.println("Scelte non corrette");
+		} else if(choice == "importa") {
+			importContactsToDbFromXML("/home/flaviana/dev/beije/AcademyJavaXVII/Exercises/src/it/beije/xvii/exercises/Caroselli/myRubrica/rubrica.xml");
+			System.out.println("Contatti importati correttamente");
+		} else {
+			exportContactsFromDbToXML("/home/flaviana/fromDbToXML.xml");
+		}
+	}
+	
 
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
+	public static void exportContactsFromDbToCSV(String path) {
+
+		try {
+
+			List<Contact> contacts = readContactsFromDb();
+			writeRubricaCSV(contacts, path, ";");
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	public static void exportContactsFromDbToXML() {
+	public static void exportContactsFromDbToXML(String path) {
 
 		List<Contact> contacts = readContactsFromDb();
-		writeRubricaToXML(contacts, "/home/flaviana/fromDbToXML.xml");
+		writeRubricaToXML(contacts, path);
 
 	}
 
-	public static void importContactsToDbFromCSV() {
+	public static void importContactsToDbFromCSV(String path) {
 
 		Contact contact = new Contact();
+		Session session = null;
+		List<Contact> contactListFromCSV = loadRubricaFromCSV(path, ";");
+		try {
+			session = HBMSessionFactory.openSession();
+			Transaction transaction = session.beginTransaction();
 
-		Transaction transaction = session().beginTransaction();
+			for (Contact c : contactListFromCSV) {
+				contact.setName(c.getName());
+				contact.setSurname(c.getSurname());
+				contact.setPhone(c.getPhone());
+				contact.setEmail(c.getEmail());
+				contact.setNote(c.getNote());
 
-		List<Contact> contactListFromCSV = loadRubricaFromCSV(
-				"/home/flaviana/dev/beije/AcademyJavaXVII/Exercises/src/it/beije/xvii/exercises/Caroselli/myRubrica/rubrica.csv",
-				";");
-		for (Contact c : contactListFromCSV) {
-			contact.setName(c.getName());
-			contact.setSurname(c.getSurname());
-			contact.setPhone(c.getPhone());
-			contact.setEmail(c.getEmail());
-			contact.setNote(c.getNote());
+				session.save(contact);
 
-			session().save(contact);
+				transaction.commit();
+			}
 
-			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+
 		}
-
-		session().close();
 
 	}
 
-	public static void importContactsToDbFromXML() {
+	public static void importContactsToDbFromXML(String path) {
 
-		List<Contact> contactListFromXML = loadRubricaFromXML(
-				"/home/flaviana/dev/beije/AcademyJavaXVII/Exercises/src/it/beije/xvii/exercises/Caroselli/myRubrica/rubrica.xml");
+		List<Contact> contactListFromXML = loadRubricaFromXML(path);
 
 		Contact contact = new Contact();
+		Session session = null;
 
-		Transaction transaction = session().beginTransaction();
+		try {
+			session = HBMSessionFactory.openSession();
+			Transaction transaction = session.beginTransaction();
 
-		for (Contact c : contactListFromXML) {
-			contact.setName(c.getName());
-			contact.setSurname(c.getSurname());
-			contact.setPhone(c.getPhone());
-			contact.setEmail(c.getEmail());
-			contact.setNote(c.getNote());
+			for (Contact c : contactListFromXML) {
+				contact.setName(c.getName());
+				contact.setSurname(c.getSurname());
+				contact.setPhone(c.getPhone());
+				contact.setEmail(c.getEmail());
+				contact.setNote(c.getNote());
 
-			session().save(contact);
+				session.save(contact);
 
-			transaction.commit();
+				transaction.commit();
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
 
 		}
-
-		session().close();
 
 	}
 
 	public static void insertContact() {
+		Session session = null;
 
 		System.out.println("Inserisci i campi del contatto che vuoi aggiungere alla rubrica");
 
 		System.out.println("Inserisci il nome");
-		String name = RubricaManager.scanner.nextLine();
+		String name = RubricaManagerHBM.scanner.nextLine();
 		System.out.println("Inserisci il cognome");
-		String surname = RubricaManager.scanner.nextLine();
+		String surname = RubricaManagerHBM.scanner.nextLine();
 		System.out.println("Inserisci il telefono");
-		String phone = RubricaManager.scanner.nextLine();
+		String phone = RubricaManagerHBM.scanner.nextLine();
 		System.out.println("Inserisci l'email");
-		String email = RubricaManager.scanner.nextLine();
+		String email = RubricaManagerHBM.scanner.nextLine();
 		System.out.println("Inserisci la nota");
-		String note = RubricaManager.scanner.nextLine();
-		;
+		String note = RubricaManagerHBM.scanner.nextLine();
 
 		Contact contact = new Contact(name, surname, phone, email, note);
+		try {
+			session = HBMSessionFactory.openSession();
+			Transaction transaction = session.beginTransaction();
+			session.save(contact);
+			System.out.println("Contatto aggiunto alla rubrica");
+			transaction.commit();
 
-		Transaction transaction = session().beginTransaction();
-		session().save(contact);
-		transaction.commit();
+			System.out.println(contact);
 
-		System.out.println("Contatto aggiunto alla rubrica");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
 
-		System.out.println(contact);
-		session().close();
 	}
 
 	public static void deleteContact() {
 
 		List<Contact> contacts = findContactsFromInsertedValue();
+		Session session = null;
 
 		if (contacts == null) {
 			return;
@@ -400,15 +447,23 @@ public class RubricaUtils {
 		Contact contactToDelete = returnAContact(contacts, choice);
 
 		if (areYouSure()) {
+			try {
+				session = HBMSessionFactory.openSession();
 
-			Transaction transaction = session().beginTransaction();
+				Transaction transaction = session.beginTransaction();
 
-			Query<Contact> query = session().createQuery("DELETE c FROM Contact as c");
-			Contact contact = query.getSingleResult();
-			session().delete(contact);
-			transaction.commit();
+				Query<Contact> query = session.createQuery("DELETE c FROM Contact as c");
+				Contact contact = query.getSingleResult();
+				session.delete(contact);
+				transaction.commit();
+				System.out.println(contact);
 
-			session().close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				session.close();
+			}
+
 		}
 
 	}
@@ -417,6 +472,7 @@ public class RubricaUtils {
 	public static void changeContact() {
 
 		List<Contact> contacts = findContactsFromInsertedValue();
+		Session session = null;
 		if (contacts == null) {
 			return;
 		}
@@ -425,8 +481,8 @@ public class RubricaUtils {
 		System.out.print("Inserisci l'id nel contatto da cambiare: ");
 
 //		int choice = ScannerUtil.readIntValue("Inserisci l'id numero del contatto da cambiare: ");
-		int choice = RubricaManager.scanner.nextInt();
-		RubricaManager.scanner.nextLine();
+		int choice = RubricaManagerHBM.scanner.nextInt();
+		RubricaManagerHBM.scanner.nextLine();
 
 		Contact contactToChange = returnAContact(contacts, choice);
 		System.out.println("Contatto selezionato:");
@@ -439,7 +495,7 @@ public class RubricaUtils {
 		String note = contactToChange.getNote();
 
 		System.out.print("Inserisci il nuovo nome (o premi Invio per mantenere lo stesso valore): ");
-		String newName = RubricaManager.scanner.nextLine();
+		String newName = RubricaManagerHBM.scanner.nextLine();
 		// String newName = ScannerUtil.readStringValue("Inserisci il nuovo nome (o
 		// premi Invio per mantenere lo stesso valore): ");
 		if (!newName.isEmpty()) {
@@ -448,116 +504,127 @@ public class RubricaUtils {
 
 //		String newSurname = ScannerUtil.readStringValue("Inserisci il nuovo cognome (o premi Invio per mantenere lo stesso valore): ");
 		System.out.print("Inserisci il nuovo cognome (o premi Invio per mantenere lo stesso valore): ");
-		String newSurname = RubricaManager.scanner.nextLine();
+		String newSurname = RubricaManagerHBM.scanner.nextLine();
 		if (!newSurname.isEmpty()) {
 			surname = newSurname;
 		}
 
 //		String newPhone = ScannerUtil.readStringValue("Inserisci il nuovo telefono (o premi Invio per mantenere lo stesso valore): ");
 		System.out.print("Inserisci il nuovo telefono (o premi Invio per mantenere lo stesso valore): ");
-		String newPhone = RubricaManager.scanner.nextLine();
+		String newPhone = RubricaManagerHBM.scanner.nextLine();
 		if (!newPhone.isEmpty()) {
 			phone = newPhone;
 		}
 
 		System.out.print("Inserisci la nuova email (o premi Invio per mantenere lo stesso valore): ");
-		String newEmail = RubricaManager.scanner.nextLine();
+		String newEmail = RubricaManagerHBM.scanner.nextLine();
 		if (!newEmail.isEmpty()) {
 			email = newEmail;
 		}
 
 		System.out.print("Inserisci le nuove note (o premi Invio per mantenere lo stesso valore): ");
-		String newNote = RubricaManager.scanner.nextLine();
+		String newNote = RubricaManagerHBM.scanner.nextLine();
 		if (!newNote.isEmpty()) {
 			note = newNote;
 		}
 
 		if (areYouSure()) {
+			try {
+				session = HBMSessionFactory.openSession();
+				Transaction transaction = session.beginTransaction();
 
-//				String updateQuery = "UPDATE rubrica SET name = '" + name + "', surname = '" + surname + "', phone = '"
-//						+ phone + "', email = '" + email + "', note = '" + note + "' WHERE id = "
-//						+ contactToChange.getId();
-//				statement.executeUpdate(updateQuery);
+				Contact contact = session.get(Contact.class, id);
+				if (contact != null) {
+					contact.setName(name);
+					contact.setSurname(surname);
+					contact.setPhone(phone);
+					contact.setEmail(email);
+					contact.setNote(note);
 
-			Transaction transaction = session().beginTransaction();
-//
-//			Query<Contact> query = session().createQuery("SELECT c FROM Contact as c WHERE id = " + id); 
-//			Contact contact = query.getSingleResult();
-//			
-//			
-//			contact.setName(name);
-//			contact.setSurname(surname);
-//			contact.setPhone(newPhone);
-//			contact.setEmail(email);
-//			contact.setNote(note);
-//
-//			session().update(contact);
-//
-//			transaction.commit();
-//
-//			System.out.println("Contatto cambiato correttamente:");
-//
-//			session().close();
-			Contact contact = session().get(Contact.class, id);
-			if (contact != null) {
-				contact.setName(name);
-				contact.setSurname(surname);
-				contact.setPhone(phone);
-				contact.setEmail(email);
-				contact.setNote(note);
-				
-				
-				
-				session().update(contact);
-				transaction.commit();
-				
-				System.out.println("Contatto cambiato correttamente:");
-			
-			
-//			session().save(contact);
+					session.update(contact);
+					transaction.commit();
 
-			session().close();
+					System.out.println("Contatto cambiato correttamente");
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				session.close();
 
 			}
 		}
 
 	}
-	
 
 	public static List<Contact> findContactsFromInsertedValue() {
 
 		String value = ScannerUtil
 				.readStringValue("Inserisci il valore (esempio Mario o Rossi) per cercare i contatti desiderati");
 
-		Query<Contact> query = session()
-				.createQuery("SELECT c from Contact as c WHERE name = '" + value + "' OR surname = '" + value
-						+ "' OR phone = '" + value + "' OR email = '" + value + "' OR note = '" + value + "'");
+		Session session = null;
+		List<Contact> contacts = new ArrayList<>();
 
-		List<Contact> contacts = query.getResultList();
+		try {
+			session = HBMSessionFactory.openSession();
+			Query<Contact> query = session
+					.createQuery("SELECT c from Contact as c WHERE name = '" + value + "' OR surname = '" + value
+							+ "' OR phone = '" + value + "' OR email = '" + value + "' OR note = '" + value + "'");
+
+			contacts = query.getResultList();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+
+		}
+
 		return contacts;
 	}
 
 	// da pensare
 	public static List<Contact> findDuplicatesContactByValue() throws Exception {
 
+		Session session = null;
+
 		String value = ScannerUtil
 				.readStringValue("Inserisci il valore(esempio mario) di cui vuoi cercare i duplicati");
 
 		List<Contact> duplicateContacts = new ArrayList<>();
 
-		Statement statement = connection("suor_mary", "root");
+		try {
+			session = HBMSessionFactory.openSession();
+			Query<Contact> query = session
+					.createQuery("SELECT c.name, c.surname, c.phone, c.email, c.note FROM Contact as c WHERE c IN "
+							+ "(SELECT c2 FROM Contact as c2 WHERE c2.name = '" + value + "' OR c2.surname = '" + value
+							+ "' OR c2.phone = '" + value + "' OR c2.email = '" + value + "' OR c2.note = '" + value
+							+ "') GROUP BY c.name, c.surname, c.phone, c.email, c.note HAVING COUNT(*) > 1");
 
-		StringBuilder query = new StringBuilder("SELECT id, name, surname, phone, email, note\n" + "FROM rubrica\n"
-				+ "WHERE (name, surname, phone, email, note) IN (\n" + "    SELECT name, surname, phone, email, note\n"
-				+ "    FROM rubrica\n" + "    where name = '" + value + "' OR surname = '" + value + "' OR phone = '"
-				+ value + "' OR email = '" + value + "' OR note = '" + value + "' \n"
-				+ "    GROUP BY name, surname, phone, email, note\n" + "    HAVING COUNT(*) > 1 \n" + "  );");
+			List<Contact> contacts = query.getResultList();
+//			for(Contact c: contacts) {
+//				duplicateContacts.add(new Contact(c.getId(), c.getName(), c.getSurname(),
+//						c.getPhone(), c.getEmail(), c.getNote()));
+//			}
 
-		ResultSet rs = statement.executeQuery(query.toString());
-		while (rs.next()) {
-			duplicateContacts.add(new Contact(rs.getInt("id"), rs.getString("name"), rs.getString("surname"),
-					rs.getString("phone"), rs.getString("email"), rs.getString("note")));
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+
 		}
+
+//		StringBuilder query = new StringBuilder("SELECT id, name, surname, phone, email, note\n" + "FROM rubrica\n"
+//				+ "WHERE (name, surname, phone, email, note) IN (\n" + "    SELECT name, surname, phone, email, note\n"
+//				+ "    FROM rubrica\n" + "    where name = '" + value + "' OR surname = '" + value + "' OR phone = '"
+//				+ value + "' OR email = '" + value + "' OR note = '" + value + "' \n"
+//				+ "    GROUP BY name, surname, phone, email, note\n" + "    HAVING COUNT(*) > 1 \n" + "  );");
+//
+//		ResultSet rs = statement.executeQuery(query.toString());
+//		while (rs.next()) {
+//			duplicateContacts.add(new Contact(rs.getInt("id"), rs.getString("name"), rs.getString("surname"),
+//					rs.getString("phone"), rs.getString("email"), rs.getString("note")));
+//		}
 
 		return duplicateContacts;
 	}
@@ -566,6 +633,7 @@ public class RubricaUtils {
 
 		List<Contact> duplicateContacts = findDuplicatesContactByValue();
 		printContacts(duplicateContacts);
+		Session session = null;
 		if (duplicateContacts.isEmpty()) {
 			return;
 		}
@@ -578,17 +646,21 @@ public class RubricaUtils {
 			for (Contact c : duplicateContacts) {
 				if (c.getId() != choice) {
 
-					Transaction transaction = session().beginTransaction();
+					try {
+						session = HBMSessionFactory.openSession();
+						Transaction transaction = session.beginTransaction();
 
-					Query<Contact> query = session()
-							.createQuery("SELECT c FROM Contact as c WHERE id NOT IN ('" + choice + "')");
-					Contact contact = query.getSingleResult();
-					session().delete(contact);
+						Query<Contact> query = session
+								.createQuery("SELECT c FROM Contact as c WHERE id NOT IN ('" + choice + "')");
+						Contact contact = query.getSingleResult();
+						session.delete(contact);
 
-					transaction.commit();
-
-					session().close();
-
+						transaction.commit();
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						session.close();
+					}
 				}
 
 			}
@@ -633,7 +705,7 @@ public class RubricaUtils {
 
 	public static boolean areYouSure() {
 		System.out.println("Sei sicuro di voler effettuare questa operazione?");
-		Scanner scanner = RubricaManager.scanner;
+		Scanner scanner = RubricaManagerHBM.scanner;
 		String choice = scanner.next();
 		return choice.equalsIgnoreCase("si");
 	}

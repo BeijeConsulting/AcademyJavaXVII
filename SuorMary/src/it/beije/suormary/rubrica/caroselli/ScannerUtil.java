@@ -2,6 +2,8 @@ package it.beije.suormary.rubrica.caroselli;
 
 import java.util.Scanner;
 
+import it.beije.suormary.rubrica.caroselli.HBM.RubricaManagerHBM;
+
 public class ScannerUtil {
 
 	private static final String defaultInvalidMessage = "Input non valido. Inserisci di nuovo";
@@ -15,7 +17,7 @@ public class ScannerUtil {
 
 	public static int readIntValue(String message, String invalidInputMessage) {
 		System.out.println(message);
-		Scanner sc = RubricaManager.scanner;
+		Scanner sc = RubricaManagerHBM.scanner;
 		while (true) {
 			try {
 				if (sc.hasNextInt()) {
@@ -37,7 +39,7 @@ public class ScannerUtil {
 
 	public static String readStringValue(String message, String invalidInputMessage) {
 		System.out.println(message);
-		Scanner sc = RubricaManager.scanner;
+		Scanner sc = RubricaManagerHBM.scanner;
 		while (true) {
 //			try {
 //				if (sc.hasNext()) {
