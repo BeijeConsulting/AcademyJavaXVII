@@ -1,6 +1,7 @@
 package it.beije.suormary.rubrica.Char;
 
 import java.util.List;
+import java.util.Scanner;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -8,10 +9,32 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import org.hibernate.Session;
+
 
 public class RubricaJPA {
 
-	public static void main(String[] args) {
+	
+		
+		public static List<Contact> loadRubricaJPA(EntityManager entityManager) {
+			Scanner scanner = new Scanner(System.in);
+            List<Contact> listContacts = null;
+
+	    	 try {
+	    		 System.out.print("Vuoi ordinare i contatti per nome e cognome? (si/no) : ");
+	    		 String ord = scanner.nextLine();
+	    		 Query query = null;
+	    		 if(ord.equals("si")) query = entityManager.createQuery("SELECT c FROM Contact as c ORDER BY c.name,c.surname");
+	    		 
+	    		 else query = entityManager.createQuery("SELECT c FROM Contact as c");
+	    		 
+	    		  listContacts = query.getResultList();
+	    		 
+	    	 } catch(Exception e) {
+	    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
+	    	 } 
+	    	 return listContacts;
+		}
 		
 //		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
 //		EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -55,13 +78,5 @@ public class RubricaJPA {
 //		transaction.commit();
 
 		//SELECT JPQL
-		Query query = entityManager.createQuery("SELECT c from Contact as c"); //SELECT * FROM rubrica
-//		Query query = entityManager.createQuery("SELECT c from Contact as c WHERE c.surname = :cognome");
-//		query.setParameter("cognome", "Rossi");
-		List<Contact> contacts = query.getResultList();
-		for (Contact c : contacts) System.out.println(c);
-		
-		entityManager.close();
-	}
-	
+
 }

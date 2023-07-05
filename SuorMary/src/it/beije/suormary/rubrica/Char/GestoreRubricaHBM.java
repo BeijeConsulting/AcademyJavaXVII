@@ -5,7 +5,7 @@ import java.util.Scanner;
 import org.hibernate.Session;
 
 import java.util.List;
-public class GestoreRubrica {
+public class GestoreRubricaHBM {
 
 	public static void main(String[] args)  {
 
