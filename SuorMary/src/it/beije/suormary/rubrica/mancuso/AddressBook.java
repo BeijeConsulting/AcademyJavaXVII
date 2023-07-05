@@ -770,13 +770,13 @@ public class AddressBook {
 		
 	}
 	
-	public List<Contact> getContactByNameHBM(String name){
+	public List<Contact> getContactBy(String key, String value){
 		Session session = null;
 		List<Contact> conts = new ArrayList<Contact>();
 		try {
 			
 			session = getSession();			
-			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.firstName LIKE :name"); //SELECT * FROM rubrica
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE :key LIKE :value");
 			conts = query.getResultList();
 			
 		}catch(Exception e) {
@@ -786,4 +786,55 @@ public class AddressBook {
 		}
 		return conts;
 	}
+	
+	/*public List<Contact> getContactByNameHBM(String name){
+		Session session = null;
+		List<Contact> conts = new ArrayList<Contact>();
+		try {
+			
+			session = getSession();			
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.firstName LIKE :name");
+			conts = query.getResultList();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return conts;
+	}
+	
+	public List<Contact> getContactBySurnameHBM(String surname){
+		Session session = null;
+		List<Contact> conts = new ArrayList<Contact>();
+		try {
+			
+			session = getSession();			
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.lastName LIKE :surname");
+			conts = query.getResultList();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return conts;
+	}
+	
+	public List<Contact> getContactByEmailHBM(String email){
+		Session session = null;
+		List<Contact> conts = new ArrayList<Contact>();
+		try {
+			
+			session = getSession();			
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.email LIKE :email");
+			conts = query.getResultList();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return conts;
+	}*/
 }
