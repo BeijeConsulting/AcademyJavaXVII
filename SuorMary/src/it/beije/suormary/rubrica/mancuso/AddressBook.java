@@ -55,16 +55,7 @@ public class AddressBook {
 		return sb.toString();
 	}
 	
-	public static Session getSession() {
-		Configuration configuration = new Configuration().configure()
-				.addAnnotatedClass(Contact.class);
-		
-		SessionFactory factory = configuration.buildSessionFactory();
-		
-		Session session = factory.openSession();
-		
-		return session;
-	}
+	
 	
 	public List<Contact> loadAddressesFromCSV(String pathFile, String separator) throws IllegalArgumentException{
 		
@@ -279,7 +270,7 @@ public class AddressBook {
 		
 		try {
 			
-			session = getSession();
+			session = HBMSessionFactory.getInstance();
 			
 			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
 			contacts = query.getResultList();
@@ -485,7 +476,7 @@ public class AddressBook {
 		
 		try {
 			
-			session = getSession();
+			session = HBMSessionFactory.getInstance();
 			
 			
 			
@@ -737,7 +728,7 @@ public class AddressBook {
 
 		try {
 			
-			session = getSession();			
+			session = HBMSessionFactory.getInstance();			
 			session.save(c);
 			
 		}catch(Exception e) {
@@ -754,7 +745,7 @@ public class AddressBook {
 
 		try {
 			
-			session = getSession();
+			session = HBMSessionFactory.getInstance();
 			c.setFirstName(name);
 			c.setLastName(surname);
 			c.setEmail(email);
@@ -775,7 +766,7 @@ public class AddressBook {
 		List<Contact> conts = new ArrayList<Contact>();
 		try {
 			
-			session = getSession();			
+			session = HBMSessionFactory.getInstance();			
 			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.firstName LIKE :value");
 			query.setParameter("value", name);
 			conts = query.getResultList();
@@ -793,7 +784,7 @@ public class AddressBook {
 		List<Contact> conts = new ArrayList<Contact>();
 		try {
 			
-			session = getSession();			
+			session = HBMSessionFactory.getInstance();			
 			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.lastName LIKE :value");
 			query.setParameter("value", surname);
 			conts = query.getResultList();
@@ -811,7 +802,7 @@ public class AddressBook {
 		List<Contact> conts = new ArrayList<Contact>();
 		try {
 			
-			session = getSession();			
+			session = HBMSessionFactory.getInstance();			
 			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.email LIKE :value");
 			query.setParameter("value", email);
 			conts = query.getResultList();
