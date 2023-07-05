@@ -204,8 +204,7 @@ public class MetodiRubricaHBM {
 			cModifies.setPhoneNumber(phoneNumber);
 		}if(!email.equals("null")) {
 			cModifies.setEmail(email);
-		}
-		if(note!="null") {
+		}if(note!="null") {
 			cModifies.setNote(note);
 		}
 		//System.out.println("contact POST : " + cModifies);
