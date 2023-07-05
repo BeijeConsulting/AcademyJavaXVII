@@ -51,6 +51,7 @@ public class JPAUtils {
 		List<Object> contacts = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
 			
 			c.setFirstName(name);
 			c.setLastName(surname);
@@ -59,12 +60,41 @@ public class JPAUtils {
 			c.setNotes(notes);
 			
 			entityManager.persist(c);
+			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			entityManager.close();
 		}
 		return contacts;
+	}
+	
+	public static void addContact(Contact c) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();	
+			EntityTransaction transaction = entityManager.getTransaction();
+			entityManager.persist(c);
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
+	}
+	
+	public static void deleteContact(Contact c) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();	
+			EntityTransaction transaction = entityManager.getTransaction();
+			entityManager.remove(c);
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
 	}
 	
 }
