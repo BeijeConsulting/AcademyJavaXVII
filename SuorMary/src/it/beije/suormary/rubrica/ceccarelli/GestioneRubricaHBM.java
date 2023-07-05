@@ -21,6 +21,7 @@ public class GestioneRubricaHBM {
 		// TODO Auto-generated method stub
 		Scanner scan = new Scanner(System.in);
 		MetodiRubricaHBM mr  = new MetodiRubricaHBM();
+		MetodiRubricaJPA mrj = new MetodiRubricaJPA();
 		menu();
 		String scelta = scan.next();
 		
@@ -28,6 +29,7 @@ public class GestioneRubricaHBM {
 			case "1":
 				//System.out.println("scelta 1");
 				mr.listContacts();
+				
 				break;
 			case "2":
 				//System.out.println("scelta 2");

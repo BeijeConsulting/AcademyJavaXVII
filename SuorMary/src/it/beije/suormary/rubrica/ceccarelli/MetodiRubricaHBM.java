@@ -9,17 +9,21 @@ import it.beije.suormary.rubrica.Contact;
 public class MetodiRubricaHBM {
 	 
 	public DbWithHBM hbm;
+	public MetodiRubricaJPA jpa;
 	
 	public MetodiRubricaHBM() {
 		hbm = new DbWithHBM();
-		
+		jpa = new MetodiRubricaJPA();
 	}
 	
 	//list of contacts
 	public void listContacts() {
 		
 		List<Contact> contacts = new ArrayList<Contact>();
-		contacts = hbm.listContactHBM();
+		// CON HBM
+		//contacts = hbm.listContactHBM();
+		// CON JPA
+		contacts = jpa.listContactJPA();
 		if(contacts.isEmpty()) {
 			System.out.println("Non ci sono risultati");
 			return;
@@ -57,7 +61,7 @@ public class MetodiRubricaHBM {
 	public List<Contact> searchContacts() {
 		List<Contact> result = new ArrayList<Contact>();
 		Scanner scanSearch = new Scanner(System.in);
-		String s = selection();
+		String s = MetodiFile.selection();
 		String name;
 		String surname;
 		switch(s) {
@@ -65,13 +69,19 @@ public class MetodiRubricaHBM {
 			System.out.print("Inserisci il nome da cercare: ");
 			
 			name = scanSearch.next();
-			result = hbm.searchContactsName(name);
+			// HBM
+			//result = hbm.searchContactsName(name);
+			//JPA
+			result = jpa.searchContactNameJPA(name);
 			break;
 		case "2":
 			System.out.print("Inserisci il cognome da cercare: ");
 			
 			surname = scanSearch.next();
-			result = hbm.searchContactsSurname(surname);
+			// HBM
+			//result = hbm.searchContactsSurname(surname);
+			//JPA
+			result = jpa.searchContactSurnameJPA(surname);
 			break;
 		case "3":
 			System.out.println("Inserisci il nome e  il cognome da cercare: ");
@@ -79,7 +89,10 @@ public class MetodiRubricaHBM {
 			name = scanSearch.next();
 			System.out.print("Inserisci il cognome: ");
 			surname = scanSearch.next();
-			result = hbm.searchContactsNameSurname(name, surname);
+			//HBM
+			//result = hbm.searchContactsNameSurname(name, surname);
+			//JPA
+			result = jpa.searchContactsNameSurname(name, surname);
 			break;
 		}
 		
@@ -106,7 +119,7 @@ public class MetodiRubricaHBM {
 			case "XML":
 				System.out.println("Inserisci il path del file");
 				path=scanInsert.next();
-				list2 = hbm.loadRubricaFromXML(path);
+				list2 = MetodiFile.loadRubricaFromXML(path);
 				try {
 					for(Contact c : list2) {
 						hbm.insertContacts(c);
@@ -119,7 +132,7 @@ public class MetodiRubricaHBM {
 			case "CSV":
 				System.out.println("Inserisci il path del file");
 				path=scanInsert.next();
-				list2 = hbm.loadRubricaFromCSV(path,";");
+				list2 = MetodiFile.loadRubricaFromCSV(path,";");
 				try {
 					for(Contact c : list2) {
 						hbm.insertContacts(c);
@@ -250,17 +263,6 @@ public class MetodiRubricaHBM {
 		
 	}
 	
-	// selection type of search
-		public static String selection() {
-			System.out.println("Scegli che tipo di ricerca vuoi fare: ");
-			System.out.println("1. Per nome");
-		    System.out.println("2. Per cognome");
-		    System.out.println("3. Per nome e cognome");
-		    Scanner scanSelect = new Scanner(System.in);
-		    String r = scanSelect.next();
-		    return r;
-		    
-		}
 		
 		
 		//save into one type of file
@@ -276,14 +278,14 @@ public class MetodiRubricaHBM {
 					if(s.equalsIgnoreCase("csv")) {
 						try {
 							rispostaValida = true;
-							h.writeRubricaFromDbToCSV(c);	
+							MetodiFile.writeRubricaFromDbToCSV(c);	
 						}catch(Exception e) {
 							System.out.println("errore");
 						}
 					}else if(s.equalsIgnoreCase("xml")){
 						try {
 							rispostaValida = true;
-							h.writeRubricaFromDbToXML(c);
+							MetodiFile.writeRubricaFromDbToXML(c);
 						
 						}catch(Exception e) {
 							System.out.println("errore");
