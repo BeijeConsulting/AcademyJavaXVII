@@ -130,12 +130,14 @@ public class GestoreRubrica {
 	
 	public void  mostraContatti(String ordine) {
 		RubricaUtils ru = new RubricaUtils();
-		List<Contact> contatti=ru.loadRubricaFromDBOrdinata(ordine);
+		//List<Contatto> contatti=ru.loadRubricaFromDBOrdinata(ordine);
+		
+		List<Contatto> contatti=RubricaUtilsJPA.loadRubricaFromDBOrdinata(ordine);
 		
 		//MOSTRO QUELLI CHE HO NEL DB
 		 
 		
-		for(Contact c : contatti) {
+		for(Contatto c : contatti) {
 			System.out.println(c.toString());
 		}
 		
@@ -173,19 +175,20 @@ public class GestoreRubrica {
 		//System.out.println(nome);
 		
 		//salva tutte le info relative al contatto
-		List<Contact> contatti=info(nome, cognome);
+		List<Contatto> contatti=this.info(nome, cognome);
 		
-		for(Contact c : contatti) {
+		for(Contatto c : contatti) {
 			System.out.println(c.toString());
 		}
 	}
 	
 
 	
-	public List<Contact> info(String name, String surname) {
+	public  List<Contatto> info(String name, String surname) {
 		
-		RubricaUtils ru = new RubricaUtils();
-		List<Contact> contatti=ru.loadRubricaFromDBCerca(name, surname);
+		//RubricaUtils ru = new RubricaUtils();
+		//List<Contatto> contatti=ru.loadRubricaFromDBCerca(name, surname);
+		List<Contatto> contatti = RubricaUtilsJPA.loadRubricaFromDBCerca(name, surname);
 		
 		return contatti;
 		
@@ -193,9 +196,10 @@ public class GestoreRubrica {
 	
 	public Map<Integer, String> searchMap(){
 		ts = new Scanner(System.in);
-		RubricaUtils ru = new RubricaUtils();
+		//RubricaUtils ru = new RubricaUtils();
+		//Map<Integer, String> map = ru.searchID();
 		
-		Map<Integer, String> map = ru.searchID();
+		Map<Integer, String> map = RubricaUtilsJPA.searchID();
 		
 		Set<Integer> id = map.keySet();
 		
@@ -215,9 +219,10 @@ public class GestoreRubrica {
 	
 	public String search(){
 		ts = new Scanner(System.in);
-		RubricaUtils ru = new RubricaUtils();
+		//RubricaUtils ru = new RubricaUtils();
+		//Map<Integer, String> map = ru.searchID();
 		
-		Map<Integer, String> map = ru.searchID();
+		Map<Integer, String> map = RubricaUtilsJPA.searchID();
 		
 		Set<Integer> id = map.keySet();
 		
@@ -237,7 +242,7 @@ public class GestoreRubrica {
 	
 	//POTREI FAR VEDERE QUALI INSERISCO NEL CASO
 	public void insertFromFile() {
-		List<Contact> c=null;
+		List<Contatto> c=null;
 		RubricaUtils ru=new RubricaUtils();
 		System.out.println("scrivi csv o xml");
 		String risposta=ts.next();
@@ -255,7 +260,7 @@ public class GestoreRubrica {
 	
 	//VOLENDO POSSO CHIEDERE SE VUOLE INSERIRE ULTERIORI CONTATTI, HO GIà UNA LIST PRONTA DA RIEMPIRE
 	public void inserisciContatto() {
-		List<Contact> c=null;
+		List<Contatto> c=null;
 		RubricaUtils ru=new RubricaUtils();
 		//ts = new Scanner(System.in);
 		System.out.println("vuoi sincronizzare i contatti da file? Digita si, qualsiasi altra combinazione di caratteri"
@@ -292,18 +297,19 @@ public class GestoreRubrica {
 			}
 			
 			//creo il contatto
-			Contact c1 = new Contact();
+			Contatto c1 = new Contatto();
 			c1.setName(name);
 			c1.setSurname(surname);
 			c1.setPhoneNumber(phoneNumber);
 			c1.setEmail(email);
 			c1.setNote(note);
 			
-			List<Contact> contatti = new ArrayList<>();
+			List<Contatto> contatti = new ArrayList<>();
 			contatti.add(c1);
 			
 			
-			ru.writeRubricaDBInsert(contatti);
+			//ru.writeRubricaDBInsert(contatti);
+			RubricaUtilsJPA.writeRubricaDBInsert(contatti);
 			
 		}
 		
@@ -332,8 +338,9 @@ public class GestoreRubrica {
 			
 		System.out.println("inserisci il nuovo valore");
 		String valore = ts.next();
-		RubricaUtils ru = new RubricaUtils();
-		Contact c = ru.writeFromDBSet(campo, valore, id);
+		//RubricaUtils ru = new RubricaUtils();
+		//Contatto c = ru.writeFromDBSet(campo, valore, id);
+		Contatto c = RubricaUtilsJPA.writeFromDBSet(campo, valore, id);
 		
 		if(c!=null) {
 			System.out.println("ecco le modifiche effettuate");
@@ -356,17 +363,19 @@ public class GestoreRubrica {
 		
 		//per ora non considero l'opzione per cui l'utente non selezioni uno tra gli id mostrati
 		Integer id = ts.nextInt();
-		RubricaUtils ru = new RubricaUtils();
-		ru.writeFromDBDelete(id);
+		//RubricaUtils ru = new RubricaUtils();
+		//ru.writeFromDBDelete(id);
+		RubricaUtilsJPA.writeFromDBDelete(id);
 		
 	}
 	
 	//decidere condizione groupby
 	public void cercaDuplicati() {
-		RubricaUtils ru=new RubricaUtils();
-		List<Contact>contatti=ru.groupBy();
+		//RubricaUtils ru=new RubricaUtils();
+		//List<Contatto>contatti=ru.groupBy();
+		List<Contatto>contatti=RubricaUtilsJPA.groupBy();
 		
-		for(Contact c : contatti) {
+		for(Contatto c : contatti) {
 			if(c!=null)
 			System.out.println(c.toString());
 		}
@@ -380,7 +389,7 @@ public class GestoreRubrica {
 		String nome=ts.next();
 		String cognome=ts.next();
 		String telefono=ts.next();
-		Contact c=ru.merge(nome, cognome, telefono);
+		Contatto c=ru.merge(nome, cognome, telefono);
 	}
 	
 }

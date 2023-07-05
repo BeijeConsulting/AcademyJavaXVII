@@ -19,9 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -41,6 +39,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+//import it.beije.suormary.rubrica.HBMsessionFactory;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -97,14 +97,15 @@ public class RubricaUtils {
 			}
 		}*/
 		String ordinata="n";
-		List<Contact> co = ru.loadRubricaFromDBOrdinata(ordinata);
+		List<Contatto> co = ru.loadRubricaFromDBOrdinata(ordinata);
 		//ru.writeRubricaDBInsert(c);
 		
-		for(Contact c : co) {
+		for(Contatto c : co) {
 			if(c!=null) {
 				System.out.println(c.toString());
 			}
 		}
+		
 		
 		//ru.writeFromDBDelete();
 		//sostituito da un toString() nel bin
@@ -112,10 +113,10 @@ public class RubricaUtils {
 
 	}
 	
-	public List<Contact> loadRubricaFromCSV(String pathFile, String separator) {
+	public List<Contatto> loadRubricaFromCSV(String pathFile, String separator) {
 		FileReader fr = null;
 		BufferedReader br = null;
-		List<Contact> contatti=null;
+		List<Contatto> contatti=null;
 		
 		try {
 			File file = new File(pathFile);
@@ -124,8 +125,8 @@ public class RubricaUtils {
 			fr = new FileReader(file);
 			
 			br = new BufferedReader(fr);
-			contatti = new ArrayList<Contact>();
-			Contact c = null;
+			contatti = new ArrayList<Contatto>();
+			Contatto c = null;
 			String riga = null;
 			
 			String [] campi =null;
@@ -140,7 +141,7 @@ public class RubricaUtils {
 
 				if(campi.length==5) {
 					
-					c=new Contact();
+					c=new Contatto();
 					
 					sb.setLength(0);
 					sb.append(campi[0].trim());
@@ -190,11 +191,11 @@ public class RubricaUtils {
 	}
 
 	//LETTURA DINAMICA DA CSV
-	public List<Contact> loadRubricaDynamicFromCSV(String pathFile, String separator){
+	public List<Contatto> loadRubricaDynamicFromCSV(String pathFile, String separator){
 				
 				FileReader fr=null;
 				BufferedReader br = null;
-				List<Contact> contatti=null;
+				List<Contatto> contatti=null;
 				
 				try {
 					File file = new File(pathFile);
@@ -204,9 +205,9 @@ public class RubricaUtils {
 					
 					br = new BufferedReader(fr);
 					
-					contatti = new ArrayList<Contact>();
+					contatti = new ArrayList<Contatto>();
 					Map<String, Integer> map = new HashMap<>();
-					Contact c = null;
+					Contatto c = null;
 					
 					//costrutti per le righe dei valori
 					String line = null;
@@ -236,7 +237,7 @@ public class RubricaUtils {
 		                //CONTROLLO PER VERIFICARE CHE LA LUNGHEZZA DEI DUE ARRAY SIA
 			        	//LA STESSA, ALTRIMENTI GENERO UNA LINEA NON VALIDA
 		                if(headers.length==fields.length) {
-		                	c = new Contact();
+		                	c = new Contatto();
 			                
 			                //controllo se nella mappa è presente la chiave (ovvero il campo cognome in questo caso)
 			                if(map.containsKey(COGNOME_FIELD)) {
@@ -306,8 +307,8 @@ public class RubricaUtils {
 				return contatti;
 			}
 
-	public List<Contact> loadRubricaFromXML(String pathFile) {
-		List<Contact> contacts =null;
+	public List<Contatto> loadRubricaFromXML(String pathFile) {
+		List<Contatto> contacts =null;
 		try {
 			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -317,15 +318,15 @@ public class RubricaUtils {
 			
 			List<Element> elements = getChildElements(docEl);
 			
-			contacts = new ArrayList<Contact>();
-			Contact c = null;
+			contacts = new ArrayList<Contatto>();
+			Contatto c = null;
 		
 			List<Element> els = null;
 			
 			for (Element el : elements) {
 				
 				els = getChildElements(el);
-				c = new Contact();
+				c = new Contatto();
 				
 				for (Element e : els) {
 					
@@ -384,24 +385,25 @@ public class RubricaUtils {
 	}
 	
 	//CONTIENE STATEMENT
-	public List<Contact> loadRubricaFromDB(){
+	public List<Contatto> loadRubricaFromDB(){
 		
-		Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
-					.addAnnotatedClass(Contact.class);
+		//Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
+					//.addAnnotatedClass(Contact.class);
 			
-			SessionFactory factory = configuration.buildSessionFactory();
+		//	SessionFactory factory = configuration.buildSessionFactory();
 			
 			Session session = null;
-			List<Contact> contacts=null;
+			List<Contatto> contacts=null;
 			
 			try {
-				session = factory.openSession();
+				session = HBMsessionFactory.openSession();
+				
 			
-				Transaction transaction = session.beginTransaction();
+				//Transaction transaction = session.beginTransaction();
 				
-				Contact contact = null;
+				Contatto contact = null;
 				
-				Query<Contact> query=null;
+				Query<Contatto> query=null;
 				
 				query = session.createQuery("SELECT c FROM Contact as c");
 				
@@ -418,29 +420,30 @@ public class RubricaUtils {
 		return contacts;
 	}
 	
-	public List<Contact> loadRubricaFromDBOrdinata(String ordine){
-		Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
-				.addAnnotatedClass(Contact.class);
+	public List<Contatto> loadRubricaFromDBOrdinata(String ordine){
+		//Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
+				//.addAnnotatedClass(Contact.class);
 		
-		SessionFactory factory = configuration.buildSessionFactory();
+		//SessionFactory factory = configuration.buildSessionFactory();
 		
 		Session session = null;
-		List<Contact> contacts=null;
+		List<Contatto> contacts=null;
 		
 		try {
-			session = factory.openSession();
+			//session = factory.openSession();
+			session = HBMsessionFactory.openSession();
 		
 			Transaction transaction = session.beginTransaction();
 			
-			Contact contact = null;
+			Contatto contact = null;
 			
-			Query<Contact> query=null;
+			Query<Contatto> query=null;
 			if(ordine.equalsIgnoreCase("n")) {
-				query = session.createQuery("SELECT c FROM Contact as c ORDER BY c.name");
+				query = session.createQuery("SELECT c FROM Contatto as c ORDER BY c.name");
 			} else if(ordine.equalsIgnoreCase("c")) {
-				query = session.createQuery("SELECT c FROM Contact as c ORDER BY c.surname");
+				query = session.createQuery("SELECT c FROM Contatto as c ORDER BY c.surname");
 			} else {
-				query = session.createQuery("SELECT c FROM Contact as c");
+				query = session.createQuery("SELECT c FROM Contatto as c");
 			}
 			
 			contacts = query.getResultList();
@@ -454,22 +457,23 @@ public class RubricaUtils {
 		return contacts;
 	}
 	
-	public List<Contact> loadRubricaFromDBCerca(String searchName, String searchSurname){
-		Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
-				.addAnnotatedClass(Contact.class);
+	public List<Contatto> loadRubricaFromDBCerca(String searchName, String searchSurname){
+		//Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
+				//.addAnnotatedClass(Contatto.class);
 		
-		SessionFactory factory = configuration.buildSessionFactory();
+		//SessionFactory factory = configuration.buildSessionFactory();
 		
 		Session session = null;
 		//List<Contact> contacts=null;
-		List<Contact> results=null;
+		List<Contatto> results=null;
 		
 		try {
-			session = factory.openSession();
+			//session = factory.openSession();
+			session = HBMsessionFactory.openSession();
 		
 			//Transaction transaction = session.beginTransaction();
 			
-			String hql="SELECT DISTINCT c FROM Contact c WHERE c.name = ?1 AND c.surname = ?2";
+			String hql="SELECT DISTINCT c FROM Contatto c WHERE c.name = ?1 AND c.surname = ?2";
 			Query query=session.createQuery(hql);
 			query.setParameter(1, searchName);
 			query.setParameter(2, searchSurname);
@@ -506,30 +510,31 @@ public class RubricaUtils {
 	}
 	
 	public Map<Integer, String> searchID(){
-		Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
-				.addAnnotatedClass(Contact.class);
+		//Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
+				//.addAnnotatedClass(Contatto.class);
 		
-		SessionFactory factory = configuration.buildSessionFactory();
+		//SessionFactory factory = configuration.buildSessionFactory();
 		
 		Session session = null;
 		
 		Map<Integer, String> map = null;
 		
 		try {
-			session = factory.openSession();
+			//session = factory.openSession();
+			session = HBMsessionFactory.openSession();
 		
 			//Transaction transaction = session.beginTransaction();
 			
 			//String hql="SELECT new Contact(c.id as id, concat(c.name, ' ', c.surname) as fullName) FROM Contact c";
-			String hql = "SELECT new Contact(c.id as id, c.name as nome, c.surname as cognome) FROM Contact c";
-			Query<Contact> query = session.createQuery(hql, Contact.class);
+			String hql = "SELECT new Contatto(c.id as id, c.name as nome, c.surname as cognome) FROM Contatto c";
+			Query<Contatto> query = session.createQuery(hql, Contatto.class);
 			
-			List<Contact> results = query.getResultList();
+			List<Contatto> results = query.getResultList();
 			
 			
 			map= new HashMap<>();
 			
-			for(Contact c : results ) {
+			for(Contatto c : results ) {
 				int index = c.getId();
 				String name = c.getName();
 				String surname = c.getSurname();
@@ -556,7 +561,7 @@ public class RubricaUtils {
 	}
 	
 	//SCRITTURA CSV
- 	public void writeRubricaCSV(List<Contact> contatti, String pathFile, String separator) {
+ 	public void writeRubricaCSV(List<Contatto> contatti, String pathFile, String separator) {
 			FileWriter fw =null;
 			try {
 				//creo un nuovo oggetto della classe File che punti al path
@@ -585,7 +590,7 @@ public class RubricaUtils {
 				}
 				
 				
-				for(Contact c : contatti) {
+				for(Contatto c : contatti) {
 					if(c!=null) {
 						if(c.getSurname()!=null) {
 							fw.write(c.getSurname());
@@ -625,7 +630,7 @@ public class RubricaUtils {
 			}	
 		}
 		
-	public void writeRubricaXML(List<Contact> contatti, String pathFile) {
+	public void writeRubricaXML(List<Contatto> contatti, String pathFile) {
 			
 			try {
 				DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -655,7 +660,7 @@ public class RubricaUtils {
 				
 				Element nuovoContatto = null;
 				
-				for(Contact c : contatti) {
+				for(Contatto c : contatti) {
 					if(c!=null) { 
 						nuovoContatto = document.createElement("contatto");
 						
@@ -721,21 +726,22 @@ public class RubricaUtils {
 	}
 	
 	
-	public void writeRubricaDBInsert(List<Contact> contatti) {
-		Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
-				.addAnnotatedClass(Contact.class);
+	public void writeRubricaDBInsert(List<Contatto> contatti) {
+		//Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
+				//.addAnnotatedClass(Contatto.class);
 		
-		SessionFactory factory = configuration.buildSessionFactory();
+		//SessionFactory factory = configuration.buildSessionFactory();
 		
 		Session session = null;
 		
 		try {
-			session = factory.openSession();
+			//session = factory.openSession();
+			session = HBMsessionFactory.openSession();
 
 			Transaction transaction = session.beginTransaction();
 			
 			int numeroInseriti=0;
-			for(Contact c : contatti) {
+			for(Contatto c : contatti) {
 				if(c!=null) {
 					session.save(c);
 					numeroInseriti++;
@@ -768,20 +774,21 @@ public class RubricaUtils {
 	
 	public void writeFromDBDelete(Integer id) {
 		
-		Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
-				.addAnnotatedClass(Contact.class);
+		//Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
+				//.addAnnotatedClass(Contatto.class);
 		
-		SessionFactory factory = configuration.buildSessionFactory();
+		//SessionFactory factory = configuration.buildSessionFactory();
 		
 		Session session = null;
 		
 		try {
-			session = factory.openSession();
+			//session = factory.openSession();
+			session = HBMsessionFactory.openSession();
 
 			Transaction transaction = session.beginTransaction();
 			
 			
-			Contact c=session.get(Contact.class, id);
+			Contatto c=session.get(Contatto.class, id);
 			
 			if(c!=null) {
 				session.delete(c);
@@ -805,18 +812,19 @@ public class RubricaUtils {
 		}
 	}
 
-	public Contact writeFromDBSet(String campo, String valore, Integer id) {
-		Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
-				.addAnnotatedClass(Contact.class);
+	public Contatto writeFromDBSet(String campo, String valore, Integer id) {
+		//Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
+				//.addAnnotatedClass(Contatto.class);
 		
-		SessionFactory factory = configuration.buildSessionFactory();
+		//SessionFactory factory = configuration.buildSessionFactory();
 		
 		Session session = null;
 		
-		Contact c=null;
+		Contatto c=null;
 		
 		try {
-			session = factory.openSession();
+			//session = factory.openSession();
+			session = HBMsessionFactory.openSession();
 
 			Transaction transaction = session.beginTransaction();
 			
@@ -827,7 +835,7 @@ public class RubricaUtils {
 			
 			
 			//estraggo il contatto che ha l'id desiderato
-			c=session.get(Contact.class, id);
+			c=session.get(Contatto.class, id);
 			System.out.println("contatto da modificare: " + c);
 			if(campo.equalsIgnoreCase("nome")) {
 				c.setName(valore);
@@ -873,22 +881,24 @@ public class RubricaUtils {
 	}
 
 
-	public List<Contact> groupBy() {
-		Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
-				.addAnnotatedClass(Contact.class);
+	public List<Contatto> groupBy() {
+		//Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
+				//.addAnnotatedClass(Contatto.class);
 		
-		SessionFactory factory = configuration.buildSessionFactory();
+		//SessionFactory factory = configuration.buildSessionFactory();
 		
 		Session session = null;
 				
-		List<Contact> contacts=null;
+		List<Contatto> contacts=null;
 		
 		try {
 			 
-			session = factory.openSession();
+			//session = factory.openSession();
+			session = HBMsessionFactory.openSession();
+			
 			//NON LEGGE QUESTA SINTASSI "SELECT c FROM Contact c GROUP BY c.name, c.surname, c.phoneNumber"
-			String hql = "SELECT new Contact (c.name, c.surname, c.phoneNumber) FROM Contact c GROUP BY c.name, c.surname, c.phoneNumber";
-			Query<Contact>query=session.createQuery(hql);
+			String hql = "SELECT new Contatto (c.name, c.surname, c.phoneNumber) FROM Contatto c GROUP BY c.name, c.surname, c.phoneNumber";
+			Query<Contatto>query=session.createQuery(hql);
 			contacts=query.getResultList();
 			/*CriteriaBuilder builder = session.getCriteriaBuilder();
 	        CriteriaQuery<Contact> criteriaQuery = builder.createQuery(Contact.class);
@@ -920,8 +930,8 @@ public class RubricaUtils {
 		
 	}
 	
-	public Contact merge(String nome, String cognome, String telefono) {
-		Contact c=null;
+	public Contatto merge(String nome, String cognome, String telefono) {
+		Contatto c=null;
 		return c;
 	}
 

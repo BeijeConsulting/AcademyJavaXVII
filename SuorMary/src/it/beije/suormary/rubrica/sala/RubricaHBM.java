@@ -14,7 +14,7 @@ public class RubricaHBM {
 	public static void main(String[] args) {
 		
 		Configuration configuration = new Configuration().configure()//"/hibernate.cfg.xml")
-				.addAnnotatedClass(Contact.class);
+				.addAnnotatedClass(Contatto.class);
 		
 		SessionFactory factory = configuration.buildSessionFactory();
 		
@@ -27,7 +27,7 @@ public class RubricaHBM {
 //			transaction.begin();
 			Transaction transaction = session.beginTransaction();
 			
-			Contact contact = null;
+			Contatto contact = null;
 			
 			//INSERT
 //			contact = new Contact();
@@ -46,15 +46,15 @@ public class RubricaHBM {
 		
 
 			//SELECT HQL
-			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
+			Query<Contatto> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
 			//Query<Contact> query = session.createQuery("FROM Contact"); //fa la stessa cosa di quella sopra 
 			//Query<String> query = session.createQuery("SELECT c.name FROM Contact as c");
-			List<Contact> contacts = query.getResultList();
+			List<Contatto> contacts = query.getResultList();
 			//List<String> names = query.getResultList();
 			//for (Contact c : contacts) System.out.println(c);
 			//for (Contact c : contacts) System.out.println(c);
 			
-			for(Contact c : contacts) {
+			for(Contatto c : contacts) {
 				System.out.println(c);
 			}
 			

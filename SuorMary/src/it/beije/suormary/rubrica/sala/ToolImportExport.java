@@ -28,7 +28,7 @@ public class ToolImportExport {
 	
 	public void fromCVStoDB(RubricaUtils ru){
 		//leggo da CSV e scrivo si DB
-				List<Contact> contatti = ru.loadRubricaFromCSV(pathFile, separator);
+				List<Contatto> contatti = ru.loadRubricaFromCSV(pathFile, separator);
 				
 				if(contatti!=null && contatti.size()>0) {
 					//scrivo su DB dopo aver letto da CSV
@@ -40,7 +40,7 @@ public class ToolImportExport {
 	
 	public void fromXMLtoDB(RubricaUtils ru) {
 		//leggo da XML e scrivo su DB
-				List<Contact> c = ru.loadRubricaFromXML(pathFileXML);
+				List<Contatto> c = ru.loadRubricaFromXML(pathFileXML);
 				
 				if(c!=null && c.size()>0) {
 					//scrivo su DB dopo aver letto da CSV
@@ -51,7 +51,7 @@ public class ToolImportExport {
 	}
 	
 	public void fromDBtoCSV(RubricaUtils ru) {
-		List<Contact> cDB = ru.loadRubricaFromDB();
+		List<Contatto> cDB = ru.loadRubricaFromDB();
 				//leggo da DB e scrivo su CSV
 				if(cDB!=null && cDB.size()>0) {
 					//scrivo su DB dopo aver letto da CSV
@@ -62,7 +62,7 @@ public class ToolImportExport {
 	}
 	
 	public void fromDBtoXML(RubricaUtils ru) {
-		List<Contact> cDB = ru.loadRubricaFromDB();
+		List<Contatto> cDB = ru.loadRubricaFromDB();
 		//leggo da DB e scrivo su XML
 				if(cDB!=null && cDB.size()>0) {
 					//scrivo su DB dopo aver letto da CSV
