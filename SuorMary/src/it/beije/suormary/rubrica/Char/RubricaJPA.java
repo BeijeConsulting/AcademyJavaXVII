@@ -1,5 +1,6 @@
 package it.beije.suormary.rubrica.Char;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -9,8 +10,6 @@ import javax.persistence.Query;
 
 public class RubricaJPA {
 
-	
-		
 		public static List<Contact> loadRubricaJPA(EntityManager entityManager) {
 			Scanner scanner = new Scanner(System.in);
             List<Contact> listContacts = null;
@@ -30,6 +29,15 @@ public class RubricaJPA {
 	    	 } 
 	    	 return listContacts;
 		}
+		public static void writeRubricaJPA(List<Contact> contacts, EntityManager entityManager) {
+		   	 try {
+		   		 for(Contact c : contacts) {
+		   			entityManager.persist(c);
+		   		 }
+		   	 }catch(Exception e) {
+		   		 e.printStackTrace();
+		   	 } 
+			}
 		public static Contact findContactByNameSurname(EntityManager entityManager) throws Exception {
 		     Scanner scanner = new Scanner(System.in);
 	    	 List<Contact> listContacts = null;
@@ -104,48 +112,134 @@ public class RubricaJPA {
 	    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
 	    	 }
 		}
-		
-//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
-//		EntityManager entityManager = entityManagerFactory.createEntityManager();
-//		EntityManager entityManager = JPAmanagerFactory.createEntityManager();
-		
-//		EntityTransaction transaction = entityManager.getTransaction();
-//		transaction.begin();
+		public static void updateContact(EntityManager entityManager) {
+			 Scanner scanner = new Scanner(System.in);
 
-//		Contact contact = null;
-		
-		//SELECT di contatto specifico
-//		contact = entityManager.find(Contact.class, 21);
-//		System.out.println(contact);
-		
-		
-		//INSERT
-//		contact = new Contact();
-//		//contact.setId(21);
-//		contact.setName("Alessandro");
-//		contact.setSurname("Ceccarelli");
-//		contact.setPhoneNumber("09876543");
-//		contact.setEmail("ale@beije.it");
-//		contact.setNote("contatto inserito con JPA");
+			try {
+				 Contact c = findContactByNameSurname(entityManager);
+				EntityTransaction transaction = entityManager.getTransaction();
+				System.out.print("Inserisci il campo che vuoi modificare : ");
+				String campo = scanner.nextLine();
+				System.out.print("Inserisci il nuovo valore del campo : ");
+				String valore = scanner.nextLine();
+				Query query = entityManager.createQuery("UPDATE Contact SET " +  campo + " = :valore WHERE id = :id");
+		         query.setParameter("valore", valore);
+		         query.setParameter("id", c.getId());
+		         query.executeUpdate();
+			    transaction.commit();
+			    System.out.println("Modifica eseguita");
+			    System.out.print("Vuoi effettuare un'altra modifica? (si/no) : ");
+			    String mod = scanner.nextLine();
+			    if(mod.equals("si")) updateContact(entityManager);
+			} catch (Exception e) {
+				 System.out.println("Si è verificato un errore  : " + e.getMessage());
+			} 
+		}
+		public static void deleteContact(EntityManager entityManager) {
+			Scanner scanner = new Scanner(System.in);
+			try {
+				 Contact c = findContactByNameSurname(entityManager);
+				EntityTransaction transaction = entityManager.getTransaction();
+				System.out.print("Sei sicuro di voler eliminare il contatto? (si/no) : ");
+				String del = scanner.nextLine();
+				if(del.equals("si")) {
+					entityManager.remove(c);
+					transaction.commit();
+					System.out.println("Contatto eliminato");
+				}
+				else System.out.println("Contatto non eliminato");
+			} catch (Exception e) {
+				 System.out.println("Si è verificato un errore  : " + e.getMessage());
+			} 
+		}
+		public static List<Contact> findDuplicatedContacts(EntityManager entityManager) {
+			List<Contact> duplicatedContacts = new ArrayList<>();
+			List<Contact> contacts = loadRubricaJPA(entityManager);
 
-		//UPDATE
-//		System.out.println("contact PRE UPDATE: " + contact);
-//		//contact.setId(30);
-//		contact.setName("Alessandro");
-//		contact.setSurname("Sala");
-//		contact.setPhoneNumber("09876543");
-//		contact.setEmail("Alessandro@beije.it");
-//		contact.setNote("contatto modificato con JPA");
-//		
-//		System.out.println("contact PRE : " + contact);
-//		entityManager.persist(contact);
-//		System.out.println("contact POST : " + contact);
-		
-		//DELETE
-//		entityManager.remove(contact);
-//		
-//		transaction.commit();
+			 for (int i = 0; i < contacts.size(); i++) {
+			        for (int j = i + 1; j < contacts.size(); j++) {
+			            if (contacts.get(i).equals(contacts.get(j))) {
+			                duplicatedContacts.add(contacts.get(i));
+			                break; 
+			            }
+			        }
+			    }
+			 if(duplicatedContacts.size() == 0) {
+				 System.out.println("Non sono stati trovati contatti duplicati"); 
+			 }
+			 else {
+				 System.out.println("Contatti duplicati trovati : ");
+					for(Contact c : duplicatedContacts) {
+						System.out.println(c);
+					} 
+			 }
+			return duplicatedContacts;
+			
+		}
+		public static void mergeDuplicatedContacts(EntityManager entityManager) {
+			List<Contact> duplicatedContacts = findDuplicatedContacts(entityManager);
 
-		//SELECT JPQL
+			try {
+				if(duplicatedContacts.size() > 0) {
+				EntityTransaction transaction = entityManager.getTransaction();
+				//elimino tutti i contatti duplicati
+			    for (Contact c : duplicatedContacts) {
+			    	Query query = entityManager.createQuery("DELETE FROM Contact WHERE name = :name AND surname = :surname AND email = :email AND note = :note AND phone = :phone");
+			    	query.setParameter("name", c.getName());
+			    	query.setParameter("surname", c.getSurname());
+			    	query.setParameter("email", c.getEmail());
+			    	query.setParameter("phone", c.getPhoneNumber());
+			    	query.setParameter("note", c.getNote());
+			    	query.executeUpdate();
+			    	transaction.commit();
+			    	
+			   	
+			    }
+	            //aggiungo 1 contatto
+			    for (Contact c : duplicatedContacts) {
+			    	entityManager.persist(c);
+			    }
+			    System.out.println("I contatti duplicati sono stati uniti");
+			}
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
+			} 
+		}
+		 public static void exportDbToCSV (EntityManager entityManager) {
+		  	   Scanner scanner = new Scanner(System.in);
+		  	   System.out.print("Indica il path del file CSV : ");
+		  	   String pathCSV = scanner.nextLine();
+		  	   System.out.print("Indica il tipo di separatore per i campi : ");
+		  	   String separator = scanner.nextLine();
+		  	  List<Contact> contacts = loadRubricaJPA(entityManager);
+		  	  EsRubrica.writeRubricaCSV(contacts, pathCSV, separator);
+		     }
+		     public static void exportDbToXML (EntityManager entityManager) {
+		  	   Scanner scanner = new Scanner(System.in);
+		  	   System.out.print("Indica il path del file XML : ");
+		  	   String pathXML = scanner.nextLine();
+		  	  List<Contact> contacts = loadRubricaJPA(entityManager);
+		  	  EsRubrica.writeRubricaXML(contacts,pathXML);
+		     }
+		     public static void exportCSVToDb(EntityManager entityManager) {
+		  	   Scanner scanner = new Scanner(System.in);
+		  	   System.out.print("Indica il path del file CSV : ");
+		  	   String pathFile = scanner.nextLine();
+		  	   System.out.print("Indica il tipo di separatore per i campi : ");
+		  	   String separator = scanner.nextLine();
+		  	  List<Contact> contacts = EsRubrica.loadRubricaFromCSV(pathFile, separator);
+		  	  writeRubricaJPA(contacts,entityManager );
+		     }
+		     public static void exportXMLToDb(EntityManager entityManager) {
+		  	   Scanner scanner = new Scanner(System.in);
+		  	   System.out.print("Indica il path del file CSV : ");
+		  	   String pathFile = scanner.nextLine();
+		   	  List<Contact> contacts = EsRubrica.loadRubricaFromXML(pathFile);
+		   	  writeRubricaJPA(contacts,entityManager);
+		      }
+		
+
 
 }

@@ -6,13 +6,12 @@ import javax.persistence.Persistence;
 
 public class JPAmanagerFactory {
      private JPAmanagerFactory() {}
-     private static EntityManager entityManager;
+     private static EntityManagerFactory entityManagerFactory;
      public static EntityManager createEntityManager() {
-    	 if(entityManager == null) {
-    		 EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
-    		 entityManager = entityManagerFactory.createEntityManager();
+    	 if(entityManagerFactory == null) {
+    		  entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
     	 }
-    	 return entityManager;
+    	 return entityManagerFactory.createEntityManager();
      }
 }
      
