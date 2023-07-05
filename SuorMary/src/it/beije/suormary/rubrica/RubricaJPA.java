@@ -1,6 +1,8 @@
 package it.beije.suormary.rubrica;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -12,6 +14,7 @@ import javax.persistence.Query;
 public class RubricaJPA {
 
 	public static void main(String[] args) {
+
 		
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
 		EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -49,7 +52,7 @@ public class RubricaJPA {
 //		System.out.println("contact POST : " + contact);
 		
 		//DELETE
-		entityManager.remove(contact);
+//		entityManager.remove(contact);
 		
 		transaction.commit();
 

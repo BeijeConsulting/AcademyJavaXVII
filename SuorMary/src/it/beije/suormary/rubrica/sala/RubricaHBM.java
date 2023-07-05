@@ -13,7 +13,7 @@ public class RubricaHBM {
 
 	public static void main(String[] args) {
 		
-		Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
+		Configuration configuration = new Configuration().configure()//"/hibernate.cfg.xml")
 				.addAnnotatedClass(Contact.class);
 		
 		SessionFactory factory = configuration.buildSessionFactory();
