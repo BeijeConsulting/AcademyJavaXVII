@@ -27,7 +27,7 @@ public class RubricaJPA {
 		
 		
 		//INSERT
-//		contact = new Contact();
+		contact = new Contact();
 //		//contact.setId(21);
 //		contact.setName("Alessandro");
 //		contact.setSurname("Ceccarelli");
@@ -36,20 +36,20 @@ public class RubricaJPA {
 //		contact.setNote("contatto inserito con JPA");
 
 		//UPDATE
-//		System.out.println("contact PRE UPDATE: " + contact);
-//		//contact.setId(30);
-//		contact.setName("Alessandro");
-//		contact.setSurname("Sala");
-//		contact.setPhoneNumber("09876543");
-//		contact.setEmail("Alessandro@beije.it");
-//		contact.setNote("contatto modificato con JPA");
+		System.out.println("contact PRE UPDATE: " + contact);
+		//contact.setId(30);
+		contact.setName("Alessandro");
+		contact.setSurname("Sala");
+		contact.setPhoneNumber("09876543");
+		contact.setEmail("Alessandro@beije.it");
+		contact.setNote("contatto modificato con JPA");
 //		
 //		System.out.println("contact PRE : " + contact);
-//		entityManager.persist(contact);
+		entityManager.persist(contact);
 //		System.out.println("contact POST : " + contact);
 		
 		//DELETE
-		entityManager.remove(contact);
+//		entityManager.remove(contact);
 		
 		transaction.commit();
 

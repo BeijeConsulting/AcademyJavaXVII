@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -30,19 +31,18 @@ public class ContactsManagerHBM {
  	public void end() {
 		in.close();
 	}
-	
+	private SessionFactory factory;
+ 	
 	public ContactsManagerHBM() {
 		this.in = new Scanner(System.in);
-	}
-	
-	public Session getSession() {
 		Configuration configuration = new Configuration().configure()
 				.addAnnotatedClass(Contact.class);
 		
-		SessionFactory factory;
-		factory = configuration.buildSessionFactory();
+		this.factory = configuration.buildSessionFactory();
+	}
+	
+	public Session openSession() {
 		Session session = factory.openSession();
-		
 		return session;
 	}
 	
@@ -76,13 +76,13 @@ public class ContactsManagerHBM {
  	
 	public void showContacts(String orderBy) {
 		
-		Session session = getSession();
+		Session session = openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		if (!orderBy.equals("name") && !orderBy.equals("surname")) orderBy = "id";
-		Query<iannetta.Contact> query = session.createQuery("SELECT c FROM Contact as c ORDER BY " + orderBy); //SELECT * FROM rubrica
-		List<iannetta.Contact> contacts = query.getResultList();
-		for (iannetta.Contact c : contacts) System.out.println(c);
+		Query<Contact> query = session.createQuery("SELECT c FROM Contact as c ORDER BY " + orderBy); //SELECT * FROM rubrica
+		List<Contact> contacts = query.getResultList();
+		for (Contact c : contacts) System.out.println(c);
 		
 		transaction.commit();
 		session.close();
@@ -101,7 +101,7 @@ public class ContactsManagerHBM {
 
 	
 	public void searchContact() throws SQLException, ClassNotFoundException{
-		Session session = getSession();
+		Session session = openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		System.out.println("Enter data (or part of it) to look for:");
@@ -121,7 +121,7 @@ public class ContactsManagerHBM {
 	}
 
 	public void insertContact() {
-		Session session = getSession();
+		Session session = openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		Contact contact = new Contact();
@@ -155,16 +155,16 @@ public class ContactsManagerHBM {
 	}
 
 	public void editContact(int id) {
-		Session session = getSession();
+		Session session = openSession();
 		Transaction transaction = session.beginTransaction();
 		
-		Query<iannetta.Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE id = " + id);
-		iannetta.Contact contact = query.getSingleResult();
+		Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE id = " + id);
+		Contact contact = query.getSingleResult();
 		
 		String[] updateContact  = readData(setDataToRead());
 		
 		//UPDATE
-		contact.setId(id);
+		contact.setID(id);
 		if (updateContact[1] != null) contact.setName(updateContact[1]);
 		if (updateContact[2] != null) contact.setSurname(updateContact[2]);
 		if (updateContact[3] != null) contact.setPhoneNumber(updateContact[3]);
@@ -177,11 +177,11 @@ public class ContactsManagerHBM {
 	}
 
 	public void deleteContact(int id) {
-		Session session = getSession();
+		Session session = openSession();
 		Transaction transaction = session.beginTransaction();
 		
-		Query<iannetta.Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE id = " + id);
-		iannetta.Contact contact = query.getSingleResult();
+		Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE id = " + id);
+		Contact contact = query.getSingleResult();
 		session.delete(contact);
 		
 		transaction.commit();
@@ -191,7 +191,7 @@ public class ContactsManagerHBM {
 
 	public List<List<Contact>> findDuplicates() {
 		
-		Session session = getSession();
+		Session session = openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
@@ -199,21 +199,21 @@ public class ContactsManagerHBM {
 		
 		List<List<Contact>> listOfDuplicates = new ArrayList<>();
 		String number;
-		List<iannetta.Contact> duplicates;
+		List<Contact> duplicates;
 		while (allContacts.size() > 0) {
 			number = allContacts.get(0).getPhoneNumber();
 			query = session.createQuery("SELECT c FROM Contact as c WHERE phoneNumber = '" + number + "'");
 			duplicates = query.getResultList();
 			if (duplicates.size() > 1) {
 				listOfDuplicates.add(duplicates);
-				for (iannetta.Contact con : duplicates) {
+				for (Contact con : duplicates) {
 					allContacts.remove(con);
 				}
 			}
 			else allContacts.remove(0);
 		}
 		
-		for (List<iannetta.Contact> duplicatesContacts : listOfDuplicates) {
+		for (List<Contact> duplicatesContacts : listOfDuplicates) {
 			System.out.println(duplicatesContacts);
 		}
 		
@@ -223,13 +223,13 @@ public class ContactsManagerHBM {
 	}
 
 	public void mergeDuplicates() {
-		Session session = getSession();
+		Session session = openSession();
 		Transaction transaction;
 		
-		List<List<iannetta.Contact>> listOfDuplicates = findDuplicates();
+		List<List<Contact>> listOfDuplicates = findDuplicates();
 		
-		iannetta.Contact keepThisContact;
-		iannetta.Contact checkThisContact;
+		Contact keepThisContact;
+		Contact checkThisContact;
 		int id;
 		String name;
 		String surname;
@@ -244,11 +244,11 @@ public class ContactsManagerHBM {
 //		boolean[] enterData = new boolean[contactFields.length];
 //		Arrays.fill(enterData, false);
 		
-		for (List<iannetta.Contact> duplicates: listOfDuplicates) {
+		for (List<Contact> duplicates: listOfDuplicates) {
 			transaction = session.beginTransaction();
 			keepThisContact = duplicates.get(0);
 			
-			id = keepThisContact.getId();
+			id = keepThisContact.getID();
 			
 			name = keepThisContact.getName();
 			if (name == null) {
@@ -325,7 +325,7 @@ public class ContactsManagerHBM {
 					if (answer.equals("1")) keepThisContact.setNote(checkThisContact.getNote());
 				}
 				
-				deleteContact(checkThisContact.getId());
+				deleteContact(checkThisContact.getID());
 			}
 			session.save(keepThisContact);
 			deleteContact(id);
@@ -351,15 +351,15 @@ public class ContactsManagerHBM {
 	public void importFrom() throws ParserConfigurationException, SAXException, IOException {
 		System.out.println("Enter path of file containing contacts to add (.xml or .csv) : ");
 		String path = in.nextLine();
-		List<it.beije.suormary.rubrica.iannetta.Contact> listOfContacts = null;
-		Session session = getSession();
+		List<Contact> listOfContacts = null;
+		Session session = openSession();
 		Transaction transaction = session.beginTransaction();
-		ContactsList contactList = new ContactsList();
+		ContactsList contacstList = new ContactsList();
 		
 		if (checkFile(path)) {
 			if (path.endsWith(".xml")) {
-				listOfContacts = ContactsList.loadContactListFromXML(path);
-				for (it.beije.suormary.rubrica.iannetta.Contact con : listOfContacts) {
+				listOfContacts = contacstList.loadContactListFromXML(path);
+				for (Contact con : listOfContacts) {
 					transaction = session.beginTransaction();
 					session.save(con);
 					transaction.commit();
@@ -368,8 +368,8 @@ public class ContactsManagerHBM {
 			else if (path.endsWith(".csv")) {
 				System.out.println("Enter separator: ");
 				String separator = in.nextLine();
-				listOfContacts = ContactsList.loadContactListFromCSV(path, separator);
-				for (it.beije.suormary.rubrica.iannetta.Contact con : listOfContacts) {
+				listOfContacts = contacstList.loadContactListFromCSV(path, separator);
+				for (Contact con : listOfContacts) {
 					transaction = session.beginTransaction();
 					session.save(con);
 					transaction.commit();
@@ -380,25 +380,28 @@ public class ContactsManagerHBM {
 		System.out.println("Contacts imported");
 	}
 	
-	public void exportTo() {
+	public void exportTo() throws IOException, ParserConfigurationException, SAXException, TransformerException {
 		System.out.println("Enter path of file where export contacts to (.xml or .csv) : ");
 		String path = in.nextLine();
-		List<iannetta.Contact> listOfContacts = null;
-		Session session = getSession();
+		List<Contact> listOfContacts = null;
+		Session session = openSession();
 		Transaction transaction = session.beginTransaction();
-		ContactsList contactList = new ContactsList();
+		ContactsList contacstList = new ContactsList();
 		
 		if (path.endsWith(".xml")) {
-			Query<iannetta.Contact> query = session.createQuery("SELECT c FROM Contact as c");
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c");
 			listOfContacts = query.getResultList();
-			writeContactListsXLM(listOfContacts, path);
-					
-				for (iannetta.Contact c : listOfContacts) System.out.println(c);
+			contacstList.writeContactListXLM(listOfContacts, path);
 		}
 		else if (path.endsWith(".cvs")) {
-			
+			System.out.println("Enter separator: ");
+			String separator = in.nextLine();
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c");
+			listOfContacts = query.getResultList();
+			contacstList.writeContactListCSV(listOfContacts, path, separator);
 		}
 		else System.out.println("Invalid format");
-		
+		session.close();
 	}
+	
 }

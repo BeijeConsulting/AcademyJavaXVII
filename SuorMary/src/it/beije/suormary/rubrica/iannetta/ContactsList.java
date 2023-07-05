@@ -32,7 +32,7 @@ import org.xml.sax.SAXException;
 
 public class ContactsList {
 
-	public static List<Contact> loadContactListFromCSV (String pathFile, String separator) throws IOException{
+	public List<Contact> loadContactListFromCSV (String pathFile, String separator) throws IOException{
 		FileReader fileReader = new FileReader(pathFile);
 		BufferedReader bufferedReader = new BufferedReader(fileReader);
 		
@@ -74,7 +74,7 @@ public class ContactsList {
 		return listOfContacts;
 	}
 	
-	public static List<Contact> loadContactListFromXML(String pathFile) throws ParserConfigurationException, SAXException, IOException{
+	public List<Contact> loadContactListFromXML(String pathFile) throws ParserConfigurationException, SAXException, IOException{
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(pathFile);
@@ -110,7 +110,7 @@ public class ContactsList {
 		return listOfContacts;
 	}
 	
-	public static List<Element> getChildElements(Element el) {
+	public List<Element> getChildElements(Element el) {
 		NodeList nodeList = el.getChildNodes();
 		List<Element> elements = new ArrayList<Element>();
 		for (int i = 0; i < nodeList.getLength(); i++) {
@@ -120,7 +120,7 @@ public class ContactsList {
 		return elements;
 	}
 	
-	public static List<Contact> loadContactListFromDB (String table, String... orderBy) throws ClassNotFoundException, SQLException{
+	public List<Contact> loadContactListFromDB (String table, String... orderBy) throws ClassNotFoundException, SQLException{
 		Class.forName("com.mysql.cj.jdbc.Driver");	
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");Statement statement = null;
 		statement = connection.createStatement();
@@ -145,7 +145,7 @@ public class ContactsList {
 		return listOfContacts;
 	}
 	
-	public static void writeContactListsXLM(List<Contact> listOfContacts, String pathFile) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+	public void writeContactListXLM(List<Contact> listOfContacts, String pathFile) throws ParserConfigurationException, SAXException, IOException, TransformerException {
 		
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -210,7 +210,7 @@ public class ContactsList {
 		System.out.println("Contacts added to XML file");
 	}	
 	
- 	public static void writeContactListCSV(List<Contact> listOfContacts, String pathFile, String separator) throws IOException{
+ 	public void writeContactListCSV(List<Contact> listOfContacts, String pathFile, String separator) throws IOException{
 		
 		FileWriter fileWriter = null;
 		StringBuilder line;
@@ -235,7 +235,7 @@ public class ContactsList {
 		System.out.println("Contacts added to CSV file");
 	}
 	
- 	public static void writeContactListDB(List<Contact> listOfContacts) throws ClassNotFoundException, SQLException {
+ 	public void writeContactListDB(List<Contact> listOfContacts) throws ClassNotFoundException, SQLException {
  		Class.forName("com.mysql.cj.jdbc.Driver");	
 		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/suor_mary?serverTimezone=CET", "root", "MySQLPassword1!");
 		Statement statement = null;			
@@ -252,23 +252,23 @@ public class ContactsList {
 		//System.out.println("Contacts added to database");
  	}
  	
-	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException, ClassNotFoundException, SQLException{
-		
-		String pathReadFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\rubricanotel.csv";
-		String separator = ";";
-		String pathWriteFile = "db";
-		
-		//read
-		List<Contact> listOfContacts = new ArrayList<>();
-		if (pathReadFile.endsWith(".csv")) listOfContacts = loadContactListFromCSV(pathReadFile, separator);
-		else if (pathReadFile.endsWith(".xml")) listOfContacts = loadContactListFromXML(pathReadFile);
-		else if (pathReadFile.equals("db")) listOfContacts = loadContactListFromDB("rubrica");
-		
-		//write
-		if (pathWriteFile.endsWith(".csv")) writeContactListCSV(listOfContacts, pathWriteFile, separator);
-		else if (pathWriteFile.endsWith(".xml")) writeContactListsXLM(listOfContacts, pathWriteFile);
-		else if (pathWriteFile.equals("db")) writeContactListDB(listOfContacts);
-		
-	}
+//	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException, TransformerException, ClassNotFoundException, SQLException{
+//		
+//		String pathReadFile = "C:\\Users\\Chiara\\Desktop\\Academy\\esercizi\\rubricanotel.csv";
+//		String separator = ";";
+//		String pathWriteFile = "db";
+//		
+//		//read
+//		List<Contact> listOfContacts = new ArrayList<>();
+//		if (pathReadFile.endsWith(".csv")) listOfContacts = loadContactListFromCSV(pathReadFile, separator);
+//		else if (pathReadFile.endsWith(".xml")) listOfContacts = loadContactListFromXML(pathReadFile);
+//		else if (pathReadFile.equals("db")) listOfContacts = loadContactListFromDB("rubrica");
+//		
+//		//write
+//		if (pathWriteFile.endsWith(".csv")) writeContactListCSV(listOfContacts, pathWriteFile, separator);
+//		else if (pathWriteFile.endsWith(".xml")) writeContactListsXLM(listOfContacts, pathWriteFile);
+//		else if (pathWriteFile.equals("db")) writeContactListDB(listOfContacts);
+//		
+//	}
 
 }
