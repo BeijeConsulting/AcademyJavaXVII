@@ -52,7 +52,13 @@ public class Menu {
 		
 		System.out.println("--------------------------------------------------------------------");
 		
-		System.out.println("find by field\t\tRICERCA su DATABASE per campo e valore");
+		System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "I SEGUENTI COMANDI VENGONO ESEGUITI DIRETTAMENTE SU DATABASE" + ANSI_RESET);
+		
+		System.out.println("find by field\t\tRICERCA per campo e valore");
+		System.out.println("read all\t\tVISUALIZZA tutti i contatti presenti");
+		System.out.println("new contact\t\tINSERISCI nuovo contatto");
+		System.out.println("edit contact\t\tMODIFICA contatto");
+		System.out.println("delete contact\t\tELIMINA contatto");
 		
 		System.out.println("--------------------------------------------------------------------");
 		
@@ -432,7 +438,172 @@ public class Menu {
 			for(Contact ct : resultContacts) {
 				System.out.println(ct);
 			}
+			break;
+		case "new contact":
+			System.out.println("\nInserisci il nome del contatto:");
+			name = input.nextLine();
 			
+			System.out.println("\nInserisci il cognome del contatto:");
+			surname = input.nextLine();
+
+			System.out.println("\nInserisci il telefono del contatto:");
+			phone = input.nextLine();
+			
+			System.out.println("\nInserisci la mail del contatto:");
+			email = input.nextLine();
+			
+			System.out.println("\nInserisci le note del contatto:");
+			notes = input.nextLine();
+			
+			c = new Contact(name,surname,phone,email,notes);
+			
+			JPAUtils.addContact(c);
+			
+			System.out.println("Contatto inserito: \n");
+			
+			System.out.println(c);
+			
+			break;
+		case "edit contact":
+			index = -1;
+			resultContacts = JPAUtils.getAllContacts();
+			if(resultContacts.size()>0) {
+				while(index<0 || index>=resultContacts.size()) {
+					System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "I contatti presenti sono i seguenti, inserire l'indice del contatto che si desidera modificare. Inserire \"exit\" per annullare l'operazione." + ANSI_RESET);
+					int i=0;
+					for(Contact cont : resultContacts) {
+						System.out.println("Index : " + i);
+						System.out.println(cont);
+						System.out.println("------------------------------------------");
+						i++;
+					}
+					command = input.nextLine();
+					if(command.equals("exit")) {
+						break;
+					}else {
+						try {
+							index = Integer.valueOf(command);
+						}catch(NumberFormatException ex) {
+							System.out.println("Inserire un indice numerico o \"exit\".");
+						}
+					}
+				}
+				if(command.equals("exit")) {
+					break;
+				}
+				
+				// EDIT NAME
+				String response = "";
+				Contact toEdit = JPAUtils.getContact(resultContacts.get(index).getId());
+				
+				String newName = toEdit.getFirstName();
+				String newSurname = toEdit.getLastName();
+				String newNumber = toEdit.getPhoneNumber();
+				String newEmail = toEdit.getEmail();
+				String newNotes = toEdit.getNotes();
+				
+				while(!response.equals("y") && !response.equals("n")) {
+					System.out.println("Modificare il nome? (Y/n)");
+					response = input.nextLine().toLowerCase();
+				}
+				
+				if(response.equals("y")) {
+					System.out.println("Inserire il nuovo nome: ");
+					newName = input.nextLine();
+				}
+				
+				// EDIT SURNAME
+				response = "";
+				while(!response.equals("y") && !response.equals("n")) {
+					System.out.println("Modificare il cognome? (Y/n)");
+					response = input.nextLine().toLowerCase();
+				}
+				
+				if(response.equals("y")) {
+					System.out.println("Inserire il nuovo cognome: ");
+					newSurname = input.nextLine();
+				}
+				
+				// EDIT PHONE NUMBER
+				response = "";
+				while(!response.equals("y") && !response.equals("n")) {
+					System.out.println("Modificare il numero di telefono? (Y/n)");
+					response = input.nextLine().toLowerCase();
+				}
+				
+				if(response.equals("y")) {
+					System.out.println("Inserire il nuovo numero di telefono: ");
+					newNumber = input.nextLine();
+				}
+				
+				// EDIT MAIL
+				response = "";
+				while(!response.equals("y") && !response.equals("n")) {
+					System.out.println("Modificare la email? (Y/n)");
+					response = input.nextLine().toLowerCase();
+				}
+				
+				if(response.equals("y")) {
+					System.out.println("Inserire la nuova email: ");
+					newEmail = input.nextLine();
+				}
+				
+				// EDIT NOTES
+				response = "";
+				while(!response.equals("y") && !response.equals("n")) {
+					System.out.println("Modificare le note? (Y/n)");
+					response = input.nextLine().toLowerCase();
+				}
+				
+				if(response.equals("y")) {
+					System.out.println("Inserire le nuove note: ");
+					newNotes = input.nextLine();
+				}
+				
+				JPAUtils.editContact(toEdit, newName, newSurname, newNumber, newEmail, newNotes);
+				
+				System.out.println("Contatto modificato:\n");
+				System.out.println(toEdit);
+				
+			}else {
+				System.out.println("La lista dei contatti e' vuota. Non e' possibile modificare un contatto.");
+			}
+			break;
+		case "delete contact":
+			index = -1;
+			resultContacts = JPAUtils.getAllContacts();
+			if(resultContacts.size()>0) {
+				while(index<0 || index>=resultContacts.size()) {
+					System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "I contatti presenti sono i seguenti, inserire l'indice del contatto che si desidera cancellare. Inserire \"exit\" per annullare l'operazione." + ANSI_RESET);
+					int i=0;
+					for(Contact cont : resultContacts) {
+						System.out.println("Index : " + i);
+						System.out.println(cont);
+						System.out.println("------------------------------------------");
+						i++;
+					}
+					command = input.nextLine();
+					if(command.equals("exit")) {
+						break;
+					}else {
+						try {
+							index = Integer.valueOf(command);
+						}catch(NumberFormatException ex) {
+							System.out.println("Inserire un indice numerico o \"exit\".");
+						}
+					}
+				}
+				if(command.equals("exit")) {
+					break;
+				}else {
+					JPAUtils.deleteContact(resultContacts.get(index));
+				}
+				
+			}else {
+				System.out.println("La lista dei contatti e' vuota. Non e' possibile eliminare un contatto.");
+			}
+			
+			break;
 		default:
 			System.out.println(ANSI_RED + "Comando non riconosciuto.\n" + ANSI_RESET);
 			break;

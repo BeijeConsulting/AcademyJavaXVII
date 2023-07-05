@@ -53,6 +53,7 @@ public class JPAUtils {
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
 			
 			c.setFirstName(name);
 			c.setLastName(surname);
@@ -75,6 +76,7 @@ public class JPAUtils {
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();	
 			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
 			entityManager.persist(c);
 			transaction.commit();
 		} catch (Exception e) {
@@ -89,6 +91,7 @@ public class JPAUtils {
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();	
 			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
 			entityManager.remove(c);
 			transaction.commit();
 		} catch (Exception e) {
@@ -96,6 +99,22 @@ public class JPAUtils {
 		} finally {
 			//entityManager.close();
 		}
+	}
+	
+	public static Contact getContact(int id) {
+		EntityManager entityManager = null;
+		Contact contact = null;
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();
+			
+			contact = entityManager.find(Contact.class, id);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//entityManager.close();
+		}
+		return contact;
 	}
 	
 }
