@@ -118,14 +118,23 @@ public class RubricaJPA {
 			try {
 				 Contact c = findContactByNameSurname(entityManager);
 				EntityTransaction transaction = entityManager.getTransaction();
+				transaction.begin();
 				System.out.print("Inserisci il campo che vuoi modificare : ");
 				String campo = scanner.nextLine();
 				System.out.print("Inserisci il nuovo valore del campo : ");
 				String valore = scanner.nextLine();
-				Query query = entityManager.createQuery("UPDATE Contact SET " +  campo + " = :valore WHERE id = :id");
-		         query.setParameter("valore", valore);
-		         query.setParameter("id", c.getId());
-		         query.executeUpdate();
+				switch(campo) {
+				case "name" : c.setName(valore); break;
+				case "surname" : c.setSurname(valore); break;
+				case "email" : c.setEmail(valore); break;
+				case "phone" : c.setPhoneNumber(valore); break;
+				case "note" : c.setNote(valore); break;
+				}
+//				Query query = entityManager.createQuery("UPDATE Contact SET " +  campo + " = :valore WHERE id = :id");
+//		         query.setParameter("valore", valore);
+//		         query.setParameter("id", c.getId());
+//		         query.executeUpdate();
+				entityManager.persist(c);
 			    transaction.commit();
 			    System.out.println("Modifica eseguita");
 			    System.out.print("Vuoi effettuare un'altra modifica? (si/no) : ");
@@ -140,6 +149,7 @@ public class RubricaJPA {
 			try {
 				 Contact c = findContactByNameSurname(entityManager);
 				EntityTransaction transaction = entityManager.getTransaction();
+				transaction.begin();
 				System.out.print("Sei sicuro di voler eliminare il contatto? (si/no) : ");
 				String del = scanner.nextLine();
 				if(del.equals("si")) {
@@ -181,9 +191,12 @@ public class RubricaJPA {
 
 			try {
 				if(duplicatedContacts.size() > 0) {
-				EntityTransaction transaction = entityManager.getTransaction();
+					EntityTransaction  transaction = null;
+			    
 				//elimino tutti i contatti duplicati
 			    for (Contact c : duplicatedContacts) {
+			    	 transaction = entityManager.getTransaction();
+			    	transaction.begin();
 			    	Query query = entityManager.createQuery("DELETE FROM Contact WHERE name = :name AND surname = :surname AND email = :email AND note = :note AND phone = :phone");
 			    	query.setParameter("name", c.getName());
 			    	query.setParameter("surname", c.getSurname());
@@ -193,11 +206,18 @@ public class RubricaJPA {
 			    	query.executeUpdate();
 			    	transaction.commit();
 			    	
-			   	
 			    }
-	            //aggiungo 1 contatto
 			    for (Contact c : duplicatedContacts) {
-			    	entityManager.persist(c);
+			    	Contact newContact = new Contact();
+			    	newContact.setName(c.getName());
+			    	newContact.setSurname(c.getSurname());
+			    	newContact.setPhoneNumber(c.getPhoneNumber());
+			    	newContact.setNote(c.getNote());
+			    	newContact.setEmail(c.getEmail());
+			    	 transaction = entityManager.getTransaction();
+				    	transaction.begin();
+			    	entityManager.persist(newContact);
+			    	transaction.commit();
 			    }
 			    System.out.println("I contatti duplicati sono stati uniti");
 			}

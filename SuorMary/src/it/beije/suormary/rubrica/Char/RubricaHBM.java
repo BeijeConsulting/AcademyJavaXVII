@@ -13,12 +13,9 @@ import java.util.Scanner;
 public class RubricaHBM {
 	public static List<Contact> loadRubricaHBM(Session session) {
 		Scanner scanner = new Scanner(System.in);
-//	 	 Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
-//    	 SessionFactory sessionFactory = configuration.buildSessionFactory();
     	 List<Contact> listContacts = null;
 //    	 Session session = null;
     	 try {
-//    		 session = sessionFactory.openSession();
     		 System.out.print("Vuoi ordinare i contatti per nome e cognome? (si/no) : ");
     		 String ord = scanner.nextLine();
     		 Query<Contact> query = null;
@@ -34,7 +31,6 @@ public class RubricaHBM {
     	 return listContacts;
 	}
 	public static void writeRubricaHBM(List<Contact> contacts, Session session) {
-   	 List<Contact> listContacts = null;
    	 try {
    		 for(Contact c : contacts) {
    			 session.save(c);
@@ -182,15 +178,9 @@ public class RubricaHBM {
 	}
 	public static void mergeDuplicatedContacts(Session session) {
 		List<Contact> duplicatedContacts = findDuplicatedContacts(session);
-	
-//		Configuration configuration = new Configuration().configure().addAnnotatedClass(Contact.class);
-//   	    SessionFactory sessionFactory = configuration.buildSessionFactory();
-//   	    Session session = null;
+
 		try {
 			if(duplicatedContacts.size() > 0) {
-				
-			
-//			session = sessionFactory.openSession();
 			Transaction transaction = session.beginTransaction();
 			//elimino tutti i contatti duplicati
 		    for (Contact c : duplicatedContacts) {
@@ -217,7 +207,6 @@ public class RubricaHBM {
 			System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
 		} finally {
 			session.close();
-//			sessionFactory.close();
 		}
 
 
