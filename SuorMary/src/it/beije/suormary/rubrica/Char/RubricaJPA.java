@@ -239,6 +239,7 @@ public class RubricaJPA {
 		  	   String separator = scanner.nextLine();
 		  	  List<Contact> contacts = loadRubricaJPA(entityManager);
 		  	  EsRubrica.writeRubricaCSV(contacts, pathCSV, separator);
+		  	  System.out.println("I contatti sono stati importati nel file csv");
 		     }
 		     public static void exportDbToXML (EntityManager entityManager) {
 		  	   Scanner scanner = new Scanner(System.in);
@@ -246,6 +247,7 @@ public class RubricaJPA {
 		  	   String pathXML = scanner.nextLine();
 		  	  List<Contact> contacts = loadRubricaJPA(entityManager);
 		  	  EsRubrica.writeRubricaXML(contacts,pathXML);
+		  	System.out.println("I contatti sono stati importati nel file xml");
 		     }
 		     public static void exportCSVToDb(EntityManager entityManager) {
 		  	   Scanner scanner = new Scanner(System.in);
@@ -255,6 +257,7 @@ public class RubricaJPA {
 		  	   String separator = scanner.nextLine();
 		  	  List<Contact> contacts = EsRubrica.loadRubricaFromCSV(pathFile, separator);
 		  	  writeRubricaJPA(contacts,entityManager );
+		  	System.out.println("I contatti sono stati importati nel database");
 		     }
 		     public static void exportXMLToDb(EntityManager entityManager) {
 		  	   Scanner scanner = new Scanner(System.in);
@@ -262,6 +265,7 @@ public class RubricaJPA {
 		  	   String pathFile = scanner.nextLine();
 		   	  List<Contact> contacts = EsRubrica.loadRubricaFromXML(pathFile);
 		   	  writeRubricaJPA(contacts,entityManager);
+		   	  System.out.println("I contatti sono stati importati nel database");
 		      }
 		
 

@@ -87,7 +87,6 @@ public class EsRubrica {
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(pathFile);
 		Element el = document.getDocumentElement();
-		System.out.println(el.getTextContent());
 		contacts = new ArrayList<>();
 		List<Element> elements = getChildElements(el);
 		List<Element> els = null;
@@ -97,10 +96,10 @@ public class EsRubrica {
 			c = new Contact();
 			for(Element elem : els) {
 				switch(elem.getTagName()) {
-				case "nome" : c.setName(elem.getTextContent()); break;
-				case "cognome" : c.setSurname(elem.getTextContent()); break;
+				case "name" : c.setName(elem.getTextContent()); break;
+				case "surname" : c.setSurname(elem.getTextContent()); break;
 				case "email" : c.setEmail(elem.getTextContent()); break;
-				case "telefono" : c.setPhoneNumber(elem.getTextContent()); break;
+				case "phone" : c.setPhoneNumber(elem.getTextContent()); break;
 				case "note" : c.setNote(elem.getTextContent()); break;
 				default : System.out.println("Il tag non è stato riconosciuto"); break;
 				}
