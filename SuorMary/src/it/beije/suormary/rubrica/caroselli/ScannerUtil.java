@@ -41,17 +41,6 @@ public class ScannerUtil {
 		System.out.println(message);
 		Scanner sc = RubricaManagerHBM.scanner;
 		while (true) {
-//			try {
-//				if (sc.hasNext()) {
-//                    return sc.nextLine();
-//				} else {
-//					System.out.println(invalidInputMessage);
-//				}
-//			} catch (Exception e) {
-//				System.out.println(invalidInputMessage);
-//			}
-//			sc.nextLine();
-//		}
 			try {
 	            if (sc.hasNextLine()) {
 	                String input = sc.nextLine();

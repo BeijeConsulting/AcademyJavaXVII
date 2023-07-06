@@ -14,6 +14,12 @@ import java.util.Scanner;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -32,15 +38,13 @@ import org.xml.sax.SAXException;
 import it.beije.suormary.rubrica.caroselli.Contact;
 import it.beije.suormary.rubrica.caroselli.ScannerUtil;
 
-
 public class RubricaUtilsJPA {
 
 	public static List<Contact> readContactsFromDb() {
 
 		List<Contact> newList = new ArrayList<>();
 		EntityTransaction transaction = null;
-		PersistenceManagerJPA persistenceManager = PersistenceManagerJPA.getInstance();
-		EntityManager entityManager = persistenceManager.getEntityManager();
+		EntityManager entityManager = null;
 
 		String choice = ScannerUtil
 				.readStringValue("Vuoi cecare i contatti per nome o per cognome? Scegli 'si' o 'no'");
@@ -54,20 +58,18 @@ public class RubricaUtilsJPA {
 
 			try {
 
+				entityManager = PersistenceManagerJPA.getEntityManager();
 				transaction = entityManager.getTransaction();
 				transaction.begin();
 				Query query = entityManager.createQuery("SELECT c FROM Contact as c");
 				List<Contact> contacts = query.getResultList();
 				for (Contact c : contacts)
-					System.out.println(c);
+					System.out.println(c.toString());
 
-				transaction.commit(); // Commit the transaction if successful
+				transaction.commit();
 			} catch (Exception e) {
-				transaction.rollback(); // Rollback the transaction in case of an exception
+				transaction.rollback();
 				e.printStackTrace();
-			} finally {
-				entityManager.close(); // Close the entityManager
-				persistenceManager.close(); // Close the PersistenceManager
 			}
 
 		}
@@ -78,47 +80,40 @@ public class RubricaUtilsJPA {
 	public static List<Contact> orderContactsByNameOrSurname(String nameOrSurname) {
 
 		List<Contact> result = new ArrayList<>();
-		EntityTransaction transaction = null;
-
-		PersistenceManagerJPA persistenceManager = PersistenceManagerJPA.getInstance();
-		EntityManager entityManager = persistenceManager.getEntityManager();
+		EntityManager entityManager = null;
 
 		if (nameOrSurname.equals("nome")) {
 
 			try {
 
-				transaction = entityManager.getTransaction();
+				entityManager = PersistenceManagerJPA.getEntityManager();
+				EntityTransaction transaction = entityManager.getTransaction();
 				transaction.begin();
 
-				Query query = entityManager.createQuery("SELECT c FROM Contact as c ORDER BY name ASC");
-				List<Contact> contacts = query.getResultList();
-				for (Contact c : contacts) {
-					System.out.println(c);
+				CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+				CriteriaQuery<Contact> criteriaQuery = criteriaBuilder.createQuery(Contact.class);
+				Root<Contact> root = criteriaQuery.from(Contact.class);
+				criteriaQuery.select(root);
+
+				if (nameOrSurname.equals("nome")) {
+					Order orderByName = criteriaBuilder.asc(root.get("name"));
+					criteriaQuery.orderBy(orderByName);
+				} else if (nameOrSurname.equals("cognome")) {
+					Order orderBySurname = criteriaBuilder.asc(root.get("surname"));
+					criteriaQuery.orderBy(orderBySurname);
 				}
+
+//				Query query = entityManager.createQuery("SELECT c FROM Contact as c ORDER BY name ASC");
+				List<Contact> contacts = entityManager.createQuery(criteriaQuery).getResultList();
+				for (Contact c : contacts) {
+					System.out.println(c.toString());
+
+				}
+				transaction.commit();
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				entityManager.close();
-				persistenceManager.close();
 			}
 
-		} else if (nameOrSurname.equals("cognome")) {
-
-			try {
-
-				transaction = entityManager.getTransaction();
-				transaction.begin();
-
-				Query query = entityManager.createQuery("SELECT c FROM Contact as c ORDER BY surname ASC");
-				List<Contact> contacts = query.getResultList();
-				for (Contact c : contacts)
-					System.out.println(c);
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				entityManager.close();
-				persistenceManager.close();
-			}
 		}
 
 		return result;
@@ -126,9 +121,7 @@ public class RubricaUtilsJPA {
 
 	public static List<Contact> findContactsFromInsertedValue() {
 
-		PersistenceManagerJPA persistenceManager = PersistenceManagerJPA.getInstance();
-		EntityManager entityManager = persistenceManager.getEntityManager();
-		EntityTransaction transaction = null;
+		EntityManager entityManager = null;
 
 		String value = ScannerUtil
 				.readStringValue("Inserisci il valore (esempio Mario o Rossi) per cercare i contatti desiderati");
@@ -137,20 +130,45 @@ public class RubricaUtilsJPA {
 
 		try {
 
-			transaction = entityManager.getTransaction();
+			entityManager = PersistenceManagerJPA.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
-			Query query = entityManager
-					.createQuery("SELECT c from Contact as c WHERE name = '" + value + "' OR surname = '" + value
-							+ "' OR phone = '" + value + "' OR email = '" + value + "' OR note = '" + value + "'");
 
-			contacts = query.getResultList();
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CriteriaQuery<Contact> criteriaQuery = criteriaBuilder.createQuery(Contact.class);
+			Root<Contact> root = criteriaQuery.from(Contact.class);
+			criteriaQuery.select(root);
+
+			// faccio una lista di predicati per raccogliere i predicati delle diverse
+			// condizioni di ricerca
+			List<Predicate> predicates = new ArrayList<>();
+			predicates.add(criteriaBuilder.equal(root.get("name"), value));
+			predicates.add(criteriaBuilder.equal(root.get("surname"), value));
+			predicates.add(criteriaBuilder.equal(root.get("phone"), value));
+			predicates.add(criteriaBuilder.equal(root.get("email"), value));
+			predicates.add(criteriaBuilder.equal(root.get("note"), value));
+
+//			Query query = entityManager
+//					.createQuery("SELECT c from Contact as c WHERE name = '" + value + "' OR surname = '" + value
+//							+ "' OR phone = '" + value + "' OR email = '" + value + "' OR note = '" + value + "'");
+//
+//			contacts = query.getResultList();
+
+			// crea un predicato finale utilizzando l'operatore logico OR per combinare una
+			// lista di predicati
+			// il predicato finale poi lo passo a criteriaQUery.where()
+			Predicate finalPredicate = criteriaBuilder.or(predicates.toArray(new Predicate[0]));
+			criteriaQuery.where(finalPredicate);
+
+			contacts = entityManager.createQuery(criteriaQuery).getResultList();
+
+			transaction.commit();
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			entityManager.close();
-			persistenceManager.close();
-
+		}
+		for (Contact c : contacts) {
+			System.out.println(c.toString());
 		}
 
 		return contacts;
@@ -158,9 +176,7 @@ public class RubricaUtilsJPA {
 
 	public static void insertContact() {
 
-		PersistenceManagerJPA persistenceManager = PersistenceManagerJPA.getInstance();
-		EntityManager entityManager = persistenceManager.getEntityManager();
-		EntityTransaction transaction = null;
+		EntityManager entityManager = null;
 
 		System.out.println("Inserisci i campi del contatto che vuoi aggiungere alla rubrica");
 
@@ -178,20 +194,19 @@ public class RubricaUtilsJPA {
 		Contact contact = new Contact(name, surname, phone, email, note);
 
 		try {
+			
+			entityManager = PersistenceManagerJPA.getEntityManager();
 
-			transaction = entityManager.getTransaction();
+			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
 			entityManager.persist(contact);
 			transaction.commit();
 			System.out.println("Contatto aggiunto alla rubrica");
 
-			System.out.println(contact);
+			System.out.println(contact.toString());
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			entityManager.close();
-			persistenceManager.close();
 		}
 
 	}
@@ -199,9 +214,7 @@ public class RubricaUtilsJPA {
 	public static void changeContact() {
 
 		List<Contact> contacts = findContactsFromInsertedValue();
-		PersistenceManagerJPA persistenceManager = PersistenceManagerJPA.getInstance();
-		EntityManager entityManager = persistenceManager.getEntityManager();
-		EntityTransaction transaction = null;
+		EntityManager entityManager = null;
 
 		if (contacts == null) {
 			return;
@@ -260,42 +273,80 @@ public class RubricaUtilsJPA {
 
 		if (areYouSure()) {
 			try {
-				transaction = entityManager.getTransaction();
 
+				entityManager = PersistenceManagerJPA.getEntityManager();
+				EntityTransaction transaction = entityManager.getTransaction();
 				transaction.begin();
 
-				Contact contact = entityManager.find(Contact.class, id);
+				CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+				CriteriaUpdate<Contact> updateCriteria = criteriaBuilder.createCriteriaUpdate(Contact.class);
+				Root<Contact> root = updateCriteria.from(Contact.class);
 
-				if (contact != null) {
-					contact.setName(name);
-					contact.setSurname(surname);
-					contact.setPhone(phone);
-					contact.setEmail(email);
-					contact.setNote(note);
+				updateCriteria.set(root.get("name"), name);
+				updateCriteria.set(root.get("surname"), surname);
+				updateCriteria.set(root.get("phone"), phone);
+				updateCriteria.set(root.get("email"), email);
+				updateCriteria.set(root.get("note"), note);
 
-					entityManager.persist(contact);
+				Predicate condition = criteriaBuilder.equal(root.get("id"), contactToChange.getId());
+				updateCriteria.where(condition);
+
+				int updatedCount = entityManager.createQuery(updateCriteria).executeUpdate();
+
+				if (updatedCount > 0) {
+					entityManager.flush();
+					entityManager.clear();
+					Contact updatedContact = entityManager.find(Contact.class, contactToChange.getId());
 					transaction.commit();
-
 					System.out.println("Contatto cambiato correttamente");
-
+					System.out.println(updatedContact.toString());
+				} else {
+					transaction.rollback();
 				}
-
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				entityManager.close();
-				persistenceManager.close();
-
 			}
 
 		}
 	}
 
+//		if (areYouSure()) {
+//
+//			try {
+//				
+//				EntityTransaction transaction = entityManager.getTransaction();
+//				transaction.begin();
+//
+//				contact = entityManager.find(Contact.class, id);
+//
+//				if (contact != null) {
+//					contact.setName(name);
+//					contact.setSurname(surname);
+//					contact.setPhone(phone);
+//					contact.setEmail(email);
+//					contact.setNote(note);
+//
+//					entityManager.persist(contact);
+//					transaction.commit();
+//
+//					System.out.println("Contatto cambiato correttamente");
+//					System.out.println(contact.toString());
+//
+//				}
+//
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//
+//			} finally {
+//				entityManager.close();
+//			}
+//
+//		}
+
 	public static void deleteContact() {
 
 		List<Contact> contacts = findContactsFromInsertedValue();
-		PersistenceManagerJPA persistenceManager = PersistenceManagerJPA.getInstance();
-		EntityManager entityManager = persistenceManager.getEntityManager();
+		EntityManager entityManager = null;
 
 		if (contacts == null) {
 			return;
@@ -309,7 +360,9 @@ public class RubricaUtilsJPA {
 		int id = contactToDelete.getId();
 
 		if (areYouSure()) {
+
 			try {
+				entityManager = PersistenceManagerJPA.getEntityManager();
 
 				EntityTransaction transaction = entityManager.getTransaction();
 				transaction.begin();
@@ -319,16 +372,11 @@ public class RubricaUtilsJPA {
 				entityManager.remove(contact);
 
 				transaction.commit();
-				System.out.println(contact);
+				System.out.println(contact.toString());
 
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				entityManager.close();
-
-				persistenceManager.close();
 			}
-
 		}
 
 	}
@@ -337,13 +385,16 @@ public class RubricaUtilsJPA {
 		String value = ScannerUtil
 				.readStringValue("Inserisci il valore(esempio mario) di cui vuoi cercare i duplicati");
 		List<Contact> duplicateContacts = new ArrayList<>();
-		PersistenceManagerJPA persistenceManager = PersistenceManagerJPA.getInstance();
-		EntityManager entityManager = persistenceManager.getEntityManager();
+
+		EntityManager entityManager = null;
 
 		try {
 
+			entityManager = PersistenceManagerJPA.getEntityManager();
+
 			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
+
 			Query query = entityManager.createQuery("SELECT c FROM Contact c WHERE c.id IN "
 					+ "(SELECT c2.id FROM Contact c2 WHERE c2.id <> :choice AND (c2.name = :value OR c2.surname = :value OR c2.phone = :value OR c2.email = :value OR c2.note = :value))");
 			query.setParameter("choice", 0);
@@ -354,7 +405,7 @@ public class RubricaUtilsJPA {
 			System.out.println("Number of results: " + results.size());
 
 			for (Contact result : results) {
-				System.out.println(result);
+				System.out.println(result.toString());
 				duplicateContacts.add(result);
 			}
 			transaction.commit();
@@ -362,16 +413,13 @@ public class RubricaUtilsJPA {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return duplicateContacts;
-
 	}
 
 	public static void mergeDuplicatesContact() throws Exception {
 
 		List<Contact> duplicateContacts = findDuplicatesContactByValue();
-		PersistenceManagerJPA persistenceManager = PersistenceManagerJPA.getInstance();
-		EntityManager entityManager = persistenceManager.getEntityManager();
+		EntityManager entityManager = null;
 
 		if (duplicateContacts.isEmpty()) {
 			return;
@@ -381,6 +429,9 @@ public class RubricaUtilsJPA {
 		System.out.println("Id scelto: " + choice);
 		if (areYouSure()) {
 			try {
+
+				entityManager = PersistenceManagerJPA.getEntityManager();
+
 				EntityTransaction transaction = entityManager.getTransaction();
 				transaction.begin();
 
@@ -395,17 +446,13 @@ public class RubricaUtilsJPA {
 				System.out.println("Eliminati " + deletedCount + " contatti duplicati.");
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				entityManager.close();
-				persistenceManager.close();
 			}
 			System.out.println("Operazione completata!");
 		} else {
 			System.out.println("Operazione annullata");
 		}
 	}
-	
-	
+
 	public static void importExportFromToCSV() {
 		System.out.println(
 				"scrivi 'importa' per importare i contatti dal db al csv, 'esporta' per esportare i contatti dal cvs al db");
@@ -459,9 +506,10 @@ public class RubricaUtilsJPA {
 
 		Contact contact = new Contact();
 		List<Contact> contactListFromCSV = loadRubricaFromCSV(path, ";");
-		PersistenceManagerJPA persistenceManager = PersistenceManagerJPA.getInstance();
-		EntityManager entityManager = persistenceManager.getEntityManager();
+		EntityManager entityManager = null;
+
 		try {
+			entityManager = PersistenceManagerJPA.getEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
 
@@ -478,10 +526,6 @@ public class RubricaUtilsJPA {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			entityManager.close();
-			persistenceManager.close();
-
 		}
 
 	}
@@ -491,10 +535,11 @@ public class RubricaUtilsJPA {
 		List<Contact> contactListFromXML = loadRubricaFromXML(path);
 
 		Contact contact = new Contact();
-		PersistenceManagerJPA persistenceManager = PersistenceManagerJPA.getInstance();
-		EntityManager entityManager = persistenceManager.getEntityManager();
+		EntityManager entityManager = null;
 
 		try {
+			entityManager = PersistenceManagerJPA.getEntityManager();
+
 			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
 
@@ -512,15 +557,10 @@ public class RubricaUtilsJPA {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			entityManager.close();
-			persistenceManager.close();
-
 		}
 
 	}
-	
-	
+
 	public static List<Contact> loadRubricaFromCSV(String pathFile, String separator) {
 
 		File file = new File(pathFile);
@@ -699,18 +739,12 @@ public class RubricaUtilsJPA {
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
 	public static void printContacts(List<Contact> contacts) {
 
 		if (contacts.isEmpty()) {
 			System.out.println("Nessun contatto trovato.");
 			return;
-		}
-
-		// lista dei contatti trovati
-		for (Contact contact : contacts) {
-			System.out.println(contact.toString());
 		}
 	}
 
@@ -739,7 +773,7 @@ public class RubricaUtilsJPA {
 		String choice = scanner.next();
 		return choice.equalsIgnoreCase("si");
 	}
-	
+
 	public static List<Element> getChildElements(Element el) {
 		NodeList nodeList = el.getChildNodes();
 		List<Element> elements = new ArrayList<>();

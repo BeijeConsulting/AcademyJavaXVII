@@ -6,27 +6,18 @@ import javax.persistence.Persistence;
 
 public class PersistenceManagerJPA {
 
-	private static PersistenceManagerJPA instance;
-	private EntityManagerFactory entityManagerFactory;
-	private EntityManager entityManager;
+	private static EntityManagerFactory entityManagerFactory;
+	private static EntityManager entityManager;
 
-	private PersistenceManagerJPA() {
+
+	public static EntityManager getEntityManager() {
+		if(entityManager == null) {
 		entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
 		entityManager = entityManagerFactory.createEntityManager();
-	}
-
-	public static PersistenceManagerJPA getInstance() {
-		if (instance == null) {
-			instance = new PersistenceManagerJPA();
 		}
-
-		return instance;
-	}
-
-	public EntityManager getEntityManager() {
 		return entityManager;
 	}
-
+	
 	public void close() {
 		entityManager.close();
 		entityManagerFactory.close();

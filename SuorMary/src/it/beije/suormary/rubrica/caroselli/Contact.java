@@ -100,14 +100,13 @@ public class Contact {
 
 	    @Override
 	    public String toString() {
-	        return "Contact{" +
-	                "id=" + id +
-	                ", name='" + name + '\'' +
-	                ", surname='" + surname + '\'' +
-	                ", phone='" + phone + '\'' +
-	                ", email='" + email + '\'' +
-	                ", note='" + note + '\'' +
-	                '}';
+	        return "Contact : " +
+	                "id = " + id +
+	                ", name = '" + name + '\'' +
+	                ", surname = '" + surname + '\'' +
+	                ", phone = '" + phone + '\'' +
+	                ", email = '" + email + '\'' +
+	                ", note = '" + note + '\'';
 	    }
 
 	    @Override
