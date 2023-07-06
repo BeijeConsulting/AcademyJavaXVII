@@ -360,7 +360,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 			e.printStackTrace();
 		}
 			
-		
+		return contacts2;
 	}
 
 	//7
