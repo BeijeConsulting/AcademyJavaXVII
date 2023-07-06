@@ -17,6 +17,8 @@ public class Rubrica {
 			
 			boolean exit = false;
 			
+			//System.out.println(JPAUtils.getContact(80));
+			
 			while(!exit) {
 				
 				Menu.printOptions();
