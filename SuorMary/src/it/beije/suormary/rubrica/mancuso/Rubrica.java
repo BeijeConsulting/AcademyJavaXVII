@@ -1,9 +1,6 @@
 package it.beije.suormary.rubrica.mancuso;
 
-import java.util.List;
 import java.util.Scanner;
-
-import javax.persistence.EntityManager;
 
 public class Rubrica {
 

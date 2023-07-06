@@ -9,9 +9,7 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -19,7 +17,6 @@ import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.io.File;
 
 import java.io.IOException;
