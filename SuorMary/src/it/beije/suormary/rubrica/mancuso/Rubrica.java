@@ -1,13 +1,17 @@
 package it.beije.suormary.rubrica.mancuso;
 
+import java.util.List;
 import java.util.Scanner;
+
+import javax.persistence.EntityManager;
 
 public class Rubrica {
 
 	public static void main(String[] args) {
 		Scanner input = null;
-		
+			
 		try {
+			JPAManagerFactory.getEntityManager();
 			AddressBook ab = new AddressBook();
 			
 			input = new Scanner(System.in);

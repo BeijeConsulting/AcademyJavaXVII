@@ -435,6 +435,7 @@ public class Menu {
 			break;
 		case "read all":
 			resultContacts = JPAUtils.getAllContacts();
+			System.out.println("\n");
 			for(Contact ct : resultContacts) {
 				System.out.println(ct);
 			}
@@ -459,7 +460,7 @@ public class Menu {
 			
 			JPAUtils.addContact(c);
 			
-			System.out.println("Contatto inserito: \n");
+			System.out.println("\nContatto inserito: \n");
 			
 			System.out.println(c);
 			
