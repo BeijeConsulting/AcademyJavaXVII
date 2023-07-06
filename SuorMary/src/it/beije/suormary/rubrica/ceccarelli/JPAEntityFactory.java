@@ -8,16 +8,16 @@ public class JPAEntityFactory {
 	
 	private JPAEntityFactory() {}
 	
-	private static EntityManager entityManager;
+	private static EntityManagerFactory entityManagerFactory;
 	
 	public static EntityManager  openEntity() {
-		if(entityManager ==null) {
+		if(entityManagerFactory ==null || (!entityManagerFactory.isOpen())) {
 			System.out.println("creo entityManager");
 			
-			EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
-			entityManager = entityManagerFactory.createEntityManager();
+			entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+			//entityManager = entityManagerFactory.createEntityManager();
 		}
-		return entityManager;
+		return entityManagerFactory.createEntityManager();
 	}
 
 }

@@ -12,7 +12,7 @@ public class HBMsessionFactory {
 	private static SessionFactory sessionFactory;
 	
 	public static Session openSession() {
-		if (sessionFactory == null) {
+		if (sessionFactory == null || sessionFactory.isClosed()) {
 			System.out.println("creo SessionFactory...");
 			
 			Configuration configuration = new Configuration().configure()

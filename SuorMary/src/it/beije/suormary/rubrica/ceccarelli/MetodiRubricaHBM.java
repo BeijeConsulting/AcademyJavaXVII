@@ -122,7 +122,8 @@ public class MetodiRubricaHBM {
 				list2 = MetodiFile.loadRubricaFromXML(path);
 				try {
 					for(Contact c : list2) {
-						hbm.insertContacts(c);
+						//hbm.insertContacts(c);
+						jpa.insertContacts(c);
 					}
 					
 				} catch (Exception e) {
@@ -135,7 +136,10 @@ public class MetodiRubricaHBM {
 				list2 = MetodiFile.loadRubricaFromCSV(path,";");
 				try {
 					for(Contact c : list2) {
-						hbm.insertContacts(c);
+						//HBM
+						//hbm.insertContacts(c);
+						//JPA
+						jpa.insertContacts(c);
 					}
 					
 				} catch (Exception e) {
@@ -156,9 +160,12 @@ public class MetodiRubricaHBM {
 				System.out.print("email: "); 
 				contact.setEmail(scanInsert.next());
 				System.out.print("note: "); 
-				contact.setNote(scanInsert.next());
-				hbm.insertContacts(contact);
-//				//System.out.print(contact.toString());
+				contact.setNote(scanInsert.nextLine());
+				//HBM
+				//hbm.insertContacts(contact);
+//				//JPA
+				jpa.insertContacts(contact);
+				//System.out.print(contact.toString());
 				break;
 		}
 		
@@ -169,24 +176,29 @@ public class MetodiRubricaHBM {
 		List<Contact> c = searchContacts();
 		Contact cModifies = null;
 		Scanner scanModifies = new Scanner(System.in);
-		if(c.size()==1) {
-			cModifies = c.get(0);
-		}else {
-			System.out.println("seleziona il contatto da modificare: ");
-			
-			for(Contact contact : c) {
-				System.out.println(contact);
-				System.out.println("E' questo?");
-				String choose = scanModifies.next();
-				scanModifies.nextLine();
-				if(choose.equalsIgnoreCase("Si")|| choose.equalsIgnoreCase("Sì")) {
-					cModifies = contact;
-					break;
+		try {
+			if(c.size()==1) {
+				cModifies = c.get(0);
+			}else {
+				System.out.println("seleziona il contatto da modificare: ");
+				
+				for(Contact contact : c) {
+					System.out.println(contact);
+					System.out.println("E' questo?");
+					String choose = scanModifies.next();
+					scanModifies.nextLine();
+					if(choose.equalsIgnoreCase("Si")|| choose.equalsIgnoreCase("Sì")) {
+						cModifies = contact;
+						break;
+					}
 				}
 			}
-		}
-		if(cModifies==null) {
-			System.out.println("Non è stato selezionato nessun contatto");
+			if(cModifies==null) {
+				System.out.println("Non è stato selezionato nessun contatto");
+				
+			}
+		}catch (NullPointerException e) {
+			e.fillInStackTrace();
 			return;
 		}
 		
@@ -222,7 +234,10 @@ public class MetodiRubricaHBM {
 		}
 		//System.out.println("contact POST : " + cModifies);
 		System.out.println("Il dato viene aggiornato sul db");
-		hbm.updateContact(cModifies);
+		//HBM
+		//hbm.updateContact(cModifies);
+		//JPA
+		jpa.updateContacts(cModifies);
 		
 	}
 	
@@ -254,7 +269,10 @@ public class MetodiRubricaHBM {
 		System.out.println("Sicuro di voler eliminare il contatto?");
 		String response = scanDelete.next();
 		if(response.equalsIgnoreCase("Si")|| response.equalsIgnoreCase("Sì")) {
-			hbm.deleteContact(cDelete);
+			//HBM
+			//hbm.deleteContact(cDelete);
+			//JPA
+			jpa.deleteContacts(cDelete);
 		}else {
 			System.out.println("Si è deciso di NON eliminare il contatto");
 			return;

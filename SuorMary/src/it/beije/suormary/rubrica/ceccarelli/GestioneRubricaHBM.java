@@ -21,7 +21,6 @@ public class GestioneRubricaHBM {
 		// TODO Auto-generated method stub
 		Scanner scan = new Scanner(System.in);
 		MetodiRubricaHBM mr  = new MetodiRubricaHBM();
-		MetodiRubricaJPA mrj = new MetodiRubricaJPA();
 		menu();
 		String scelta = scan.next();
 		

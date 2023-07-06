@@ -42,33 +42,34 @@ public class DbWithHBM {
 	public Session session;
 	public Transaction transaction;
 	
-	// check connection
-	public Session connectionCheck() {
-		try {
-//		//creazione configurazione
+//	// check connection
+//	public Session connectionCheck() {
+//		try {
+////		//creazione configurazione
+////			
+////		configuration = new Configuration().configure(new File("./src/hibernate.cfg.xml"))
+////				.addAnnotatedClass(Contact.class);
+////		
+////		//creazione sessione
+////		factory = configuration.buildSessionFactory();
+//		//inizializzazione sessione
 //			
-//		configuration = new Configuration().configure(new File("./src/hibernate.cfg.xml"))
-//				.addAnnotatedClass(Contact.class);
-//		
-//		//creazione sessione
-//		factory = configuration.buildSessionFactory();
-		//inizializzazione sessione
-		session = HBMsessionFactory.openSession();
-		}catch (Exception e) {
-			e.printStackTrace();
-		}
-		return session;
-	}
+//			session = HBMsessionFactory.openSession().openSession();
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return session;
+//	}
 	
 	//list contact from DB
 	public List<Contact> listContactHBM() {
 		List<Contact> contacts = null;
 			try {
-				session = factory.openSession();
+				session = HBMsessionFactory.openSession();
 				//transaction = session.beginTransaction();
 				
 				//SELECT HQL
-				Query<Contact> query = connectionCheck().createQuery("SELECT c from Contact as c");
+				Query<Contact> query = session.createQuery("SELECT c from Contact as c");
 				contacts = query.getResultList();
 				
 			}catch (Exception e) {
@@ -83,7 +84,8 @@ public class DbWithHBM {
 	public List<Contact> searchContactsName(String name){
 		List<Contact> selected= new ArrayList<Contact>();
 			try {
-				Query<Contact> query = connectionCheck().createQuery("SELECT c from Contact as c WHERE c.name = :nome");
+				session = HBMsessionFactory.openSession();
+				Query<Contact> query = session.createQuery("SELECT c from Contact as c WHERE c.name = :nome");
 				query.setParameter("nome", name);
 				selected = query.getResultList();
 			}catch (Exception e) {
@@ -99,7 +101,8 @@ public class DbWithHBM {
 			List<Contact> selected= new ArrayList<Contact>();
 			
 				try {
-					Query<Contact> query = connectionCheck().createQuery("SELECT c from Contact as c WHERE c.surname = :cognome");
+					session = HBMsessionFactory.openSession();
+					Query<Contact> query =session.createQuery("SELECT c from Contact as c WHERE c.surname = :cognome");
 					query.setParameter("cognome", surname);
 					selected = query.getResultList();
 				}catch (Exception e) {
@@ -114,7 +117,8 @@ public class DbWithHBM {
 	public List<Contact> searchContactsNameSurname(String name, String surname){
 				List<Contact> selected= new ArrayList<Contact>();
 					try {
-						Query<Contact> query = connectionCheck().createQuery("SELECT c from Contact as c WHERE c.name = :nome and c.surname = :cognome");
+						session = HBMsessionFactory.openSession();
+						Query<Contact> query = session.createQuery("SELECT c from Contact as c WHERE c.name = :nome and c.surname = :cognome");
 						query.setParameter("nome", name);
 						query.setParameter("cognome", surname);
 						
@@ -130,8 +134,8 @@ public class DbWithHBM {
 	//inserti contact
 	public void insertContacts(Contact contact) {
 			try {
-				
-				transaction = connectionCheck().beginTransaction();
+				session = HBMsessionFactory.openSession();
+				transaction = session.beginTransaction();
 				session.save(contact);
 				transaction.commit();
 				System.out.println("Contatto/i inserito/i");
@@ -146,7 +150,9 @@ public class DbWithHBM {
 	public void updateContact(Contact contact) {
 		System.out.println(contact.getId());
 			try {
-				Query<Contact> query = connectionCheck().createQuery("SELECT c from Contact as c WHERE c.id = :id");
+				session = HBMsessionFactory.openSession();
+				transaction = session.beginTransaction();
+				Query<Contact> query = session.createQuery("SELECT c from Contact as c WHERE c.id = :id");
 				query.setParameter("id", contact.getId());
 				List<Contact> selected= new ArrayList<Contact>();
 				selected = query.getResultList();
@@ -158,7 +164,7 @@ public class DbWithHBM {
 				c.setEmail(contact.getEmail());
 				c.setNote(contact.getNote());
 				System.out.println("contact POST UPDATE: " + c);
-				transaction = connectionCheck().beginTransaction();
+				
 				session.save(c);
 				transaction.commit();
 				System.out.println("Contatto modificato");
@@ -172,8 +178,8 @@ public class DbWithHBM {
 	//delete contact
 	public void deleteContact(Contact contact) {
 			try {
-				
-				transaction = connectionCheck().beginTransaction();
+				session = HBMsessionFactory.openSession();
+				transaction = session.beginTransaction();
 				session.delete(contact);
 				transaction.commit();
 				System.out.println("Contatto eliminato");
