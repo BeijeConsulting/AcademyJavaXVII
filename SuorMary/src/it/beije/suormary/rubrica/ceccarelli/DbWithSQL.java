@@ -32,7 +32,7 @@ import org.w3c.dom.NodeList;
 
 import it.beije.suormary.rubrica.Contact;
 
-public class ExerciseswithDB {
+public class DbWithSQL {
 	
 	public Connection connection = null;
 	public Statement statement = null;
@@ -525,7 +525,7 @@ public class ExerciseswithDB {
 	}
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ExerciseswithDB db = new ExerciseswithDB();
+		DbWithSQL db = new DbWithSQL();
 		try {
 			
 			// DA DB A CSV E XML

@@ -9,11 +9,11 @@ import it.beije.suormary.rubrica.Contact;
 public class MetodiRubricaHBM {
 	 
 	public DbWithHBM hbm;
-	public MetodiRubricaJPA jpa;
+	public DbWithJPA jpa;
 	
 	public MetodiRubricaHBM() {
 		hbm = new DbWithHBM();
-		jpa = new MetodiRubricaJPA();
+		jpa = new DbWithJPA();
 	}
 	
 	//list of contacts
@@ -54,7 +54,7 @@ public class MetodiRubricaHBM {
 		for(Contact contact : names) {
 			System.out.println(contact.toString());
 		}
-		chooseFile(contacts, hbm);
+		chooseFile(contacts);
 	}
 	
 	//search contact
@@ -104,7 +104,7 @@ public class MetodiRubricaHBM {
 			System.out.println(contact.toString());
 		}
 		
-		chooseFile(result, hbm);
+		chooseFile(result);
 		return result;
 	}
 	
@@ -284,7 +284,7 @@ public class MetodiRubricaHBM {
 		
 		
 		//save into one type of file
-		public static void chooseFile(List<Contact> c, DbWithHBM h) {
+		public static void chooseFile(List<Contact> c) {
 			Scanner scanChoose = new Scanner(System.in);
 			System.out.print("Vuoi salvare il risultato su un file? ");
 			boolean rispostaValida = false;
@@ -320,7 +320,7 @@ public class MetodiRubricaHBM {
 			}
 		}
 		
-		public static void saveToDb(List<Contact> c, ExerciseswithDB db) {
+		public static void saveToDb(List<Contact> c, DbWithSQL db) {
 			Scanner scansave = new Scanner(System.in);
 			System.out.print("Vuoi aggiornare il dato sul db? ");
 			boolean rispostaValida = false;

@@ -10,9 +10,9 @@ import it.beije.suormary.rubrica.Contact;
 
 public class MetodiRubrica {
 	
-	private ExerciseswithDB db;
+	private DbWithSQL db;
 	public MetodiRubrica() {
-		db = new ExerciseswithDB();
+		db = new DbWithSQL();
 	}
 	
 	// list of contacts
@@ -258,7 +258,7 @@ public class MetodiRubrica {
 	}
 	
 	//save into one type of file
-	public static void chooseFile(List<Contact> c, ExerciseswithDB db) {
+	public static void chooseFile(List<Contact> c, DbWithSQL db) {
 		Scanner scanChoose = new Scanner(System.in);
 		System.out.print("Vuoi salvare il risultato su un file? ");
 		boolean rispostaValida = false;
@@ -294,7 +294,7 @@ public class MetodiRubrica {
 		}
 	}
 	
-	public static void saveToDb(List<Contact> c, ExerciseswithDB db) {
+	public static void saveToDb(List<Contact> c, DbWithSQL db) {
 		Scanner scansave = new Scanner(System.in);
 		System.out.print("Vuoi aggiornare il dato sul db? ");
 		boolean rispostaValida = false;

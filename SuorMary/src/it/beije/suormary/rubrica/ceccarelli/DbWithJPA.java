@@ -9,7 +9,7 @@ import javax.persistence.Query;
 
 import it.beije.suormary.rubrica.Contact;
 
-public class MetodiRubricaJPA {
+public class DbWithJPA {
 	
 	public EntityManager entityManager;
 	
@@ -133,5 +133,10 @@ public class MetodiRubricaJPA {
 		} finally {
 			entityManager.close();
 		}
+	}
+	
+	//find multiple contacts
+	public void findMultipleContacts() {
+		
 	}
 }
