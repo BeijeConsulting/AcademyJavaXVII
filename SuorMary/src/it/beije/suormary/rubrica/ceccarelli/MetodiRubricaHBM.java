@@ -293,9 +293,12 @@ public class MetodiRubricaHBM {
 		
 	}
 	
-	// find multiple contacts - JPA
+	// find multiple contacts 
 	public void findMultipleContact() {
-		List<Contact> occ = jpa.findMultipleContacts();
+		//JPA
+		//List<Contact> occ = jpa.findMultipleContacts();
+		//HBM
+		List<Contact> occ = hbm.findMultipleContact();
 		System.out.println("Di seguito la lista dei contatti con più di una occorrenza:");
 		if(occ.isEmpty() || occ==null) {
 			System.out.println("Non ci sono contatti ripetuti");

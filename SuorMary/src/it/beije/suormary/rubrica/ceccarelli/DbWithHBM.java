@@ -190,4 +190,19 @@ public class DbWithHBM {
 			}
 	}
 	
+	//find multiple contacts
+	public List<Contact> findMultipleContact() {
+		List<Contact> occ= new ArrayList<Contact>();
+		try {
+			session = HBMsessionFactory.openSession();
+			Query<Contact> query = session.createQuery("SELECT COUNT(*) from Contact as c GROUP BY c.name, c.surname HAVING COUNT>1");
+			occ = query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return occ;
+	}
+	
 }
