@@ -22,7 +22,6 @@ public class RubricaJPA {
 	    		 CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 	    		 CriteriaQuery<Contact> criteriaQuery = criteriaBuilder.createQuery(Contact.class);
 	    		 Root<Contact> contactRoot = criteriaQuery.from(Contact.class);
-	    		 List<Contact> contacts = entityManager.createQuery(criteriaQuery).getResultList();
 	    		 System.out.print("Vuoi ordinare i contatti per nome e cognome? (si/no) : ");
 	    		 String ord = scanner.nextLine();
 
