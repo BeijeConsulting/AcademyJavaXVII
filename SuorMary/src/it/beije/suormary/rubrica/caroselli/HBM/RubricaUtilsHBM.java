@@ -289,31 +289,34 @@ public class RubricaUtilsHBM {
 	}
 
 	public static void importExportFromToCSV() {
-		System.out.println("scrivi 'importa' per importare i contatti dal db al csv, 'esporta' per esportare i contatti dal cvs al db");
+		System.out.println(
+				"scrivi 'importa' per importare i contatti dal db al csv, 'esporta' per esportare i contatti dal cvs al db");
 		String choice = RubricaManagerHBM.scanner.nextLine();
-		if(choice != "importa" || choice != "esporta") {
+		if (choice != "importa" || choice != "esporta") {
 			System.out.println("Scelte non corrette");
-		} else if(choice == "importa") {
-			importContactsToDbFromCSV("/home/flaviana/git/AcademyJavaXVII/SuorMary/src/it/beije/suormary/rubrica/caroselli/rubrica.csv");
+		} else if (choice == "importa") {
+			importContactsToDbFromCSV(
+					"/home/flaviana/git/AcademyJavaXVII/SuorMary/src/it/beije/suormary/rubrica/caroselli/rubrica.csv");
 			System.out.println("Contatti importati correttamente");
 		} else {
 			exportContactsFromDbToCSV("/home/flaviana/fromDbToCSV.csv");
 		}
 	}
-	
+
 	public static void importExportFromToXML() {
-		System.out.println("scrivi 'importa' per importare i contatti dal db all'xml, 'esporta' per esportare i contatti dal cvs all'xml");
+		System.out.println(
+				"scrivi 'importa' per importare i contatti dal db all'xml, 'esporta' per esportare i contatti dal cvs all'xml");
 		String choice = RubricaManagerHBM.scanner.nextLine();
-		if(choice != "importa" || choice != "esporta") {
+		if (choice != "importa" || choice != "esporta") {
 			System.out.println("Scelte non corrette");
-		} else if(choice == "importa") {
-			importContactsToDbFromXML("/home/flaviana/dev/beije/AcademyJavaXVII/Exercises/src/it/beije/xvii/exercises/Caroselli/myRubrica/rubrica.xml");
+		} else if (choice == "importa") {
+			importContactsToDbFromXML(
+					"/home/flaviana/dev/beije/AcademyJavaXVII/Exercises/src/it/beije/xvii/exercises/Caroselli/myRubrica/rubrica.xml");
 			System.out.println("Contatti importati correttamente");
 		} else {
 			exportContactsFromDbToXML("/home/flaviana/fromDbToXML.xml");
 		}
 	}
-	
 
 	public static void exportContactsFromDbToCSV(String path) {
 
@@ -595,17 +598,19 @@ public class RubricaUtilsHBM {
 
 		try {
 			session = HBMSessionFactory.openSession();
-			Query<Contact> query = session
-					.createQuery("SELECT c.name, c.surname, c.phone, c.email, c.note FROM Contact as c WHERE c IN "
-							+ "(SELECT c2 FROM Contact as c2 WHERE c2.name = '" + value + "' OR c2.surname = '" + value
-							+ "' OR c2.phone = '" + value + "' OR c2.email = '" + value + "' OR c2.note = '" + value
-							+ "') GROUP BY c.name, c.surname, c.phone, c.email, c.note HAVING COUNT(*) > 1");
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact c WHERE c.id IN "
+					+ "(SELECT c2.id FROM Contact c2 WHERE c2.id <> :choice AND (c2.name = :value OR c2.surname = :value OR c2.phone = :value OR c2.email = :value OR c2.note = :value))");
+			query.setParameter("choice", 0);
+			query.setParameter("value", value);
 
-			List<Contact> contacts = query.getResultList();
-//			for(Contact c: contacts) {
-//				duplicateContacts.add(new Contact(c.getId(), c.getName(), c.getSurname(),
-//						c.getPhone(), c.getEmail(), c.getNote()));
-//			}
+			List<Contact> results = query.getResultList();
+
+			System.out.println("Number of results: " + results.size());
+
+			for (Contact result : results) {
+				System.out.println(result);
+				duplicateContacts.add(result);
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -613,18 +618,6 @@ public class RubricaUtilsHBM {
 			session.close();
 
 		}
-
-//		StringBuilder query = new StringBuilder("SELECT id, name, surname, phone, email, note\n" + "FROM rubrica\n"
-//				+ "WHERE (name, surname, phone, email, note) IN (\n" + "    SELECT name, surname, phone, email, note\n"
-//				+ "    FROM rubrica\n" + "    where name = '" + value + "' OR surname = '" + value + "' OR phone = '"
-//				+ value + "' OR email = '" + value + "' OR note = '" + value + "' \n"
-//				+ "    GROUP BY name, surname, phone, email, note\n" + "    HAVING COUNT(*) > 1 \n" + "  );");
-//
-//		ResultSet rs = statement.executeQuery(query.toString());
-//		while (rs.next()) {
-//			duplicateContacts.add(new Contact(rs.getInt("id"), rs.getString("name"), rs.getString("surname"),
-//					rs.getString("phone"), rs.getString("email"), rs.getString("note")));
-//		}
 
 		return duplicateContacts;
 	}
@@ -634,36 +627,31 @@ public class RubricaUtilsHBM {
 		List<Contact> duplicateContacts = findDuplicatesContactByValue();
 		printContacts(duplicateContacts);
 		Session session = null;
-		if (duplicateContacts.isEmpty()) {
-			return;
-		}
 
-		int choice = ScannerUtil.readIntValue("Inserisci l'id del contatto principale da tenere: ");
-		System.out.println("Id scelto: " + choice);
-		if (areYouSure()) {
+		if (!duplicateContacts.isEmpty()) {
 
-			// elimino i contatti duplicati
-			for (Contact c : duplicateContacts) {
-				if (c.getId() != choice) {
+			int choice = ScannerUtil.readIntValue("Inserisci l'id del contatto principale da tenere: ");
+			System.out.println("Id scelto: " + choice);
+			if (areYouSure()) {
+				try {
+					session = HBMSessionFactory.openSession();
 
-					try {
-						session = HBMSessionFactory.openSession();
-						Transaction transaction = session.beginTransaction();
+					Query<Contact> deleteQuery = session.createQuery(
+							"DELETE FROM Contact c WHERE c.id NOT IN (:choice) AND c IN :duplicateContacts");
+					deleteQuery.setParameter("choice", choice);
+					deleteQuery.setParameter("duplicateContacts", duplicateContacts);
+					int deletedCount = deleteQuery.executeUpdate();
 
-						Query<Contact> query = session
-								.createQuery("SELECT c FROM Contact as c WHERE id NOT IN ('" + choice + "')");
-						Contact contact = query.getSingleResult();
-						session.delete(contact);
+					System.out.println("Eliminati " + deletedCount + " contatti duplicati.");
 
-						transaction.commit();
-					} catch (Exception e) {
-						e.printStackTrace();
-					} finally {
-						session.close();
-					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					session.close();
+
 				}
-
 			}
+
 			System.out.println("Operazione completata!");
 
 		} else {
@@ -723,36 +711,5 @@ public class RubricaUtilsHBM {
 		return elements;
 	}
 
-	public static Statement connection(String dbName, String user) throws ClassNotFoundException {
-
-		Connection connection = null;
-		Statement statement = null;
-
-		try {
-
-			Class.forName("com.mysql.cj.jdbc.Driver");
-
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + dbName + "?serverTimezone=CET",
-					"'" + user + "'", "password");
-
-			statement = connection.createStatement();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-//        } finally {
-//            try {
-//                if (connection != null && statement != null) {
-//                    statement.close();
-//                    connection.close();
-//                }
-//
-//            } catch (SQLException e) {
-//                throw new RuntimeException(e);
-//            }
-
-		}
-
-		return statement;
-	}
 
 }

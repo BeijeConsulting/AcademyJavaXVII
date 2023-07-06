@@ -534,11 +534,11 @@ System.out.println("Inserisci i campi del contatto che vuoi aggiungere alla rubr
 
 		Statement statement = connection("suor_mary", "root");
 
-		StringBuilder query = new StringBuilder("SELECT id, name, surname, phone, email, note\n" + "FROM rubrica\n"
-				+ "WHERE (name, surname, phone, email, note) IN (\n" + "    SELECT name, surname, phone, email, note\n"
-				+ "    FROM rubrica\n" + "    where name = '" + value + "' OR surname = '" + value + "' OR phone = '"
-				+ value + "' OR email = '" + value + "' OR note = '" + value + "' \n"
-				+ "    GROUP BY name, surname, phone, email, note\n" + "    HAVING COUNT(*) > 1 \n" + "  );");
+		StringBuilder query = new StringBuilder("SELECT id, name, surname, phone, email, note FROM rubrica"
+				+ "WHERE (name, surname, phone, email, note) IN (SELECT name, surname, phone, email, note"
+				+ " FROM rubrica" + " where name = '" + value + "' OR surname = '" + value + "' OR phone = '"
+				+ value + "' OR email = '" + value + "' OR note = '" + value + "' GROUP BY name, surname, phone, email, note" +
+				"    HAVING COUNT(*) > 1)");
 
 		ResultSet rs = statement.executeQuery(query.toString());
 		while (rs.next()) {
@@ -568,7 +568,7 @@ System.out.println("Inserisci i campi del contatto che vuoi aggiungere alla rubr
 				if (c.getId() != choice) {
 
 					Statement statement = connection("suor_mary", "root");
-					String deleteQuery = "DELETE FROM rubrica\n" + "WHERE id NOT IN ('" + choice + "');";
+					String deleteQuery = "DELETE FROM rubrica\n" + "WHERE id NOT IN ('" + choice + "') AND c IN :" + duplicateContacts + ";";
 
 					statement.executeUpdate(deleteQuery);
 					statement.close();

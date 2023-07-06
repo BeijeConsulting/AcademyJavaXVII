@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 public class RubricaManagerJPA {
 	
+	public static final Scanner scanner = new Scanner(System.in);
+	
 	public static void main(String[] args) throws Exception {
 
 		System.out.println("Inserisci 1 per vedere la lista dei contatti,");
@@ -26,27 +28,27 @@ public class RubricaManagerJPA {
 		case 2:
 			System.out.println(RubricaUtilsJPA.findContactsFromInsertedValue());
 			break;
-//		case 3:
-//			RubricaUtilsJPA.insertContact();
-//			break;
-//		case 4:
-//			RubricaUtilsJPA.changeContact();
-//			break;
-//		case 5:
-//			RubricaUtilsJPA.deleteContact();
-//			break;
-//		case 6:
-//			RubricaUtilsJPA.findDuplicatesContactByValue();
-//			break;
-//		case 7:
-//			RubricaUtilsJPA.mergeDuplicatesContact();
-//			break;
-//		case 8:
-//			RubricaUtilsJPA.importExportFromToCSV();
-//			break;
-//		case 9:
-//			RubricaUtilsJPA.importExportFromToXML();
-//			break;
+		case 3:
+			RubricaUtilsJPA.insertContact();
+			break;
+		case 4:
+			RubricaUtilsJPA.changeContact();
+			break;
+		case 5:
+			RubricaUtilsJPA.deleteContact();
+			break;
+		case 6:
+			RubricaUtilsJPA.findDuplicatesContactByValue();
+			break;
+		case 7:
+			RubricaUtilsJPA.mergeDuplicatesContact();
+			break;
+		case 8:
+			RubricaUtilsJPA.importExportFromToCSV();
+			break;
+		case 9:
+			RubricaUtilsJPA.importExportFromToXML();
+			break;
 		}
 
 		scanner.close();
