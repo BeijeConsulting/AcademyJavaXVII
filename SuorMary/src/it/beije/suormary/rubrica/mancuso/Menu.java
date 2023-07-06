@@ -554,8 +554,8 @@ public class Menu {
 				
 				JPAUtils.editContact(toEdit, newName, newSurname, newNumber, newEmail, newNotes);
 				
-				System.out.println("Contatto modificato:\n");
-				System.out.println(toEdit);
+				System.out.println("Contatto modificato\n");
+				//System.out.println(toEdit);
 				
 			}else {
 				System.out.println("La lista dei contatti e' vuota. Non e' possibile modificare un contatto.");

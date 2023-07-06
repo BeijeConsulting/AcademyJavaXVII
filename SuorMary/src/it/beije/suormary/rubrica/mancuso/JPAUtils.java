@@ -76,7 +76,7 @@ public class JPAUtils {
 			entityManager = JPAManagerFactory.getEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
 			
-			CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+			/*CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 				
 			CriteriaUpdate<Contact> criteriaUpdate = cb.createCriteriaUpdate(Contact.class);
 			
@@ -93,18 +93,18 @@ public class JPAUtils {
 			
 			int i = entityManager.createQuery(criteriaUpdate).executeUpdate();
 			
-			transaction.commit();
+			transaction.commit();*/
 			
-			//transaction.begin();
+			transaction.begin();
 			
-			/*c.setFirstName(name);
+			c.setFirstName(name);
 			c.setLastName(surname);
 			c.setEmail(email);
 			c.setPhoneNumber(phone);
-			c.setNotes(notes);*/
+			c.setNotes(notes);
 
-			//entityManager.persist(c);
-			//transaction.commit();
+			entityManager.persist(c);
+			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -148,9 +148,9 @@ public class JPAUtils {
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
 	
-			//contact = entityManager.find(Contact.class, id);		
+			contact = entityManager.find(Contact.class, id);		
 
-			CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+			/*CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 			
 			CriteriaQuery<Contact> cq = cb.createQuery(Contact.class);
 			Root<Contact> rootContact = cq.from(Contact.class);
@@ -158,8 +158,8 @@ public class JPAUtils {
 			cq.select(rootContact).where(cb.equal(rootContact.get("id"), id));
 			
 			TypedQuery<Contact> typedQuery = entityManager.createQuery(cq);
-			contact = typedQuery.getSingleResult();
-
+			contact = typedQuery.getSingleResult();*/
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
