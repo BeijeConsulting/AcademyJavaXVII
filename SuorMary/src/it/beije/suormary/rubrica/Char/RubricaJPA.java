@@ -7,6 +7,9 @@ import java.util.Scanner;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transaction;
 
 public class RubricaJPA {
@@ -16,14 +19,24 @@ public class RubricaJPA {
             List<Contact> listContacts = null;
 
 	    	 try {
+	    		 CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+	    		 CriteriaQuery<Contact> criteriaQuery = criteriaBuilder.createQuery(Contact.class);
+	    		 Root<Contact> contactRoot = criteriaQuery.from(Contact.class);
+	    		 List<Contact> contacts = entityManager.createQuery(criteriaQuery).getResultList();
 	    		 System.out.print("Vuoi ordinare i contatti per nome e cognome? (si/no) : ");
 	    		 String ord = scanner.nextLine();
-	    		 Query query = null;
-	    		 if(ord.equals("si")) query = entityManager.createQuery("SELECT c FROM Contact as c ORDER BY c.name,c.surname");
+//	    		 Query query = null;
+//	    		 if(ord.equals("si")) query = entityManager.createQuery("SELECT c FROM Contact as c ORDER BY c.name,c.surname");
+	    		 if(ord.equals("si")) {
+	    			 criteriaQuery.select(contactRoot).orderBy(criteriaBuilder.asc(contactRoot.get("name")), criteriaBuilder.asc(contactRoot.get("surname")));
+	    			 listContacts = entityManager.createQuery(criteriaQuery).getResultList();
+	    		 }
 	    		 
-	    		 else query = entityManager.createQuery("SELECT c FROM Contact as c");
+	    		 else {
+	    			 criteriaQuery.select(contactRoot);
+	    			 listContacts = entityManager.createQuery("SELECT c FROM Contact as c").getResultList();
+	    		 }
 	    		 
-	    		  listContacts = query.getResultList();
 	    		 
 	    	 } catch(Exception e) {
 	    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
@@ -50,10 +63,12 @@ public class RubricaJPA {
 	    		 String name = scanner.nextLine();
 	    		 System.out.print("Inserisci il cognome : ");
 	    		 String surname = scanner.nextLine();
-	    		 Query query = entityManager.createQuery("SELECT c FROM Contact as c WHERE c.name = :name AND c.surname = :surname");
-	    		 query.setParameter("name", name);
-	    		 query.setParameter("surname", surname);
-	    		 listContacts = query.getResultList();
+	    		 CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+	    		 CriteriaQuery<Contact> criteriaQuery = criteriaBuilder.createQuery(Contact.class);
+	    		 Root<Contact> contactRoot = criteriaQuery.from(Contact.class);
+	    		 criteriaQuery.select(contactRoot).where(criteriaBuilder.equal(contactRoot.get("name"), name),criteriaBuilder.equal(contactRoot.get("surname"), surname));
+
+	    		 listContacts =  entityManager.createQuery(criteriaQuery).getResultList();
 	    		 
 	    	 } catch(Exception e) {
 	    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
@@ -134,10 +149,7 @@ public class RubricaJPA {
 				case "phone" : c.setPhoneNumber(valore); break;
 				case "note" : c.setNote(valore); break;
 				}
-//				Query query = entityManager.createQuery("UPDATE Contact SET " +  campo + " = :valore WHERE id = :id");
-//		         query.setParameter("valore", valore);
-//		         query.setParameter("id", c.getId());
-//		         query.executeUpdate();
+
 				entityManager.persist(c);
 			    transaction.commit();
 			    System.out.println("Modifica eseguita");
