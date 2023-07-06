@@ -25,8 +25,7 @@ public class RubricaJPA {
 	    		 List<Contact> contacts = entityManager.createQuery(criteriaQuery).getResultList();
 	    		 System.out.print("Vuoi ordinare i contatti per nome e cognome? (si/no) : ");
 	    		 String ord = scanner.nextLine();
-//	    		 Query query = null;
-//	    		 if(ord.equals("si")) query = entityManager.createQuery("SELECT c FROM Contact as c ORDER BY c.name,c.surname");
+
 	    		 if(ord.equals("si")) {
 	    			 criteriaQuery.select(contactRoot).orderBy(criteriaBuilder.asc(contactRoot.get("name")), criteriaBuilder.asc(contactRoot.get("surname")));
 	    			 listContacts = entityManager.createQuery(criteriaQuery).getResultList();
@@ -34,7 +33,7 @@ public class RubricaJPA {
 	    		 
 	    		 else {
 	    			 criteriaQuery.select(contactRoot);
-	    			 listContacts = entityManager.createQuery("SELECT c FROM Contact as c").getResultList();
+	    			 listContacts = entityManager.createQuery(criteriaQuery).getResultList();
 	    		 }
 	    		 
 	    		 
