@@ -83,12 +83,14 @@ public class Menu {
 		Contact c = null;
 		int index;
 		
+		System.out.println("\n");
+		
 		switch(command) {
 		case "import csv":
-			System.out.println("\nInserisci il path del file CSV da cui importare i dati: ");
+			System.out.println("Inserisci il path del file CSV da cui importare i dati: ");
 			pathFile = input.nextLine();
 			
-			System.out.println("\nInserisci il separatore del file CSV ( ; , : [etc...] ): ");
+			System.out.println("Inserisci il separatore del file CSV ( ; , : [etc...] ): ");
 			separator = input.nextLine();
 			
 			try {
@@ -98,7 +100,7 @@ public class Menu {
 			}
 			break;
 		case "import xml":
-			System.out.println("\nInserisci il path del file XML da cui importare i dati: ");
+			System.out.println("Inserisci il path del file XML da cui importare i dati: ");
 			pathFile = input.nextLine();
 			
 			try {
@@ -111,10 +113,12 @@ public class Menu {
 			ab.contacts = ab.loadAddressesHBM();
 			break;
 		case "export csv":
-			System.out.println("\nInserisci il path del file CSV su cui esportare i dati: ");
+			System.out.println("Inserisci il path del file CSV su cui esportare i dati: ");
 			pathFile = input.nextLine();
 			
-			System.out.println("\nInserisci il separatore del file CSV ( ; , : [etc...] ): ");
+			System.out.println("\n");
+			
+			System.out.println("Inserisci il separatore del file CSV ( ; , : [etc...] ): ");
 			separator = input.nextLine();
 			
 			overwrite = "";
@@ -132,7 +136,7 @@ public class Menu {
 			
 			break;
 		case "export xml":
-			System.out.println("\nInserisci il path del file XML su cui esportare i dati: ");
+			System.out.println("Inserisci il path del file XML su cui esportare i dati: ");
 			pathFile = input.nextLine();
 			
 			overwrite = "";
@@ -168,7 +172,7 @@ public class Menu {
 			System.out.println(ab.toString());
 			break;
 		case "add":
-			System.out.println("\nInserisci il nome del contatto:");
+			System.out.println("Inserisci il nome del contatto:");
 			name = input.nextLine();
 			
 			System.out.println("\nInserisci il cognome del contatto:");
@@ -201,7 +205,7 @@ public class Menu {
 						try {
 							index = Integer.valueOf(command);
 						}catch(NumberFormatException ex) {
-							System.out.println("Inserire un indice numerico o \"exit\".");
+							System.out.println("\nInserire un indice numerico o \"exit\".");
 						}
 					}
 				}
@@ -211,12 +215,12 @@ public class Menu {
 				// EDIT NAME
 				String response = "";
 				while(!response.equals("y") && !response.equals("n")) {
-					System.out.println("Modificare il nome? (Y/n)");
+					System.out.println("\nModificare il nome? (Y/n)");
 					response = input.nextLine().toLowerCase();
 				}
 				
 				if(response.equals("y")) {
-					System.out.println("Inserire il nuovo nome: ");
+					System.out.println("\nInserire il nuovo nome: ");
 					String newName = input.nextLine();
 					ab.contacts.get(index).setFirstName(newName);
 				}
@@ -224,12 +228,12 @@ public class Menu {
 				// EDIT SURNAME
 				response = "";
 				while(!response.equals("y") && !response.equals("n")) {
-					System.out.println("Modificare il cognome? (Y/n)");
+					System.out.println("\nModificare il cognome? (Y/n)");
 					response = input.nextLine().toLowerCase();
 				}
 				
 				if(response.equals("y")) {
-					System.out.println("Inserire il nuovo cognome: ");
+					System.out.println("\nInserire il nuovo cognome: ");
 					String newSurname = input.nextLine();
 					ab.contacts.get(index).setLastName(newSurname);
 				}
@@ -237,12 +241,12 @@ public class Menu {
 				// EDIT PHONE NUMBER
 				response = "";
 				while(!response.equals("y") && !response.equals("n")) {
-					System.out.println("Modificare il numero di telefono? (Y/n)");
+					System.out.println("\nModificare il numero di telefono? (Y/n)");
 					response = input.nextLine().toLowerCase();
 				}
 				
 				if(response.equals("y")) {
-					System.out.println("Inserire il nuovo numero di telefono: ");
+					System.out.println("\nInserire il nuovo numero di telefono: ");
 					String newNumber = input.nextLine();
 					ab.contacts.get(index).setPhoneNumber(newNumber);
 				}
@@ -250,12 +254,12 @@ public class Menu {
 				// EDIT MAIL
 				response = "";
 				while(!response.equals("y") && !response.equals("n")) {
-					System.out.println("Modificare la email? (Y/n)");
+					System.out.println("\nModificare la email? (Y/n)");
 					response = input.nextLine().toLowerCase();
 				}
 				
 				if(response.equals("y")) {
-					System.out.println("Inserire la nuova email: ");
+					System.out.println("\nInserire la nuova email: ");
 					String newEmail = input.nextLine();
 					ab.contacts.get(index).setEmail(newEmail);
 				}
@@ -263,12 +267,12 @@ public class Menu {
 				// EDIT NOTES
 				response = "";
 				while(!response.equals("y") && !response.equals("n")) {
-					System.out.println("Modificare le note? (Y/n)");
+					System.out.println("\nModificare le note? (Y/n)");
 					response = input.nextLine().toLowerCase();
 				}
 				
 				if(response.equals("y")) {
-					System.out.println("Inserire le nuove note: ");
+					System.out.println("\nInserire le nuove note: ");
 					String newNotes = input.nextLine();
 					ab.contacts.get(index).setNotes(newNotes);
 				}
@@ -289,7 +293,7 @@ public class Menu {
 						try {
 							index = Integer.valueOf(command);
 						}catch(NumberFormatException ex) {
-							System.out.println("Inserire un indice numerico o \"exit\".");
+							System.out.println("\nInserire un indice numerico o \"exit\".");
 						}
 					}
 				}
@@ -318,7 +322,7 @@ public class Menu {
 			name = input.nextLine();
 				
 			resultContacts = ab.findContactByName(name);
-			
+			System.out.println("\n");
 			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti con il nome simile a quello inserito: \n" + ANSI_RESET);
 			System.out.println(AddressBook.print(resultContacts));
 				
