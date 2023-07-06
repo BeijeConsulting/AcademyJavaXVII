@@ -11,6 +11,10 @@ import java.util.Scanner;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -35,13 +39,14 @@ public class ContactsManagerJPA {
 	}
 	
 	public boolean[] setDataToRead() {
-		int answer;
+		String answer;
 		boolean[] result = new boolean[contactFields.length];
 		result[0] = false; //id
 		for (int i = 1; i < contactFields.length; i++) {
 			System.out.println("Do you want to edit " + contactFields[i] + "? \n0: NO\n1: YES");
-			answer = in.nextInt();
-			if (answer == 1) result[i] = true;
+			answer = in.nextLine();
+			//in.nextLine();
+			if (answer.equals("1")) result[i] = true;
 			else result[i] = false;
 		}
 		return result;
@@ -53,8 +58,8 @@ public class ContactsManagerJPA {
 		for (int i = 0; i < contactFields.length; i++) {
 			if (dataToRead[i]) {
 				System.out.println("Enter " + contactFields[i] + ":");
-				in.nextLine();
 				result[i] = in.nextLine();
+				//in.nextLine();
 			}
 			else result[i] = null;
 		}
@@ -115,41 +120,50 @@ public class ContactsManagerJPA {
 		int id;
 		
 		System.out.println("Enter id of contact. Enter 0 to see all contacts:");
-		String answer = in.next();
+		String answer = in.nextLine();
 		if (answer.equals("0")) {
 			sorting();
 			System.out.println("Enter id of contact:");	
-			String a = in.next();
-			in.nextLine();
+			String a = in.nextLine();
+			//in.nextLine();
 			id = Integer.parseInt(a);
 		} else id = Integer.parseInt(answer);
-		
 		return id;
 	}
 
+	private void print(int id) {
+		//EntityTransaction transaction = entityManager.getTransaction();
+		Contact contact = entityManager.find(Contact.class, id);
+		System.out.println(contact);	
+	}
+	
 	public void editContact(int id) {
+		//print(id); se togli il commento non funziona;
 		EntityTransaction transaction = entityManager.getTransaction();
 		transaction.begin();
 		
-		Contact contact = entityManager.find(Contact.class, id);
-		System.out.println(contact);
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		
+		CriteriaUpdate<Contact> cu = cb.createCriteriaUpdate(Contact.class);
+		Root<Contact> root = cu.from(Contact.class);
 		
 		String[] updateContact  = readData(setDataToRead());
-		//contact.setID(id);
-		if (updateContact[1] != null) contact.setName(updateContact[1]);
-		if (updateContact[2] != null) contact.setSurname(updateContact[2]);
-		if (updateContact[3] != null) contact.setPhoneNumber(updateContact[3]);
-		if (updateContact[4] != null) contact.setEmail(updateContact[4]);
-		if (updateContact[5] != null) contact.setNote(updateContact[5]);
+		if (updateContact[1] != null) cu.set("name", updateContact[1]);
+		if (updateContact[2] != null) cu.set("surname", updateContact[2]);
+		if (updateContact[3] != null) cu.set("phoneNumber", updateContact[3]);
+		if (updateContact[4] != null) cu.set("email", updateContact[4]);
+		if (updateContact[5] != null) cu.set("note", updateContact[5]);
+
+		cu.where(cb.equal(root.get("id"), id));
+		entityManager.createQuery(cu).executeUpdate(); 
 		transaction.commit();
-		entityManager.persist(contact);
 	}
 	
 	public void deleteContact(int id) {
-		
 		EntityTransaction transaction = entityManager.getTransaction();
 		boolean isActive = transaction.isActive();
 		if (!isActive) transaction.begin();
+		else print(id);
 		Contact contact = entityManager.find(Contact.class, id);
 		entityManager.remove(contact);
 		if(!isActive) transaction.commit();

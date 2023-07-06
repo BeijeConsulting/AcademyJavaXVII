@@ -33,6 +33,7 @@ public class ContactsManagerTest {
 		menu();
 		int id;
 		int answer = in.nextInt();
+		in.nextLine();
 		switch(answer) {
 		case 1: contactsManagerJDBC.sorting(); break; 
 		case 2: contactsManagerJDBC.searchContact(); break;
