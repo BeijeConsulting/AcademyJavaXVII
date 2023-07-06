@@ -47,7 +47,9 @@ public class GestioneRubricaHBM {
 				mr.deleteContact();
 				break;
 			case "6":
-				System.out.println("scelta 6");
+				//System.out.println("scelta 6");
+				//JPA
+				mr.findMultipleContact();
 				break;
 			case "7":
 				System.out.println("scelta 7");

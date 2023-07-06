@@ -35,6 +35,7 @@ public class Contact {
 	
 //	@Transient
 //	private String note2;
+	public Contact() {}
 	
 	public int getId() {
 		return id;
@@ -96,4 +97,24 @@ public class Contact {
 		
 		return builder.toString();
 	}
+	
+	//confronto due contatti
+//	public boolean equals(Object obj) {
+//		if(this == obj) {
+//			return true;
+//		}
+//		if(obj==null) {
+//			return false;
+//		}
+//		Contact other = (Contact) obj;
+//		if(
+//				this.getName().equals(other.getName()) &&
+//				this.getSurname().equals(other.getSurname()) &&
+//				this.getPhoneNumber().equals(getPhoneNumber()) &&
+//				this.getEmail().equals(other.getEmail()) &&
+//				this.getNote().equals(other.getNote())){
+//			return true;
+//		}
+//		return false;
+//	}
 }

@@ -3,6 +3,7 @@ package it.beije.suormary.rubrica.ceccarelli;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 import it.beije.suormary.rubrica.Contact;
 
@@ -26,35 +27,46 @@ public class MetodiRubricaHBM {
 		contacts = jpa.listContactJPA();
 		if(contacts.isEmpty()) {
 			System.out.println("Non ci sono risultati");
-			return;
+			return ;
 		}
 		List<Contact> names = new ArrayList<Contact>();
 		
-		Contact tmp = contacts.get(0);
-		for(int y=1;y<=contacts.size();y++) {
-			if(y==contacts.size()) {
-				names.add(tmp);
-				break;
-			}
-			//System.out.println(tmp.getName() + contacts.get(y).getName());
-			int comp = tmp.getName().compareToIgnoreCase(contacts.get(y).getName());
-			//System.out.println(comp);
-			if(comp<0) {
-				names.add(tmp);
-				tmp = contacts.get(y);
-			}else if(comp>0){
-				names.add(contacts.get(y)); 
-			}else {
-				names.add(contacts.get(y));
-				tmp = contacts.get(y);
-			}
+		// Aggiungi il primo contatto alla lista
+		names.add(contacts.get(0));
+
+		// Scorrere la lista dei contatti a partire dal secondo elemento
+		for (int i = 1; i < contacts.size(); i++) {
+		    Contact currentContact = contacts.get(i);
+		    boolean inserted = false;
+
+		    // Trova la posizione in cui inserire il contatto corrente in ordine alfabetico
+		    for (int j = 0; j < names.size(); j++) {
+		        Contact existingContact = names.get(j);
+
+		        // Confronta il nome del contatto corrente con il nome del contatto esistente nella lista
+		        int comparison = currentContact.getName().compareToIgnoreCase(existingContact.getName());
+
+		        if (comparison < 0) {
+		            // Inserisci il contatto corrente prima del contatto esistente
+		            names.add(j, currentContact);
+		            inserted = true;
+		            break;
+		        }
+		    }
+
+		    // Se il contatto corrente è in ordine alfabetico maggiore rispetto a tutti gli altri contatti nella lista, aggiungilo alla fine
+		    if (!inserted) {
+		        names.add(currentContact);
+		    }
 		}
+
 		
 		System.out.println("Di seguito la lista dei contatti: ");
 		for(Contact contact : names) {
 			System.out.println(contact.toString());
 		}
-		chooseFile(contacts);
+		chooseFile(names);
+		
 	}
 	
 	//search contact
@@ -281,65 +293,78 @@ public class MetodiRubricaHBM {
 		
 	}
 	
-		
-		
-		//save into one type of file
-		public static void chooseFile(List<Contact> c) {
-			Scanner scanChoose = new Scanner(System.in);
-			System.out.print("Vuoi salvare il risultato su un file? ");
-			boolean rispostaValida = false;
-			while(!rispostaValida) {
-				String r = scanChoose.next();
-				if(r.equalsIgnoreCase("Si") || r.equalsIgnoreCase("Sì") ) {
-					System.out.print("CSV o XML? ");
-					String s = scanChoose.next().trim();
-					if(s.equalsIgnoreCase("csv")) {
-						try {
-							rispostaValida = true;
-							MetodiFile.writeRubricaFromDbToCSV(c);	
-						}catch(Exception e) {
-							System.out.println("errore");
-						}
-					}else if(s.equalsIgnoreCase("xml")){
-						try {
-							rispostaValida = true;
-							MetodiFile.writeRubricaFromDbToXML(c);
-						
-						}catch(Exception e) {
-							System.out.println("errore");
-						}
-					}else {
-						System.out.println("Valore inserito non valido");
-					}
-				}else if(r.equalsIgnoreCase("No")){
-					System.out.println("Valori non salvati");
-					rispostaValida = true;
-				}else {
-					System.out.println("Valore inserito non valido");
-				};
-			}
+	// find multiple contacts - JPA
+	public void findMultipleContact() {
+		List<Contact> occ = jpa.findMultipleContacts();
+		System.out.println("Di seguito la lista dei contatti con più di una occorrenza:");
+		if(occ.isEmpty() || occ==null) {
+			System.out.println("Non ci sono contatti ripetuti");
+			return;
+		}
+		for(Contact contact : occ) {
+			System.out.println(contact.toString());
 		}
 		
-		public static void saveToDb(List<Contact> c, DbWithSQL db) {
-			Scanner scansave = new Scanner(System.in);
-			System.out.print("Vuoi aggiornare il dato sul db? ");
-			boolean rispostaValida = false;
-			while(!rispostaValida) {
-				String r = scansave.next();
-				if(r.equalsIgnoreCase("Si") || r.equalsIgnoreCase("Sì") ) {
-					rispostaValida = true;
+		chooseFile(occ);
+	}
+		
+	//save into one type of file
+	public static void chooseFile(List<Contact> c) {
+		Scanner scanChoose = new Scanner(System.in);
+		System.out.print("Vuoi salvare il risultato su un file? ");
+		boolean rispostaValida = false;
+		while(!rispostaValida) {
+			String r = scanChoose.next();
+			if(r.equalsIgnoreCase("Si") || r.equalsIgnoreCase("Sì") ) {
+				System.out.print("CSV o XML? ");
+				String s = scanChoose.next().trim();
+				if(s.equalsIgnoreCase("csv")) {
 					try {
-						db.updateContact(c);
+						rispostaValida = true;
+						MetodiFile.writeRubricaFromDbToCSV(c);	
 					}catch(Exception e) {
-						e.fillInStackTrace();
+						System.out.println("errore");
 					}
+				}else if(s.equalsIgnoreCase("xml")){
+					try {
+						rispostaValida = true;
+						MetodiFile.writeRubricaFromDbToXML(c);
 					
-				}else if(r.equalsIgnoreCase("No")){
-					System.out.println("Contatto non aggiornato");
-					rispostaValida = true;
-				}else{
+					}catch(Exception e) {
+						System.out.println("errore");
+					}
+				}else {
 					System.out.println("Valore inserito non valido");
 				}
+			}else if(r.equalsIgnoreCase("No")){
+				System.out.println("Valori non salvati");
+				rispostaValida = true;
+			}else {
+				System.out.println("Valore inserito non valido");
+			};
+		}
+	}
+	
+	public static void saveToDb(List<Contact> c, DbWithSQL db) {
+		Scanner scansave = new Scanner(System.in);
+		System.out.print("Vuoi aggiornare il dato sul db? ");
+		boolean rispostaValida = false;
+		while(!rispostaValida) {
+			String r = scansave.next();
+			if(r.equalsIgnoreCase("Si") || r.equalsIgnoreCase("Sì") ) {
+				rispostaValida = true;
+				try {
+					db.updateContact(c);
+				}catch(Exception e) {
+					e.fillInStackTrace();
+				}
+				
+			}else if(r.equalsIgnoreCase("No")){
+				System.out.println("Contatto non aggiornato");
+				rispostaValida = true;
+			}else{
+				System.out.println("Valore inserito non valido");
 			}
-}
+		}
+	}
 }
