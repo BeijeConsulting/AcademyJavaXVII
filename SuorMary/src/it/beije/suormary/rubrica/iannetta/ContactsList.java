@@ -131,7 +131,7 @@ public class ContactsList {
 		Contact con = null;
 		while (rs.next()) {
 			con = new Contact();
-			con.setID(rs.getInt("id"));
+			con.setId(rs.getInt("id"));
 			con.setName(rs.getString("name"));
 			con.setSurname(rs.getString("surname"));
 			con.setPhoneNumber(rs.getString("phone_number"));

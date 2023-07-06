@@ -99,7 +99,7 @@ public class ContactsManagerJDBC {
 		Contact con = null; new Contact();
 		while (rs.next()) {
 			con = new Contact();
-			con.setID(rs.getInt("id"));
+			con.setId(rs.getInt("id"));
 			con.setName(rs.getString("name"));
 			con.setSurname(rs.getString("surname"));
 			con.setPhoneNumber(rs.getString("phone_number"));
@@ -169,8 +169,8 @@ public class ContactsManagerJDBC {
 		ResultSet rs = statement.executeQuery("SELECT * FROM telephone_book WHERE id = " + id +";");
 		Contact con = new Contact();
 		while (rs.next()) {
-			con.setID(id);
-			con.setID(rs.getInt("id"));
+			con.setId(id);
+			con.setId(rs.getInt("id"));
 			con.setName(rs.getString("name"));
 			con.setSurname(rs.getString("surname"));
 			con.setPhoneNumber(rs.getString("phone_number"));
@@ -212,7 +212,7 @@ public class ContactsManagerJDBC {
 			number = con1.getPhoneNumber();
 			rs = statement.executeQuery("SELECT * FROM telephone_book WHERE phone_number = '" + number + "';");
 			while (rs.next()) {
-				con2.setID(rs.getInt("id"));
+				con2.setId(rs.getInt("id"));
 				con2.setName(rs.getString("name"));
 				con2.setSurname(rs.getString("surname"));
 				con2.setPhoneNumber(rs.getString("phone_number"));
@@ -258,7 +258,7 @@ public class ContactsManagerJDBC {
 		for (List<Contact> duplicates: listOfDuplicates) {
 			keepThisContact = duplicates.get(0);
 			
-			id = keepThisContact.getID();
+			id = keepThisContact.getId();
 			
 			name = keepThisContact.getName();
 			if (name == null) {
@@ -335,7 +335,7 @@ public class ContactsManagerJDBC {
 					if (answer.equals("1")) keepThisContact.setNote(checkThisContact.getNote());
 				}
 				
-				deleteContact(checkThisContact.getID());
+				deleteContact(checkThisContact.getId());
 			}
 			list.add(keepThisContact);
 			contactsList.writeContactListDB(list);
@@ -393,7 +393,7 @@ public class ContactsManagerJDBC {
 		
 		if (path.endsWith(".xml")) {
 			while (rs.next()) {
-				con.setID(rs.getInt("id"));
+				con.setId(rs.getInt("id"));
 				con.setName(rs.getString("name"));
 				con.setSurname(rs.getString("surname"));
 				con.setPhoneNumber(rs.getString("phoneNumber"));
@@ -407,7 +407,7 @@ public class ContactsManagerJDBC {
 			System.out.println("Enter separator: ");
 			String separator = in.nextLine();
 			while (rs.next()) {
-				con.setID(rs.getInt("id"));
+				con.setId(rs.getInt("id"));
 				con.setName(rs.getString("name"));
 				con.setSurname(rs.getString("surname"));
 				con.setPhoneNumber(rs.getString("phoneNumber"));

@@ -31,11 +31,11 @@ public class Contact {
 	@Column(name = "note")	
 	private String note;
 	
-	public int getID() {
+	public int getId() {
 		return id;
 	}
 	
-	public void setID(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	
@@ -76,13 +76,13 @@ public class Contact {
 
 	
 	public String toString() {
-		StringBuilder builder = new StringBuilder("")
-				.append("ID: ").append(id)
-				.append("\nName: ").append(name)
-				.append("\nSurname: ").append(surname)
-				.append("\nPhone number: ").append(phoneNumber)
-				.append("\nEmail: ").append(email)
-				.append("\nNote: ").append(note);
+		StringBuilder builder = new StringBuilder("{")
+				.append("id: ").append(id)
+				.append(" Name: ").append(name)
+				.append(" Surname: ").append(surname)
+				.append(" Phone number: ").append(phoneNumber)
+				.append(" Email: ").append(email)
+				.append(" Note: ").append(note).append("}");
 		return builder.toString();
 	}
 	

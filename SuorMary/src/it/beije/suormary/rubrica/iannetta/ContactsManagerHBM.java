@@ -26,24 +26,21 @@ import org.xml.sax.SAXException;
 public class ContactsManagerHBM {
 
 	private Scanner in;
-	private SessionFactory factory;
+	private Scanner sc;
+	private Session session;
+
 	private final String[] contactFields = {"id", "name", "surname", "telephone number", "email", "note"};
 	
  	public ContactsManagerHBM() {
 		this.in = new Scanner(System.in);
-		Configuration configuration = new Configuration().configure()
-				.addAnnotatedClass(Contact.class);
-		
-		this.factory = configuration.buildSessionFactory();
+		this.sc = new Scanner(System.in);
+		this.session = HBMsessionFactory.openSession();
 	}
 	
 	public void end() {
 		in.close();
-	}
- 	
- 	public Session openSession() {
-		Session session = factory.openSession();
-		return session;
+		sc.close();
+		session.close();
 	}
 	
 	public boolean[] setDataToRead() {
@@ -52,7 +49,7 @@ public class ContactsManagerHBM {
 		result[0] = false; //id
 		for (int i = 1; i < contactFields.length; i++) {
 			System.out.println("Do you want to edit " + contactFields[i] + "? \n0: NO\n1: YES");
-			answer = in.nextInt();
+			answer = sc.nextInt();
 			if (answer == 1) result[i] = true;
 			else result[i] = false;
 		}
@@ -61,12 +58,18 @@ public class ContactsManagerHBM {
 	
 	public String[] readData(boolean[] dataToRead){
 		String result[] = new String[contactFields.length];
-		String answer;
-		for (int i = 1; i < contactFields.length; i++) {
+		int answer;
+		for (int i = 0; i < contactFields.length; i++) {
 			if (dataToRead[i]) {
 				System.out.println("Enter " + contactFields[i] + ":");
-				answer = in.nextLine();
-				result[i] = answer;
+				in.nextLine();
+//				answer = in.nextLine();
+//				System.out.println("answer" + answer);
+				result[i] = in.nextLine();
+//				answer = sc.nextInt();
+				//System.out.println(Arrays.toString(result));
+//				result[i] = answer;
+				
 			}
 			else result[i] = null;
 		}
@@ -75,7 +78,7 @@ public class ContactsManagerHBM {
 	
  	public void showContacts(String orderBy) {
 		
-		Session session = openSession();
+ 		session = HBMsessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		if (!orderBy.equals("name") && !orderBy.equals("surname")) orderBy = "id";
@@ -98,7 +101,7 @@ public class ContactsManagerHBM {
 	}
 	
 	public void searchContact() throws SQLException, ClassNotFoundException{
-		Session session = openSession();
+		session = HBMsessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		System.out.println("Enter data (or part of it) to look for:");
@@ -117,7 +120,7 @@ public class ContactsManagerHBM {
 	}
 
 	public void insertContact() {
-		Session session = openSession();
+		session = HBMsessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		Contact contact = new Contact();
@@ -151,7 +154,7 @@ public class ContactsManagerHBM {
 	}
 
 	public void editContact(int id) {
-		Session session = openSession();
+		session = HBMsessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE id = " + id);
@@ -160,7 +163,7 @@ public class ContactsManagerHBM {
 		String[] updateContact  = readData(setDataToRead());
 		
 		//UPDATE
-		contact.setID(id);
+		contact.setId(id);
 		if (updateContact[1] != null) contact.setName(updateContact[1]);
 		if (updateContact[2] != null) contact.setSurname(updateContact[2]);
 		if (updateContact[3] != null) contact.setPhoneNumber(updateContact[3]);
@@ -173,7 +176,7 @@ public class ContactsManagerHBM {
 	}
 
 	public void deleteContact(int id) {
-		Session session = openSession();
+		session = HBMsessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE id = " + id);
@@ -187,7 +190,7 @@ public class ContactsManagerHBM {
 
 	public List<List<Contact>> findDuplicates() {
 		
-		Session session = openSession();
+		session = HBMsessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		
 		Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
@@ -219,7 +222,7 @@ public class ContactsManagerHBM {
 	}
 
 	public void mergeDuplicates() {
-		Session session = openSession();
+		session = HBMsessionFactory.openSession();
 		Transaction transaction;
 		
 		List<List<Contact>> listOfDuplicates = findDuplicates();
@@ -244,7 +247,7 @@ public class ContactsManagerHBM {
 			transaction = session.beginTransaction();
 			keepThisContact = duplicates.get(0);
 			
-			id = keepThisContact.getID();
+			id = keepThisContact.getId();
 			
 			name = keepThisContact.getName();
 			if (name == null) {
@@ -321,7 +324,7 @@ public class ContactsManagerHBM {
 					if (answer.equals("1")) keepThisContact.setNote(checkThisContact.getNote());
 				}
 				
-				deleteContact(checkThisContact.getID());
+				deleteContact(checkThisContact.getId());
 			}
 			session.save(keepThisContact);
 			deleteContact(id);
@@ -345,11 +348,13 @@ public class ContactsManagerHBM {
 	}
 	
 	public void importFrom() throws ParserConfigurationException, SAXException, IOException {
+		session = HBMsessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		
 		System.out.println("Enter path of file containing contacts to add (.xml or .csv) : ");
 		String path = in.nextLine();
 		List<Contact> listOfContacts = null;
-		Session session = openSession();
-		Transaction transaction = session.beginTransaction();
+		
 		ContactsList contacstList = new ContactsList();
 		
 		if (checkFile(path)) {
@@ -377,11 +382,13 @@ public class ContactsManagerHBM {
 	}
 	
 	public void exportTo() throws IOException, ParserConfigurationException, SAXException, TransformerException {
+		session = HBMsessionFactory.openSession();
+		Transaction transaction = session.beginTransaction();
+		
 		System.out.println("Enter path of file where export contacts to (.xml or .csv) : ");
 		String path = in.nextLine();
 		List<Contact> listOfContacts = null;
-		Session session = openSession();
-		Transaction transaction = session.beginTransaction();
+		
 		ContactsList contacstList = new ContactsList();
 		
 		if (path.endsWith(".xml")) {
