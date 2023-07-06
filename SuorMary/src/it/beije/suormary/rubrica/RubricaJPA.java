@@ -2,6 +2,7 @@ package it.beije.suormary.rubrica;
 
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -13,16 +14,19 @@ public class RubricaJPA {
 
 	public static void main(String[] args) {
 		
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
-		EntityManager entityManager = entityManagerFactory.createEntityManager();
-		
-		EntityTransaction transaction = entityManager.getTransaction();
-		transaction.begin();
+//		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+//		EntityManager entityManager = entityManagerFactory.createEntityManager();
+//		
+//		EntityTransaction transaction = entityManager.getTransaction();
+		EntityManager eM = JPAentity.getEntityManager();
+				
+			EntityTransaction transaction= eM.getTransaction();
+			transaction.begin();
 
 		Contact contact = null;
 		
 		//SELECT di contatto specifico
-		contact = entityManager.find(Contact.class, 21);
+//		contact = eM.find(Contact.class, 21);
 //		System.out.println(contact);
 		
 		
@@ -49,18 +53,18 @@ public class RubricaJPA {
 //		System.out.println("contact POST : " + contact);
 		
 		//DELETE
-		entityManager.remove(contact);
+//		eM.remove(contact);
 		
-		transaction.commit();
+//		transaction.commit();
 
 		//SELECT JPQL
-		Query query = entityManager.createQuery("SELECT c from Contact as c"); //SELECT * FROM rubrica
+		Query query = eM.createQuery("SELECT c from Contact as c"); //SELECT * FROM rubrica
 //		Query query = entityManager.createQuery("SELECT c from Contact as c WHERE c.surname = :cognome");
 //		query.setParameter("cognome", "Rossi");
 		List<Contact> contacts = query.getResultList();
 		for (Contact c : contacts) System.out.println(c);
 		
-		entityManager.close();
+		eM.close();
 	}
 	
 }

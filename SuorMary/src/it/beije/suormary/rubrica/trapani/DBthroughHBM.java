@@ -80,24 +80,28 @@ public class DBthroughHBM {
 	}
 	
 	public static void updateContact() {
-		List<Contact> contatti = listContacts();
+		List<Contact> contatti = null;
 		Contact contact = null;
 		
-		System.out.println("Visualizzare elenco contatti salvati prima? (y/n)");
-		if(in.nextLine().equals("y")) {
-			
-			for (Contact s : contatti) {
-				System.out.println(s);
-			}
-		}
-		
-		System.out.println("Inserire Id contatto da aggiornare:");
-		int idagg=in.nextInt(); 
-		
 		if(connection()) {
+			
 			SessionFactory factory = configuration.buildSessionFactory();
 			
 			Session session = factory.openSession();
+			
+			System.out.println("Visualizzare elenco contatti salvati prima? (y/n)");
+			if(in.nextLine().equals("y")) {
+				
+				Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
+				contatti = query.getResultList();
+				
+				for (Contact s : contatti) {
+					System.out.println(s);
+				}
+			}
+			
+			System.out.println("Inserire Id contatto da aggiornare:");
+			int idagg=in.nextInt(); 
 		
 			Transaction transaction = session.beginTransaction();
 			for (Contact s : contatti) {
@@ -106,15 +110,15 @@ public class DBthroughHBM {
 				}
 			}
 			System.out.println("Nome: ");
-			contact.setName(in.nextLine());
+			contact.setName(in.next());
 			System.out.println("Cognome: ");
-			contact.setSurname(in.nextLine());
+			contact.setSurname(in.next());
 			System.out.println("Telefono: ");
-			contact.setPhoneNumber(in.nextLine());
+			contact.setPhoneNumber(in.next());
 			System.out.println("Email: ");
-			contact.setEmail(in.nextLine());
+			contact.setEmail(in.next());
 			System.out.println("Note: ");
-			contact.setNote(in.nextLine());
+			contact.setNote(in.next());
 			
 			session.save(contact);
 			
@@ -126,27 +130,35 @@ public class DBthroughHBM {
 		}
 	
 	public static void deleteContact() {
-		
-		System.out.println("Visualizzare elenco contatti salvati prima? (y/n)");
-		if(in.nextLine().equals("y")) {
-			List<Contact> contatti =listContacts();
-			for (Contact s : contatti) {
-				System.out.println(s);
-			}
-		}
-		
-		System.out.println("Inserire Id contatto da eliminare:");
-		int idcanc=in.nextInt(); 
-		
+				
+		List<Contact> contatti = null;
+		Contact contact = null;
 		
 		if(connection()) {
 			SessionFactory factory = configuration.buildSessionFactory();
 			
 			Session session = factory.openSession();
+			
+			System.out.println("Visualizzare elenco contatti salvati prima? (y/n)");
+			if(in.nextLine().equals("y")) {
+				
+				Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
+				contatti = query.getResultList();
+				
+				for (Contact s : contatti) {
+					System.out.println(s);
+				}
+			}
+			
+			System.out.println("Inserire Id contatto da aggiornare:");
+			int idagg=in.nextInt(); 
+		
 			Transaction transaction = session.beginTransaction();
-			
-			
-			Contact contact = listContacts().get(idcanc);
+			for (Contact s : contatti) {
+				if(s.getId()== idagg) {
+					contact = s;
+				}
+			}
 			
 			session.delete(contact);
 			
@@ -159,6 +171,6 @@ public class DBthroughHBM {
 		
 	}
 		
-	
+	public static void 
 	
 }

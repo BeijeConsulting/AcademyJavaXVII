@@ -21,7 +21,7 @@ public class MenuGestioneRubrica {
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		String select = null;
-//		 contatti = new ArrayList<>();
+		List<Contact> contatti = new ArrayList<>();
 		boolean continua = true;
 		//MENU OPZIONI
 		while(continua) {
@@ -39,23 +39,11 @@ public class MenuGestioneRubrica {
 			
 			switch (select) {
 			case "1":
-				List<Contact> contatti = AzioniGestore.listContact();
-				for(Contact s : contatti) {
-					System.out.println(s);
-				}
-				System.out.println();
+				contatti = AzioniGestore.listContact();
 				break;
 				
 			case "2": 
-				List<Contact> contacts = AzioniGestore.findContact();
-				if(contacts.isEmpty()) {
-					System.out.println("errore");
-				}
-				
-				for(Contact a : contacts) {
-					System.out.println(a);
-				}
-				System.out.println();
+				contatti = AzioniGestore.findContact();			
 				break;
 				
 			case "3": 
