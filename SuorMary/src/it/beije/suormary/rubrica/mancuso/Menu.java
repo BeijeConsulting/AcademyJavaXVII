@@ -12,7 +12,7 @@ public class Menu {
 	
 	public static void printOptions() {
 		System.out.println("_____________________________________________________________________\n");
-		System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\t\tMenu funzionalita' rubrica:\t\t\n" + ANSI_RESET);
+		System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\t\t\tMenu funzionalita' rubrica:\t\t\t\n" + ANSI_RESET);
 		
 		System.out.println("import csv\t\tIMPORTA contatti da file CSV");
 		System.out.println("import xml\t\tIMPORTA contatti da file XML");
@@ -24,7 +24,7 @@ public class Menu {
 		System.out.println("export xml\t\tESPORTA contatti su file XML");
 		System.out.println("export db\t\tESPORTA contatti su DATABASE");
 		
-		System.out.println("---------------------------------------------------------------------");
+		System.out.println("--------------------------------------------------------------------");
 		
 		System.out.println("view\t\t\tVISUALIZZA contatti su CONSOLE");
 		System.out.println("sort by name\t\tVISUALIZZA contatti su CONSOLE");
@@ -49,9 +49,10 @@ public class Menu {
 		System.out.println("find phone\t\tRICERCA contatto per numero di telefono");
 		System.out.println("find email\t\tRICERCA contatto per email");
 		
-		System.out.println("--------------------------------------------------------------------");
+		System.out.println("____________________________________________________________________");
 		
-		System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "I SEGUENTI COMANDI VENGONO ESEGUITI DIRETTAMENTE SU DATABASE" + ANSI_RESET);
+		
+		System.out.println("\n" + ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\tI seguenti comandi verranno eseguiti direttamente su DATABASE\t" + ANSI_RESET + "\n");
 		
 		System.out.println("find by field\t\tRICERCA per campo e valore");
 		System.out.println("read all\t\tVISUALIZZA tutti i contatti presenti");
@@ -62,7 +63,7 @@ public class Menu {
 		System.out.println("--------------------------------------------------------------------");
 		
 		System.out.println("exit\t\t\tChiudi il programma");
-		System.out.println("_____________________________________________________________________\n");
+		System.out.println("____________________________________________________________________\n");
 	}
 	
 	public static boolean executeCommand(String command, Scanner input, AddressBook ab) {
