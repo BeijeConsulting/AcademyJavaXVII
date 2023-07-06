@@ -319,48 +319,41 @@ public class AzioniGestore extends MenuGestioneRubrica{
 	//6
 	public static List<Contact> findDuplicateContact() {
 		
-		Connection connection = null;
-		Statement statement= null;
-		PreparedStatement preparedStatement = null;
+		PreparedStatement preparedStatement= null;
 
-		List<Contact> contacts = new ArrayList<>();
-		List<Contact> contacts2 = new ArrayList<>();
+		List<Contact> contacts = new ArrayList<Contact>();
 		Contact c = null;
-		List<Contact> duplicate = new ArrayList<>(); 
 			
 		try {
-				connection = getConnection();
 				
-				ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
+				preparedStatement = getConnection().prepareStatement
+						("SELECT nome,cognome,telefono,email,note, COUNT(*) FROM rubrica"
+								+ " GROUP BY nome,cognome,telefono,email,note HAVING COUNT(*) > 1;");
+				
+					
+				ResultSet rs = preparedStatement.executeQuery();
 				while (rs.next()) {
 					c = new Contact();
-					c.setId(rs.getInt("id"));
+					c.setId(00);
 					c.setName(rs.getString("nome"));
 					c.setSurname(rs.getString("cognome"));
 					c.setPhoneNumber(rs.getString("telefono"));
 					c.setEmail(rs.getString("email"));
 					c.setNote(rs.getString("note"));
+					System.out.println(c.toString());
 					contacts.add(c);
-				}
-			
-				for (Contact co: contacts) {
-					for(Contact contact : contacts) {
-						if(co.getName().equals(contact.getName()) && co.getSurname().equals(contact.getSurname()) 
-								&& co.getPhoneNumber().equals(contact.getPhoneNumber()) && co.getEmail().equals(contact.getEmail())){
-							contacts2.add(co);
-						}
-					}
-				}
+					} 
 				
-
-
+				
+			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-			
-		return contacts2;
+		
+		
+		return contacts;
 	}
 
 	//7
