@@ -238,7 +238,7 @@ public class RubricaHBM {
      }
      public static void exportXMLToDb(Session session) {
   	   Scanner scanner = new Scanner(System.in);
-  	   System.out.print("Indica il path del file CSV : ");
+  	   System.out.print("Indica il path del file XML : ");
   	   String pathFile = scanner.nextLine();
    	  List<Contact> contacts = EsRubrica.loadRubricaFromXML(pathFile);
    	  writeRubricaHBM(contacts,session);

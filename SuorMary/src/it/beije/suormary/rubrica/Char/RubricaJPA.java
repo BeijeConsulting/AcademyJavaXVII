@@ -7,6 +7,7 @@ import java.util.Scanner;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.transaction.Transaction;
 
 public class RubricaJPA {
 
@@ -31,9 +32,12 @@ public class RubricaJPA {
 		}
 		public static void writeRubricaJPA(List<Contact> contacts, EntityManager entityManager) {
 		   	 try {
+		   		 EntityTransaction transaction = entityManager.getTransaction();
+		   		 transaction.begin();
 		   		 for(Contact c : contacts) {
 		   			entityManager.persist(c);
 		   		 }
+		   		transaction.commit();
 		   	 }catch(Exception e) {
 		   		 e.printStackTrace();
 		   	 } 
@@ -254,7 +258,7 @@ public class RubricaJPA {
 		     }
 		     public static void exportXMLToDb(EntityManager entityManager) {
 		  	   Scanner scanner = new Scanner(System.in);
-		  	   System.out.print("Indica il path del file CSV : ");
+		  	   System.out.print("Indica il path del file XML : ");
 		  	   String pathFile = scanner.nextLine();
 		   	  List<Contact> contacts = EsRubrica.loadRubricaFromXML(pathFile);
 		   	  writeRubricaJPA(contacts,entityManager);
