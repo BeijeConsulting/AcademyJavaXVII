@@ -13,6 +13,16 @@ import javax.persistence.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
+
+
 public class RubricaUtilsJPA {
 	
 	public static List<Contatto> loadRubricaFromDB(){
@@ -39,6 +49,33 @@ public class RubricaUtilsJPA {
 			
 		return contacts;
 	}
+	
+	
+	public static List<Contatto> loadRubricaFromDBCON(){
+		
+		EntityManager em = null;
+	    List<Contatto> contacts = null;
+
+	    try {
+	        em = JPAEntityManagerFactory.createEM();
+	        CriteriaBuilder cb = em.getCriteriaBuilder();
+	        CriteriaQuery<Contatto> query = cb.createQuery(Contatto.class);
+	        Root<Contatto> root = query.from(Contatto.class);
+
+	        query.select(root);
+
+	        contacts = em.createQuery(query).getResultList();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (em != null) {
+	            em.close();
+	        }
+	    }
+
+	    return contacts;
+	}
+	
 	
 	public static List<Contatto> loadRubricaFromDBOrdinata(String ordine){
 		
@@ -75,6 +112,37 @@ public class RubricaUtilsJPA {
 		return contacts;
 	}
 
+	
+	public static List<Contatto> loadRubricaFromDBOrdinataCON(String ordine){
+		EntityManager em = null;
+	    List<Contatto> contacts = null;
+
+	    try {
+	        em = JPAEntityManagerFactory.createEM();
+	        CriteriaBuilder cb = em.getCriteriaBuilder();
+	        CriteriaQuery<Contatto> cq = cb.createQuery(Contatto.class);
+	        Root<Contatto> root = cq.from(Contatto.class);
+
+	        if (ordine.equalsIgnoreCase("n")) {
+	            cq.orderBy(cb.asc(root.get("name")));
+	        } else if (ordine.equalsIgnoreCase("c")) {
+	            cq.orderBy(cb.asc(root.get("surname")));
+	        } else {
+	        	cq.select(root);
+	        }
+
+	        contacts = em.createQuery(cq).getResultList();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (em != null) {
+	            em.close();
+	        }
+	    }
+
+	    return contacts;
+	}
+	
 	public static List<Contatto> loadRubricaFromDBCerca(String searchName, String searchSurname){
 
 		EntityManager em = null;
@@ -110,6 +178,39 @@ public class RubricaUtilsJPA {
 		return results;
 	}
 
+	
+	public static List<Contatto> loadRubricaFromDBCercaCON(String searchName, String searchSurname){
+
+		EntityManager em = null;
+		
+		List<Contatto> results=null;
+		
+		try {
+			
+			em = JPAEntityManagerFactory.createEM();
+			
+		    CriteriaBuilder cb = em.getCriteriaBuilder();
+		    CriteriaQuery<Contatto> query = cb.createQuery(Contatto.class);
+		    Root<Contatto> root = query.from(Contatto.class);
+		    //List<Predicate> predicate = new ArrayList<>();
+
+		    Predicate nomePre=cb.equal(root.get("name"), searchName);
+		    Predicate cognomePre=cb.equal(root.get("surname"), searchSurname);
+		    Predicate finalePre=cb.and(nomePre, cognomePre);
+		    
+		    query.select(root).where(finalePre);
+		    results=em.createQuery(query).getResultList();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		
+		return results;
+	}
+	
+	
 	public static Map<Integer, String> searchID(){
 		
 		EntityManager em = null;
@@ -152,6 +253,43 @@ public class RubricaUtilsJPA {
 		}
 		
 		
+		return map;
+	}
+	
+	public static Map<Integer, String> searchIDCON(){
+		EntityManager em = null;
+		
+		List<Contatto> contatti=null;
+		Map<Integer, String> map=null;
+		
+		try {
+			
+			em = JPAEntityManagerFactory.createEM();
+			
+		    CriteriaBuilder cb = em.getCriteriaBuilder();
+		    CriteriaQuery<Contatto> query = cb.createQuery(Contatto.class);
+		    Root<Contatto> root = query.from(Contatto.class);
+		    
+		    //posso selezionare tutto e andare a mettere in una mappa solo le chiavi e nomi e cognomi
+		    query.select(root);
+		    
+		    contatti = em.createQuery(query).getResultList();
+		    map = new HashMap<>();
+		    
+		    for(Contatto c : contatti) {
+		    	String nome = c.getName();
+		    	String cognome = c.getSurname();
+		    	String fullName=nome+" "+cognome;
+		    	int id = c.getId();
+		    	map.put(id, fullName);
+		    }
+		    
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
 		return map;
 	}
 
@@ -318,5 +456,107 @@ public class RubricaUtilsJPA {
 		
 		
 	}
+	
+public static List<Contatto> groupByCON() {
+		
+		EntityManager em = null;
+				
+		List<Contatto> contacts=null;
+		
+		try {
+			/* 
+			em = JPAEntityManagerFactory.createEM();
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+		    CriteriaQuery<Contatto> query = cb.createQuery(Contatto.class);
+		    Root<Contatto> root = query.from(Contatto.class);
+			
+		    query.multiselect(root.get("name"), root.get("surname"), root.get("phoneNumber"));
+		    query.groupBy(root.get("name"), root.get("surname"), root.get("phoneNumber"));
+		    
+		    contacts=em.createQuery(query).getResultList();*/
+			
+			/*em = JPAEntityManagerFactory.createEM();
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<String> subquery = cb.createQuery(String.class);
+	        Root<Contatto> subqueryRoot = subquery.from(Contatto.class);
+	        subquery.select(subqueryRoot.get("name"))
+	                .groupBy(subqueryRoot.get("name"))
+	                .having(cb.gt(cb.count(subqueryRoot), 1));
+
+	        // Query principale per ottenere i contatti duplicati
+	        CriteriaQuery<Contatto> query = cb.createQuery(Contatto.class);
+	        Root<Contatto> root = query.from(Contatto.class);
+	        query.select(root)
+	             .where(root.get("name").in(subquery));
+
+	        contacts=em.createQuery(query).getResultList();*/
+			
+			
+		} catch (Exception e) {
+			//if(transaction!=null){
+			//transaction.rollback();
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return contacts;
+		
+		
+	}
+
+	/*public static void merge() {
+		EntityManager em = null;
+		List<Contatto> contatti = null;
+	    try {
+	        em = JPAEntityManagerFactory.createEM();
+	        CriteriaBuilder cb = em.getCriteriaBuilder();
+	        
+	        // Criteri per identificare i contatti duplicati
+	        CriteriaQuery<Contatto> duplicateQuery = cb.createQuery(Object[].class);
+	        Root<Contatto> duplicateRoot = duplicateQuery.from(Contatto.class);
+	        duplicateQuery.multiselect(duplicateRoot.get("name"), duplicateRoot.get("surname"), duplicateRoot.get("phoneNumber"))
+	                      .groupBy(duplicateRoot.get("name"), duplicateRoot.get("surname"), duplicateRoot.get("phoneNumber"))
+	                      .having(cb.gt(cb.count(duplicateRoot), 1));
+	        
+	     // Recupera i dati dei contatti duplicati
+	       // List<Object[]> duplicateContacts = em.createQuery(duplicateQuery).getResultList();
+	        contatti=em.createQuery(duplicateQuery).getResultList();
+
+	        // Per ogni contatto duplicato, unifica i contatti
+	        //for (Object[] duplicateContact : duplicateContacts) {
+	          //  String name = (String) duplicateContact[0];
+	            //String surname = (String) duplicateContact[1];
+	            //String phoneNumber = (String) duplicateContact[2];
+	        
+	        for(Contatto c : contatti ) {
+	        	String nome = c.getName();
+	        	String cognome = c.getSurname();
+	        	String numeroTelefono=c.getPhoneNumber();
+	        }
+
+	            CriteriaUpdate<Contatto> updateQuery = cb.createCriteriaUpdate(Contatto.class);
+	            Root<Contatto> updateRoot = updateQuery.from(Contatto.class);
+
+	            // Imposta il valore da mantenere per il contatto unificato (ad esempio, il contatto con il valore più recente)
+	          /*  Expression<Integer> maxId = cb.max(updateRoot.get("id"));
+	            updateQuery.set("unifiedValue", maxId)
+	                       .where(cb.and(
+	                           cb.equal(updateRoot.get("name"), name),
+	                           cb.equal(updateRoot.get("surname"), surname),
+	                           cb.equal(updateRoot.get("phoneNumber"), phoneNumber)
+	                       ));
+
+	            em.createQuery(updateQuery).executeUpdate();
+	            System.out.println("duplicati unificati");
+	        }QUI CHIUDE IL COMMENTO
+	        
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    } finally {
+	        if (em != null) {
+	            em.close();
+	        }
+	    }
+	}*/
 
 }

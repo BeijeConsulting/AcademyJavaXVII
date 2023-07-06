@@ -117,6 +117,7 @@ public class GestoreRubrica {
 			}
 			if(scelta == 7) {
 				System.out.println("hai scelto di unire contatti duplicati!");
+				unisciDuplicati();
 			}
 			if(scelta<1 || scelta >7) {
 				System.out.println("OPS! Hai inserito un valore non corretto! Prova di nuovo");
@@ -132,7 +133,8 @@ public class GestoreRubrica {
 		RubricaUtils ru = new RubricaUtils();
 		//List<Contatto> contatti=ru.loadRubricaFromDBOrdinata(ordine);
 		
-		List<Contatto> contatti=RubricaUtilsJPA.loadRubricaFromDBOrdinata(ordine);
+		//List<Contatto> contatti=RubricaUtilsJPA.loadRubricaFromDBOrdinata(ordine);
+		List<Contatto> contatti=RubricaUtilsJPA.loadRubricaFromDBOrdinataCON(ordine);
 		
 		//MOSTRO QUELLI CHE HO NEL DB
 		 
@@ -188,7 +190,8 @@ public class GestoreRubrica {
 		
 		//RubricaUtils ru = new RubricaUtils();
 		//List<Contatto> contatti=ru.loadRubricaFromDBCerca(name, surname);
-		List<Contatto> contatti = RubricaUtilsJPA.loadRubricaFromDBCerca(name, surname);
+		//List<Contatto> contatti = RubricaUtilsJPA.loadRubricaFromDBCerca(name, surname);
+		List<Contatto> contatti = RubricaUtilsJPA.loadRubricaFromDBCercaCON(name, surname);
 		
 		return contatti;
 		
@@ -199,7 +202,8 @@ public class GestoreRubrica {
 		//RubricaUtils ru = new RubricaUtils();
 		//Map<Integer, String> map = ru.searchID();
 		
-		Map<Integer, String> map = RubricaUtilsJPA.searchID();
+		//Map<Integer, String> map = RubricaUtilsJPA.searchID();
+		Map<Integer, String> map = RubricaUtilsJPA.searchIDCON();
 		
 		Set<Integer> id = map.keySet();
 		
@@ -222,7 +226,8 @@ public class GestoreRubrica {
 		//RubricaUtils ru = new RubricaUtils();
 		//Map<Integer, String> map = ru.searchID();
 		
-		Map<Integer, String> map = RubricaUtilsJPA.searchID();
+		//Map<Integer, String> map = RubricaUtilsJPA.searchID();
+		Map<Integer, String> map = RubricaUtilsJPA.searchIDCON();
 		
 		Set<Integer> id = map.keySet();
 		
@@ -373,23 +378,28 @@ public class GestoreRubrica {
 	public void cercaDuplicati() {
 		//RubricaUtils ru=new RubricaUtils();
 		//List<Contatto>contatti=ru.groupBy();
-		List<Contatto>contatti=RubricaUtilsJPA.groupBy();
+		//List<Contatto>contatti=RubricaUtilsJPA.groupBy();
+		List<Contatto>contatti=RubricaUtilsJPA.groupByCON();
 		
-		for(Contatto c : contatti) {
-			if(c!=null)
-			System.out.println(c.toString());
+		if(contatti!=null) {
+			for(Contatto c : contatti) {
+				if(c!=null)
+				System.out.println(c.toString());
+			}
 		}
+		
 	}
 	
 	public void unisciDuplicati() {
 		RubricaUtils ru=new RubricaUtils();
 		System.out.println("Questi sono i contatti duplicati nella tua rubrica");
 		cercaDuplicati();
-		System.out.println("inserisci nome, cognome e telefono del contatto di cui vuoi eliminare i duplicati");
-		String nome=ts.next();
-		String cognome=ts.next();
-		String telefono=ts.next();
-		Contatto c=ru.merge(nome, cognome, telefono);
+		System.out.println("vuoi unificarli?");
+		System.out.println("scrivi si o no, qualsiasi altra combinazione sarà interpretata come no");
+		String risposta=ts.next();
+		if(risposta.equalsIgnoreCase("si")) {
+			//RubricaUtilsJPA.merge();
+		}
 	}
 	
 }
