@@ -10,6 +10,39 @@ public class Menu {
 	public static final String ANSI_BLUE = "\u001B[34m";
 	public static final String ANSI_RESET = "\u001B[0m";
 	
+	
+	public static int selectIndex(Scanner input, List<Contact> resultContacts) {
+		String command = "";
+		int index = -1;
+
+		while(index<0 || index>=resultContacts.size()) {
+			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "I contatti presenti sono i seguenti, "
+					+ "inserire l'indice del contatto su cui effettuare l'operazione. "
+					+ "Inserire \"exit\" per annullare l'operazione." + ANSI_RESET);
+			int i=0;
+			for(Contact cont : resultContacts) {
+				System.out.println("Index : " + i);
+				System.out.println(cont);
+				System.out.println("------------------------------------------");
+				i++;
+			}
+			command = input.nextLine();
+			if(command.equals("exit")) {
+				return -1;
+			}else {
+				try {
+					index = Integer.valueOf(command);
+					return index;
+				}catch(NumberFormatException ex) {
+					System.out.println("Inserire un indice numerico o \"exit\".");
+					return -1;
+				}
+			}
+		}
+		return -1;
+	}
+	
+	
 	public static void printOptions() {
 		System.out.println("_____________________________________________________________________\n");
 		System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\t\t\tMenu funzionalita' rubrica:\t\t\t\n" + ANSI_RESET);
@@ -50,7 +83,6 @@ public class Menu {
 		System.out.println("find email\t\tRICERCA contatto per email");
 		
 		System.out.println("____________________________________________________________________");
-		
 		
 		System.out.println("\n" + ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\tI seguenti comandi verranno eseguiti direttamente su DATABASE\t" + ANSI_RESET + "\n");
 		
@@ -195,21 +227,8 @@ public class Menu {
 		case "edit":
 			index = -1;
 			if(ab.contacts.size()>0) {
-				while(index<0 || index>=ab.contacts.size()) {
-					System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "I contatti presenti sono i seguenti, inserire l'indice del contatto che si desidera modificare. Inserire \"exit\" per annullare l'operazione." + ANSI_RESET);
-					System.out.println(ab.toString());
-					command = input.nextLine();
-					if(command.equals("exit")) {
-						break;
-					}else {
-						try {
-							index = Integer.valueOf(command);
-						}catch(NumberFormatException ex) {
-							System.out.println("\nInserire un indice numerico o \"exit\".");
-						}
-					}
-				}
-				if(command.equals("exit")) {
+				index = selectIndex(input, ab.contacts);
+				if(index == -1) {
 					break;
 				}
 				// EDIT NAME
@@ -283,21 +302,8 @@ public class Menu {
 		case "delete":
 			index = -1;
 			if(ab.contacts.size()>0) {
-				while(index<0 || index>=ab.contacts.size()) {
-					System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "I contatti presenti sono i seguenti, inserire l'indice del contatto che si desidera cancellare. Inserire \"exit\" per annullare l'operazione." + ANSI_RESET);
-					System.out.println(ab.toString());
-					command = input.nextLine();
-					if(command.equals("exit")) {
-						break;
-					}else {
-						try {
-							index = Integer.valueOf(command);
-						}catch(NumberFormatException ex) {
-							System.out.println("\nInserire un indice numerico o \"exit\".");
-						}
-					}
-				}
-				if(command.equals("exit")) {
+				index = selectIndex(input, ab.contacts);
+				if(index == -1) {
 					break;
 				}else {
 					ab.contacts.remove(index);
@@ -439,7 +445,7 @@ public class Menu {
 			break;
 		case "read all":
 			resultContacts = JPAUtils.getAllContacts();
-			System.out.println("\n");
+			//System.out.println("\n");
 			for(Contact ct : resultContacts) {
 				System.out.println(ct);
 			}
@@ -473,27 +479,8 @@ public class Menu {
 			index = -1;
 			resultContacts = JPAUtils.getAllContacts();
 			if(resultContacts.size()>0) {
-				while(index<0 || index>=resultContacts.size()) {
-					System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "I contatti presenti sono i seguenti, inserire l'indice del contatto che si desidera modificare. Inserire \"exit\" per annullare l'operazione." + ANSI_RESET);
-					int i=0;
-					for(Contact cont : resultContacts) {
-						System.out.println("Index : " + i);
-						System.out.println(cont);
-						System.out.println("------------------------------------------");
-						i++;
-					}
-					command = input.nextLine();
-					if(command.equals("exit")) {
-						break;
-					}else {
-						try {
-							index = Integer.valueOf(command);
-						}catch(NumberFormatException ex) {
-							System.out.println("Inserire un indice numerico o \"exit\".");
-						}
-					}
-				}
-				if(command.equals("exit")) {
+				index = selectIndex(input, resultContacts);
+				if(index == -1) {
 					break;
 				}
 				
@@ -578,27 +565,8 @@ public class Menu {
 			index = -1;
 			resultContacts = JPAUtils.getAllContacts();
 			if(resultContacts.size()>0) {
-				while(index<0 || index>=resultContacts.size()) {
-					System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "I contatti presenti sono i seguenti, inserire l'indice del contatto che si desidera cancellare. Inserire \"exit\" per annullare l'operazione." + ANSI_RESET);
-					int i=0;
-					for(Contact cont : resultContacts) {
-						System.out.println("Index : " + i);
-						System.out.println(cont);
-						System.out.println("------------------------------------------");
-						i++;
-					}
-					command = input.nextLine();
-					if(command.equals("exit")) {
-						break;
-					}else {
-						try {
-							index = Integer.valueOf(command);
-						}catch(NumberFormatException ex) {
-							System.out.println("Inserire un indice numerico o \"exit\".");
-						}
-					}
-				}
-				if(command.equals("exit")) {
+				index = selectIndex(input, resultContacts);
+				if(index == -1) {
 					break;
 				}else {
 					JPAUtils.deleteContact(resultContacts.get(index));

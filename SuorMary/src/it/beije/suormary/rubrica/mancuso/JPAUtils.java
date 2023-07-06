@@ -8,7 +8,6 @@ import javax.persistence.Query;
 
 public class JPAUtils {
 	
-	
 	public static List<Contact> selectColumn(String column, String value) {
 		EntityManager entityManager = null;
 		List<Contact> contacts = null;
@@ -45,9 +44,8 @@ public class JPAUtils {
 	}
 	
 	// c must have been previously read by the db
-	public static List<Contact> editContact(Contact c, String name, String surname, String phone, String email, String notes) {
+	public static void editContact(Contact c, String name, String surname, String phone, String email, String notes) {
 		EntityManager entityManager = null;
-		List<Contact> contacts = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
@@ -66,7 +64,6 @@ public class JPAUtils {
 		} finally {
 			//entityManager.close();
 		}
-		return contacts;
 	}
 	
 	public static void addContact(Contact c) {
