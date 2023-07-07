@@ -1,17 +1,64 @@
 package it.beije.suormary.rubrica.mancuso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
+//import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
+//import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 
 public class JPAUtils {
+	
+	public static List<Contact> multiColumn(List<String> columns, List<String> values){
+		EntityManager entityManager = null;
+		List<Contact> contacts = null;
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();
+			
+			//Query query = entityManager.createQuery("SELECT c FROM Contact as c WHERE c." + column + " LIKE CONCAT('%', :value,'%')");
+			//query.setParameter("value", value);
+			
+			CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+			
+			CriteriaQuery<Contact> cq = cb.createQuery(Contact.class);
+			Root<Contact> rootContact = cq.from(Contact.class);
+			
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			Predicate condition = null;
+			
+			for(int i=0; i<columns.size();i++) {
+				
+				condition = cb.like(rootContact.get(
+						columns.get(i)), 
+						cb.parameter(String.class, "likeCondition"+i)
+						);
+				
+				predicates.add(condition);
+			}
+			cq.select(rootContact).where( predicates.toArray( new Predicate[ predicates.size() ] ));
+			
+			TypedQuery<Contact> typedQuery = entityManager.createQuery(cq);
+			
+			for(int i=0; i<columns.size();i++) {
+				typedQuery.setParameter("likeCondition"+i, "%"+ values.get(i) +"%");
+			}
+			
+			contacts = typedQuery.getResultList();
+			
+			//contacts = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//entityManager.close();
+		}
+		return contacts;
+	}
 	
 	public static List<Contact> selectColumn(String column, String value) {
 		EntityManager entityManager = null;

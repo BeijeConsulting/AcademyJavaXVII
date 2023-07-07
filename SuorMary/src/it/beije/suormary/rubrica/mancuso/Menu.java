@@ -1,5 +1,6 @@
 package it.beije.suormary.rubrica.mancuso;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -442,6 +443,61 @@ public class Menu {
 			for(Contact ct : resultContacts) {
 				System.out.println(ct);
 			}
+			break;
+		case "multi find":
+			String col = "";
+			List<String> fields = new ArrayList<>();
+			List<String> values = new ArrayList<>();
+			boolean end = false;
+
+			while(!end) {
+				System.out.println("Inserire il campo su cui effettuare la ricerca selezionando uno dei seguenti: ");
+				System.out.println("--- nome ---");
+				System.out.println("--- cognome ---");
+				System.out.println("--- email ---");
+				System.out.println("--- telefono ---");
+				System.out.println("--- note ---");
+				System.out.println("--- end (fine selezione colonne) ---");
+				System.out.println("--- exit (annulla operazione) ---\n");
+				command = input.nextLine();
+				if(AddressBook.getOkColumns().contains(command)) {
+					switch(command) {
+					case "nome":
+						col = "firstName";
+						break;
+					case "cognome":
+						col = "lastName";
+						break;
+					case "email":
+						col = "email";
+						break;
+					case "telefono":
+						col = "phoneNumber";
+						break;
+					case "note":
+						col = "notes";
+						break;
+					}
+					fields.add(col);
+					System.out.println("Inserire il valore da cercare: ");
+					values.add(input.nextLine());
+					System.out.println("");
+				}
+				if(command.equals("exit") || command.equals("end")) {
+					end = true;
+				}
+			}
+			
+			if(command.equals("exit")) {
+				break;
+			}
+			
+			resultContacts = JPAUtils.multiColumn(fields, values);
+			System.out.println("\n");
+			for(Contact ct : resultContacts) {
+				System.out.println(ct);
+			}
+			
 			break;
 		case "read all":
 			resultContacts = JPAUtils.getAllContacts();
