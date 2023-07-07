@@ -44,13 +44,14 @@ public class ContactsManagerHBM {
 	}
 	
 	public boolean[] setDataToRead() {
-		int answer;
+		String answer;
 		boolean[] result = new boolean[contactFields.length];
 		result[0] = false; //id
 		for (int i = 1; i < contactFields.length; i++) {
 			System.out.println("Do you want to edit " + contactFields[i] + "? \n0: NO\n1: YES");
-			answer = sc.nextInt();
-			if (answer == 1) result[i] = true;
+			answer = in.nextLine();
+			//in.nextLine();
+			if (answer.equals("1")) result[i] = true;
 			else result[i] = false;
 		}
 		return result;
@@ -58,18 +59,11 @@ public class ContactsManagerHBM {
 	
 	public String[] readData(boolean[] dataToRead){
 		String result[] = new String[contactFields.length];
-		int answer;
 		for (int i = 0; i < contactFields.length; i++) {
 			if (dataToRead[i]) {
 				System.out.println("Enter " + contactFields[i] + ":");
-				in.nextLine();
-//				answer = in.nextLine();
-//				System.out.println("answer" + answer);
-				result[i] = in.nextLine();
-//				answer = sc.nextInt();
-				//System.out.println(Arrays.toString(result));
-//				result[i] = answer;
-				
+				//in.nextLine();
+				result[i] = in.nextLine();				
 			}
 			else result[i] = null;
 		}
@@ -90,17 +84,17 @@ public class ContactsManagerHBM {
 		session.close();
 	}
 	
-	public void sorting() throws SQLException, ClassNotFoundException {		
+	public void sorting(){		
 		System.out.println("1: Sort by name" + 
-						 "\n2: Sort by surname" + 
-						 "\n0: Sort by id (default sorting)");
-		int answer = in.nextInt();		
-		if (answer == 1) showContacts("name");
-		else if (answer == 2) showContacts("surname");
+				 "\n2: Sort by surname" + 
+				 "\n0: Sort by id (default sorting)");
+		String answer = in.nextLine();		
+		if (answer.equals("1")) showContacts("name");
+		else if (answer.equals("2")) showContacts("surname");
 		else showContacts("id");
 	}
 	
-	public void searchContact() throws SQLException, ClassNotFoundException{
+	public void searchContact(){
 		session = HBMsessionFactory.openSession();
 		Transaction transaction = session.beginTransaction();
 		
@@ -113,6 +107,7 @@ public class ContactsManagerHBM {
 																				   "email LIKE '%" + answer + "%' OR " +
 																				    "note LIKE '%" + answer + "%'");
 		List<Contact> contacts = query.getResultList();
+		if(contacts.size() == 0) System.out.println("No contact matching \"" + answer + "\"");
 		for (Contact c : contacts) System.out.println(c);
 		
 		transaction.commit();
@@ -137,11 +132,11 @@ public class ContactsManagerHBM {
 		session.close();
 	}
 
-	public int selectID() throws ClassNotFoundException, SQLException {
+	public int selectID(){
 		int id;
 		
 		System.out.println("Enter id of contact. Enter 0 to see all contacts:");
-		String answer = in.next();
+		String answer = in.nextLine();
 		if (answer.equals("0")) {
 			sorting();
 			System.out.println("Enter id of contact to edit:");	
@@ -159,6 +154,7 @@ public class ContactsManagerHBM {
 		
 		Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE id = " + id);
 		Contact contact = query.getSingleResult();
+		System.out.println(contact);
 		
 		String[] updateContact  = readData(setDataToRead());
 		
@@ -176,16 +172,18 @@ public class ContactsManagerHBM {
 	}
 
 	public void deleteContact(int id) {
-		session = HBMsessionFactory.openSession();
-		Transaction transaction = session.beginTransaction();
+		boolean isOpen = session.isOpen();
+		Transaction transaction;
+		if (!isOpen) session = HBMsessionFactory.openSession();
+		transaction = session.beginTransaction();
+		
 		
 		Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE id = " + id);
 		Contact contact = query.getSingleResult();
 		session.delete(contact);
 		
 		transaction.commit();
-		session.close();
-		System.out.println("Contact deleted");
+		if (!isOpen) session.close();
 	}
 
 	public List<List<Contact>> findDuplicates() {
@@ -244,7 +242,8 @@ public class ContactsManagerHBM {
 //		Arrays.fill(enterData, false);
 		
 		for (List<Contact> duplicates: listOfDuplicates) {
-			transaction = session.beginTransaction();
+			session = HBMsessionFactory.openSession();
+			
 			keepThisContact = duplicates.get(0);
 			
 			id = keepThisContact.getId();
@@ -326,12 +325,12 @@ public class ContactsManagerHBM {
 				
 				deleteContact(checkThisContact.getId());
 			}
+			transaction = session.beginTransaction();
 			session.save(keepThisContact);
-			deleteContact(id);
 			transaction.commit();
+			deleteContact(id);
 		}
 		session.close();
-		System.out.println("Contacts merged");
 	}
 
 	public boolean checkFile (String path) {
@@ -349,7 +348,7 @@ public class ContactsManagerHBM {
 	
 	public void importFrom() throws ParserConfigurationException, SAXException, IOException {
 		session = HBMsessionFactory.openSession();
-		Transaction transaction = session.beginTransaction();
+		Transaction transaction = null; 
 		
 		System.out.println("Enter path of file containing contacts to add (.xml or .csv) : ");
 		String path = in.nextLine();
@@ -362,7 +361,13 @@ public class ContactsManagerHBM {
 				listOfContacts = contacstList.loadContactListFromXML(path);
 				for (Contact con : listOfContacts) {
 					transaction = session.beginTransaction();
-					session.save(con);
+					Contact newCon = new Contact();
+					newCon.setName(con.getName());
+					newCon.setSurname(con.getSurname());
+					newCon.setPhoneNumber(con.getPhoneNumber());
+					newCon.setEmail(con.getEmail());
+					newCon.setNote(con.getNote());
+					session.save(newCon);
 					transaction.commit();
 				}
 			}
@@ -372,7 +377,13 @@ public class ContactsManagerHBM {
 				listOfContacts = contacstList.loadContactListFromCSV(path, separator);
 				for (Contact con : listOfContacts) {
 					transaction = session.beginTransaction();
-					session.save(con);
+					Contact newCon = new Contact();
+					newCon.setName(con.getName());
+					newCon.setSurname(con.getSurname());
+					newCon.setPhoneNumber(con.getPhoneNumber());
+					newCon.setEmail(con.getEmail());
+					newCon.setNote(con.getNote());
+					session.save(newCon);
 					transaction.commit();
 				}
 			}
@@ -396,7 +407,7 @@ public class ContactsManagerHBM {
 			listOfContacts = query.getResultList();
 			contacstList.writeContactListXLM(listOfContacts, path);
 		}
-		else if (path.endsWith(".cvs")) {
+		else if (path.endsWith(".csv")) {
 			System.out.println("Enter separator: ");
 			String separator = in.nextLine();
 			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c");

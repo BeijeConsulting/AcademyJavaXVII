@@ -38,13 +38,14 @@ public class ContactsManagerJDBC {
 	}
 	
 	public boolean[] setDataToRead() {
-		int answer;
+		String answer;
 		boolean[] result = new boolean[contactFields.length];
 		result[0] = false; //id
 		for (int i = 1; i < contactFields.length; i++) {
 			System.out.println("Do you want to edit " + contactFields[i] + "? \n0: NO\n1: YES");
-			answer = in.nextInt();
-			if (answer == 1) result[i] = true;
+			answer = in.nextLine();
+			//in.nextLine();
+			if (answer.equals("1")) result[i] = true;
 			else result[i] = false;
 		}
 		return result;
@@ -52,67 +53,83 @@ public class ContactsManagerJDBC {
 	
 	public String[] readData(boolean[] dataToRead){
 		String result[] = new String[contactFields.length];
-	String answer;
-	for (int i = 1; i < contactFields.length; i++) {
-		if (dataToRead[i]) {
-			System.out.println("Enter " + contactFields[i] + ":");
-			answer = in.nextLine();
-			result[i] = answer;
+		for (int i = 1; i < contactFields.length; i++) {
+			if (dataToRead[i]) {
+				System.out.println("Enter " + contactFields[i] + ":");
+				result[i] = in.nextLine();
+			}
+			else result[i] = null;
 		}
-		else result[i] = null;
+		return result;
 	}
-	return result;
-}
 		
-	public void showContacts(String orderBy) throws ClassNotFoundException, SQLException{
+	public void showContacts(String orderBy){
 		ContactsList contactsList = new ContactsList();
-		if (!orderBy.equals("name") && !orderBy.equals("surname")) orderBy = "id";
-		List<Contact> listOfContacts = contactsList.loadContactListFromDB("telephone_book", orderBy);
-		for (Contact con : listOfContacts) System.out.println(con.toString() + "\n");
+		if (!orderBy.equals("nome") && !orderBy.equals("cognome")) orderBy = "id";
+		List<Contact> listOfContacts;
+		try {
+			listOfContacts = contactsList.loadContactListFromDB("rubrica", orderBy);
+			for (Contact con : listOfContacts) System.out.println(con.toString() + "\n");
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void sorting() throws SQLException, ClassNotFoundException {		
+	public void sorting(){		
 		System.out.println("1: Sort by name" + 
-						 "\n2: Sort by surname" + 
-						 "\n0: Sort by id (default sorting)");
-		int answer = in.nextInt();		
-		if (answer == 1) showContacts("name");
-		else if (answer == 2) showContacts("surname");
+				 "\n2: Sort by surname" + 
+				 "\n0: Sort by id (default sorting)");
+		String answer = in.nextLine();		
+		if (answer.equals("1")) showContacts("name");
+		else if (answer.equals("2")) showContacts("surname");
 		else showContacts("id");
 	}
 	
-	public void searchContact() throws SQLException, ClassNotFoundException{
-		Connection connection = getConnection();
+	public void searchContact(){
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
 		
-		System.out.println("Enter data (or part of it) to look for:");
-		String answer = in.nextLine();
-		
-		PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM telephone_book WHERE name LIKE ? OR surname LIKE ? OR phone_number LIKE ? OR email LIKE ? OR note LIKE ? ;");
-		preparedStatement.setString(1, "%" + answer + "%");
-		preparedStatement.setString(2, "%" + answer + "%");
-		preparedStatement.setString(3, "%" + answer + "%");
-		preparedStatement.setString(4, "%" + answer + "%");
-		preparedStatement.setString(5, "%" + answer + "%");
-		
-		ResultSet rs = preparedStatement.executeQuery();
-		//List<Contact> listOfContacts = new ArrayList<>();
-		Contact con = null; new Contact();
-		while (rs.next()) {
-			con = new Contact();
-			con.setId(rs.getInt("id"));
-			con.setName(rs.getString("name"));
-			con.setSurname(rs.getString("surname"));
-			con.setPhoneNumber(rs.getString("phone_number"));
-			con.setEmail(rs.getString("email"));
-			con.setNote(rs.getString("note"));
-			System.out.println(con.toString() + "\n");
+		try {
+			connection = getConnection();
+			System.out.println("Enter data (or part of it) to look for:");
+			String answer = in.nextLine();
+			
+			preparedStatement = connection.prepareStatement("SELECT * FROM rubrica WHERE nome LIKE ? OR cognome LIKE ? OR telefono LIKE ? OR email LIKE ? OR note LIKE ? ;");
+			preparedStatement.setString(1, "%" + answer + "%");
+			preparedStatement.setString(2, "%" + answer + "%");
+			preparedStatement.setString(3, "%" + answer + "%");
+			preparedStatement.setString(4, "%" + answer + "%");
+			preparedStatement.setString(5, "%" + answer + "%");
+			
+			rs = preparedStatement.executeQuery();
+			//List<Contact> listOfContacts = new ArrayList<>();
+			Contact con = null; new Contact();
+			if(!rs.next()) System.out.println("No contact matching \"" + answer + "\"");
+			while (rs.next()) {
+				con = new Contact();
+				con.setId(rs.getInt("id"));
+				con.setName(rs.getString("nome"));
+				con.setSurname(rs.getString("cognome"));
+				con.setPhoneNumber(rs.getString("telefono"));
+				con.setEmail(rs.getString("email"));
+				con.setNote(rs.getString("note"));
+				System.out.println(con.toString() + "\n");
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				preparedStatement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}		
 		}
-		rs.close();		
-		preparedStatement.close();
-		connection.close();
 	}
 	
-	public void insertContact() throws ClassNotFoundException, SQLException {
+	public void insertContact(){
 		ContactsList contactsList = new ContactsList();
 		List<Contact> list = new ArrayList<>();
 		Contact contact = new Contact();
@@ -124,226 +141,330 @@ public class ContactsManagerJDBC {
 		contact.setEmail(newContactData[4]);
 		contact.setNote(newContactData[5]);
 		list.add(contact);
-		contactsList.writeContactListDB(list);
+		try {
+			contactsList.writeContactListDB(list);
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void editContact(int id) throws SQLException, ClassNotFoundException {
+	private void print(int id){
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
 		
-		Connection connection = getConnection();
-		
-		System.out.println("Enter new data");
-		String [] updateContact = readData(setDataToRead());
-		
-		StringBuilder sb = new StringBuilder("UPDATE telephone_book SET");
-		if (updateContact[1] != null) sb.append(" name = '" + updateContact[1] + "'");
-		if (updateContact[2] != null) sb.append(", surname = '" + updateContact[2] + "'");
-		if (updateContact[3] != null) sb.append(", phone_number = '" + updateContact[3] + "'");
-		if (updateContact[4] != null) sb.append(", email = '" + updateContact[4] + "'");
-		if (updateContact[5] != null) sb.append(", note = '" + updateContact[5] + "'");
-		
-		if (sb.charAt(0) == ',') sb.deleteCharAt(0);
-		if (sb.charAt(sb.length() - 1) == ',') sb.deleteCharAt(sb.length() - 1);
-		sb.append(" WHERE id = " + id + ";");
-		Statement statement = connection.createStatement();
-		statement.executeUpdate(sb.toString());
-		statement.close();
-		connection.close();
+		try {
+			connection = getConnection();
+			statement = connection.createStatement();
+			rs = statement.executeQuery("SELECT * FROM rubrica WHERE id = " + id +";");
+			Contact con = new Contact();
+			while (rs.next()) {
+				con.setId(id);
+				con.setId(rs.getInt("id"));
+				con.setName(rs.getString("nome"));
+				con.setSurname(rs.getString("cognome"));
+				con.setPhoneNumber(rs.getString("telefono"));
+				con.setEmail(rs.getString("email"));
+				con.setNote(rs.getString("note"));
+				System.out.println(con.toString());
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}		
+			
+		}
 	}
 	
-	public int searchByID() throws ClassNotFoundException, SQLException {
+	public void editContact(int id){
+		print(id);
+		Connection connection = null;
+		Statement statement = null;
+		
+		try {
+			connection = getConnection();
+			System.out.println("Enter new data");
+			String [] updateContact = readData(setDataToRead());
+			
+			StringBuilder sb = new StringBuilder("UPDATE telephone_book SET");
+			if (updateContact[1] != null) sb.append(" name = '" + updateContact[1] + "'");
+			if (updateContact[2] != null) sb.append(", surname = '" + updateContact[2] + "'");
+			if (updateContact[3] != null) sb.append(", phone_number = '" + updateContact[3] + "'");
+			if (updateContact[4] != null) sb.append(", email = '" + updateContact[4] + "'");
+			if (updateContact[5] != null) sb.append(", note = '" + updateContact[5] + "'");
+			
+			if (sb.charAt(0) == ',') sb.deleteCharAt(0);
+			if (sb.charAt(sb.length() - 1) == ',') sb.deleteCharAt(sb.length() - 1);
+			sb.append(" WHERE id = " + id + ";");
+			statement = connection.createStatement();
+			statement.executeUpdate(sb.toString());
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public int searchByID(){
 		int id = 0;
 		System.out.println("Enter id of contact. Enter 0 to see all contacts:");
 		String answer = in.next();
 		in.nextLine();
 		if (answer.equals("0")) {
 			sorting();
-			System.out.println("Enter id of contact to edit:");	
+			System.out.println("Enter id of contact:");	
 			String a = in.next();
 			in.nextLine();
 			id = Integer.parseInt(a);
 		} else id = Integer.parseInt(answer);
+		Connection connection = null;
+		Statement statement = null;
+		ResultSet rs = null;
 		
-		Connection connection = getConnection();
-		Statement statement = connection.createStatement();
+		try {
+			connection = getConnection();
+			statement = connection.createStatement();
 			
-		ResultSet rs = statement.executeQuery("SELECT * FROM telephone_book WHERE id = " + id +";");
-		Contact con = new Contact();
-		while (rs.next()) {
-			con.setId(id);
-			con.setId(rs.getInt("id"));
-			con.setName(rs.getString("name"));
-			con.setSurname(rs.getString("surname"));
-			con.setPhoneNumber(rs.getString("phone_number"));
-			con.setEmail(rs.getString("email"));
-			con.setNote(rs.getString("note"));
-			System.out.println(con.toString());
+			rs = statement.executeQuery("SELECT * FROM rubrica WHERE id = " + id +";");
+			Contact con = new Contact();
+			while (rs.next()) {
+				con.setId(id);
+				con.setId(rs.getInt("id"));
+				con.setName(rs.getString("nome"));
+				con.setSurname(rs.getString("cognome"));
+				con.setPhoneNumber(rs.getString("telefono"));
+				con.setEmail(rs.getString("email"));
+				con.setNote(rs.getString("note"));
+				System.out.println(con.toString());
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}		
+			
 		}
-		rs.close();		
-		statement.close();
-		connection.close();
 		return id;
 	}
 
-	public void deleteContact(int id) throws ClassNotFoundException, SQLException {
-		Connection connection = getConnection();
-		Statement statement = connection.createStatement();
-		statement.executeUpdate("DELETE FROM telephone_book WHERE id = " + id +";");
-		statement.close();
-		connection.close();
-		System.out.println("ID: " + id + " deleted");
+	public void deleteContact(int id){
+		Connection connection = null;
+		Statement statement = null;
+		try {
+		connection = getConnection();
+		statement = connection.createStatement();
+		statement.executeUpdate("DELETE FROM rubrica WHERE id = " + id +";");
+		} catch(ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
-	public List<List<Contact>> findDuplicates() throws ClassNotFoundException, SQLException{
+	public List<List<Contact>> findDuplicates(){
 		
-		Connection connection = getConnection();
+		Connection connection = null;
 		ContactsList contactsList = new ContactsList();
-		Statement statement = connection.createStatement();
+		Statement statement = null;
 		
 		ResultSet rs = null;
-		List<Contact> listOfContacts = contactsList.loadContactListFromDB("telephone_book", "name");
+		List<Contact> listOfContacts = new ArrayList<>();
 		List<List<Contact>> listOfDuplicates = new ArrayList<>();
 		String number;
-		List<Contact> duplicates = new ArrayList<>();
-		
-		Contact con1 = new Contact();
-		Contact con2 = new Contact();
-		while (listOfContacts.size() > 0) {
-			con1 = listOfContacts.get(0);
-			number = con1.getPhoneNumber();
-			rs = statement.executeQuery("SELECT * FROM telephone_book WHERE phone_number = '" + number + "';");
-			while (rs.next()) {
-				con2.setId(rs.getInt("id"));
-				con2.setName(rs.getString("name"));
-				con2.setSurname(rs.getString("surname"));
-				con2.setPhoneNumber(rs.getString("phone_number"));
-				con2.setEmail(rs.getString("email"));
-				con2.setNote(rs.getString("note"));
-				duplicates.add(con2);
-				listOfContacts.remove(con2);
+		List<Contact> duplicates;
+		try {
+			connection = getConnection();
+			statement = connection.createStatement();
+			listOfContacts = contactsList.loadContactListFromDB("rubrica", "nome");
+			
+			Contact con1 = new Contact();
+			Contact con2 = new Contact();
+			while (listOfContacts.size() > 0) {
+				con1 = new Contact();
+				con1 = listOfContacts.get(0);
+				//System.out.println(con1);
+				number = con1.getPhoneNumber();
+				duplicates = new ArrayList<>();
+				rs = statement.executeQuery("SELECT * FROM rubrica WHERE telefono = '" + number + "';");
+				while (rs.next()) {
+					con2 = new Contact();
+					con2.setId(rs.getInt("id"));
+					con2.setName(rs.getString("nome"));
+					con2.setSurname(rs.getString("cognome"));
+					con2.setPhoneNumber(rs.getString("telefono"));
+					con2.setEmail(rs.getString("email"));
+					con2.setNote(rs.getString("note"));
+					duplicates.add(con2);
+					//System.out.println("dup: " + duplicates + "\n");
+					for (int i = listOfContacts.size() - 1; i >= 0; i--) {
+						if (listOfContacts.get(i).getId() == con2.getId()) listOfContacts.remove(i);
+					}
+				}
+				if(duplicates.size() > 1) listOfDuplicates.add(duplicates);
+				//System.out.println("loc: " + listOfContacts + "\n");
 			}
-			listOfDuplicates.add(duplicates);
+			
+			for (List<Contact> duplicatesContacts : listOfDuplicates) {
+				System.out.println(duplicatesContacts);
+			}
+		}catch (SQLException | ClassNotFoundException e){
+			e.printStackTrace();
+		}finally {
+			try {
+				rs.close();
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
-		for (List<Contact> duplicatesContacts : listOfDuplicates) {
-			System.out.println(duplicatesContacts);
-		}
-		rs.close();
-		statement.close();
-		connection.close();
+		if(listOfDuplicates.size() == 0) System.out.println("No duplicates");
 		return listOfDuplicates;
 	}
 		
-	public void mergeDuplicates() throws SQLException, ClassNotFoundException {
-		Connection connection = getConnection();
-		ContactsList contactsList = new ContactsList();
-		Statement statement = connection.createStatement();
-		
-		List<Contact> list = new ArrayList<Contact>();
-		List<List<Contact>> listOfDuplicates = findDuplicates();
-		
-		Contact keepThisContact;
-		Contact checkThisContact;
-		int id;
-		String name;
-		String surname;
-		String email;
-		String note;
-		String checkName;
-		String checkSurname;
-		String checkEmail;
-		String checkNote;
-		
-		String answer;
-		
-		for (List<Contact> duplicates: listOfDuplicates) {
-			keepThisContact = duplicates.get(0);
+	public void mergeDuplicates(){
+		Connection connection = null;
+		Statement statement = null; 
+		try {
+			connection = getConnection();
+			ContactsList contactsList = new ContactsList();
+			statement = connection.createStatement();
 			
-			id = keepThisContact.getId();
+			List<Contact> list = new ArrayList<Contact>();
+			List<List<Contact>> listOfDuplicates = findDuplicates();
 			
-			name = keepThisContact.getName();
-			if (name == null) {
-				name = "";
-				keepThisContact.setName(name);
-			}
+			Contact keepThisContact;
+			Contact checkThisContact;
+			int id;
+			String name;
+			String surname;
+			String email;
+			String note;
+			String checkName;
+			String checkSurname;
+			String checkEmail;
+			String checkNote;
 			
-			surname = keepThisContact.getSurname();
-			if (surname == null) {
-				surname = "";
-				keepThisContact.setName(surname);
-			}
+			String answer;
 			
-			//non dovrebbe essere null in generale
-			if (keepThisContact.getPhoneNumber() == null) keepThisContact.setPhoneNumber("");
-			
-			email = keepThisContact.getEmail();
-			if (email == null) {
-				email = "";
-				keepThisContact.setEmail(email);
-			}
-			
-			note = keepThisContact.getNote();
-			if (note == null) {
-				note = "";
-				keepThisContact.setNote(note);
-			}
-			
-			for (int i = 1; i < duplicates.size(); i++) {
-				checkThisContact = duplicates.get(i);
-				//conflitti
+			for (List<Contact> duplicates: listOfDuplicates) {
+				keepThisContact = duplicates.get(0);
 				
-				//nome
-				checkName = checkThisContact.getName();
-				if (checkName == null || checkName.contentEquals("") || name.equals(checkName));
-				else {
-					System.out.println("Conflict: Which name do you want to keep?");
-					System.out.println("0: " + name);
-					System.out.println("1: " + checkName);
-					answer = in.nextLine();
-					if (answer.equals("1")) keepThisContact.setName(checkName);
+				id = keepThisContact.getId();
+				
+				name = keepThisContact.getName();
+				if (name == null) {
+					name = "";
+					keepThisContact.setName(name);
 				}
 				
-				//cognome
-				checkSurname = checkThisContact.getSurname();
-				if (checkSurname == null || checkSurname.contentEquals("") || surname.equals(checkSurname));
-				else {
-					System.out.println("Conflict: Which surname do you want to keep?");
-					System.out.println("0: " + surname);
-					System.out.println("1: " + checkThisContact.getSurname());
-					answer = in.nextLine();
-					if (answer.equals("1")) keepThisContact.setSurname(checkThisContact.getSurname());
+				surname = keepThisContact.getSurname();
+				if (surname == null) {
+					surname = "";
+					keepThisContact.setName(surname);
 				}
 				
-				//email
-				checkEmail = checkThisContact.getEmail();
-				if (checkEmail == null || checkEmail.contentEquals("") || email.equals(checkEmail));
-				else {
-					System.out.println("Conflict: Which email do you want to keep?");
-					System.out.println("0: " + email);
-					System.out.println("1: " + checkThisContact.getEmail());
-					answer = in.nextLine();
-					if (answer.equals("1")) keepThisContact.setEmail(checkThisContact.getEmail());
+				//non dovrebbe essere null in generale
+				if (keepThisContact.getPhoneNumber() == null) keepThisContact.setPhoneNumber("");
+				
+				email = keepThisContact.getEmail();
+				if (email == null) {
+					email = "";
+					keepThisContact.setEmail(email);
 				}
 				
-				//note
-				checkNote = checkThisContact.getNote();
-				if (checkNote == null || checkNote.contentEquals("") || note.equals(checkNote));
-				else {
-					System.out.println("Conflict: Which note do you want to keep?");
-					System.out.println("0: " + note);
-					System.out.println("1: " + checkThisContact.getNote());
-					answer = in.nextLine();
-					if (answer.equals("1")) keepThisContact.setNote(checkThisContact.getNote());
+				note = keepThisContact.getNote();
+				if (note == null) {
+					note = "";
+					keepThisContact.setNote(note);
 				}
 				
-				deleteContact(checkThisContact.getId());
+				for (int i = 1; i < duplicates.size(); i++) {
+					checkThisContact = duplicates.get(i);
+					//conflitti
+					
+					//nome
+					checkName = checkThisContact.getName();
+					if (checkName == null || checkName.contentEquals("") || name.equals(checkName));
+					else {
+						System.out.println("Conflict: Which name do you want to keep?");
+						System.out.println("0: " + name);
+						System.out.println("1: " + checkName);
+						answer = in.nextLine();
+						if (answer.equals("1")) keepThisContact.setName(checkName);
+					}
+					
+					//cognome
+					checkSurname = checkThisContact.getSurname();
+					if (checkSurname == null || checkSurname.contentEquals("") || surname.equals(checkSurname));
+					else {
+						System.out.println("Conflict: Which surname do you want to keep?");
+						System.out.println("0: " + surname);
+						System.out.println("1: " + checkThisContact.getSurname());
+						answer = in.nextLine();
+						if (answer.equals("1")) keepThisContact.setSurname(checkThisContact.getSurname());
+					}
+					
+					//email
+					checkEmail = checkThisContact.getEmail();
+					if (checkEmail == null || checkEmail.contentEquals("") || email.equals(checkEmail));
+					else {
+						System.out.println("Conflict: Which email do you want to keep?");
+						System.out.println("0: " + email);
+						System.out.println("1: " + checkThisContact.getEmail());
+						answer = in.nextLine();
+						if (answer.equals("1")) keepThisContact.setEmail(checkThisContact.getEmail());
+					}
+					
+					//note
+					checkNote = checkThisContact.getNote();
+					if (checkNote == null || checkNote.contentEquals("") || note.equals(checkNote));
+					else {
+						System.out.println("Conflict: Which note do you want to keep?");
+						System.out.println("0: " + note);
+						System.out.println("1: " + checkThisContact.getNote());
+						answer = in.nextLine();
+						if (answer.equals("1")) keepThisContact.setNote(checkThisContact.getNote());
+					}
+					deleteContact(checkThisContact.getId());
+				}
+				list.add(keepThisContact);
+				contactsList.writeContactListDB(list);
+				deleteContact(id);
 			}
-			list.add(keepThisContact);
-			contactsList.writeContactListDB(list);
-			deleteContact(id);
+		}catch(ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				statement.close();
+				connection.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
 		}
-		statement.close();
-		connection.close();
-		System.out.println("Contacts merged");
 	}
 
 	public boolean checkFile (String path) {
@@ -388,31 +509,33 @@ public class ContactsManagerJDBC {
 		Connection connection = getConnection();
 		Statement statement = connection.createStatement();
 		
-		ResultSet rs = statement.executeQuery("SELECT * FROM telephone_book;");
+		ResultSet rs = statement.executeQuery("SELECT * FROM rubrica;");
 		Contact con = new Contact();
 		
 		if (path.endsWith(".xml")) {
 			while (rs.next()) {
+				con = new Contact();
 				con.setId(rs.getInt("id"));
-				con.setName(rs.getString("name"));
-				con.setSurname(rs.getString("surname"));
-				con.setPhoneNumber(rs.getString("phoneNumber"));
+				con.setName(rs.getString("nome"));
+				con.setSurname(rs.getString("cognome"));
+				con.setPhoneNumber(rs.getString("telefono"));
 				con.setEmail(rs.getString("email"));
-				con.setNote( rs.getString("nome"));
+				con.setNote( rs.getString("note"));
 				listOfContacts.add(con);
 			}
 			contacstList.writeContactListXLM(listOfContacts, path);
 		}
-		else if (path.endsWith(".cvs")) {
+		else if (path.endsWith(".csv")) {
 			System.out.println("Enter separator: ");
 			String separator = in.nextLine();
 			while (rs.next()) {
+				con = new Contact();
 				con.setId(rs.getInt("id"));
-				con.setName(rs.getString("name"));
-				con.setSurname(rs.getString("surname"));
-				con.setPhoneNumber(rs.getString("phoneNumber"));
+				con.setName(rs.getString("nome"));
+				con.setSurname(rs.getString("cognome"));
+				con.setPhoneNumber(rs.getString("telefono"));
 				con.setEmail(rs.getString("email"));
-				con.setNote( rs.getString("nome"));
+				con.setNote( rs.getString("note"));
 				listOfContacts.add(con);
 			}
 			contacstList.writeContactListCSV(listOfContacts, path, separator);

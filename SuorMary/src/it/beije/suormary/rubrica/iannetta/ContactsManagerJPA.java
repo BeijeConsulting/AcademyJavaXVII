@@ -18,7 +18,7 @@ import javax.persistence.criteria.Root;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
-import org.hibernate.Transaction;
+import org.hibernate.internal.build.AllowSysOut;
 import org.xml.sax.SAXException;
 
 
@@ -36,6 +36,13 @@ public class ContactsManagerJPA {
 	public void end() {
 		in.close();
 		entityManager.close();
+		System.out.println("Bye (:");
+	}
+	
+	public boolean confirm() {
+		System.out.println("1: Confirm\n0: Cancel");
+		String answer = in.nextLine();
+		return answer.equals("1");
 	}
 	
 	public boolean[] setDataToRead() {
@@ -63,7 +70,7 @@ public class ContactsManagerJPA {
 			}
 			else result[i] = null;
 		}
-		System.out.println(Arrays.toString(result));
+		//System.out.println(Arrays.toString(result));
 		return result;
 	}
 	
@@ -73,15 +80,17 @@ public class ContactsManagerJPA {
 		Query query = entityManager.createQuery("SELECT c from Contact as c ORDER BY " + orderBy);
 		List<Contact> contacts = query.getResultList();
 		for (Contact c : contacts) System.out.println(c);
+		query = entityManager.createQuery("SELECT count(c) from Contact as c");
+		System.out.println("Total contacts: " + query.getSingleResult());
 	}
 	
-	public void sorting() throws SQLException, ClassNotFoundException {		
+	public void sorting(){		
 		System.out.println("1: Sort by name" + 
 						 "\n2: Sort by surname" + 
 						 "\n0: Sort by id (default sorting)");
-		int answer = in.nextInt();		
-		if (answer == 1) showContacts("name");
-		else if (answer == 2) showContacts("surname");
+		String answer = in.nextLine();		
+		if (answer.equals("1")) showContacts("name");
+		else if (answer.equals("2")) showContacts("surname");
 		else showContacts("id");
 	}
 
@@ -96,6 +105,7 @@ public class ContactsManagerJPA {
 																				    "c.note LIKE :answer");
 		query.setParameter("answer", "%" + answer + "%");
 		List<Contact> contacts = query.getResultList();
+		if(contacts.size() == 0) System.out.println("No contact matching \"" + answer + "\"");
 		for (Contact c : contacts) System.out.println(c);
 	}
 
@@ -112,11 +122,15 @@ public class ContactsManagerJPA {
 		contact.setPhoneNumber(newContactData[3]);
 		contact.setEmail(newContactData[4]);
 		contact.setNote(newContactData[5]);
-		entityManager.persist(contact);
-		transaction.commit();
+		System.out.println(contact);
+		if (confirm()) {
+			entityManager.persist(contact);
+			transaction.commit();
+		}
+		else transaction.rollback();
 	}
 
-	public int selectID() throws ClassNotFoundException, SQLException {
+	public int selectID(){
 		int id;
 		
 		System.out.println("Enter id of contact. Enter 0 to see all contacts:");
@@ -132,13 +146,23 @@ public class ContactsManagerJPA {
 	}
 
 	private void print(int id) {
-		//EntityTransaction transaction = entityManager.getTransaction();
-		Contact contact = entityManager.find(Contact.class, id);
-		System.out.println(contact);	
+		EntityTransaction transaction = entityManager.getTransaction();
+		transaction.begin();
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		
+		CriteriaQuery<Contact> cr = cb.createQuery(Contact.class);
+		Root<Contact> root = cr.from(Contact.class);
+		cr.select(root).where(cb.equal(root.get("id"), id));
+		Query query = entityManager.createQuery(cr);
+//		List<Contact> results = query.getResultList();
+//		for (Contact c : results) System.out.println(c);
+		System.out.println(query.getResultList());
+		transaction.rollback();	//non so perchè, ma se metto transaction.commit() lui salva i cambiamenti
+								//ma non me li fa vedere immediatamente, invece così sì. 
 	}
 	
 	public void editContact(int id) {
-		//print(id); se togli il commento non funziona;
+		print(id);
 		EntityTransaction transaction = entityManager.getTransaction();
 		transaction.begin();
 		
@@ -153,10 +177,14 @@ public class ContactsManagerJPA {
 		if (updateContact[3] != null) cu.set("phoneNumber", updateContact[3]);
 		if (updateContact[4] != null) cu.set("email", updateContact[4]);
 		if (updateContact[5] != null) cu.set("note", updateContact[5]);
-
-		cu.where(cb.equal(root.get("id"), id));
-		entityManager.createQuery(cu).executeUpdate(); 
-		transaction.commit();
+		
+		if(confirm()) {
+			cu.where(cb.equal(root.get("id"), id));
+			entityManager.createQuery(cu).executeUpdate(); 
+			transaction.commit();
+			System.out.println("id: " + id + " edited");
+		} 
+		else transaction.rollback();
 	}
 	
 	public void deleteContact(int id) {
@@ -165,8 +193,23 @@ public class ContactsManagerJPA {
 		if (!isActive) transaction.begin();
 		else print(id);
 		Contact contact = entityManager.find(Contact.class, id);
-		entityManager.remove(contact);
-		if(!isActive) transaction.commit();
+		
+		/*serve per quando richiamo il metodo da merge perchè la transaction potrebbe già essere attiva
+		quindi ho bisogno di differenziare i casi così però è consistente all if di prima
+		se è solo delete chiede, se è da merge non chiede
+		*/
+		if(!isActive) {								
+			if (confirm()) {						
+				entityManager.remove(contact);		
+				transaction.commit();	
+				System.out.println("id: " + id + " deleted");
+			}										
+			else transaction.rollback();			
+		}											
+		else {
+			entityManager.remove(contact);
+			transaction.commit();					
+		}
 	}
 
 	public List<List<Contact>> findDuplicates() {
@@ -191,6 +234,7 @@ public class ContactsManagerJPA {
 			}
 			else allContacts.remove(0);
 		}
+		if (listOfDuplicates.size() == 0) System.out.println("No duplicates");
 		for (List<Contact> duplicatesContacts : listOfDuplicates) {
 			System.out.println(duplicatesContacts);
 		}
@@ -200,114 +244,114 @@ public class ContactsManagerJPA {
 	}
 
 	public void mergeDuplicates() {
+		
 		EntityTransaction transaction = entityManager.getTransaction();
 
 		List<List<Contact>> listOfDuplicates = findDuplicates();
-		
-		Contact keepThisContact;
-		Contact checkThisContact;
-		int id;
-		String name;
-		String surname;
-		String email;
-		String note;
-		String checkName;
-		String checkSurname;
-		String checkEmail;
-		String checkNote;
-		
-		String answer;
-//		boolean[] enterData = new boolean[contactFields.length];
-//		Arrays.fill(enterData, false);
-		
-		for (List<Contact> duplicates: listOfDuplicates) {
-			transaction.begin();
-			keepThisContact = duplicates.get(0);
+		if (confirm()) {
+			Contact keepThisContact;
+			Contact checkThisContact;
+			//int id;
+			String name;
+			String surname;
+			String email;
+			String note;
+			String checkName;
+			String checkSurname;
+			String checkEmail;
+			String checkNote;
 			
-			id = keepThisContact.getId();
+			String answer;
+//			boolean[] enterData = new boolean[contactFields.length];
+//			Arrays.fill(enterData, false);
 			
-			name = keepThisContact.getName();
-			if (name == null) {
-				name = "";
-				keepThisContact.setName(name);
-			}
-			
-			surname = keepThisContact.getSurname();
-			if (surname == null) {
-				surname = "";
-				keepThisContact.setName(surname);
-			}
-			
-			//non dovrebbe essere null in generale
-			if (keepThisContact.getPhoneNumber() == null) keepThisContact.setPhoneNumber("");
-			
-			email = keepThisContact.getEmail();
-			if (email == null) {
-				email = "";
-				keepThisContact.setEmail(email);
-			}
-			
-			note = keepThisContact.getNote();
-			if (note == null) {
-				note = "";
-				keepThisContact.setNote(note);
-			}
-			
-			for (int i = 1; i < duplicates.size(); i++) {
-				checkThisContact = duplicates.get(i);
-				//conflitti
+			for (List<Contact> duplicates: listOfDuplicates) {
+				keepThisContact = duplicates.get(0);
+				//id = keepThisContact.getId();
 				
-				//nome
-				checkName = checkThisContact.getName();
-				if (checkName == null || checkName.contentEquals("") || name.equals(checkName));
-				else {
-					System.out.println("Conflict: Which name do you want to keep?");
-					System.out.println("0: " + name);
-					System.out.println("1: " + checkName);
-					answer = in.nextLine();
-					if (answer.equals("1")) keepThisContact.setName(checkName);
+				name = keepThisContact.getName();
+				if (name == null) {
+					name = "";
+					keepThisContact.setName(name);
 				}
 				
-				//cognome
-				checkSurname = checkThisContact.getSurname();
-				if (checkSurname == null || checkSurname.contentEquals("") || surname.equals(checkSurname));
-				else {
-					System.out.println("Conflict: Which surname do you want to keep?");
-					System.out.println("0: " + surname);
-					System.out.println("1: " + checkThisContact.getSurname());
-					answer = in.nextLine();
-					if (answer.equals("1")) keepThisContact.setSurname(checkThisContact.getSurname());
+				surname = keepThisContact.getSurname();
+				if (surname == null) {
+					surname = "";
+					keepThisContact.setName(surname);
 				}
 				
-				//email
-				checkEmail = checkThisContact.getEmail();
-				if (checkEmail == null || checkEmail.contentEquals("") || email.equals(checkEmail));
-				else {
-					System.out.println("Conflict: Which email do you want to keep?");
-					System.out.println("0: " + email);
-					System.out.println("1: " + checkThisContact.getEmail());
-					answer = in.nextLine();
-					if (answer.equals("1")) keepThisContact.setEmail(checkThisContact.getEmail());
+				//non dovrebbe essere null in generale
+				if (keepThisContact.getPhoneNumber() == null) keepThisContact.setPhoneNumber("");
+				
+				email = keepThisContact.getEmail();
+				if (email == null) {
+					email = "";
+					keepThisContact.setEmail(email);
 				}
 				
-				//note
-				checkNote = checkThisContact.getNote();
-				if (checkNote == null || checkNote.contentEquals("") || note.equals(checkNote));
-				else {
-					System.out.println("Conflict: Which note do you want to keep?");
-					System.out.println("0: " + note);
-					System.out.println("1: " + checkThisContact.getNote());
-					answer = in.nextLine();
-					if (answer.equals("1")) keepThisContact.setNote(checkThisContact.getNote());
+				note = keepThisContact.getNote();
+				if (note == null) {
+					note = "";
+					keepThisContact.setNote(note);
 				}
 				
-				deleteContact(checkThisContact.getId());
+				for (int i = 1; i < duplicates.size(); i++) {
+					checkThisContact = duplicates.get(i);
+					//conflitti
+					
+					//nome
+					checkName = checkThisContact.getName();
+					if (checkName == null || checkName.contentEquals("") || name.equals(checkName));
+					else {
+						System.out.println("Conflict: Which name do you want to keep?");
+						System.out.println("0: " + name);
+						System.out.println("1: " + checkName);
+						answer = in.nextLine();
+						if (answer.equals("1")) keepThisContact.setName(checkName);
+					}
+					
+					//cognome
+					checkSurname = checkThisContact.getSurname();
+					if (checkSurname == null || checkSurname.contentEquals("") || surname.equals(checkSurname));
+					else {
+						System.out.println("Conflict: Which surname do you want to keep?");
+						System.out.println("0: " + surname);
+						System.out.println("1: " + checkThisContact.getSurname());
+						answer = in.nextLine();
+						if (answer.equals("1")) keepThisContact.setSurname(checkThisContact.getSurname());
+					}
+					
+					//email
+					checkEmail = checkThisContact.getEmail();
+					if (checkEmail == null || checkEmail.contentEquals("") || email.equals(checkEmail));
+					else {
+						System.out.println("Conflict: Which email do you want to keep?");
+						System.out.println("0: " + email);
+						System.out.println("1: " + checkThisContact.getEmail());
+						answer = in.nextLine();
+						if (answer.equals("1")) keepThisContact.setEmail(checkThisContact.getEmail());
+					}
+					
+					//note
+					checkNote = checkThisContact.getNote();
+					if (checkNote == null || checkNote.contentEquals("") || note.equals(checkNote));
+					else {
+						System.out.println("Conflict: Which note do you want to keep?");
+						System.out.println("0: " + note);
+						System.out.println("1: " + checkThisContact.getNote());
+						answer = in.nextLine();
+						if (answer.equals("1")) keepThisContact.setNote(checkThisContact.getNote());
+					}
+					
+					deleteContact(checkThisContact.getId());
+				}
+				transaction.begin();
+				entityManager.persist(keepThisContact);
+				transaction.commit();
+				System.out.println("Contacts merged");
 			}
-			entityManager.persist(keepThisContact);
-			//deleteContact(id);
-			transaction.commit();
 		}
-		System.out.println("Contacts merged");
 	}
 
 	public boolean checkFile (String path) {
@@ -330,34 +374,37 @@ public class ContactsManagerJPA {
 		String path = in.nextLine();
 		List<Contact> listOfContacts = null;
 		
-		ContactsList contacstList = new ContactsList();
-		
-		if (checkFile(path)) {
-			if (path.endsWith(".xml")) {
-				listOfContacts = contacstList.loadContactListFromXML(path);
-				for (Contact con : listOfContacts) {
-					transaction.begin();;
-					entityManager.persist(con);
-					transaction.commit();
+		if (confirm()) {
+			ContactsList contacstList = new ContactsList();
+			
+			if (checkFile(path)) {
+				if (path.endsWith(".xml")) {
+					listOfContacts = contacstList.loadContactListFromXML(path);
+					for (Contact con : listOfContacts) {
+						transaction.begin();
+						entityManager.persist(con);
+						transaction.commit();
+					}
+				}
+				else if (path.endsWith(".csv")) {
+					System.out.println("Enter separator: ");
+					String separator = in.nextLine();
+					listOfContacts = contacstList.loadContactListFromCSV(path, separator);
+					for (Contact con : listOfContacts) {
+						transaction.begin();
+						entityManager.persist(con);
+						transaction.commit();
+					}
 				}
 			}
-			else if (path.endsWith(".csv")) {
-				System.out.println("Enter separator: ");
-				String separator = in.nextLine();
-				listOfContacts = contacstList.loadContactListFromCSV(path, separator);
-				for (Contact con : listOfContacts) {
-					transaction.begin();;
-					entityManager.persist(con);
-					transaction.commit();
-				}
-			}
+			System.out.println("Contacts imported");
 		}
-		System.out.println("Contacts imported");
+		else transaction.rollback();
 	}
 
-	public void exportTo() throws IOException, ParserConfigurationException, SAXException, TransformerException {
-		EntityTransaction transaction = entityManager.getTransaction();
-		transaction.begin();
+	public void exportTo() throws ParserConfigurationException, SAXException, IOException, TransformerException{
+		EntityTransaction transaction;
+		transaction = entityManager.getTransaction();
 	
 		System.out.println("Enter path of file where export contacts to (.xml or .csv) : ");
 		String path = in.nextLine();
@@ -366,18 +413,31 @@ public class ContactsManagerJPA {
 		ContactsList contacstList = new ContactsList();
 		
 		if (path.endsWith(".xml")) {
-			Query query = entityManager.createNamedQuery("SELECT c FROM Contact as c");
+			
+			transaction.begin();
+			Query query = entityManager.createQuery("SELECT c from Contact as c");
 			listOfContacts = query.getResultList();
-			contacstList.writeContactListXLM(listOfContacts, path);
+			if (confirm()) {
+				contacstList.writeContactListXLM(listOfContacts, path);
+				transaction.commit();
+			}
+			else transaction.rollback();
 		}
-		else if (path.endsWith(".cvs")) {
+		
+		else if (path.endsWith(".csv")) {
 			System.out.println("Enter separator: ");
 			String separator = in.nextLine();
-			Query query = entityManager.createNamedQuery("SELECT c FROM Contact as c");
+			
+			transaction.begin();
+			Query query = entityManager.createQuery("SELECT c from Contact as c");
 			listOfContacts = query.getResultList();
-			contacstList.writeContactListCSV(listOfContacts, path, separator);
+			if (confirm()) {
+				contacstList.writeContactListCSV(listOfContacts, path, separator);
+				transaction.commit();
+			}
+			else transaction.rollback();
 		}
+		
 		else System.out.println("Invalid format");
 	}
-
 }

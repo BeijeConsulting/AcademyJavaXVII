@@ -132,9 +132,9 @@ public class ContactsList {
 		while (rs.next()) {
 			con = new Contact();
 			con.setId(rs.getInt("id"));
-			con.setName(rs.getString("name"));
-			con.setSurname(rs.getString("surname"));
-			con.setPhoneNumber(rs.getString("phone_number"));
+			con.setName(rs.getString("nome"));
+			con.setSurname(rs.getString("cognome"));
+			con.setPhoneNumber(rs.getString("telefono"));
 			con.setEmail(rs.getString("email"));
 			con.setNote(rs.getString("note"));
 			listOfContacts.add(con);
@@ -242,7 +242,7 @@ public class ContactsList {
 		statement = connection.createStatement();
 		StringBuilder query;
 		for (Contact con : listOfContacts) {
-			query = new StringBuilder("INSERT INTO telephone_book (`name`, `surname`, `phone_number`, `email`, `note`) VALUES ('")
+			query = new StringBuilder("INSERT INTO rubrica (`nome`, `cognome`, `telefono`, `email`, `note`) VALUES ('")
 					.append(con.getName()).append("', '").append(con.getSurname()).append("', '").append(con.getPhoneNumber()).append("', '")
 					.append(con.getEmail()).append("', '").append(con.getNote()).append("');");
 			statement.executeUpdate(query.toString());

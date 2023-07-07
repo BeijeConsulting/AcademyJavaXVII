@@ -28,7 +28,7 @@ public class ContactsManagerTest {
 						 "\n0: Exit");
 	}
 	
-	private static boolean choiceJDBC() throws ClassNotFoundException, SQLException, ParserConfigurationException, SAXException, IOException, TransformerException {
+	private static boolean choiceJDBC() throws ClassNotFoundException, ParserConfigurationException, SAXException, IOException, SQLException, TransformerException{
 		ContactsManagerJDBC contactsManagerJDBC = new ContactsManagerJDBC();
 		menu();
 		int id;
@@ -59,18 +59,23 @@ public class ContactsManagerTest {
 		menu();
 		int id;
 		int answer = in.nextInt();
+		in.nextLine();
 		switch(answer) {
 		case 1: contactsManagerHBM.sorting(); break; 
 		case 2: contactsManagerHBM.searchContact(); break;
 		case 3: contactsManagerHBM.insertContact(); break;
 		case 4: id = contactsManagerHBM.selectID();
-				contactsManagerHBM.editContact(id); 
+				contactsManagerHBM.editContact(id);
+				System.out.println("id: " + id + " edited");
 				break;
 		case 5: id = contactsManagerHBM.selectID();
 				contactsManagerHBM.deleteContact(id);
+				System.out.println("id: " + id + " deleted");
 				break;
 		case 6: contactsManagerHBM.findDuplicates(); break;
-		case 7: contactsManagerHBM.mergeDuplicates(); break;
+		case 7: contactsManagerHBM.mergeDuplicates();
+				System.out.println("Contacts merged");
+				break;
 		case 8: contactsManagerHBM.importFrom(); break;
 		case 9: contactsManagerHBM.exportTo(); break;
 		case 0:
@@ -84,6 +89,7 @@ public class ContactsManagerTest {
 		menu();
 		int id;
 		int answer = in.nextInt();
+		in.nextLine();
 		switch(answer) {
 		case 1: contactsManagerJPA.sorting(); break; 
 		case 2: contactsManagerJPA.searchContact(); break;
@@ -95,7 +101,8 @@ public class ContactsManagerTest {
 				contactsManagerJPA.deleteContact(id);
 				break;
 		case 6: contactsManagerJPA.findDuplicates(); break;
-		case 7: contactsManagerJPA.mergeDuplicates(); break;
+		case 7: contactsManagerJPA.mergeDuplicates();
+				break;
 		case 8: contactsManagerJPA.importFrom(); break;
 		case 9: contactsManagerJPA.exportTo(); break;
 		case 0:
@@ -104,7 +111,7 @@ public class ContactsManagerTest {
 		return true;
 	}
 	
-	public static void main(String[] args) throws ClassNotFoundException, SQLException, ParserConfigurationException, SAXException, IOException, TransformerException {
+	public static void main(String[] args) throws ClassNotFoundException, SQLException, ParserConfigurationException, SAXException, IOException, TransformerException{
 				
 		System.out.println("Welcome to Contacts Manager.");
 		
@@ -121,5 +128,7 @@ public class ContactsManagerTest {
 		//JPA
 		do keepGoing = choiceJPA();						
 		while (keepGoing);
+		
+		in.close();
 	}
 }
