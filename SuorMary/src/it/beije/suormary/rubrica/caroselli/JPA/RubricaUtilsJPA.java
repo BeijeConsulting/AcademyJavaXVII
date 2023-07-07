@@ -196,7 +196,7 @@ public class RubricaUtilsJPA {
 		Contact contact = new Contact(name, surname, phone, email, note);
 
 		try {
-			
+
 			entityManager = PersistenceManagerJPA.getEntityManager();
 
 			EntityTransaction transaction = entityManager.getTransaction();
@@ -389,7 +389,6 @@ public class RubricaUtilsJPA {
 		List<Contact> duplicateContacts = new ArrayList<>();
 
 		EntityManager entityManager = null;
-		
 
 		try {
 
@@ -397,7 +396,7 @@ public class RubricaUtilsJPA {
 
 			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
-			
+
 //			 CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 //		        CriteriaQuery<Contact> selectQuery = criteriaBuilder.createQuery(Contact.class);
 //		        Root<Contact> root = selectQuery.from(Contact.class);
@@ -432,16 +431,15 @@ public class RubricaUtilsJPA {
 //		        selectQuery.select(root).where(root.in(subquery.select(subRoot)));
 //
 //		        List<Contact> results = entityManager.createQuery(selectQuery).getResultList();
-			
 
-			Query query = entityManager.createQuery("SELECT c FROM Contact c WHERE (c.name, c.surname, c.phone, c.email, c.note) IN ("
-				    + "SELECT c2.name, c2.surname, c2.phone, c2.email, c2.note FROM Contact c2 "
-				    + "WHERE (c2.name = :value OR c2.surname = :value OR c2.phone = :value OR c2.email = :value OR c2.note = :value)"
-				    + "GROUP BY c2.name, c2.surname, c2.phone, c2.email, c2.note HAVING COUNT(*) > 1)");
+			Query query = entityManager
+					.createQuery("SELECT c FROM Contact c WHERE (c.name, c.surname, c.phone, c.email, c.note) IN ("
+							+ "SELECT c2.name, c2.surname, c2.phone, c2.email, c2.note FROM Contact c2 "
+							+ "WHERE (c2.name = :value OR c2.surname = :value OR c2.phone = :value OR c2.email = :value OR c2.note = :value)"
+							+ "GROUP BY c2.name, c2.surname, c2.phone, c2.email, c2.note HAVING COUNT(*) > 1)");
 			query.setParameter("value", value);
 
 			List<Contact> results = query.getResultList();
-			
 
 			System.out.println("Number of results: " + results.size());
 
@@ -470,14 +468,14 @@ public class RubricaUtilsJPA {
 		int choice = ScannerUtil.readIntValue("Inserisci l'id del contatto principale da tenere: ");
 		System.out.println("Id scelto: " + choice);
 		Contact mainContact = returnAContact(duplicateContacts, choice);
-		for(Contact c: duplicateContacts) {
-			if(c.equals(mainContact)) {
-				if(c.getId() != mainContact.getId()) {
+		for (Contact c : duplicateContacts) {
+			if (c.equals(mainContact)) {
+				if (c.getId() != mainContact.getId()) {
 					contactsToDelete.add(c);
-				}	
+				}
 			}
 		}
-		
+
 		if (areYouSure()) {
 			try {
 
@@ -508,14 +506,14 @@ public class RubricaUtilsJPA {
 		System.out.println(
 				"scrivi 'importa' per importare i contatti dal db al csv, 'esporta' per esportare i contatti dal cvs al db");
 		String choice = RubricaManagerJPA.scanner.nextLine();
-		if (choice != "importa" || choice != "esporta") {
+		if (!choice.equals("importa") && !choice.equals("esporta")) {
 			System.out.println("Scelte non corrette");
-		} else if (choice == "importa") {
+		} else if (choice.equals("importa")) {
 			importContactsToDbFromCSV(
-					"/home/flaviana/git/AcademyJavaXVII/SuorMary/src/it/beije/suormary/rubrica/caroselli/rubrica.csv");
+					"/home/flaviana/eclipse-workspace/rubrica.csv");
 			System.out.println("Contatti importati correttamente");
 		} else {
-			exportContactsFromDbToCSV("/home/flaviana/fromDbToCSV.csv");
+			exportContactsFromDbToCSV("/home/flaviana/eclipse-workspace/fromDbToCSV.csv");
 		}
 	}
 
@@ -523,14 +521,13 @@ public class RubricaUtilsJPA {
 		System.out.println(
 				"scrivi 'importa' per importare i contatti dal db all'xml, 'esporta' per esportare i contatti dal cvs all'xml");
 		String choice = RubricaManagerJPA.scanner.nextLine();
-		if (choice != "importa" || choice != "esporta") {
+		if (!choice.equals("importa") && !choice.equals("esporta")) {
 			System.out.println("Scelte non corrette");
-		} else if (choice == "importa") {
-			importContactsToDbFromXML(
-					"/home/flaviana/dev/beije/AcademyJavaXVII/Exercises/src/it/beije/xvii/exercises/Caroselli/myRubrica/rubrica.xml");
+		} else if (choice.equals("importa")) {
+			importContactsToDbFromXML("/home/flaviana/eclipse-workspace/rubrica.xml");
 			System.out.println("Contatti importati correttamente");
 		} else {
-			exportContactsFromDbToXML("/home/flaviana/fromDbToXML.xml");
+			exportContactsFromDbToXML("/home/flaviana/eclipse-workspace/fromDbToXML.xml");
 		}
 	}
 
@@ -554,8 +551,6 @@ public class RubricaUtilsJPA {
 	}
 
 	public static void importContactsToDbFromCSV(String path) {
-
-		Contact contact = new Contact();
 		List<Contact> contactListFromCSV = loadRubricaFromCSV(path, ";");
 		EntityManager entityManager = null;
 
@@ -565,6 +560,7 @@ public class RubricaUtilsJPA {
 			transaction.begin();
 
 			for (Contact c : contactListFromCSV) {
+				Contact contact = new Contact();
 				contact.setName(c.getName());
 				contact.setSurname(c.getSurname());
 				contact.setPhone(c.getPhone());
@@ -572,8 +568,8 @@ public class RubricaUtilsJPA {
 				contact.setNote(c.getNote());
 
 				entityManager.persist(contact);
-				transaction.commit();
-			}
+				
+			}transaction.commit();
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -585,26 +581,31 @@ public class RubricaUtilsJPA {
 
 		List<Contact> contactListFromXML = loadRubricaFromXML(path);
 
-		Contact contact = new Contact();
+		System.out.println(contactListFromXML);
+		
 		EntityManager entityManager = null;
 
 		try {
+
 			entityManager = PersistenceManagerJPA.getEntityManager();
-
 			EntityTransaction transaction = entityManager.getTransaction();
-			transaction.begin();
+				transaction.begin();
 
-			for (Contact c : contactListFromXML) {
-				contact.setName(c.getName());
-				contact.setSurname(c.getSurname());
-				contact.setPhone(c.getPhone());
-				contact.setEmail(c.getEmail());
-				contact.setNote(c.getNote());
 
-				entityManager.persist(contact);
-				transaction.commit();
+				for (Contact c : contactListFromXML) {
+					
+					Contact contact = new Contact();
+				    contact.setName(c.getName());
+				    contact.setSurname(c.getSurname());
+				    contact.setPhone(c.getPhone());
+				    contact.setEmail(c.getEmail());
+				    contact.setNote(c.getNote());
 
-			}
+				    entityManager.persist(contact);
+				   
+				}
+				 transaction.commit();
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
