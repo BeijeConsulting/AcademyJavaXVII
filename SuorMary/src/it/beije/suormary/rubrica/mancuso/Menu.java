@@ -11,8 +11,11 @@ public class Menu {
 	public static final String ANSI_BLUE = "\u001B[34m";
 	public static final String ANSI_RESET = "\u001B[0m";
 	
+	public static final String divider1 = "--------------------------------------------------------------------";
+	public static final String divider2 = "_____________________________________________________________________";
+	public static final String divider3 = "------------------------------------------";
 	
-	public static int selectIndex(Scanner input, List<Contact> resultContacts) {
+ 	public static int selectIndex(Scanner input, List<Contact> resultContacts) {
 		String command = "";
 		int index = -1;
 
@@ -24,7 +27,7 @@ public class Menu {
 			for(Contact cont : resultContacts) {
 				System.out.println("Index : " + i);
 				System.out.println(cont);
-				System.out.println("------------------------------------------");
+				System.out.println(divider3);
 				i++;
 			}
 			command = input.nextLine();
@@ -45,37 +48,37 @@ public class Menu {
 	
 	
 	public static void printOptions() {
-		System.out.println("_____________________________________________________________________\n");
+		System.out.println(divider2 + "\n");
 		System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\t\t\tMenu funzionalita' rubrica:\t\t\t\n" + ANSI_RESET);
 		
 		System.out.println("import csv\t\tIMPORTA contatti da file CSV");
 		System.out.println("import xml\t\tIMPORTA contatti da file XML");
 		System.out.println("import db\t\tIMPORTA contatti da DATABASE");
 		
-		System.out.println("--------------------------------------------------------------------");
+		System.out.println(divider1);
 		
 		System.out.println("export csv\t\tESPORTA contatti su file CSV");
 		System.out.println("export xml\t\tESPORTA contatti su file XML");
 		System.out.println("export db\t\tESPORTA contatti su DATABASE");
 		
-		System.out.println("--------------------------------------------------------------------");
+		System.out.println(divider1);
 		
 		System.out.println("view\t\t\tVISUALIZZA contatti su CONSOLE");
 		System.out.println("sort by name\t\tVISUALIZZA contatti su CONSOLE");
 		System.out.println("sort by surname\t\tVISUALIZZA contatti su CONSOLE");
 		
-		System.out.println("--------------------------------------------------------------------");
+		System.out.println(divider1);
 		
 		System.out.println("add\t\t\tINSERISCI nuovo contatto");
 		System.out.println("edit\t\t\tMODIFICA contatto");
 		System.out.println("delete\t\t\tELIMINA contatto");
 		
-		System.out.println("--------------------------------------------------------------------");
+		System.out.println(divider1);
 		
 		System.out.println("duplicates\t\tRICERCA contatti duplicati");
 		System.out.println("merge\t\t\tUNISCI contatti duplicati");
 		
-		System.out.println("--------------------------------------------------------------------");
+		System.out.println(divider1);
 		
 		System.out.println("find name\t\tRICERCA contatto per nome");
 		System.out.println("find surname\t\tRICERCA contatto per cognome");
@@ -83,7 +86,7 @@ public class Menu {
 		System.out.println("find phone\t\tRICERCA contatto per numero di telefono");
 		System.out.println("find email\t\tRICERCA contatto per email");
 		
-		System.out.println("____________________________________________________________________");
+		System.out.println(divider2);
 		
 		System.out.println("\n" + ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\tI seguenti comandi verranno eseguiti direttamente su DATABASE\t" + ANSI_RESET + "\n");
 		
@@ -95,10 +98,10 @@ public class Menu {
 		System.out.println("delete contact\t\tELIMINA contatto");
 		System.out.println("db dups\t\tRICERCA contatti duplicati");
 		
-		System.out.println("--------------------------------------------------------------------");
+		System.out.println(divider1);
 		
 		System.out.println("exit\t\t\tChiudi il programma");
-		System.out.println("____________________________________________________________________\n");
+		System.out.println(divider2 + "\n");
 	}
 	
 	public static boolean executeCommand(String command, Scanner input, AddressBook ab) {
