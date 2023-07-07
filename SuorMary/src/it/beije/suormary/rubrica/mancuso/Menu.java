@@ -633,7 +633,7 @@ public class Menu {
 			
 			break;
 		case "db dups":
-			resultContacts = JPAUtils.findDuplicates();
+			resultContacts = JDBCUtils.findDuplicates();
 			System.out.println(AddressBook.print(resultContacts));
 			break;
 		default:

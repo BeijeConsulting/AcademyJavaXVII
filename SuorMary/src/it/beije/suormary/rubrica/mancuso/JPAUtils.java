@@ -1,5 +1,10 @@
 package it.beije.suormary.rubrica.mancuso;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +19,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 //import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 public class JPAUtils {
 	
@@ -215,38 +221,6 @@ public class JPAUtils {
 			//entityManager.close();
 		}
 		return contact;
-	}
-	
-	public static List<Contact> findDuplicates() {
-		EntityManager entityManager = null;
-		List<Contact> contacts = new ArrayList<>();
-		List<Object[]> result = new ArrayList<>();
-		try {
-			entityManager = JPAManagerFactory.getEntityManager();
-			
-			Query query = entityManager.createQuery("SELECT c.firstName, c.lastName, c.phoneNumber,"
-					+ " c.email, c.notes FROM Contact AS c GROUP BY "
-					+ "firstName, lastName, phoneNumber, email, notes HAVING COUNT(*) > 1");
-			
-			result = query.getResultList();
-			
-			for(Object[] row : result) {
-				Contact c = new Contact();
-				c.setFirstName((String)row[0]);
-				c.setLastName((String)row[1]);
-				c.setPhoneNumber((String)row[2]);
-				c.setEmail((String)row[3]);
-				c.setNotes((String)row[4]);
-				contacts.add(c);
-			}
-			
-			//contacts = query.getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			//entityManager.close();
-		}
-		return contacts;
 	}
 	
 }
