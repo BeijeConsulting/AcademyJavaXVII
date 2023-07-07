@@ -14,11 +14,15 @@ public class RubricaToolsDB {
 		 List<Contact> contatti = rubricaUtils.loadRubricaFromCSV(csvFilePath,separator);
 		 
 		 // Utilizza il metodo esistente per l'inserimento dei record (lista contatti) nel database
-		 rubricaUtils.writeRubricaJDBC(contatti);
+		 //rubricaUtils.writeRubricaJDBC(contatti);
+		 //rubricaUtils.writeRubricaHBM(contatti);
+		 rubricaUtils.writeRubricaJPA(contatti);
 	 }
 	 
 	 public void exportToCSV(String csvFilePath, String separator) {
-		 List<Contact> contatti = rubricaUtils.loadRubricaFromJDBC();
+		 //List<Contact> contatti = rubricaUtils.loadRubricaFromJDBC();
+		 //List<Contact> contatti = rubricaUtils.loadRubricaFromHBM();
+		 List<Contact> contatti = rubricaUtils.loadRubricaFromJPA();
 		 rubricaUtils.writeRubricaCSV(contatti, csvFilePath, separator);
 	    }
 	 
@@ -27,11 +31,15 @@ public class RubricaToolsDB {
 		 List<Contact> contatti = rubricaUtils.loadRubricaFromXML(xmlFilePath);
 
 		 // Utilizza il metodo esistente per l'inserimento dei record (lista contatti) nel database
-		 rubricaUtils.writeRubricaJDBC(contatti);
+		 //rubricaUtils.writeRubricaJDBC(contatti);
+		 //rubricaUtils.writeRubricaHBM(contatti);
+		 rubricaUtils.writeRubricaJPA(contatti);
 	 }
 	 
 	 public void exportToXML(String xmlFilePath) {
-		 List<Contact> contatti = rubricaUtils.loadRubricaFromJDBC();
+		 //List<Contact> contatti = rubricaUtils.loadRubricaFromJDBC();
+		 //List<Contact> contatti = rubricaUtils.loadRubricaFromHBM();
+		 List<Contact> contatti = rubricaUtils.loadRubricaFromJPA();
 		 rubricaUtils.writeRubricaXML(contatti, xmlFilePath);
 	    }
 	 

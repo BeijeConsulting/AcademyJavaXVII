@@ -14,11 +14,13 @@ import java.sql.SQLException;
 import java.sql.SQLSyntaxErrorException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -30,18 +32,14 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
+//import org.hibernate.query.Query;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import it.beije.suormary.rubrica.Contact;
-import it.beije.suormary.rubrica.jdbc.RubricaUtils;
 
 
 public class RubricaUtils {
@@ -59,7 +57,7 @@ public class RubricaUtils {
 	}
 	
 	public static Configuration getConfiguration() {
-		Configuration configuration = new Configuration().configure(new File("./src/hibernate.cfg.xml")) // "/hibernate.cfg.xml"
+		Configuration configuration = new Configuration().configure() // "/hibernate.cfg.xml"
 				.addAnnotatedClass(Contact.class);
 		return configuration;
 	}
@@ -218,9 +216,10 @@ public class RubricaUtils {
 		List<Contact> contatti = null;
 		
 		try {
-			Configuration configuration = RubricaUtils.getConfiguration();
+			/*Configuration configuration = RubricaUtils.getConfiguration();
 			SessionFactory factory = configuration.buildSessionFactory();
-			session = factory.openSession();
+			session = factory.openSession();*/
+			session = HBMsessionFactory.openSession();
 			//Transaction transaction = session.beginTransaction();
 			
 			//SELECT HQL
@@ -233,6 +232,34 @@ public class RubricaUtils {
 		} finally {
 			try {
 				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return contatti;
+	}
+	
+	public List<Contact> loadRubricaFromJPA(){
+		EntityManager entityManager = null;
+		
+		List<Contact> contatti = null;
+		
+		try {
+			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
+			entityManager = JPAentityManager.getEntityManager();
+			//EntityTransaction transaction = entityManager.getTransaction();
+			//transaction.begin();
+			
+			//SELECT JPQL
+			javax.persistence.Query query = entityManager.createQuery("SELECT c from Contact as c"); //SELECT * FROM rubrica
+			contatti = query.getResultList();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -413,11 +440,12 @@ public class RubricaUtils {
 		Session session = null;
 		
 		try {
-			Configuration configuration = RubricaUtils.getConfiguration();
+			/*Configuration configuration = RubricaUtils.getConfiguration();
 			SessionFactory factory = configuration.buildSessionFactory();
-			session = factory.openSession();
+			session = factory.openSession();*/
+			session = HBMsessionFactory.openSession();
 			Transaction transaction = session.beginTransaction();
-			Contact contact = null;
+			Contact contact =  new Contact();
 			
 			for (Contact contatto : contatti) {
 				if(contatto!=null) {
@@ -428,7 +456,7 @@ public class RubricaUtils {
 						contact.setEmail(contatto.getEmail());
 						contact.setNote(contatto.getNote());
 						session.save(contact);
-						transaction.commit();
+						transaction.commit(); 
 					} catch (Exception e) {
 						e.printStackTrace();
 						System.out.println("Insert non valido: " + contatto.toString());
@@ -445,6 +473,48 @@ public class RubricaUtils {
 		} finally {
 			try {
 				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void writeRubricaJPA(List<Contact> contatti) {
+		EntityManager entityManager = null;
+		
+		try {
+			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
+			entityManager = JPAentityManager.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();;
+			
+			Contact contact =  new Contact();
+			for (Contact contatto : contatti) {
+				if(contatto!=null) {
+					transaction.begin();
+					try {
+						contact.setSurname(contatto.getSurname());
+						contact.setName(contatto.getName());
+						contact.setPhoneNumber(contatto.getPhoneNumber());
+						contact.setEmail(contatto.getEmail());
+						contact.setNote(contatto.getNote());
+						transaction.commit();
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out.println("Insert non valido: " + contatto.toString());
+						transaction.rollback();
+					} 
+					
+				} else {
+					System.out.println("Contatto mancante");
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -586,11 +656,12 @@ public class RubricaUtils {
 		Session session = null;
 		
 		try {
-			Configuration configuration = RubricaUtils.getConfiguration();
+			/*Configuration configuration = RubricaUtils.getConfiguration();
 			SessionFactory factory = configuration.buildSessionFactory();
-			session = factory.openSession();
+			session = factory.openSession();*/
+			session = HBMsessionFactory.openSession();
 			Transaction transaction = session.beginTransaction();
-			Contact contact = null;
+			Contact contact = new Contact();
 			
 			if(contatto!=null) {
 				try {
@@ -602,9 +673,9 @@ public class RubricaUtils {
 					session.save(contact);
 					transaction.commit();
 				} catch (Exception e) {
-					e.printStackTrace();
 					System.out.println("Insert non valido: " + contatto.toString());
-					//transaction.rollback();
+					transaction.rollback();
+					throw e; //rilancia eccezione al catch più esterno
 				} 
 					
 			} else {
@@ -616,6 +687,47 @@ public class RubricaUtils {
 		} finally {
 			try {
 				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void addContactJPA(Contact contatto) {
+		EntityManager entityManager = null;
+		
+		try {
+			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
+			entityManager = JPAentityManager.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
+			
+			Contact contact = new Contact();
+			
+			if(contatto!=null) {
+				try {
+					contact.setSurname(contatto.getSurname());
+					contact.setName(contatto.getName());
+					contact.setPhoneNumber(contatto.getPhoneNumber());
+					contact.setEmail(contatto.getEmail());
+					contact.setNote(contatto.getNote());
+					transaction.commit();
+				} catch (Exception e) {
+					System.out.println("Insert non valido: " + contatto.toString());
+					transaction.rollback();
+					throw e; //rilancia eccezione al catch più esterno
+				} 
+					
+			} else {
+				System.out.println("Contatto mancante");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -678,55 +790,92 @@ public class RubricaUtils {
 	}
 
 	public void updateContactHBM(int id, Contact contatto) {
-		Session sesion = null;
+		Session session = null;
 		
 		try {
-			connection = RubricaUtils.getConnection();
+			/*Configuration configuration = RubricaUtils.getConfiguration();
+			SessionFactory factory = configuration.buildSessionFactory();
+			session = factory.openSession();*/
+			session = HBMsessionFactory.openSession();
+			Transaction transaction = session.beginTransaction();
 			
-			statement = connection.createStatement();
-			//System.out.println("connection open? " + !connection.isClosed());
-			StringBuilder query = new StringBuilder();
-			StringBuilder columnsValues = new StringBuilder("UPDATE rubrica set ");
-			int nRecord = -1;
+			StringBuilder hql = new StringBuilder("UPDATE Contact set ");
+			hql.append(SURNAME_FIELD).append(" = :").append(SURNAME_FIELD).append(", ")
+			   .append(NAME_FIELD).append(" = :").append(NAME_FIELD).append(", ")
+			   .append(PHONE_NUMBER_FIELD).append(" = :").append(PHONE_NUMBER_FIELD).append(", ")
+			   .append(EMAIL_FIELD).append(" = :").append(EMAIL_FIELD).append(", ")
+			   .append(NOTE_FIELD).append(" = :").append(NOTE_FIELD)
+			   .append(" WHERE ").append(ID_FIELD).append(" = ").append(id);
+			Query query = session.createQuery(hql.toString());
 			
 			if(contatto!=null) {
-				query.setLength(0);
-				query.append(columnsValues)
-					.append(SURNAME_FIELD).append(" = '")
-					.append(escapeSpecialCharacters(contatto.getSurname())).append("', ")
-					.append(NAME_FIELD).append(" = '")
-					.append(escapeSpecialCharacters(contatto.getName())).append("', ")
-					.append(PHONE_NUMBER_FIELD).append(" = '")
-					.append(escapeSpecialCharacters(contatto.getPhoneNumber())).append("', ")
-					.append(EMAIL_FIELD).append(" = '")
-					.append(escapeSpecialCharacters(contatto.getEmail())).append("', ")
-					.append(NOTE_FIELD).append(" = '")
-					.append(escapeSpecialCharacters(contatto.getNote()))
-					.append("' WHERE ").append(ID_FIELD).append(" = ").append(id);
-					
+				query.setParameter(SURNAME_FIELD, contatto.getSurname());
+				query.setParameter(NAME_FIELD, contatto.getName());
+				query.setParameter(PHONE_NUMBER_FIELD, contatto.getPhoneNumber());
+				query.setParameter(EMAIL_FIELD, contatto.getEmail());
+				query.setParameter(NOTE_FIELD, contatto.getNote());
+				
 					try {
-						nRecord = statement.executeUpdate(query.toString());
+						int nRecord = query.executeUpdate();
+						transaction.commit();
 						if (nRecord !=1) {
 							System.out.println("Query non aggiornata: " + query);
 						}
-					} catch (SQLSyntaxErrorException e) {
+					} catch (Exception e) {
 						System.out.println("Query non valida: " + query);
-					}
+						transaction.rollback();
+						throw e; //rilancia eccezione al catch più esterno
+					} 
 					
 				} else {
 					System.out.println("Contatto mancante");
-				}
-	
-			
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
+				}	
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				statement.close();
-				connection.close();
-			} catch (SQLException e) {
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void updateContactJPA(int id, Contact contatto) {
+		EntityManager entityManager = null;
+		
+		try {
+			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
+			entityManager = JPAentityManager.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
+			Contact contact = null;
+			if(contatto!=null) {
+				try {
+					contact = entityManager.find(Contact.class, id);
+					contact.setSurname(contatto.getSurname());
+					contact.setName(contatto.getName());
+					contact.setPhoneNumber(contatto.getPhoneNumber());
+					contact.setEmail(contatto.getEmail());
+					contact.setNote(contatto.getNote());
+				
+					transaction.commit();
+					} catch (Exception e) {
+						System.out.println("Contatto id" + id +" non aggiornato: " + contatto.toString());
+						transaction.rollback();
+						throw e; //rilancia eccezione al catch più esterno
+					} 
+					
+				} else {
+					System.out.println("Contatto mancante");
+				}	
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				entityManager.close();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -768,6 +917,75 @@ public class RubricaUtils {
 		}
 	}
 	
+	public void deleteContactHBM(int id) {
+		Session session = null;
+		
+		try {
+			/*Configuration configuration = RubricaUtils.getConfiguration();
+			SessionFactory factory = configuration.buildSessionFactory();
+			session = factory.openSession();*/
+			session = HBMsessionFactory.openSession();
+			Transaction transaction = session.beginTransaction();
+			
+			StringBuilder hql = new StringBuilder("DELETE FROM Contact WHERE id = ");
+			hql.append(id);
+			Query query = session.createQuery(hql.toString());
+				
+			try {
+				int nRecord = query.executeUpdate();
+				transaction.commit();
+				if (nRecord !=1) {
+					System.out.println("Query non eliminata: " + query);
+					}
+				} catch (Exception e) {
+					System.out.println("Query non valida: " + query);
+					transaction.rollback();
+					throw e; //rilancia eccezione al catch più esterno
+				}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void deleteContactJPA(int id) {
+		EntityManager entityManager = null;
+		
+		try {
+			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
+			entityManager = JPAentityManager.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
+			
+			Contact contact = null;
+			try {
+				contact = entityManager.find(Contact.class, id);
+				entityManager.remove(contact);
+				
+				transaction.commit();
+				} catch (Exception e) {
+					System.out.println("Contatto id" + id +" non eliminato: " + contact.toString());
+					transaction.rollback();
+					throw e; //rilancia eccezione al catch più esterno
+				} 
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				entityManager.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void deleteContactJDBC(List<Contact> contatti) {
 		Connection connection = null;
 		Statement statement = null;
@@ -789,7 +1007,7 @@ public class RubricaUtils {
 					try {
 						nRecord = statement.executeUpdate(query.toString());
 						if (nRecord !=1) {
-							System.out.println("Query non inserita: " + query);
+							System.out.println("Contatto non eliminato: " + query);
 						}
 					} catch (SQLSyntaxErrorException e) {
 						System.out.println("Query non valida: " + query);
@@ -809,6 +1027,92 @@ public class RubricaUtils {
 				statement.close();
 				connection.close();
 			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteContactHBM(List<Contact> contatti) {
+		Session session = null;
+		
+		try {
+			/*Configuration configuration = RubricaUtils.getConfiguration();
+			SessionFactory factory = configuration.buildSessionFactory();
+			session = factory.openSession();*/
+			session = HBMsessionFactory.openSession();
+						
+			StringBuilder hql = new StringBuilder("DELETE FROM Contact WHERE id = :id_number");
+			Query<Contact> query = session.createQuery(hql.toString());
+			Transaction transaction;
+			int nRecord = -1;
+			
+			for (Contact contatto : contatti) {
+				transaction = session.beginTransaction();
+				if(contatto!=null) {
+					query.setParameter("id_number", contatto.getId());					
+					try {
+						nRecord = query.executeUpdate();
+						transaction.commit();
+						if (nRecord !=1) {
+							System.out.println("Contatto non eliminato: " + query);
+						}
+					} catch (Exception e) {
+						System.out.println("Query non valida: " + query);
+						transaction.rollback();
+						throw e; //rilancia eccezione al catch più esterno
+					} 
+					
+				} else {
+					System.out.println("Contatto mancante");
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				session.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void deleteContactJPA(List<Contact> contatti) {
+		EntityManager entityManager = null;
+		
+		try {
+			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
+			entityManager = JPAentityManager.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			Contact contact = null;
+			
+			for (Contact contatto : contatti) {
+				transaction.begin();
+				if(contatto!=null) {			
+					try {
+						contact = entityManager.find(Contact.class, contatto.getId());
+						entityManager.remove(contact);
+						
+						transaction.commit();
+					} catch (Exception e) {
+						System.out.println("Contatto id" + contatto.getId() +" non eliminato: " + contact.toString());
+						transaction.rollback();
+						throw e; //rilancia eccezione al catch più esterno
+					} 
+					
+				} else {
+					System.out.println("Contatto mancante");
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				entityManager.close();
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

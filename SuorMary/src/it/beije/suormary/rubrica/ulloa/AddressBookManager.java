@@ -12,8 +12,9 @@ public class AddressBookManager {
 	public AddressBookManager() {
 		rUtils = new RubricaUtils();
 		scanner = new Scanner(System.in);
-        rubrica = new AddressBook(rUtils.loadRubricaFromJDBC());
-		
+        //rubrica = new AddressBook(rUtils.loadRubricaFromJDBC());
+		//rubrica = new AddressBook(rUtils.loadRubricaFromHBM());
+		rubrica = new AddressBook(rUtils.loadRubricaFromJPA());
     }
 	
 	public void runCLI () {
@@ -91,7 +92,9 @@ public class AddressBookManager {
 	}
 	
 	private void aggiornaRubrica() {
-		rubrica = new AddressBook(rUtils.loadRubricaFromJDBC());
+		//rubrica = new AddressBook(rUtils.loadRubricaFromJDBC());
+		//rubrica = new AddressBook(rUtils.loadRubricaFromHBM());
+		rubrica = new AddressBook(rUtils.loadRubricaFromJPA());
 		if (rubrica.getContatti().isEmpty()) {
 	        System.out.println("Nessun contatto presente nella rubrica.");
 	        return;
@@ -236,7 +239,9 @@ public class AddressBookManager {
 			        
 				    switch (choice) {
 				    case "1": rubrica.aggiungiContatto(contatto);
-				    		  rUtils.addContactJDBC(contatto);
+				    		  //rUtils.addContactJDBC(contatto);
+				    		  //rUtils.addContactHBM(contatto);
+				    		  rUtils.addContactJPA(contatto);
 				    		  System.out.println("Contatto inserito!");
 				    		  System.out.println("------------------------");
 				    		  runningInterno = false;
@@ -286,6 +291,7 @@ public class AddressBookManager {
 		    	
 		    	System.out.print("Inserisci l'ID o l'identificatore del contatto da modificare: ");
 		    	int id = scanner.nextInt();
+		    	scanner.nextLine(); // Consuma la nuova riga
 		    	Contact contattoDaModificare = rubrica.getContattoById(id);
 		    	
 		    	if (contattoDaModificare != null) {
@@ -361,7 +367,9 @@ public class AddressBookManager {
 				        
 					    switch (choice) {
 					    case "1": rubrica.modificaContatto(contattoDaModificare, contatto);
-					    		  rUtils.updateContactJDBC(id, contatto);
+					    		  //rUtils.updateContactJDBC(id, contatto);
+					    		  //rUtils.updateContactHBM(id, contatto);
+					    		  rUtils.updateContactJPA(id, contatto);
 					    		  System.out.println("Contatto modificato!");
 					    		  System.out.println("------------------------");
 					    		  runningInterno = false;
@@ -431,7 +439,9 @@ public class AddressBookManager {
 				        
 					    switch (choice) {
 					    case "1": rubrica.cancellaContatto(contattoDaCancellare);
-					    		  rUtils.deleteContactJDBC(id);
+					    		  //rUtils.deleteContactJDBC(id);
+					    		  //rUtils.deleteContactHBM(id);
+					    		  rUtils.deleteContactJPA(id);
 					    		  System.out.println("Contatto cancellato!");
 					    		  System.out.println("------------------------");
 					    		  runningInterno = false;
@@ -534,7 +544,9 @@ public class AddressBookManager {
 				        
 					    switch (choice) {
 					    case "1": 
-					    		  rUtils.deleteContactJDBC(duplicatiEliminati);
+					    		  //rUtils.deleteContactJDBC(duplicatiEliminati);
+					    		  //rUtils.deleteContactHBM(duplicatiEliminati);
+					    		  rUtils.deleteContactJPA(duplicatiEliminati);
 					    		  System.out.println("Unione completata!");
 					    		  System.out.println("------------------------");
 					    		  runningInterno = false;

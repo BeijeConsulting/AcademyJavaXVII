@@ -2,11 +2,9 @@ package it.beije.suormary.rubrica.ulloa;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class AddressBook {
 	private List<Contact> contatti;
@@ -101,9 +99,9 @@ public class AddressBook {
                     duplicati.add(contatto);
                 }
             }*/
-        	List<Contact> contattiUnivoci = new ArrayList<>(contatti);
+        	List<Contact> contattiUnivoci = new ArrayList<Contact>(contatti);
         	contattiUnivoci.removeAll(duplicati);
-        	List<Contact> contattiDuplicati = new ArrayList<>(contatti);
+        	List<Contact> contattiDuplicati = new ArrayList<Contact>(contatti);
         	contattiDuplicati.removeAll(contattiUnivoci);
         	duplicati = contattiDuplicati;
            

@@ -2,13 +2,35 @@ package it.beije.suormary.rubrica.ulloa;
 
 import java.util.Objects;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "rubrica")
 public class Contact {
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private int id;
+	
+	@Column(name = "nome")
 	private String name;
+	
+	@Column(name = "cognome")
 	private String surname;
+	
+	@Column(name = "telefono")
 	private String phoneNumber;
+	
+	@Column(name = "email")
 	private String email;
+	
+	@Column(name = "note")
 	private String note;
 	
 	public int getId() {
@@ -19,47 +41,67 @@ public class Contact {
 	}
 	
 	public String getName() {
-		return name;
+		return name == null ? "" : name;
 	}
 	public void setName(String name) {
-		this.name = name.trim();
+		if (name == null) {
+			name = "";
+		} else {
+			this.name = name.trim();
+		}
 	}
 	
 	public String getSurname() {
-		return surname;
+		return surname == null ? "" : surname;
 	}
 	public void setSurname(String surname) {
+		if (surname == null) {
+			surname = "";
+		} else {
 		this.surname = surname.trim();
+		}
 	}
 	
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return phoneNumber == null ? "" : phoneNumber;
 	}
 	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber.trim();
+		if (phoneNumber == null) {
+			phoneNumber = "";
+		} else {
+			this.phoneNumber = phoneNumber.trim();
+		}
 	}
 	
 	public String getEmail() {
-		return email;
+		return email == null ? "" : email;
 	}
 	public void setEmail(String email) {
-		this.email = email.trim();
+		if (email == null) {
+			email = "";
+		} else {
+			this.email = email.trim();
+		}
 	}
 	
 	public String getNote() {
-		return note;
+		return note == null ? "" : email;
 	}
 	public void setNote(String note) {
+		if (note == null) {
+			note = "";
+		} else {
 		this.note = note.trim();
+		}
 	}
 	
 	public String toStringExcludingId() {
 		StringBuilder builder = new StringBuilder("{ ")
-				.append("name : ").append(name.toLowerCase())
-				.append(", surname : ").append(surname.toLowerCase())
-				.append(", phoneNumber : ").append(phoneNumber.toLowerCase())
-				.append(", email : ").append(email.toLowerCase())
-				.append(", note : ").append(note.toLowerCase())
+				.append("name : ").append(this.getName().toLowerCase())
+				.append(", surname : ").append(this.getSurname().toLowerCase())
+				.append(", phoneNumber : ").append(this.getPhoneNumber().toLowerCase())
+				.append(", email : ").append(this.getEmail().toLowerCase())
+				.append(", note : ").append(this.getNote().toLowerCase())
 				.append(" }");
 		
 		return builder.toString();
@@ -68,11 +110,11 @@ public class Contact {
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
-				.append(", name : ").append(name)
-				.append(", surname : ").append(surname)
-				.append(", phoneNumber : ").append(phoneNumber)
-				.append(", email : ").append(email)
-				.append(", note : ").append(note)
+				.append(", name : ").append(this.getName())
+				.append(", surname : ").append(this.getSurname())
+				.append(", phoneNumber : ").append(this.getPhoneNumber())
+				.append(", email : ").append(this.getEmail())
+				.append(", note : ").append(this.getNote())
 				.append(" }");
 		
 		return builder.toString();
@@ -136,11 +178,11 @@ public class Contact {
 	    }
 
 	    // Verifica se i campi (tranne l'ID) sono uguali
-	    if (name.equalsIgnoreCase(other.getName()) 
-	    		&& surname.equalsIgnoreCase(other.getSurname()) 
-	    		&& email.equalsIgnoreCase(other.getEmail()) 
-	    		&& phoneNumber.equalsIgnoreCase(other.getPhoneNumber())
-	    		&& note.equalsIgnoreCase(other.getNote())) {
+	    if (this.getName().equalsIgnoreCase(other.getName()) 
+	    		&& this.getSurname().equalsIgnoreCase(other.getSurname()) 
+	    		&& this.getEmail().equalsIgnoreCase(other.getEmail()) 
+	    		&& this.getPhoneNumber().equalsIgnoreCase(other.getPhoneNumber())
+	    		&& this.getNote().equalsIgnoreCase(other.getNote())) {
 	        return true;
 	    }
 
@@ -156,11 +198,11 @@ public class Contact {
 		if (getClass() != obj.getClass())
 			return false;
 		Contact other = (Contact) obj;
-		return name.equalsIgnoreCase(other.getName()) 
-	    		&& surname.equalsIgnoreCase(other.getSurname()) 
-	    		&& email.equalsIgnoreCase(other.getEmail()) 
-	    		&& phoneNumber.equalsIgnoreCase(other.getPhoneNumber())
-	    		&& note.equalsIgnoreCase(other.getNote());
+		return this.getName().equalsIgnoreCase(other.getName()) 
+	    		&& this.getSurname().equalsIgnoreCase(other.getSurname()) 
+	    		&& this.getEmail().equalsIgnoreCase(other.getEmail()) 
+	    		&& this.getPhoneNumber().equalsIgnoreCase(other.getPhoneNumber())
+	    		&& this.getNote().equalsIgnoreCase(other.getNote());
 	}	
 
 }
