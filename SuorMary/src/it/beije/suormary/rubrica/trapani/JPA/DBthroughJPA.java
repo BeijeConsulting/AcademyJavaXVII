@@ -1,6 +1,7 @@
-package it.beije.suormary.rubrica.trapani;
+package it.beije.suormary.rubrica.trapani.JPA;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,27 +15,19 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+
 import it.beije.suormary.rubrica.Contact;
 import it.beije.suormary.rubrica.JPAentity;
 
-public class ManagerJPA {
+public class DBthroughJPA {
 	
 	public static Scanner in = new Scanner(System.in);
 
 	public static void main(String[] args) {
-//		List<Contact> contattiContacts = listContacts();
-		List<Contact> contattiContacts =findContacts();
-//		insertContact();
-//		
-//		updateContact();
-//		List<Contact> contattiContacts = listContacts();
-//
-//		deleteContact();
-		
-//		List<Contact> contatti= listContacts();
-		
-		
-		JPAentity.getEntityManager().close();
+
 	}
 
 	public static List<Contact> listContacts() {
@@ -244,4 +237,53 @@ public class ManagerJPA {
 		
 		System.out.println("Contatto rimosso");
 	}
+	
+	public static List<Contact> findDuplicateContact() {
+		
+		EntityManager eM = JPAentity.getEntityManager();
+		List<Contact> duplicates = null;
+	
+			Query query = eM.createQuery("SELECT name,surname,phoneNumber,email, COUNT(*) FROM Contact "
+					+ "GROUP BY name,surname,phoneNumber,email HAVING COUNT(*) > 1"); 
+			
+			duplicates = query.getResultList();
+			
+			
+			if(duplicates.size()==0) {
+				System.out.println("Nessun contatto duplicato");
+				return null;
+			}
+		
+		
+		return duplicates;
+	}
+
+	public static void mergeDuplicate() {
+		List<Contact> contacts = null;
+		Contact contact =  new Contact();
+
+		EntityManager eM = JPAentity.getEntityManager();
+		EntityTransaction transaction= eM.getTransaction();
+		transaction.begin();
+		
+				
+			contacts = findDuplicateContact();
+
+			for(int i=0; i<contacts.size(); i++) {
+				for(int j=i+1; j<contacts.size(); j++) {
+					if(contacts.get(i).toString().equals(contacts.get(j).toString())) {
+						contact = contacts.get(j);
+						eM.remove(contact);
+						transaction.commit();
+					}
+							
+			if(contacts.size()==0) {
+				System.out.println("Nessun contatto duplicato da eliminare");
+				return;
+					}		
+				}
+			}
+			
+		
+	}	
 }

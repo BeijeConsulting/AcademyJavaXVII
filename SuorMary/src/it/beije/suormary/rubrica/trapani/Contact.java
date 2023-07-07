@@ -72,5 +72,15 @@ public class Contact {
 		
 		return builder.toString();
 	}
+	public String toStringDup() {
+		StringBuilder builder = new StringBuilder("{ ")
+				.append("name: ").append(name)
+				.append(", surname: ").append(surname)
+				.append(", phoneNumber: ").append(phoneNumber)
+				.append(", email: ").append(email)
+				.append(" }");
+		
+		return builder.toString();
+	}
 
 }

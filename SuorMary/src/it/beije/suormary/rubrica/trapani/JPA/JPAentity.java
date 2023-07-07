@@ -1,4 +1,4 @@
-package it.beije.suormary.rubrica.trapani;
+package it.beije.suormary.rubrica.trapani.JPA;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

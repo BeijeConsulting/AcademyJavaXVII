@@ -1,26 +1,17 @@
-package it.beije.suormary.rubrica.trapani;
+package it.beije.suormary.rubrica.trapani.HBM;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
+import it.beije.suormary.rubrica.Contact;
 
-//vedi lista contatti (con possibilità di ordinare per nome e cognome a scelta)  --
-//cerca contatto --
-//inserisci nuovo contatto  --
-//modifica contatto --
-//cancella contatto --
-//trova contatti duplicati
-//unisci contatti duplicati
+public class ManagerHBM {
 
-public class MenuGestioneRubrica {
-	
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		String select = null;
-		List<Contact> contatti = new ArrayList<>();
+		List<Contact> contatti = null;
 		boolean continua = true;
 		//MENU OPZIONI
 		while(continua) {
@@ -38,35 +29,46 @@ public class MenuGestioneRubrica {
 			
 			switch (select) {
 			case "1":
-				contatti = AzioniGestore.listContact();
+				contatti = DBthroughHBM.listContacts();
+				for(Contact s : contatti) {
+					System.out.println(s);
+				}
+				System.out.println();
 				break;
 				
 			case "2": 
-				contatti = AzioniGestore.findContact();			
+				List<Contact> contacts = DBthroughHBM.findContacts();
+			
+				System.out.println();
 				break;
 				
 			case "3": 
-				AzioniGestore.insertContact();
+				DBthroughHBM.insertContact();
 				System.out.println();
 				break;
 				
 			case "4":
-				AzioniGestore.updetContact();
+				DBthroughHBM.updateContact();
 				System.out.println();
 				break;
 				
 			case "5":
-				AzioniGestore.deleteContact();
+				DBthroughHBM.deleteContact();
 				System.out.println();
 				break;
 				
 			case "6":
-				AzioniGestore.findDuplicateContact();
+				contatti = DBthroughHBM.findDuplicate();
+				if(!contatti.isEmpty()) {
+					for(Contact s : contatti) {
+						System.out.println(s);
+					}
+				}
 				System.out.println();
 				break;
 				
 			case "7":
-				AzioniGestore.mergeDuplicateContac();
+				DBthroughHBM.mergeDuplicate();
 				System.out.println();
 				break;
 				
@@ -86,5 +88,7 @@ public class MenuGestioneRubrica {
 
 
 	}
+
+	
 
 }

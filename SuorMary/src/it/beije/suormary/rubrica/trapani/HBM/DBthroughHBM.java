@@ -1,5 +1,6 @@
-package it.beije.suormary.rubrica.trapani;
+package it.beije.suormary.rubrica.trapani.HBM;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -10,6 +11,9 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import it.beije.suormary.rubrica.Contact;
+
+
+//		COMPLETA E FUNZIONANTE
 
 public class DBthroughHBM {
 	
@@ -41,6 +45,38 @@ public class DBthroughHBM {
 			
 			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
 			contacts = query.getResultList();
+		} else {
+			System.out.println("errore connesione");
+		}
+		return contacts;
+		
+	}
+	
+	public static List<Contact> findContacts() {
+		List<Contact> contacts = null;
+		
+		if(connection()) {
+			SessionFactory factory = configuration.buildSessionFactory();
+			
+			Session session = factory.openSession();
+
+			
+			Query query = session.createQuery("SELECT c from Contact as c WHERE c.name LIKE :nome OR c.surname LIKE :cognome "
+					+ "OR c.phoneNumber LIKE :telefono OR c.email LIKE :email OR c.note LIKE :note");
+			
+			System.out.println("Inserisci valore da cercare: ");
+			String search = "%" + in.nextLine() + "%";
+			
+			query.setParameter("nome", search);
+			query.setParameter("cognome", search);
+			query.setParameter("telefono", search);
+			query.setParameter("email", search);
+			query.setParameter("note", search);
+
+			contacts = query.getResultList();
+			
+			for (Contact c : contacts) 
+				System.out.println(c);
 		} else {
 			System.out.println("errore connesione");
 		}
@@ -171,6 +207,67 @@ public class DBthroughHBM {
 		
 	}
 		
-	public static void 
+	public static List<Contact> findDuplicate() {
+		List<Contact> contacts = null;
+		//Contact contact = null;
+		List<Contact> duplicates = null;
+		
+		if(connection()) {
+			SessionFactory factory = configuration.buildSessionFactory();
+			
+			Session session = factory.openSession();
+				
+				Query<Contact> query = session.createQuery("SELECT name,surname,phoneNumber,email, COUNT(*) FROM Contact "
+						+ "GROUP BY name,surname,phoneNumber,email HAVING COUNT(*) > 1"); 
+				
+				duplicates = query.getResultList();
+				
+				
+				if(duplicates.size()==0) {
+					System.out.println("Nessun contatto duplicato");
+					return null;
+				}
+			
+			
+			session.close();
+			
+		} else {
+			System.out.println("errore connesione");
+		}
+		return duplicates;
+	}
+	
+	public static void mergeDuplicate() {
+		List<Contact> contacts = null;
+		Contact contact =  new Contact();
+		
+		if(connection()) {
+			SessionFactory factory = configuration.buildSessionFactory();
+			Session session = factory.openSession();
+			Transaction transaction = session.beginTransaction();
+				
+			contacts = findDuplicate();
+
+			for(int i=0; i<contacts.size(); i++) {
+				for(int j=i+1; j<contacts.size(); j++) {
+					if(contacts.get(i).toString().equals(contacts.get(j).toString())) {
+						contact = contacts.get(j);
+						session.delete(contact);
+						transaction.commit();
+					}
+							
+			if(contacts.size()==0) {
+				System.out.println("Nessun contatto duplicato da eliminare");
+				return;
+					}		
+				}
+			}
+		session.close();
+			
+		} else 
+			System.out.println("errore connesione");
+		
+		
+	}	
 	
 }

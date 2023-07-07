@@ -1,16 +1,28 @@
-package it.beije.suormary.rubrica.trapani;
+package it.beije.suormary.rubrica.trapani.JDBC;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import it.beije.suormary.rubrica.Contact;
+import it.beije.suormary.rubrica.trapani.Contact;
 
-public class ManagerHBM {
 
+//vedi lista contatti (con possibilità di ordinare per nome e cognome a scelta)  --
+//cerca contatto --
+//inserisci nuovo contatto  --
+//modifica contatto --
+//cancella contatto --
+//trova contatti duplicati
+//unisci contatti duplicati
+
+public class MenuGestioneRubricaJDBC {
+	
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		String select = null;
-//		 contatti = new ArrayList<>();
+		List<Contact> contatti = new ArrayList<>();
 		boolean continua = true;
 		//MENU OPZIONI
 		while(continua) {
@@ -28,43 +40,40 @@ public class ManagerHBM {
 			
 			switch (select) {
 			case "1":
-				List<Contact> contatti = DBthroughHBM.listContacts();
-				for(Contact s : contatti) {
-					System.out.println(s);
-				}
-				System.out.println();
+				contatti = AzioniGestoreJDBC.listContact();
 				break;
 				
 			case "2": 
-//				List<Contact> contacts = DBthroughHBM.findContact();
-//				for(Contact s : contacts) {
-//					System.out.println(s);
-//				}
-				System.out.println();
+				contatti = AzioniGestoreJDBC.findContact();			
 				break;
 				
 			case "3": 
-				DBthroughHBM.insertContact();
+				AzioniGestoreJDBC.insertContact();
 				System.out.println();
 				break;
 				
 			case "4":
-				DBthroughHBM.updateContact();
+				AzioniGestoreJDBC.updateContact();
 				System.out.println();
 				break;
 				
 			case "5":
-				DBthroughHBM.deleteContact();
+				AzioniGestoreJDBC.deleteContact();
 				System.out.println();
 				break;
 				
 			case "6":
-				AzioniGestore.findDuplicateContact();
+				contatti =  AzioniGestoreJDBC.findDuplicateContact();
+				if (!contatti.isEmpty()) {
+					for (Contact c : contatti) {
+						System.out.println(c.toString());
+					}
+				}
 				System.out.println();
 				break;
 				
 			case "7":
-				AzioniGestore.mergeDuplicateContac();
+				AzioniGestoreJDBC.mergeDuplicateContac();
 				System.out.println();
 				break;
 				
@@ -84,7 +93,5 @@ public class ManagerHBM {
 
 
 	}
-
-	
 
 }

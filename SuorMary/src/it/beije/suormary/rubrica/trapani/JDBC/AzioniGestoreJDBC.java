@@ -1,12 +1,11 @@
-package it.beije.suormary.rubrica.trapani;
+package it.beije.suormary.rubrica.trapani.JDBC;
 
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
-import org.hibernate.internal.build.AllowSysOut;
+import it.beije.suormary.rubrica.trapani.Contact;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -16,16 +15,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-//		vedi lista contatti (con possibilità di ordinare per nome e cognome a scelta)  --
-//		cerca contatto --
-//		inserisci nuovo contatto  --
-//		modifica contatto --
-//		cancella contatto --
-//		trova contatti duplicati
-//		unisci contatti duplicati
+//		COMPLETA E FUNZIONANTE
 
 
-public class AzioniGestore extends MenuGestioneRubrica{
+public class AzioniGestoreJDBC extends MenuGestioneRubricaJDBC{
 	
 	public static Scanner in = new Scanner(System.in);
 	
@@ -49,7 +42,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 				statement = getConnection().createStatement();
 				
 				System.out.println("Lista contatti ordinata? (y/n): ");
-				String answ = in.nextLine().toLowerCase();
+				String answ = in.next().toLowerCase();
 			 
 				//LISTA NON ORDINATA
 				
@@ -68,7 +61,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 					}
 				} else {		//LISTA CONTATTI ORDINATA
 					System.out.println("Ordinamento per nome o cognome? (n/c): ");
-					answ=in.nextLine().toLowerCase();
+					answ=in.next().toLowerCase();
 					
 					switch(answ) {
 					
@@ -129,7 +122,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 //				System.out.println("Seleziona campo da cercare: ");
 //				preparedStatement.setString(1, in.nextLine());
 				System.out.println("Valore da cercare: ");	
-				String search ="%" + in.nextLine() +"%";
+				String search ="%" + in.next() +"%";
 				preparedStatement.setString(1, search);		
 				preparedStatement.setString(2, search);	
 				preparedStatement.setString(3, search);	
@@ -149,7 +142,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 					contacts.add(c);
 					} 
 				System.out.println("Contatto trovato in elenco? (y/n)");
-				String anString = in.nextLine();
+				String anString = in.next();
 				if(anString.equals("n")) {
 					findContact();
 				}
@@ -178,15 +171,15 @@ public class AzioniGestore extends MenuGestioneRubrica{
 					("INSERT INTO rubrica (`nome`, `cognome`, `telefono`, `email`, `note`) VALUES (?, ?, ?, ?, ?)");
 			
 			System.out.println("Nome:");
-			preparedStatement.setString(1, in.nextLine());
+			preparedStatement.setString(1, in.next().trim());
 			System.out.println("Cognome:");
-			preparedStatement.setString(2, in.nextLine());
+			preparedStatement.setString(2, in.next().trim());
 			System.out.println("Telefono:");
-			preparedStatement.setString(3, in.nextLine());
+			preparedStatement.setString(3, in.next().trim());
 			System.out.println("Email:");
-			preparedStatement.setString(4, in.nextLine());
+			preparedStatement.setString(4, in.next().trim());
 			System.out.println("Note:");
-			preparedStatement.setString(5, in.nextLine());
+			preparedStatement.setString(5, in.next().trim());
 	
 			preparedStatement.execute();
 			
@@ -201,7 +194,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 	}
 
 	//4
-	public static void updetContact() {
+	public static void updateContact() {
 
 		PreparedStatement preparedStatement = null;
 		List<Contact> found = new ArrayList<>();
@@ -229,7 +222,7 @@ public class AzioniGestore extends MenuGestioneRubrica{
 			
 			//nome
 			System.out.println("Nuovo nome: (se invariato null)");
-			String name = in.nextLine();
+			String name = in.next().trim();
 			if(name.equals("null")){
 				name = contact.getName();			
 			} 
@@ -237,28 +230,28 @@ public class AzioniGestore extends MenuGestioneRubrica{
 			
 			//cognome
 			System.out.println("Nuovo cognome: (se invariato null)");
-			String surname = in.nextLine();
+			String surname = in.next().trim();
 			if(surname.equals("null")){
 				surname = contact.getSurname();			
 			} 
 			
 			//telefono
 			System.out.println("Nuovo telefono: (se invariato null)");
-			String phoneNumber = in.nextLine();
+			String phoneNumber = in.next().trim();
 			if(phoneNumber.equals("null")){
 				phoneNumber = contact.getPhoneNumber();
 			} 
 			
 			//email
 			System.out.println("Nuovo email: (se invariato null)");
-			String email = in.nextLine();
+			String email = in.next().trim();
 			if(email.equals("null")){
 				email = contact.getEmail();			
 			} 
 			
 			//note
 			System.out.println("Nuovo note: (se invariato null)");
-			String note = in.nextLine();
+			String note = in.next();
 			if(note.equals("null")){
 				note = contact.getNote();			
 			} 
@@ -292,20 +285,20 @@ public class AzioniGestore extends MenuGestioneRubrica{
 			connection = getConnection();
 			List<Contact> found = findContact();
 			preparedStatement = connection.prepareStatement
-					("DELETE rubrica WHERE id = ?");
+					("DELETE FROM rubrica WHERE id = ?");
 			
-			for (Contact c : found) {
-				System.out.println(c.toString());
-			}
+//			for (Contact c : found) {
+//				System.out.println(c.toString());
+//			}
 			
 			System.out.println("Indica id contatto da eliminare ");
-			preparedStatement.setString(3, in.nextLine().toLowerCase().trim());
+			preparedStatement.setInt(1, in.nextInt());
 
 			preparedStatement.execute();	
 			
-			if(preparedStatement.execute()) {
-				System.out.println("Contatto eliminato correttamente");
-			}
+			
+			System.out.println("Contatto eliminato correttamente");
+			
 			getConnection().close();
 		
 		} catch (ClassNotFoundException e) {
@@ -319,32 +312,61 @@ public class AzioniGestore extends MenuGestioneRubrica{
 	//6
 	public static List<Contact> findDuplicateContact() {
 		
+		Statement statement= null;
 		PreparedStatement preparedStatement= null;
 
 		List<Contact> contacts = new ArrayList<Contact>();
+		List<Contact> duplicates = new ArrayList<Contact>();
 		Contact c = null;
 			
 		try {
-				
-				preparedStatement = getConnection().prepareStatement
-						("SELECT nome,cognome,telefono,email,note, COUNT(*) FROM rubrica"
-								+ " GROUP BY nome,cognome,telefono,email,note HAVING COUNT(*) > 1;");
-				
-					
+			statement = getConnection().createStatement();
+
+			ResultSet rs1 = statement.executeQuery("SELECT nome,cognome,telefono,email, COUNT(*) FROM rubrica "
+					+ "GROUP BY nome,cognome,telefono,email HAVING COUNT(*) > 1;");
+			while (rs1.next()) {
+				c = new Contact();	
+				c.setName(rs1.getString("nome"));
+				c.setSurname(rs1.getString("cognome"));
+				c.setPhoneNumber(rs1.getString("telefono"));
+				c.setEmail(rs1.getString("email"));
+				contacts.add(c);
+			}
+			
+//			String nome = (rs1.getString("nome"));
+//			String cognome = (rs1.getString("cognome"));
+//			String telefono = (rs1.getString("telefono"));
+//			String emailString = (rs1.getString("email"));
+			
+			preparedStatement = getConnection().prepareStatement
+					("SELECT * FROM rubrica WHERE nome = ? AND cognome = ? AND telefono = ? AND email = ?");
+			for (Contact cn : contacts) {
+				preparedStatement.setString(1, cn.getName());
+				preparedStatement.setString(2, cn.getSurname());
+				preparedStatement.setString(3, cn.getPhoneNumber());
+				preparedStatement.setString(4, cn.getEmail());
 				ResultSet rs = preparedStatement.executeQuery();
-				while (rs.next()) {
-					c = new Contact();
-					c.setId(00);
-					c.setName(rs.getString("nome"));
-					c.setSurname(rs.getString("cognome"));
-					c.setPhoneNumber(rs.getString("telefono"));
-					c.setEmail(rs.getString("email"));
-					c.setNote(rs.getString("note"));
-					System.out.println(c.toString());
-					contacts.add(c);
-					} 
+			
+			while (rs.next()) {
+				c = new Contact();
+				c.setId(rs.getInt("id"));
+				c.setName(rs.getString("nome"));
+				c.setSurname(rs.getString("cognome"));
+				c.setPhoneNumber(rs.getString("telefono"));
+				c.setEmail(rs.getString("email"));
+				c.setNote(rs.getString("note"));
+
+				duplicates.add(c);
+			}
+			}
+			
 				
+			if(contacts.size()==0) {
+				System.out.println("Nessun contatto duplicato");
+				return null;
+			}
 				
+			getConnection().close();
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -353,12 +375,42 @@ public class AzioniGestore extends MenuGestioneRubrica{
 		}
 		
 		
-		return contacts;
+		return duplicates;
 	}
 
 	//7
 	public static void mergeDuplicateContac() {
-		
-		
+		PreparedStatement preparedStatement= null;
+
+		List<Contact> contacts = new ArrayList<Contact>();
+//		Contact c = null;
+			
+		try {
+				contacts = findDuplicateContact();
+				preparedStatement = getConnection().prepareStatement
+						("DELETE FROM rubrica WHERE id = ?");
+				
+				if(contacts.size()==0) {
+					System.out.println("Nessun contatto duplicato da eliminare");
+					return;
+				}
+				for(int i=0; i<contacts.size(); i++) {
+					for(int j=i+1; j<contacts.size(); j++) {
+						if(contacts.get(i).toStringDup().equals(contacts.get(j).toStringDup())) {
+							int id = contacts.get(j).getId();
+							preparedStatement.setInt(1,id);
+							preparedStatement.execute();
+						}
+					}
+				}
+				getConnection().close();
+
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+			
 	}
 }
