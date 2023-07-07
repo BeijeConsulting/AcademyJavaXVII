@@ -1,10 +1,12 @@
 package it.beije.suormary.rubrica.mancuso;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 //import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -213,6 +215,38 @@ public class JPAUtils {
 			//entityManager.close();
 		}
 		return contact;
+	}
+	
+	public static List<Contact> findDuplicates() {
+		EntityManager entityManager = null;
+		List<Contact> contacts = new ArrayList<>();
+		List<Object[]> result = new ArrayList<>();
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();
+			
+			Query query = entityManager.createQuery("SELECT c.firstName, c.lastName, c.phoneNumber,"
+					+ " c.email, c.notes FROM Contact AS c GROUP BY "
+					+ "firstName, lastName, phoneNumber, email, notes HAVING COUNT(*) > 1");
+			
+			result = query.getResultList();
+			
+			for(Object[] row : result) {
+				Contact c = new Contact();
+				c.setFirstName((String)row[0]);
+				c.setLastName((String)row[1]);
+				c.setPhoneNumber((String)row[2]);
+				c.setEmail((String)row[3]);
+				c.setNotes((String)row[4]);
+				contacts.add(c);
+			}
+			
+			//contacts = query.getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//entityManager.close();
+		}
+		return contacts;
 	}
 	
 }

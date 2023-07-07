@@ -93,6 +93,7 @@ public class Menu {
 		System.out.println("new contact\t\tINSERISCI nuovo contatto");
 		System.out.println("edit contact\t\tMODIFICA contatto");
 		System.out.println("delete contact\t\tELIMINA contatto");
+		System.out.println("db dups\t\tRICERCA contatti duplicati");
 		
 		System.out.println("--------------------------------------------------------------------");
 		
@@ -441,9 +442,7 @@ public class Menu {
 			System.out.println("\n");
 			System.out.println(ANSI_WHITE_BACKGROUND + ANSI_BLUE + "Sono stati trovati i seguenti contatti: \n" + ANSI_RESET);
 			
-			for(Contact ct : resultContacts) {
-				System.out.println(ct);
-			}
+			System.out.println(AddressBook.print(resultContacts));
 			break;
 		case "multi find":
 			String col = "";
@@ -495,17 +494,13 @@ public class Menu {
 			
 			resultContacts = JPAUtils.multiColumn(fields, values);
 			System.out.println("\n");
-			for(Contact ct : resultContacts) {
-				System.out.println(ct);
-			}
+			System.out.println(AddressBook.print(resultContacts));
 			
 			break;
 		case "read all":
 			resultContacts = JPAUtils.getAllContacts();
 			//System.out.println("\n");
-			for(Contact ct : resultContacts) {
-				System.out.println(ct);
-			}
+			System.out.println(AddressBook.print(resultContacts));
 			break;
 		case "new contact":
 			System.out.println("\nInserisci il nome del contatto:");
@@ -633,6 +628,10 @@ public class Menu {
 				System.out.println("La lista dei contatti e' vuota. Non e' possibile eliminare un contatto.");
 			}
 			
+			break;
+		case "db dups":
+			resultContacts = JPAUtils.findDuplicates();
+			System.out.println(AddressBook.print(resultContacts));
 			break;
 		default:
 			System.out.println(ANSI_RED + "Comando non riconosciuto.\n" + ANSI_RESET);
