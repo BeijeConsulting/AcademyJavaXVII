@@ -299,9 +299,9 @@ public class MetodiRubricaHBM {
 	// find multiple contacts 
 	public List<Contact> findMultipleContact() {
 		//JPA
-		//List<Contact> occ = jpa.findMultipleContacts();
+		List<Contact> occ = jpa.findMultipleContacts();
 		//HBM
-		List<Contact> occ = hbm.findMultipleContact();
+		//List<Contact> occ = hbm.findMultipleContact();
 		System.out.println("Di seguito la lista dei contatti con più di una occorrenza:");
 		if(occ.isEmpty() || occ==null) {
 			System.out.println("Non ci sono contatti ripetuti");
@@ -349,7 +349,10 @@ public class MetodiRubricaHBM {
 				}
 				//si dovrebbe fare con una JOIN
 				// cancello gli altri contatti uguali
-				hbm.deleteContactEqual(cMerge);
+				//HBM
+				//hbm.deleteContactEqual(cMerge);
+				//JPA
+				jpa.deleteSimilarContacts(cMerge);
 		}catch(NullPointerException e) {
 			e.fillInStackTrace();
 		}

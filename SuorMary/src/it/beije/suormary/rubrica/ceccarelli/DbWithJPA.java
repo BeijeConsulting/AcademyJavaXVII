@@ -5,10 +5,13 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Tuple;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 
 import it.beije.suormary.rubrica.Contact;
 
@@ -168,20 +171,13 @@ public class DbWithJPA {
 			CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Contact> query = cb.createQuery(Contact.class);
 			Root<Contact> root = query.from(Contact.class);
-			query.select(root);
 			
-			//definizione raggruppamento
-			query.groupBy(root.get("name"), root.get("surname"), root.get("phoneNumber"), root.get("email"), root.get("note"));
-			
-			//condizione per contatti duplicati
-			query.having(cb.gt(cb.count(root),1));
-			
+			query.multiselect(root.get("name"), root.get("surname"), root.get("phoneNumber"), root.get("email"), root.get("note"));
+            query.groupBy(root.get("name"), root.get("surname"), root.get("phoneNumber"), root.get("email"), root.get("note")).having(cb.gt(cb.count(root),1));
+            occ = entityManager.createQuery(query).getResultList();
 			//disabilita indice
 //			String disableIndexQuery = "ALTER TABLE rubrica DISABLE KEYS";
 //			entityManager.createNativeQuery(disableIndexQuery).executeUpdate();
-			
-			//query duplicati;
-			occ = entityManager.createQuery(query).getResultList();
 			
 			//abilita indice
 
@@ -195,5 +191,19 @@ public class DbWithJPA {
 			entityManager.close();
 		}
 		return occ;
+	}
+
+	//delete similar contact
+	public void deleteSimilarContacts(Contact contact) {
+		List<Contact> selected= new ArrayList<Contact>();
+		entityManager = JPAEntityFactory.openEntity();
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Contact> query = cb.createQuery(Contact.class);
+		Root<Contact> root = query.from(Contact.class);
+		query.multiselect(root).where(cb.equal(root.get("name"), contact.getName()), cb.equal(root.get("surname"), contact.getSurname()),cb.equal( root.get("phoneNumber"), contact.getPhoneNumber()),cb.equal(root.get("email"), contact.getEmail()), cb.equal(root.get("note"), contact.getNote()));
+        selected = entityManager.createQuery(query).getResultList();
+        for(Contact c : selected) {
+        	System.out.println(c.toString());
+        }
 	}
 }
