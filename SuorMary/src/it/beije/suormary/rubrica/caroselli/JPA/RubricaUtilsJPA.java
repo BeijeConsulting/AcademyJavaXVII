@@ -14,12 +14,14 @@ import java.util.Scanner;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -387,6 +389,7 @@ public class RubricaUtilsJPA {
 		List<Contact> duplicateContacts = new ArrayList<>();
 
 		EntityManager entityManager = null;
+		
 
 		try {
 
@@ -394,13 +397,51 @@ public class RubricaUtilsJPA {
 
 			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
+			
+//			 CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//		        CriteriaQuery<Contact> selectQuery = criteriaBuilder.createQuery(Contact.class);
+//		        Root<Contact> root = selectQuery.from(Contact.class);
+//
+//		        CriteriaQuery<Contact> subquery = criteriaBuilder.createQuery(Contact.class);
+//		        Root<Contact> subRoot = subquery.from(Contact.class);
+//		        subquery.multiselect(
+//		            subRoot.get("name"),
+//		            subRoot.get("surname"),
+//		            subRoot.get("phone"),
+//		            subRoot.get("email"),
+//		            subRoot.get("note")
+//		        );
+//
+//		        List<Predicate> subPredicates = new ArrayList<>();
+//		        subPredicates.add(criteriaBuilder.equal(subRoot.get("name"), value));
+//		        subPredicates.add(criteriaBuilder.equal(subRoot.get("surname"), value));
+//		        subPredicates.add(criteriaBuilder.equal(subRoot.get("phone"), value));
+//		        subPredicates.add(criteriaBuilder.equal(subRoot.get("email"), value));
+//		        subPredicates.add(criteriaBuilder.equal(subRoot.get("note"), value));
+//		        subquery.where(criteriaBuilder.or(subPredicates.toArray(new Predicate[0])));
+//
+//		        subquery.groupBy(
+//		            subRoot.get("name"),
+//		            subRoot.get("surname"),
+//		            subRoot.get("phone"),
+//		            subRoot.get("email"),
+//		            subRoot.get("note")
+//		        );
+//		        subquery.having(criteriaBuilder.greaterThan(criteriaBuilder.count(subRoot), 1L));
+//
+//		        selectQuery.select(root).where(root.in(subquery.select(subRoot)));
+//
+//		        List<Contact> results = entityManager.createQuery(selectQuery).getResultList();
+			
 
-			Query query = entityManager.createQuery("SELECT c FROM Contact c WHERE c.id IN "
-					+ "(SELECT c2.id FROM Contact c2 WHERE c2.id <> :choice AND (c2.name = :value OR c2.surname = :value OR c2.phone = :value OR c2.email = :value OR c2.note = :value))");
-			query.setParameter("choice", 0);
+			Query query = entityManager.createQuery("SELECT c FROM Contact c WHERE (c.name, c.surname, c.phone, c.email, c.note) IN ("
+				    + "SELECT c2.name, c2.surname, c2.phone, c2.email, c2.note FROM Contact c2 "
+				    + "WHERE (c2.name = :value OR c2.surname = :value OR c2.phone = :value OR c2.email = :value OR c2.note = :value)"
+				    + "GROUP BY c2.name, c2.surname, c2.phone, c2.email, c2.note HAVING COUNT(*) > 1)");
 			query.setParameter("value", value);
 
 			List<Contact> results = query.getResultList();
+			
 
 			System.out.println("Number of results: " + results.size());
 
@@ -420,6 +461,7 @@ public class RubricaUtilsJPA {
 
 		List<Contact> duplicateContacts = findDuplicatesContactByValue();
 		EntityManager entityManager = null;
+		List<Contact> contactsToDelete = new ArrayList<>();
 
 		if (duplicateContacts.isEmpty()) {
 			return;
@@ -427,6 +469,15 @@ public class RubricaUtilsJPA {
 
 		int choice = ScannerUtil.readIntValue("Inserisci l'id del contatto principale da tenere: ");
 		System.out.println("Id scelto: " + choice);
+		Contact mainContact = returnAContact(duplicateContacts, choice);
+		for(Contact c: duplicateContacts) {
+			if(c.equals(mainContact)) {
+				if(c.getId() != mainContact.getId()) {
+					contactsToDelete.add(c);
+				}	
+			}
+		}
+		
 		if (areYouSure()) {
 			try {
 
@@ -436,9 +487,9 @@ public class RubricaUtilsJPA {
 				transaction.begin();
 
 				Query deleteQuery = entityManager
-						.createQuery("DELETE FROM Contact c WHERE c.id NOT IN (:choice) AND c IN :duplicateContacts");
-				deleteQuery.setParameter("choice", choice);
-				deleteQuery.setParameter("duplicateContacts", duplicateContacts);
+						.createQuery("DELETE FROM Contact c WHERE c.id NOT IN (:choice) AND c IN :contactToDelete");
+				deleteQuery.setParameter("choice", mainContact.getId());
+				deleteQuery.setParameter("contactToDelete", contactsToDelete);
 				int deletedCount = deleteQuery.executeUpdate();
 
 				transaction.commit();

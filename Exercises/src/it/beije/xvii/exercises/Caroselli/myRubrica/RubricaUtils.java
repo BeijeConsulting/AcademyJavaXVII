@@ -568,7 +568,7 @@ System.out.println("Inserisci i campi del contatto che vuoi aggiungere alla rubr
 				if (c.getId() != choice) {
 
 					Statement statement = connection("suor_mary", "root");
-					String deleteQuery = "DELETE FROM rubrica\n" + "WHERE id NOT IN ('" + choice + "') AND c IN :" + duplicateContacts + ";";
+					String deleteQuery = "DELETE FROM rubrica WHERE id NOT IN ('" + choice + "') AND c IN :" + duplicateContacts + ";";
 
 					statement.executeUpdate(deleteQuery);
 					statement.close();

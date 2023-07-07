@@ -59,7 +59,9 @@ public class RubricaUtilsHBM {
 				newList.add(new Contact(values[1], values[0], values[2], values[3], values[4]));
 			}
 
-			System.out.println(newList);
+			for(Contact c: newList) {
+				System.out.println(c.toString());
+			}
 			return newList;
 
 		} catch (IOException e) {
@@ -107,6 +109,9 @@ public class RubricaUtilsHBM {
 					}
 				}
 
+				for(Contact contact: contacts) {
+					System.out.println(contact.toString());
+				}
 				contacts.add(c);
 			}
 
@@ -237,7 +242,7 @@ public class RubricaUtilsHBM {
 				Query<Contact> query = session.createQuery("SELECT c FROM Contact as c");
 				List<Contact> contacts = query.getResultList();
 				for (Contact c : contacts)
-					System.out.println(c);
+					System.out.println(c.toString());
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -277,7 +282,7 @@ public class RubricaUtilsHBM {
 				Query<Contact> query = session.createQuery("SELECT c FROM Contact as c ORDER BY surname ASC");
 				List<Contact> contacts = query.getResultList();
 				for (Contact c : contacts)
-					System.out.println(c);
+					System.out.println(c.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -424,7 +429,7 @@ public class RubricaUtilsHBM {
 			System.out.println("Contatto aggiunto alla rubrica");
 			transaction.commit();
 
-			System.out.println(contact);
+			System.out.println(contact.toString());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -459,7 +464,7 @@ public class RubricaUtilsHBM {
 				Contact contact = query.getSingleResult();
 				session.delete(contact);
 				transaction.commit();
-				System.out.println(contact);
+				System.out.println(contact.toString());
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -582,11 +587,12 @@ public class RubricaUtilsHBM {
 			session.close();
 
 		}
+		
 
 		return contacts;
 	}
 
-	// da pensare
+
 	public static List<Contact> findDuplicatesContactByValue() throws Exception {
 
 		Session session = null;
@@ -598,9 +604,11 @@ public class RubricaUtilsHBM {
 
 		try {
 			session = HBMSessionFactory.openSession();
-			Query<Contact> query = session.createQuery("SELECT c FROM Contact c WHERE c.id IN "
-					+ "(SELECT c2.id FROM Contact c2 WHERE c2.id <> :choice AND (c2.name = :value OR c2.surname = :value OR c2.phone = :value OR c2.email = :value OR c2.note = :value))");
-			query.setParameter("choice", 0);
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact c WHERE (c.name, c.surname, c.phone, c.email, c.note) IN ("
+				    + "SELECT c2.name, c2.surname, c2.phone, c2.email, c2.note FROM Contact c2 "
+				    + "WHERE (c2.name = :value OR c2.surname = :value OR c2.phone = :value OR c2.email = :value OR c2.note = :value)"
+				    + "GROUP BY c2.name, c2.surname, c2.phone, c2.email, c2.note HAVING COUNT(*) > 1)");
+
 			query.setParameter("value", value);
 
 			List<Contact> results = query.getResultList();
@@ -608,7 +616,7 @@ public class RubricaUtilsHBM {
 			System.out.println("Number of results: " + results.size());
 
 			for (Contact result : results) {
-				System.out.println(result);
+				System.out.println(result.toString());
 				duplicateContacts.add(result);
 			}
 
@@ -626,20 +634,30 @@ public class RubricaUtilsHBM {
 
 		List<Contact> duplicateContacts = findDuplicatesContactByValue();
 		printContacts(duplicateContacts);
+		List<Contact> contactsToDelete = new ArrayList<>();
 		Session session = null;
 
 		if (!duplicateContacts.isEmpty()) {
 
 			int choice = ScannerUtil.readIntValue("Inserisci l'id del contatto principale da tenere: ");
 			System.out.println("Id scelto: " + choice);
+			Contact mainContact = returnAContact(duplicateContacts, choice);
+			for(Contact c: duplicateContacts) {
+				if(c.equals(mainContact)) {
+					if(c.getId() != mainContact.getId()) {
+						contactsToDelete.add(c);
+					}	
+				}
+			}
+			
 			if (areYouSure()) {
 				try {
 					session = HBMSessionFactory.openSession();
 
 					Query<Contact> deleteQuery = session.createQuery(
-							"DELETE FROM Contact c WHERE c.id NOT IN (:choice) AND c IN :duplicateContacts");
-					deleteQuery.setParameter("choice", choice);
-					deleteQuery.setParameter("duplicateContacts", duplicateContacts);
+							"DELETE FROM Contact c WHERE c.id NOT IN (:choice) AND c IN :contactsToDelete");
+					deleteQuery.setParameter("choice", mainContact.getId());
+					deleteQuery.setParameter("contactsToDelete", contactsToDelete);
 					int deletedCount = deleteQuery.executeUpdate();
 
 					System.out.println("Eliminati " + deletedCount + " contatti duplicati.");
