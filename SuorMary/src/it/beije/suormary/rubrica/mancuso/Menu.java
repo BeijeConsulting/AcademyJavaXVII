@@ -88,6 +88,7 @@ public class Menu {
 		System.out.println("\n" + ANSI_WHITE_BACKGROUND + ANSI_BLUE + "\tI seguenti comandi verranno eseguiti direttamente su DATABASE\t" + ANSI_RESET + "\n");
 		
 		System.out.println("find by field\t\tRICERCA per campo e valore");
+		System.out.println("multi find\t\tRICERCA per n campi e valori");
 		System.out.println("read all\t\tVISUALIZZA tutti i contatti presenti");
 		System.out.println("new contact\t\tINSERISCI nuovo contatto");
 		System.out.println("edit contact\t\tMODIFICA contatto");
