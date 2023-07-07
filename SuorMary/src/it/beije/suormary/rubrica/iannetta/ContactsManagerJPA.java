@@ -42,7 +42,11 @@ public class ContactsManagerJPA {
 	public boolean confirm() {
 		System.out.println("1: Confirm\n0: Cancel");
 		String answer = in.nextLine();
-		return answer.equals("1");
+		if (!answer.equals("1")) {
+			System.out.println("Ctrl + z :)");
+			return false;
+		}
+		return true;
 	}
 	
 	public boolean[] setDataToRead() {
@@ -248,7 +252,7 @@ public class ContactsManagerJPA {
 		EntityTransaction transaction = entityManager.getTransaction();
 
 		List<List<Contact>> listOfDuplicates = findDuplicates();
-		if (confirm()) {
+		if (listOfDuplicates.size() > 1 && confirm()) {
 			Contact keepThisContact;
 			Contact checkThisContact;
 			//int id;
