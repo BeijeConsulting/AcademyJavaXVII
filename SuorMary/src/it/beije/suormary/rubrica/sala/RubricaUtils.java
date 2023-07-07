@@ -897,8 +897,10 @@ public class RubricaUtils {
 			session = HBMsessionFactory.openSession();
 			
 			//NON LEGGE QUESTA SINTASSI "SELECT c FROM Contact c GROUP BY c.name, c.surname, c.phoneNumber"
-			String hql = "SELECT new Contatto (c.name, c.surname, c.phoneNumber) FROM Contatto c GROUP BY c.name, c.surname, c.phoneNumber";
-			Query<Contatto>query=session.createQuery(hql);
+			//String hql = "SELECT new Contatto (c.name, c.surname, c.phoneNumber) FROM Contatto c GROUP BY c.name, c.surname, c.phoneNumber";
+			
+			Query<Contatto> query = session.createQuery("SELECT c FROM Contatto as c WHERE (c.name, c.surname, c.phoneNumber, c.email, c.note) IN(SELECT c2.name, c2.surname, c2.phoneNumber, c2.email, c2.note FROM Contatto as c2 GROUP BY c2.name, c2.surname, c2.phoneNumber, c2.email, c2.note HAVING COUNT(c2) > 1)");
+			//Query<Contatto>query=session.createQuery(hql);
 			contacts=query.getResultList();
 			/*CriteriaBuilder builder = session.getCriteriaBuilder();
 	        CriteriaQuery<Contact> criteriaQuery = builder.createQuery(Contact.class);

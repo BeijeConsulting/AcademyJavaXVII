@@ -200,6 +200,8 @@ public class RubricaUtilsJPA {
 		    
 		    query.select(root).where(finalePre);
 		    results=em.createQuery(query).getResultList();
+		    int numContatti=results.size();
+		    System.out.println("sono stati trovati "+numContatti+". Eccoli:");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -457,14 +459,14 @@ public class RubricaUtilsJPA {
 		
 	}
 	
-public static List<Contatto> groupByCON() {
+	public static List<Contatto> groupByCON() {
 		
 		EntityManager em = null;
 				
 		List<Contatto> contacts=null;
 		
 		try {
-			/* 
+			/*
 			em = JPAEntityManagerFactory.createEM();
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 		    CriteriaQuery<Contatto> query = cb.createQuery(Contatto.class);
@@ -472,9 +474,68 @@ public static List<Contatto> groupByCON() {
 			
 		    query.multiselect(root.get("name"), root.get("surname"), root.get("phoneNumber"));
 		    query.groupBy(root.get("name"), root.get("surname"), root.get("phoneNumber"));
+		    query.having(cb.gt(cb.count(root), 1L));
 		    
-		    contacts=em.createQuery(query).getResultList();*/
+		    contacts=em.createQuery(query).getResultList();
+			*/
 			
+			em = JPAEntityManagerFactory.createEM();
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+			CriteriaQuery<Contatto> query = cb.createQuery(Contatto.class);
+			Root<Contatto> contactRoot = query.from(Contatto.class);
+
+			// Seleziona i campi per il raggruppamento
+			query.multiselect(
+			    contactRoot.get("name"),
+			    contactRoot.get("surname"),
+			    contactRoot.get("phoneNumber"),
+			    contactRoot.get("email"),
+			    contactRoot.get("note"),
+			    //serve a calcolare il conteggio dei contatti duplicati per ogni gruppo.
+			    cb.count(contactRoot)
+			);
+			
+			
+			
+			// Aggiungi clausole di raggruppamento e condizioni di duplicati
+			query.groupBy(
+			    contactRoot.get("name"),
+			    contactRoot.get("surname"),
+			    contactRoot.get("phoneNumber"),
+			    contactRoot.get("email"),
+			    contactRoot.get("note")
+			);
+			
+			query.having(cb.gt(cb.count(contactRoot), 1L));
+			
+			
+
+			// Seleziona solo i campi desiderati (senza l'ID)
+			//query.select(contactRoot).distinct(true).where(cb.in(contactRoot).in(query));
+
+			contacts = em.createQuery(query).getResultList();
+			
+			
+			/*if(contacts!=null) {
+				int i=0;
+				for(Contatto c : contacts) {
+					if(c!=null)
+					System.out.println("contatto "+(i++)+" "+contacts.toString());
+				}
+			}*/
+			
+			
+			/*
+			Map<String, Long> groupOccurrences = new HashMap<>();
+			for (Contatto contact : results) {
+			    String group = contact.buildGroupString(contact); // Costruisci una stringa rappresentativa del gruppo
+			    Long occurrences = contact.getOccorrenze(); // Ottenere il valore delle occorrenze dalla classe Contatto
+			    groupOccurrences.put(group, occurrences);
+			}*/
+			
+			
+		    
+		    
 			/*em = JPAEntityManagerFactory.createEM();
 			CriteriaBuilder cb = em.getCriteriaBuilder();
 			CriteriaQuery<String> subquery = cb.createQuery(String.class);
@@ -491,6 +552,32 @@ public static List<Contatto> groupByCON() {
 
 	        contacts=em.createQuery(query).getResultList();*/
 			
+			/*em = JPAEntityManagerFactory.createEM();
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+		    CriteriaQuery<Contatto> query = cb.createQuery(Contatto.class);
+		    Root<Contatto> root = query.from(Contatto.class);
+			
+		    query.multiselect(
+		    	    root.get("name"),
+		    	    root.get("surname"),
+		    	    root.get("phoneNumber"),
+		    	    root.get("email"),
+		    	    root.get("note"),
+		    	    cb.count(root)
+		    	);
+		    
+		    query.groupBy(
+		    	    root.get("name"),
+		    	    root.get("surname"),
+		    	    root.get("phoneNumber"),
+		    	    root.get("email"),
+		    	    root.get("note")
+		    	);
+		    
+		    query.having(cb.gt(cb.count(root), 1L));
+		    
+		    contacts=em.createQuery(query).getResultList();*/
+			
 			
 		} catch (Exception e) {
 			//if(transaction!=null){
@@ -504,59 +591,82 @@ public static List<Contatto> groupByCON() {
 		
 	}
 
-	/*public static void merge() {
+
+	public static void writeFromDBDeleteMerge(Integer[] id) {
+	
+	EntityManager em = null;
+	
+	try {
+		em = JPAEntityManagerFactory.createEM();
+
+		EntityTransaction transaction = em.getTransaction();
+		transaction.begin();
+		
+		Contatto c =null;
+		for(int i=0; i<id.length; i++) {
+			
+			c=em.find(Contatto.class, id[i]);
+			
+			if(c!=null) {
+				em.remove(c);
+				transaction.commit();
+				System.out.println("il tuo contatto cont id: " + id[i]+" è stato cancellato");
+			} else {
+				System.out.println("il contatto con l'id "+id[i]+" non è stato cancellato");
+			}
+		}
+		
+			
+			
+		
+		
+		//DELETE
+ 		//session.remove(contact);
+		//transaction.commit();
+		
+		
+	} catch (Exception e) {
+		//if(transaction!=null){
+		//transaction.rollback();
+		e.printStackTrace();
+	} finally {
+		em.close();
+	}
+}
+	
+	public static List<Contatto> cercaDuplicatiConId(String searchName, String searchSurname, String searchPhone, String searchEmail, String searchNote){
+
 		EntityManager em = null;
-		List<Contatto> contatti = null;
-	    try {
-	        em = JPAEntityManagerFactory.createEM();
-	        CriteriaBuilder cb = em.getCriteriaBuilder();
-	        
-	        // Criteri per identificare i contatti duplicati
-	        CriteriaQuery<Contatto> duplicateQuery = cb.createQuery(Object[].class);
-	        Root<Contatto> duplicateRoot = duplicateQuery.from(Contatto.class);
-	        duplicateQuery.multiselect(duplicateRoot.get("name"), duplicateRoot.get("surname"), duplicateRoot.get("phoneNumber"))
-	                      .groupBy(duplicateRoot.get("name"), duplicateRoot.get("surname"), duplicateRoot.get("phoneNumber"))
-	                      .having(cb.gt(cb.count(duplicateRoot), 1));
-	        
-	     // Recupera i dati dei contatti duplicati
-	       // List<Object[]> duplicateContacts = em.createQuery(duplicateQuery).getResultList();
-	        contatti=em.createQuery(duplicateQuery).getResultList();
+		
+		List<Contatto> results=null;
+		
+		try {
+			
+			em = JPAEntityManagerFactory.createEM();
+			
+		    CriteriaBuilder cb = em.getCriteriaBuilder();
+		    CriteriaQuery<Contatto> query = cb.createQuery(Contatto.class);
+		    Root<Contatto> root = query.from(Contatto.class);
+		    //List<Predicate> predicate = new ArrayList<>();
 
-	        // Per ogni contatto duplicato, unifica i contatti
-	        //for (Object[] duplicateContact : duplicateContacts) {
-	          //  String name = (String) duplicateContact[0];
-	            //String surname = (String) duplicateContact[1];
-	            //String phoneNumber = (String) duplicateContact[2];
-	        
-	        for(Contatto c : contatti ) {
-	        	String nome = c.getName();
-	        	String cognome = c.getSurname();
-	        	String numeroTelefono=c.getPhoneNumber();
-	        }
-
-	            CriteriaUpdate<Contatto> updateQuery = cb.createCriteriaUpdate(Contatto.class);
-	            Root<Contatto> updateRoot = updateQuery.from(Contatto.class);
-
-	            // Imposta il valore da mantenere per il contatto unificato (ad esempio, il contatto con il valore più recente)
-	          /*  Expression<Integer> maxId = cb.max(updateRoot.get("id"));
-	            updateQuery.set("unifiedValue", maxId)
-	                       .where(cb.and(
-	                           cb.equal(updateRoot.get("name"), name),
-	                           cb.equal(updateRoot.get("surname"), surname),
-	                           cb.equal(updateRoot.get("phoneNumber"), phoneNumber)
-	                       ));
-
-	            em.createQuery(updateQuery).executeUpdate();
-	            System.out.println("duplicati unificati");
-	        }QUI CHIUDE IL COMMENTO
-	        
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    } finally {
-	        if (em != null) {
-	            em.close();
-	        }
-	    }
-	}*/
-
+		    Predicate nomePre=cb.equal(root.get("name"), searchName);
+		    Predicate cognomePre=cb.equal(root.get("surname"), searchSurname);
+		    Predicate telefonoPre=cb.equal(root.get("phoneNumber"), searchPhone);
+		    Predicate emailPre=cb.equal(root.get("email"), searchEmail);
+		    Predicate notePre=cb.equal(root.get("note"), searchNote);
+		    Predicate finalePre=cb.and(nomePre, cognomePre, telefonoPre, emailPre, notePre);
+		    
+		    query.select(root).where(finalePre);
+		    results=em.createQuery(query).getResultList();
+		    int numContatti=results.size();
+		    System.out.println("sono stati trovati "+numContatti+". Eccoli:");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		
+		return results;
+	}
 }

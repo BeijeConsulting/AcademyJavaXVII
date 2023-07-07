@@ -41,11 +41,20 @@ package it.beije.suormary.rubrica.sala;
 		
 		public Contatto(int id, String fullName) {
 		    this.id = id;
-		    this.fullName = fullName;
+		   // if(fullName.equals(" ")){
+		    //	this.fullName=null;
+		    //}else {
+		    	//this.fullName = fullName;
+		    
+		//}
+		    
 		}
 		
 		public Contatto(int id, String name, String surname) {
 		    this.id = id;
+		   // if(name.equals(" ")) {
+		    //	this.name=null;
+		    //}
 		    this.name = name;
 		    this.surname=surname;
 		}
@@ -54,6 +63,23 @@ package it.beije.suormary.rubrica.sala;
 			this.name = name;
 		    this.surname=surname;
 		    this.phoneNumber=phoneNumber;
+		}
+		public Contatto(String name, String surname, String phoneNumber, String email, String note ) {
+			this.name = name;
+		    this.surname=surname;
+		    this.phoneNumber=phoneNumber;
+		    this.email=email;
+		    this.note=note;
+		}
+		@Transient
+		private long count;
+		public Contatto(String name, String surname, String phoneNumber, String email, String note, long count) {
+			this.name = name;
+		    this.surname=surname;
+		    this.phoneNumber=phoneNumber;
+		    this.email=email;
+		    this.note=note;
+		    this.count=count;
 		}
 		
 		public Contatto() {
@@ -106,6 +132,13 @@ package it.beije.suormary.rubrica.sala;
 			this.note = note;
 		}
 
+		 public  String buildGroupString(Contatto c) {
+		       return name + " " + surname + " " + phoneNumber + " " + email + " " + note;
+		    }
+
+		    public Long getOccorrenze() {
+		        return count;
+		    }
 		
 		public String toString() {
 			StringBuilder builder = new StringBuilder("{ ")
