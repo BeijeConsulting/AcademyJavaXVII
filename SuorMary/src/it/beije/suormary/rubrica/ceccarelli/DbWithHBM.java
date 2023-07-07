@@ -27,6 +27,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
+import org.hibernate.sql.Delete;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -80,6 +81,30 @@ public class DbWithHBM {
 		return contacts;
 	}
 	
+	
+	
+	//delete Contact equal
+	public void deleteContactEqual(Contact contact) {
+		try {
+			session = HBMsessionFactory.openSession();
+			//transaction = session.beginTransaction();
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.id != :ID and c.name = :nome and c.surname = :cognome and c.phoneNumber = :telefono and c.email = :mail and c.note = :note");
+			query.setParameter("nome", contact.getName());
+			query.setParameter("cognome", contact.getSurname());
+			query.setParameter("telefono", contact.getPhoneNumber());
+			query.setParameter("mail", contact.getEmail());
+			query.setParameter("note", contact.getNote());
+			query.setParameter("ID", contact.getId());
+			List<Contact> toDelete = query.getResultList();
+			deleteContact(toDelete);
+			//transaction.commit();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+	}
 	// search contact with name
 	public List<Contact> searchContactsName(String name){
 		List<Contact> selected= new ArrayList<Contact>();
@@ -132,12 +157,14 @@ public class DbWithHBM {
 			}
 	
 	//inserti contact
-	public void insertContacts(Contact contact) {
+	public void insertContacts(List<Contact> contact) {
 			try {
 				session = HBMsessionFactory.openSession();
 				transaction = session.beginTransaction();
-				session.save(contact);
-				transaction.commit();
+				for(Contact c : contact) {
+					session.save(c);
+					transaction.commit();
+				}
 				System.out.println("Contatto/i inserito/i");
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -176,13 +203,16 @@ public class DbWithHBM {
 	}
 	
 	//delete contact
-	public void deleteContact(Contact contact) {
+	public void deleteContact(List<Contact> contact) {
 			try {
 				session = HBMsessionFactory.openSession();
-				transaction = session.beginTransaction();
-				session.delete(contact);
-				transaction.commit();
-				System.out.println("Contatto eliminato");
+				
+				for(Contact c : contact) {
+					transaction = session.beginTransaction();
+					session.delete(c);
+					transaction.commit();
+				}
+				System.out.println("Contatto/i eliminato/i");
 			}catch (Exception e) {
 				e.printStackTrace();
 			} finally {
@@ -192,17 +222,18 @@ public class DbWithHBM {
 	
 	//find multiple contacts
 	public List<Contact> findMultipleContact() {
-		List<Contact> occ= new ArrayList<Contact>();
+		
+		List<Contact> occCon = new ArrayList<Contact>();
 		try {
 			session = HBMsessionFactory.openSession();
-			Query<Contact> query = session.createQuery("SELECT COUNT(*) from Contact as c GROUP BY c.name, c.surname HAVING COUNT>1");
-			occ = query.getResultList();
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE (c.name, c.surname, c.phoneNumber, c.email, c.note) IN(SELECT c2.name, c2.surname, c2.phoneNumber, c2.email, c2.note FROM Contact as c2 GROUP BY c2.name, c2.surname, c2.phoneNumber, c2.email, c2.note HAVING COUNT(c2) > 1)");
+			occCon = query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			session.close();
 		}
-		return occ;
+		return occCon;
 	}
 	
 }

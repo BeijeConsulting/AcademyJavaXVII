@@ -2,6 +2,7 @@ package it.beije.suormary.rubrica.ceccarelli;
 
 import java.util.Scanner;
 
+
 public class GestioneRubricaHBM {
 
 	public static void menu() {
@@ -48,11 +49,11 @@ public class GestioneRubricaHBM {
 				break;
 			case "6":
 				//System.out.println("scelta 6");
-				//JPA
 				mr.findMultipleContact();
 				break;
 			case "7":
-				System.out.println("scelta 7");
+				//System.out.println("scelta 7");
+				mr.mergeContact(mr.findMultipleContact());
 				break;
 			case "8":
 				System.exit(0);

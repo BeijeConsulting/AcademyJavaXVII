@@ -98,7 +98,7 @@ public class Contact {
 		return builder.toString();
 	}
 	
-	//confronto due contatti
+//	//confronto due contatti
 //	public boolean equals(Object obj) {
 //		if(this == obj) {
 //			return true;

@@ -133,8 +133,9 @@ public class MetodiRubricaHBM {
 				path=scanInsert.next();
 				list2 = MetodiFile.loadRubricaFromXML(path);
 				try {
+					//hbm.insertContacts(list2);
 					for(Contact c : list2) {
-						//hbm.insertContacts(c);
+						
 						jpa.insertContacts(c);
 					}
 					
@@ -171,8 +172,10 @@ public class MetodiRubricaHBM {
 				contact.setPhoneNumber(scanInsert.next());
 				System.out.print("email: "); 
 				contact.setEmail(scanInsert.next());
+				scanInsert.nextLine();
 				System.out.print("note: "); 
 				contact.setNote(scanInsert.nextLine());
+				
 				//HBM
 				//hbm.insertContacts(contact);
 //				//JPA
@@ -294,7 +297,7 @@ public class MetodiRubricaHBM {
 	}
 	
 	// find multiple contacts 
-	public void findMultipleContact() {
+	public List<Contact> findMultipleContact() {
 		//JPA
 		//List<Contact> occ = jpa.findMultipleContacts();
 		//HBM
@@ -302,13 +305,54 @@ public class MetodiRubricaHBM {
 		System.out.println("Di seguito la lista dei contatti con più di una occorrenza:");
 		if(occ.isEmpty() || occ==null) {
 			System.out.println("Non ci sono contatti ripetuti");
-			return;
+			return null;
 		}
 		for(Contact contact : occ) {
 			System.out.println(contact.toString());
 		}
 		
 		chooseFile(occ);
+		System.out.println("merge dei contatti?");
+		Scanner scanMerge = new Scanner(System.in);
+		String response = scanMerge.next();
+		if(response.equalsIgnoreCase("Si")|| response.equalsIgnoreCase("Sì")) {
+			//HBM e JPA
+			mergeContact(occ);
+		}else {
+			System.out.println("Si è deciso di NON effettuare merge");
+			return null;
+		}
+		return occ;
+	}
+	
+	//merge contact
+	public void mergeContact(List<Contact> multipleC) {
+		//List<Contact> multipleC = findMultipleContact();
+		try {
+			System.out.println("lista:");
+			for(Contact contact : multipleC) {
+				System.out.println(contact.toString());
+			}
+			Scanner scanMerge = new Scanner(System.in);
+			Contact cMerge = null;
+				//HBM e JPA
+				System.out.println("Seleziona il contatto di cui vuoi eliminare la/le sua/sue copie:");
+				for(Contact ct : multipleC) {
+					System.out.println(ct);
+					System.out.println("E' questo?");
+					String choose = scanMerge.next();
+					if(choose.equalsIgnoreCase("Si")|| choose.equalsIgnoreCase("Sì")) {
+						cMerge = ct;
+						
+						break;
+					}
+				}
+				//si dovrebbe fare con una JOIN
+				// cancello gli altri contatti uguali
+				hbm.deleteContactEqual(cMerge);
+		}catch(NullPointerException e) {
+			e.fillInStackTrace();
+		}
 	}
 		
 	//save into one type of file
@@ -361,7 +405,6 @@ public class MetodiRubricaHBM {
 				}catch(Exception e) {
 					e.fillInStackTrace();
 				}
-				
 			}else if(r.equalsIgnoreCase("No")){
 				System.out.println("Contatto non aggiornato");
 				rispostaValida = true;
