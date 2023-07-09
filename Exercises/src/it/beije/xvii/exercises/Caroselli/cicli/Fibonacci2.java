@@ -4,7 +4,8 @@ package it.beije.xvii.exercises.Caroselli.cicli;
 public class Fibonacci2 {
     public void fibonacci() {
         int n = 10;
-        Fibonacci.fibonacciEx(n);
+        Fibonacci fibonacci = new Fibonacci();
+		fibonacci.fibonacciEx(n);
     }
 
 

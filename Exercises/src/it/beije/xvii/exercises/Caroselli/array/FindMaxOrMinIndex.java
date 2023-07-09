@@ -13,7 +13,7 @@ import it.beije.xvii.exercises.Caroselli.utils.TestCase;
 //Trovare l’indice del massimo elemento in un array (o il minimo)
 public class FindMaxOrMinIndex {
 
-    public static int findMaxIndex(int[] array) {
+    public int findMaxIndex(int[] array) {
 
         int index = 0;
         int max = 0;
@@ -31,7 +31,7 @@ public class FindMaxOrMinIndex {
         return index;
     }
 
-    public static int findMinIndex(int[] list) {
+    public int findMinIndex(int[] list) {
 
         int index = 0;
 
@@ -48,7 +48,7 @@ public class FindMaxOrMinIndex {
         return index;
     }
 
-    public static void test() {
+    public void test() {
         for (TestCase<int[], Integer> test : testCasesMaxIndex) {
             int index = findMaxIndex(test.getValue());
             System.out.println("Il valore restituito e' : " + index + ", il valore atteso e' : " + test.getExpectedValue());
@@ -61,12 +61,12 @@ public class FindMaxOrMinIndex {
         }
     }
 
-    private static final List<TestCase<int[], Integer>> testCasesMaxIndex = Arrays.asList(
+    private final List<TestCase<int[], Integer>> testCasesMaxIndex = Arrays.asList(
             new TestCase<>(new int[]{2, 50, 100, 500}, 3),
             new TestCase<>(new int[]{}, null)
     );
 
-    private static final List<TestCase<int[], Integer>> testCasesMinIndex = Arrays.asList(
+    private final List<TestCase<int[], Integer>> testCasesMinIndex = Arrays.asList(
             new TestCase<>(new int[]{2, 50, 100, 500}, 0),
             new TestCase<>(new int[]{}, null)
     );

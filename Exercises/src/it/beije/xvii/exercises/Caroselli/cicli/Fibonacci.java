@@ -19,7 +19,7 @@ public class Fibonacci {
     }
 
     //fibonacci's series
-    public static int fibonacciEx(int n) {
+    public int fibonacciEx(int n) {
         if (n <= 1) {
             return n;
         } else {

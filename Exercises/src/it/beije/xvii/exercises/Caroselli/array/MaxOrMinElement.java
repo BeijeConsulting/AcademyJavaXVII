@@ -13,7 +13,8 @@ import it.beije.xvii.exercises.Caroselli.utils.TestCase;
 //Trovare il massimo elemento in un array (o il minimo)
 
 public class MaxOrMinElement {
-    public static void maxElement(int[] array) {
+	
+    public void maxElement(int[] array) {
 
         int max = 0;
 
@@ -30,7 +31,7 @@ public class MaxOrMinElement {
     }
 
 
-    public static void minElement(int[] array) {
+    public void minElement(int[] array) {
 
         int min = 0;
 
@@ -57,21 +58,21 @@ public class MaxOrMinElement {
 
 
     //prove dei test con la classe TestCase
-    private static final List<TestCase<int[], List<Integer>>> testCasesMax = Arrays.asList(
+    private final List<TestCase<int[], List<Integer>>> testCasesMax = Arrays.asList(
             new TestCase<>(new int[]{2, 50, 100, 500}, Arrays.asList(500)),
             new TestCase<>(new int[]{1, 2, 3, 4, 4, 2}, Arrays.asList(4)),
             new TestCase<>(new int[]{}, null),
             new TestCase<>(new int[]{-1, 0, -1}, Arrays.asList(0))
     );
 
-    private static final List<TestCase<int[], List<Integer>>> testCasesMin = Arrays.asList(
+    private final List<TestCase<int[], List<Integer>>> testCasesMin = Arrays.asList(
             new TestCase<>(new int[]{2, 50, 100, 500}, Arrays.asList(2)),
             new TestCase<>(new int[]{1, 2, 3, 4, 4, 2}, Arrays.asList(1)),
             new TestCase<>(new int[]{}, null),
             new TestCase<>(new int[]{-1, 0, -1}, Arrays.asList(-1))
     );
 
-    public static void test() {
+    public void test() {
         for (TestCase<int[], List<Integer>> test : testCasesMax) {
             maxElement(test.getValue());
 

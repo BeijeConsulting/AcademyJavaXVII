@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 public class DateEx {
 
-    public static void date() {
+    public void date() {
 
         String inputDate = insertDate();
 
@@ -35,7 +35,7 @@ public class DateEx {
 
     }
 
-    public static String insertDate() {
+    public String insertDate() {
         System.out.println("Inserisci la data nel formato 'giorno/mese/anno/' ad esempio: 13/09/2021, per visualizzare -> Lunedì 13 Settembre, giorno 256 dell'anno 2021, settimana numero 37 ");
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine();

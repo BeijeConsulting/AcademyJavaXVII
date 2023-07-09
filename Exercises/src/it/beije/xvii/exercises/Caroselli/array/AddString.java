@@ -12,7 +12,8 @@ import it.beije.xvii.exercises.Caroselli.utils.ArrayIsEmpty;
 //  identico ad array, aggiungendo però, come ultimo elemento, la stringa s.
 
 public class AddString {
-    public static String[] addString(String s, String[] a) {
+	
+    public String[] addString(String s, String[] a) {
 
         String[] newArray = new String[a.length + 1];
         if (!ArrayIsEmpty.arrayOfStringIsEmpty(a)) {

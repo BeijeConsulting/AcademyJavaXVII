@@ -22,7 +22,7 @@ public class MostRecurrent {
     // che trova l’elemento più ricorrente in un array. Il metodo restituisce l’elemento trovato.
 
 
-	public static List<Integer> mostRecurrent(int[] array) {
+	public List<Integer> mostRecurrent(int[] array) {
         if (array.length == 0) {
             return null;
         }
@@ -62,7 +62,7 @@ public class MostRecurrent {
         return frequencyResult;
     }
 
-    public static void runTests() {
+    public void runTests() {
         for (TestCase<int[], List<Integer>> test : testCases) {
             List<Integer> mostFrequent = mostRecurrent(test.getValue());
             if (mostFrequent != null) {
@@ -75,7 +75,7 @@ public class MostRecurrent {
         }
     }
 
-    private static final List<TestCase<int[], List<Integer>>> testCases = Arrays.asList(
+    private final List<TestCase<int[], List<Integer>>> testCases = Arrays.asList(
             new TestCase<>(new int[]{1, 2, 3, 4, 4, 2, 2}, Arrays.asList(2)),
             new TestCase<>(new int[]{1, 2, 3, 4, 4, 2}, Arrays.asList(2, 4)),
             new TestCase<>(new int[]{}, null),
