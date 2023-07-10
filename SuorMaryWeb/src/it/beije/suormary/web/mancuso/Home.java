@@ -37,11 +37,11 @@ public class Home extends HttpServlet {
 		
 		StringBuilder body = new StringBuilder();
 		
-		body.append("<body>");
+		body.append("<body style=\"background-color: black; color: white\">");
 		
 		body.append("<div style=\"margin-top: 50px; margin-bottom: 50px;\">");
 		
-		body.append("<h1 style=\"text-align: center; font-family: Arial, Helvetica, sans-serif;\">Benvenuta/o");
+		body.append("<h1 style=\"text-align: center; font-family: Arial, Helvetica, sans-serif;\">Welcome");
 		
 		if(surname != "") {
 			body.append(" ").append(surname);
@@ -51,18 +51,20 @@ public class Home extends HttpServlet {
 		}
 		body.append("!</h1>");
 		
-		body.append("<h2 style=\"text-align: center; font-family: Arial, Helvetica, sans-serif;\">Chi sei?</h2>");
+		body.append("<h2 style=\"text-align: center; font-family: Arial, Helvetica, sans-serif;\">What's your name?</h2>");
 		
 		body.append("</div>");
 		
-		body.append("<div style=\"margin-left: 200px; margin-right: 200px; padding: 20px;\"><hr></div>");
+		body.append("<div style=\"margin-left: 200px; margin-right: 200px; padding: 20px;\"><hr style=\"border-color: #B323E1;\"></div>");
 		
 		body.append("<div style=\"text-align: center; margin-top: 50px;\">");
 		
 		body.append("<form method=\"POST\">"
-				+ "<input type=\"text\" name=\"name\" placeholder=\"Mario\" style=\"margin-bottom: 20px;\"/><br/>"
-				+ "<input type=\"text\" name=\"surname\" placeholder=\"Rossi\" style=\"margin-bottom: 20px;\"/><br/>"
-				+ "<input type=\"submit\" value=\"Submit\" style=\"background-color: black; color: white\"/>"
+				+ "<label for=\"name\" style=\"color:white; font-family: Arial, Helvetica, sans-serif;\">First Name</label><br/>"
+				+ "<input type=\"text\" name=\"name\" style=\"margin-bottom: 20px; background-color:#B323E1; color: white;\"/><br/>"
+				+ "<label for=\"name\" style=\"color: white; font-family: Arial, Helvetica, sans-serif;\">Last Name</label><br/>"
+				+ "<input type=\"text\" name=\"surname\" style=\"margin-bottom: 20px; background-color:#B323E1; color: white;\"/><br/>"
+				+ "<button type=\"submit\" value=\"Submit\" style=\"background-color: #B323E1; max-width: 100%; font-size: 18px; color: white;\">Submit</button>"
 				+ "</form>");
 		
 		body.append("</div>");
