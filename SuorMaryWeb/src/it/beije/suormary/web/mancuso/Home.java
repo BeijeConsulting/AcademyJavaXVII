@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/home")
 public class Home extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+    
+	private static String purple = "#6B07B1";
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -55,16 +57,16 @@ public class Home extends HttpServlet {
 		
 		body.append("</div>");
 		
-		body.append("<div style=\"margin-left: 200px; margin-right: 200px; padding: 20px;\"><hr style=\"border-color: #B323E1;\"></div>");
+		body.append("<div style=\"margin-left: 200px; margin-right: 200px; padding: 20px;\"><hr style=\"border-color: ").append(purple).append(";\"></div>");
 		
 		body.append("<div style=\"text-align: center; margin-top: 50px;\">");
 		
 		body.append("<form method=\"POST\">"
 				+ "<label for=\"name\" style=\"color:white; font-family: Arial, Helvetica, sans-serif;\">First Name</label><br/>"
-				+ "<input type=\"text\" name=\"name\" style=\"margin-bottom: 20px; background-color:#B323E1; color: white;\"/><br/>"
+				+ "<input type=\"text\" name=\"name\" style=\"margin-bottom: 20px; background-color:").append(purple).append("; color: white;\"/><br/>"
 				+ "<label for=\"name\" style=\"color: white; font-family: Arial, Helvetica, sans-serif;\">Last Name</label><br/>"
-				+ "<input type=\"text\" name=\"surname\" style=\"margin-bottom: 20px; background-color:#B323E1; color: white;\"/><br/>"
-				+ "<button type=\"submit\" value=\"Submit\" style=\"background-color: #B323E1; max-width: 100%; font-size: 18px; color: white;\">Submit</button>"
+				+ "<input type=\"text\" name=\"surname\" style=\"margin-bottom: 20px; background-color:").append(purple).append("; color: white;\"/><br/>"
+				+ "<button type=\"submit\" value=\"Submit\" style=\"background-color: ").append(purple).append("; max-width: 100%; font-size: 18px; color: white;\">Submit</button>"
 				+ "</form>");
 		
 		body.append("</div>");
