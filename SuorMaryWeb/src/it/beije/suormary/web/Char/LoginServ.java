@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class Login
  */
-@WebServlet("/Login")
-public class Login extends HttpServlet {
+@WebServlet("/login")
+public class LoginServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
@@ -28,9 +28,9 @@ public class Login extends HttpServlet {
             		+ "<body>\r\n"
             		+ "\r\n"
             		+ "<form action=\"./home\" method=\"POST\">\r\n"
-            		+ "  <label for=\"name\">First name:</label><br>\r\n"
+            		+ "  <label for=\"fname\">First name:</label><br>\r\n"
             		+ "  <input type=\"text\" name=\"name\" ><br>\r\n"
-            		+ "  <label for=\"surname\">Last name:</label><br>\r\n"
+            		+ "  <label for=\"lname\">Last name:</label><br>\r\n"
             		+ "  <input type=\"text\" name=\"surname\" ><br><br>\r\n"
             		+ "  <input type=\"submit\" value=\"Submit\">\r\n"
             		+ "</form> \r\n"
@@ -44,7 +44,7 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	System.out.println("FirstServlet doPost");
+	
 
 	}
 
