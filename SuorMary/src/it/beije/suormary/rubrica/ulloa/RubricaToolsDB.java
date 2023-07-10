@@ -19,10 +19,10 @@ public class RubricaToolsDB {
 		 rubricaUtils.writeRubricaJPA(contatti);
 	 }
 	 
-	 public void exportToCSV(String csvFilePath, String separator) {
+	 public void exportToCSV(String csvFilePath, String separator, List<Contact> contatti) {
 		 //List<Contact> contatti = rubricaUtils.loadRubricaFromJDBC();
 		 //List<Contact> contatti = rubricaUtils.loadRubricaFromHBM();
-		 List<Contact> contatti = rubricaUtils.loadRubricaFromJPA();
+		 //List<Contact> contatti = rubricaUtils.loadRubricaFromJPA();
 		 rubricaUtils.writeRubricaCSV(contatti, csvFilePath, separator);
 	    }
 	 
@@ -36,10 +36,10 @@ public class RubricaToolsDB {
 		 rubricaUtils.writeRubricaJPA(contatti);
 	 }
 	 
-	 public void exportToXML(String xmlFilePath) {
+	 public void exportToXML(String xmlFilePath, List<Contact> contatti) {
 		 //List<Contact> contatti = rubricaUtils.loadRubricaFromJDBC();
 		 //List<Contact> contatti = rubricaUtils.loadRubricaFromHBM();
-		 List<Contact> contatti = rubricaUtils.loadRubricaFromJPA();
+		 //List<Contact> contatti = rubricaUtils.loadRubricaFromJPA();
 		 rubricaUtils.writeRubricaXML(contatti, xmlFilePath);
 	    }
 	 

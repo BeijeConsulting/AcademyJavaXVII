@@ -20,7 +20,14 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -31,9 +38,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+//import org.hibernate.Session;
+//import org.hibernate.Transaction;
+//import org.hibernate.cfg.Configuration;
 //import org.hibernate.query.Query;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -62,6 +69,11 @@ public class RubricaUtils {
 		return configuration;
 	}
 	
+	public static void closeEntityManager() {
+		EntityManager entityManager = JPAentityManager.getEntityManager();
+		entityManager.close();
+	}
+	
 	private String escapeSpecialCharacters(String input) {
 	    if (input == null) {
 	        return null;
@@ -88,8 +100,12 @@ public class RubricaUtils {
 			StringBuilder stringBuilder = new StringBuilder();
 	        int index = -1;
 			
+
 			//Costrutti e gestione dell'intestazione
 	        String headerLine = bufferedReader.readLine();
+	        if(separator.equals("\";\"")) {
+	        	headerLine = headerLine.substring(1,headerLine.length()-1);
+	        }
 	        String[] headers = headerLine.split(separator);
 	        
 	        //Si riempie la mappa per chiave (nome campo) e valore (l'indice)
@@ -101,6 +117,11 @@ public class RubricaUtils {
 			while (bufferedReader.ready()) {
 				//legge una riga di testo dal file di input
 				line = bufferedReader.readLine();
+				
+				if(separator.equals("\";\"")) {
+					line = line.substring(1,line.length()-1);
+		        }
+				
 				//l'ultimo campo della riga non viene letto correttamente quando il suo valore è null.
 				//indicando -1 nello split manteniamo anche gli elementi vuoti alla fine della riga
 				fields = line.split(separator,-1);
@@ -252,18 +273,18 @@ public class RubricaUtils {
 			//transaction.begin();
 			
 			//SELECT JPQL
-			javax.persistence.Query query = entityManager.createQuery("SELECT c from Contact as c"); //SELECT * FROM rubrica
+			Query query = entityManager.createQuery("SELECT c from Contact as c"); //SELECT * FROM rubrica
 			contatti = query.getResultList();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		} /*finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 		return contatti;
 	}
 	
@@ -343,9 +364,14 @@ public class RubricaUtils {
 			boolean append = file.exists();
 			
 			fileWriter = new FileWriter(pathFile,append);
+			String apici = "";
+			if(separator.equals("\";\"")) {
+				apici = "\"";
+			}
 			
 			if(!append) {
 				//intestazione
+				fileWriter.write(apici);
 				fileWriter.write(SURNAME_FIELD);
 				fileWriter.write(separator);
 				fileWriter.write(NAME_FIELD);
@@ -355,11 +381,13 @@ public class RubricaUtils {
 				fileWriter.write(EMAIL_FIELD);
 				fileWriter.write(separator);
 				fileWriter.write(NOTE_FIELD);
+				fileWriter.write(apici);
 				fileWriter.write('\n');
 			}
 			
 			for (Contact contatto : contatti) {
 				if(contatto!=null) {
+					fileWriter.write(apici);
 					fileWriter.write(contatto.getSurname());
 					fileWriter.write(separator);
 					fileWriter.write(contatto.getName());
@@ -369,6 +397,7 @@ public class RubricaUtils {
 					fileWriter.write(contatto.getEmail());
 					fileWriter.write(separator);
 					fileWriter.write(contatto.getNote());
+					fileWriter.write(apici);
 					fileWriter.write('\n');
 					fileWriter.flush();
 				} else {
@@ -486,18 +515,20 @@ public class RubricaUtils {
 			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
 			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
 			entityManager = JPAentityManager.getEntityManager();
-			EntityTransaction transaction = entityManager.getTransaction();;
+			EntityTransaction transaction = entityManager.getTransaction();
 			
-			Contact contact =  new Contact();
+			Contact contact;
 			for (Contact contatto : contatti) {
 				if(contatto!=null) {
 					transaction.begin();
 					try {
+						contact =  new Contact();
 						contact.setSurname(contatto.getSurname());
 						contact.setName(contatto.getName());
 						contact.setPhoneNumber(contatto.getPhoneNumber());
 						contact.setEmail(contatto.getEmail());
 						contact.setNote(contatto.getNote());
+						entityManager.persist(contact); // salva il contatto nel database
 						transaction.commit();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -512,13 +543,13 @@ public class RubricaUtils {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		} /*finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 	
 	public void writeRubricaXML(List<Contact> contatti, String pathFile) {
@@ -590,7 +621,7 @@ public class RubricaUtils {
 
 			transformer.transform(source, result);
 
-			transformer.transform(source, syso);
+			//transformer.transform(source, syso);
 
 		} catch (ParserConfigurationException pEx) {
 			pEx.printStackTrace();
@@ -712,6 +743,7 @@ public class RubricaUtils {
 					contact.setPhoneNumber(contatto.getPhoneNumber());
 					contact.setEmail(contatto.getEmail());
 					contact.setNote(contatto.getNote());
+					entityManager.persist(contact); // salva il contatto nel database
 					transaction.commit();
 				} catch (Exception e) {
 					System.out.println("Insert non valido: " + contatto.toString());
@@ -725,13 +757,13 @@ public class RubricaUtils {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		} /*finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 	
 	public void updateContactJDBC(int id, Contact contatto) {
@@ -872,13 +904,13 @@ public class RubricaUtils {
 				}	
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		} /*finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 	
 	public void deleteContactJDBC(int id) {
@@ -977,13 +1009,13 @@ public class RubricaUtils {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		} /*finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 	
 	public void deleteContactJDBC(List<Contact> contatti) {
@@ -1109,13 +1141,69 @@ public class RubricaUtils {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		} /*finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
+	}
+	
+	public List<Contact> getDuplicateContacts() {
+		EntityManager entityManager = null;
+		List<Contact> contatti = null;
+		EntityTransaction transaction = null;
+		try {
+			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
+			entityManager = JPAentityManager.getEntityManager();
+			transaction = entityManager.getTransaction();
+	        transaction.begin();
+	        
+	     // Disabilita temporaneamente la modalità only_full_group_by
+	        Query setModeQuery = entityManager.createNativeQuery("SET sql_mode = ''");
+	        setModeQuery.executeUpdate();
+	        
+			CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+	        CriteriaQuery<Contact> query = cb.createQuery(Contact.class);
+	        Root<Contact> root = query.from(Contact.class);
+			
+	        // Creazione delle condizioni di ricerca per individuare i duplicati
+	        List<Predicate> predicates = new ArrayList<>();
+	        predicates.add(cb.isNotNull(root.get("name")));
+	        predicates.add(cb.isNotNull(root.get("surname")));
+	        predicates.add(cb.isNotNull(root.get("phoneNumber")));
+	        predicates.add(cb.isNotNull(root.get("email")));
+	        predicates.add(cb.isNotNull(root.get("note")));
+	        
+	        query.select(root)
+	        	.where(cb.and(predicates.toArray(new Predicate[predicates.size()])))
+	        	.groupBy(
+	                		root.get("name"), 
+	                		root.get("surname"), 
+	                		root.get("phoneNumber"), 
+	                		root.get("email"), 
+	                		root.get("note")
+	                		)
+	                .having(cb.gt(cb.count(root), 1));
+	        
+	        contatti = entityManager.createQuery(query).getResultList();
+	        transaction.commit();
+			
+		} catch (Exception e) {
+			if (transaction != null && transaction.isActive()) {
+	            transaction.rollback();
+	        }
+			e.printStackTrace();
+		} /*finally {
+			try {
+				entityManager.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}*/
+		return contatti;
 	}
 	
 	public static void printContactList(List<Contact> contacts) {	    

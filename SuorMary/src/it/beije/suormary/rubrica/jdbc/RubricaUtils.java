@@ -699,34 +699,33 @@ public class RubricaUtils {
 	
 	public void updateContactDB(String id, Contact contatto) {
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		
 		try {
 			connection = RubricaUtils.getConnection();
 			
-			statement = connection.createStatement();
 			//System.out.println("connection open? " + !connection.isClosed());
-			StringBuilder query = new StringBuilder();
-			StringBuilder columnsValues = new StringBuilder("UPDATE rubrica set ");
+			StringBuilder query = new StringBuilder("UPDATE rubrica set ");
+			query.append(SURNAME_FIELD).append(" = ?, ")
+            .append(NAME_FIELD).append(" = ?, ")
+            .append(PHONE_NUMBER_FIELD).append(" = ?, ")
+            .append(EMAIL_FIELD).append(" = ?, ")
+            .append(NOTE_FIELD).append(" = ? WHERE ")
+            .append(ID_FIELD).append(" = ?");
+			
+			preparedStatement = connection.prepareStatement(query.toString());
 			int nRecord = -1;
 			
 			if(contatto!=null) {
-				query.setLength(0);
-				query.append(columnsValues)
-					.append(SURNAME_FIELD).append(" = '")
-					.append(escapeSpecialCharacters(contatto.getSurname())).append("', ")
-					.append(NAME_FIELD).append(" = '")
-					.append(escapeSpecialCharacters(contatto.getName())).append("', ")
-					.append(PHONE_NUMBER_FIELD).append(" = '")
-					.append(escapeSpecialCharacters(contatto.getPhoneNumber())).append("', ")
-					.append(EMAIL_FIELD).append(" = '")
-					.append(escapeSpecialCharacters(contatto.getEmail())).append("', ")
-					.append(NOTE_FIELD).append(" = '")
-					.append(escapeSpecialCharacters(contatto.getNote()))
-					.append("' WHERE ").append(ID_FIELD).append(" = ").append(id);
+				preparedStatement.setString(1, contatto.getSurname());
+				preparedStatement.setString(2, contatto.getName());
+				preparedStatement.setString(3, contatto.getPhoneNumber());
+				preparedStatement.setString(4, contatto.getEmail());
+				preparedStatement.setString(5, contatto.getNote());
+				preparedStatement.setString(6, id);
 					
 					try {
-						nRecord = statement.executeUpdate(query.toString());
+						nRecord = preparedStatement.executeUpdate();
 						if (nRecord !=1) {
 							System.out.println("Query non aggiornata: " + query);
 						}
@@ -745,7 +744,7 @@ public class RubricaUtils {
 			e.printStackTrace();
 		} finally {
 			try {
-				statement.close();
+				preparedStatement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -755,21 +754,21 @@ public class RubricaUtils {
 	
 	public void deleteContactDB(String id) {
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		
 		try {
 			connection = RubricaUtils.getConnection();
 			
-			statement = connection.createStatement();
 			//System.out.println("connection open? " + !connection.isClosed());
-			StringBuilder query = new StringBuilder("DELETE FROM rubrica WHERE id = ");
-			query.append(id);
+			StringBuilder query = new StringBuilder("DELETE FROM rubrica WHERE id = ?");
+			preparedStatement = connection.prepareStatement(query.toString());
+	        preparedStatement.setString(1, id);
 			
 			int nRecord = -1;
 			try {
-				nRecord = statement.executeUpdate(query.toString());
+				nRecord = preparedStatement.executeUpdate();
 				if (nRecord !=1) {
-					System.out.println("Query non aggiornata: " + query);
+					System.out.println("Query non eseguita: " + query);
 					}
 			} catch (SQLSyntaxErrorException e) {
 				System.out.println("Query non valida: " + query);
@@ -781,7 +780,7 @@ public class RubricaUtils {
 			e.printStackTrace();
 		} finally {
 			try {
-				statement.close();
+				preparedStatement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -791,24 +790,23 @@ public class RubricaUtils {
 	
 	public void deleteContactDB(List<Contact> contatti) {
 		Connection connection = null;
-		Statement statement = null;
+		PreparedStatement preparedStatement = null;
 		
 		try {
 			connection = RubricaUtils.getConnection();
-			
-			statement = connection.createStatement();
+
 			//System.out.println("connection open? " + !connection.isClosed());
 			StringBuilder query = new StringBuilder();
-			StringBuilder columnsValues = new StringBuilder("DELETE FROM rubrica WHERE id = ");
+			StringBuilder columnsValues = new StringBuilder("DELETE FROM rubrica WHERE id = ?");
+	        preparedStatement = connection.prepareStatement(query.toString());
 			int nRecord = -1;
 			
 			for (Contact contatto : contatti) {
 				if(contatto!=null) {
-					query.setLength(0);
-					query.append(columnsValues).append(contatto.getId());
+					preparedStatement.setString(1, contatto.getId());
 					
 					try {
-						nRecord = statement.executeUpdate(query.toString());
+						nRecord = preparedStatement.executeUpdate();
 						if (nRecord !=1) {
 							System.out.println("Query non inserita: " + query);
 						}
@@ -827,7 +825,7 @@ public class RubricaUtils {
 			e.printStackTrace();
 		} finally {
 			try {
-				statement.close();
+				preparedStatement.close();
 				connection.close();
 			} catch (SQLException e) {
 				e.printStackTrace();

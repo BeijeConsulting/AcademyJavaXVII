@@ -1,5 +1,6 @@
 package it.beije.suormary.rubrica.ulloa;
 
+import java.io.File;
 import java.util.List;
 import java.util.Scanner;
 
@@ -8,6 +9,8 @@ public class AddressBookManager {
 	private Scanner scanner;
 	private AddressBook rubrica;
 	private RubricaUtils rUtils;
+	private RubricaToolsDB rToolsDB;
+	
 	
 	public AddressBookManager() {
 		rUtils = new RubricaUtils();
@@ -15,6 +18,7 @@ public class AddressBookManager {
         //rubrica = new AddressBook(rUtils.loadRubricaFromJDBC());
 		//rubrica = new AddressBook(rUtils.loadRubricaFromHBM());
 		rubrica = new AddressBook(rUtils.loadRubricaFromJPA());
+		rToolsDB = new RubricaToolsDB();
     }
 	
 	public void runCLI () {
@@ -69,6 +73,7 @@ public class AddressBookManager {
 	                running = false;
 	                System.out.println("Arrivederci!");
 	                scanner.close();
+	                RubricaUtils.closeEntityManager();
 	                break;
 	            default:
 	                System.out.println("Scelta non valida.");
@@ -79,7 +84,7 @@ public class AddressBookManager {
 	    scanner.close();
 	    }
 	
-	public static void printContactList(List<Contact> contacts) {	    
+	public void printContactList(List<Contact> contacts, boolean salvataggio) {	    
 	    if (contacts.isEmpty()) {
 	        System.out.println("La lista dei contatti è vuota.");
 	    } else {
@@ -88,9 +93,13 @@ public class AddressBookManager {
 	        	System.out.println(contact.toString()); 
 	        }
 	        System.out.println();
+	        
+	        if(salvataggio) {
+	        	salvataggio(contacts);
+	        }
 	    }
 	}
-	
+		
 	private void aggiornaRubrica() {
 		//rubrica = new AddressBook(rUtils.loadRubricaFromJDBC());
 		//rubrica = new AddressBook(rUtils.loadRubricaFromHBM());
@@ -100,6 +109,147 @@ public class AddressBookManager {
 	        return;
 	    }
 	}
+	
+	private void salvataggio(List<Contact> contacts) {
+		boolean running = true;
+		String pathFile;
+	    while (running) {
+	    	System.out.println("=== Vuoi salvare questi dati? ===");
+		    System.out.println("1. Sì, in un file csv");
+	        System.out.println("2. Sì, in un file xml");
+	        System.out.println("0. No");
+	        System.out.println();
+	        
+	        System.out.print("Scelta: ");
+	        String choice = scanner.next();
+	        scanner.nextLine(); // Consuma la nuova riga
+	        System.out.println("------------------------");
+	        switch (choice) {
+	            case "1":
+	            	System.out.print("Inserisci il percorso/nome del file csv dove vuoi salvare i dati: ");
+			        pathFile = scanner.nextLine();
+			        rToolsDB.exportToCSV(pathFile, "\";\"", contacts);
+			        System.out.println("Dati salvati nel file");
+			        System.out.println("------------------------");
+	                break;
+	            case "2":
+	            	System.out.print("Inserisci il percorso/nome del file xml dove vuoi salvare i dati: ");
+			        pathFile = scanner.nextLine();
+			        rToolsDB.exportToXML(pathFile, contacts);
+			        System.out.println("Dati salvati nel file");
+			        System.out.println("------------------------");
+	                break;
+	            case "0":
+	                running = false;
+	                break;
+	            default:
+	                System.out.println("Scelta non valida.");
+	                break;
+	        }
+	    }
+	    
+    }
+	
+	private void inserimentoDatiFile() {
+		boolean running = true;
+		boolean runningInterno=false;
+		String pathFile;
+		String separatore;
+		List<Contact> contattiFile;
+	    while (running) {
+	    	System.out.println("=== Vuoi inserire contatti tramite un file? ===");
+		    System.out.println("1. Sì, da un file csv");
+	        System.out.println("2. Sì, da un file xml");
+	        System.out.println("0. No");
+	        System.out.println();
+	        
+	        System.out.print("Scelta: ");
+	        String choice = scanner.next();
+	        scanner.nextLine(); // Consuma la nuova riga
+	        System.out.println("------------------------");
+	        switch (choice) {
+	            case "1":
+	            	System.out.print("Inserisci il percorso/nome del file csv: ");
+			        pathFile = scanner.nextLine();
+			        System.out.print("Inserisci il separatore: ");
+			        separatore = scanner.nextLine();
+			        if(new File(pathFile).exists()) {
+			        	contattiFile = rUtils.loadRubricaFromCSV(pathFile, separatore);
+			        	System.out.println("Questi sono i contatti presi dal file indicato");
+			        	printContactList(contattiFile, false);
+			        	runningInterno = true;
+						while (runningInterno) {
+							System.out.println("------------------------");
+						    System.out.println("1. Conferma inserimento");
+						    System.out.println("0. Annulla inserimento");
+
+						    System.out.print("Seleziona un'opzione: ");
+						    choice = scanner.next();
+					        scanner.nextLine(); // Consuma la nuova riga
+					        System.out.println("------------------------");
+					        
+						    switch (choice) {
+						    case "1": rToolsDB.importFromCSV(pathFile, separatore);
+				        			  System.out.println("Dati salvati nella rubrica");
+						    		  System.out.println("------------------------");
+						    		  runningInterno = false;
+						    		  
+						    		  break;
+						    case "0": System.out.println("Hai annullato l'inserimento!");
+						    		  runningInterno = false; // Torna al menu esterno
+						    		  break;
+						    default:
+					            System.out.println("Opzione non valida.");
+					            break;
+						    }
+						}
+			        } else System.out.println("Il percorso file non esiste");
+	                break;
+	            case "2":
+	            	System.out.print("Inserisci il percorso/nome del file xml: ");
+			        pathFile = scanner.nextLine();
+			        if(new File(pathFile).exists()) {
+			        	contattiFile = rUtils.loadRubricaFromXML(pathFile);
+			        	System.out.println("Questi sono i contatti presi dal file indicato");
+			        	printContactList(contattiFile, false);
+			        	runningInterno = true;
+						while (runningInterno) {
+							System.out.println("------------------------");
+						    System.out.println("1. Conferma inserimento");
+						    System.out.println("0. Annulla inserimento");
+
+						    System.out.print("Seleziona un'opzione: ");
+						    choice = scanner.next();
+					        scanner.nextLine(); // Consuma la nuova riga
+					        System.out.println("------------------------");
+					        
+						    switch (choice) {
+						    case "1": rToolsDB.importFromXML(pathFile);
+				        			  System.out.println("Dati salvati nella rubrica");
+						    		  System.out.println("------------------------");
+						    		  runningInterno = false;
+						    		  
+						    		  break;
+						    case "0": System.out.println("Hai annullato l'inserimento!");
+						    		  runningInterno = false; // Torna al menu esterno
+						    		  break;
+						    default:
+					            System.out.println("Opzione non valida.");
+					            break;
+						    }
+						}
+			        } else System.out.println("Il percorso file non esiste");
+	                break;
+	            case "0":
+	                running = false;
+	                break;
+	            default:
+	                System.out.println("Scelta non valida.");
+	                break;
+	        }
+	    }
+	    
+    }
 	
 	private void visualizzaListaContatti() {
         // Implementa la logica per visualizzare la lista contatti
@@ -123,15 +273,15 @@ public class AddressBookManager {
 		    switch (choice) {
 		    case "1":
 		    	contattiVisualizzazione = rubrica.getContattiOrdinatiPerNome();
-	            printContactList(contattiVisualizzazione);
+	            printContactList(contattiVisualizzazione,true);
 	            break;
 	        case "2":
 	        	contattiVisualizzazione = rubrica.getContattiOrdinatiPerCognome();
-	        	printContactList(contattiVisualizzazione);
+	        	printContactList(contattiVisualizzazione,true);
 	            break;
 	        case "3":
 	        	contattiVisualizzazione = rubrica.getContatti();
-	        	printContactList(contattiVisualizzazione);
+	        	printContactList(contattiVisualizzazione,true);
 	            break;
 	        case "0":
 	        	running = false; // Torna al menu principale
@@ -172,7 +322,7 @@ public class AddressBookManager {
 		            System.out.println("Nessun contatto corrisponde alla ricerca.");
 		        } else {
 		            System.out.println("Contatti trovati:");
-		            printContactList(contattiTrovati);
+		            printContactList(contattiTrovati,true);
 		        }
 	            break;
 	        case "0":
@@ -193,7 +343,8 @@ public class AddressBookManager {
 		
 	    while (running) {
 	    	System.out.println("=== Inserisci Contatti ===");
-		    System.out.println("1. Continua con l'inserimento");
+		    System.out.println("1. Continua con l'inserimento manuale");
+		    System.out.println("2. Continua con l'inserimento tramite un file");
 		    System.out.println("0. Torna al menu principale");
 
 		    System.out.print("Seleziona un'opzione: ");
@@ -257,6 +408,9 @@ public class AddressBookManager {
 				}
 				
 	            break;
+		    case "2": 
+		    	inserimentoDatiFile();
+	            break;
 	        case "0":
 	        	running = false; // Torna al menu principale
 	        	break;
@@ -287,7 +441,7 @@ public class AddressBookManager {
 		    switch (choice) {
 		    case "1":
 		    	aggiornaRubrica();
-		    	printContactList(rubrica.getContatti());
+		    	printContactList(rubrica.getContatti(),false);
 		    	
 		    	System.out.print("Inserisci l'ID o l'identificatore del contatto da modificare: ");
 		    	int id = scanner.nextInt();
@@ -416,7 +570,7 @@ public class AddressBookManager {
 		    switch (choice) {
 		    case "1":
 		    	aggiornaRubrica();
-		    	printContactList(rubrica.getContatti());
+		    	printContactList(rubrica.getContatti(),false);
 		    	
 		    	System.out.print("Inserisci l'ID o l'identificatore del contatto da cancellare: ");
 		    	int id = scanner.nextInt();
@@ -488,7 +642,8 @@ public class AddressBookManager {
 		    case "1":
 		    	aggiornaRubrica();
 		    	List<Contact> duplicati = rubrica.trovaContattiDuplicati(false);
-		    	printContactList(duplicati);
+		    	//List<Contact> duplicati = rUtils.getDuplicateContacts();
+		    	printContactList(duplicati,false);
 		    	if (duplicati.isEmpty()) {
 		    		running = false;
 			    }
@@ -523,13 +678,13 @@ public class AddressBookManager {
 		    	aggiornaRubrica();
 		    	List<Contact> duplicati = rubrica.trovaContattiDuplicati(false);
 		    	System.out.println("=== Contatti Duplicati ===");
-		    	printContactList(duplicati);
+		    	printContactList(duplicati,false);
 		    	if (duplicati.isEmpty()) {
 		    		running = false;
 			    } else {
 			    	List<Contact> duplicatiEliminati = rubrica.unisciContattiDuplicati();
 			    	System.out.println("=== Contatti Duplicati Da Eliminare===");
-			    	printContactList(duplicatiEliminati);
+			    	printContactList(duplicatiEliminati,false);
 			    	
 			    	runningInterno = true;
 					while (runningInterno) {
@@ -572,6 +727,8 @@ public class AddressBookManager {
 		    
 	    }
     }
+    
+    
 	
 	
 	public static void main(String[] args) {
