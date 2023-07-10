@@ -27,6 +27,8 @@ public class Home extends HttpServlet {
     public String writeHTML(String name, String surname) {
     	StringBuilder html = new StringBuilder();
 		
+    	boolean empty = true;
+    	
 		html.append("<!DOCTYPE html><html>");
 		
 		StringBuilder head = new StringBuilder();
@@ -47,13 +49,23 @@ public class Home extends HttpServlet {
 		
 		if(surname != "") {
 			body.append(" ").append(surname);
+			empty = false;
 		}
 		if(name != "") {
 			body.append(" ").append(name);
+			empty = false;
 		}
 		body.append("!</h1>");
 		
-		body.append("<h2 style=\"text-align: center; font-family: Arial, Helvetica, sans-serif;\">What's your name?</h2>");
+		body.append("<h2 style=\"text-align: center; font-family: Arial, Helvetica, sans-serif;\">");
+		
+		if(empty) {
+			body.append("What's your name?");
+		}else {
+			body.append("That's a cool name!");
+		}
+		
+		body.append("</h2>");
 		
 		body.append("</div>");
 		
