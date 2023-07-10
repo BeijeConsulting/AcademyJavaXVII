@@ -34,7 +34,7 @@ public class FirstServlet extends HttpServlet {
 		//....
 		String adesso = LocalTime.now().toString();
 		
-		String name = request.getParameter("name");
+		String name = request.getParameter("nome");
 		
 		StringBuilder html = new StringBuilder("<html><body><p>")
 				.append("Ciao ").append(name).append("<br/>")
@@ -51,15 +51,28 @@ public class FirstServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("FirstServlet doPost");
 		
-		String fname = request.getParameter("fname");
-		String lname = request.getParameter("lname");
+		String fname = request.getParameter("nome");
+		String lname = request.getParameter("cognome");
+		String[] selection = request.getParameterValues("sport");
+		StringBuilder html = new StringBuilder();
+		if(selection !=null) {
 		
-		StringBuilder html = new StringBuilder("<html><body><p>")
+		html.append("<html><body><p>")
 				.append("Ciao ").append(fname).append(" ").append(lname).append("!!!")
-				.append("</p></body></html>");
+				.append("</p>").append("<p> Questi sono gli sport selezionati<br>").append(printString(selection)).append("</p></body></html>");
 
-		
+		}else {
+			
+		}
 		response.getWriter().append(html.toString());
+		
 	}
-
+	
+	public String printString(String[] s) {
+	    StringBuilder sb = new StringBuilder();
+	    for (String ss : s) {
+	        sb.append(ss).append("<br>");
+	    }
+	    return sb.toString();
+	}
 }

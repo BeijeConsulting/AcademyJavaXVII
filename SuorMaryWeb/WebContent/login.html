@@ -1,18 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Login Page</title>
+<title>FORM practices</title>
 </head>
 <body>
 
-<form action="./first" method="POST">
-  <label for="fname">First name:</label><br>
-  <input type="text" name="fname" ><br>
-  <label for="lname">Last name:</label><br>
-  <input type="text" name="lname" ><br><br>
-  <input type="submit" value="Submit">
-</form> 
-
+<h1>PROVE DEI FORM</h1>
+<div>
+	<div>
+		<h2>PRIMO FORM</h2>
+		<form action="./first" method="GET">
+			<div style="width: 500px; height: 500px; background-color: lightblue; border-style:solid; border-width: 1px; ">
+				<label>Inserisci nome, cognome,data di nascita e descrizione di te stesso</label>
+				<hr>
+				<div style="background-color: red;">
+					<hr>
+					<input type="text" placeholder="nome..." style="text-align: center;" name="nome" for="nome"><br>
+					<input type="text" placeholder="cognome..."  name="cognome" for="cognome"><br>
+					<input type="date" id="data" name="data"><br>
+					<textarea name="description" rows="3" placeholder="inserisci la tua descrizione..."></textarea><br>
+					<hr>
+					<input type="submit" value="invio">
+				</div>
+			</div>
+		</form>
+	</div>
+	<div>
+		<h2>SECONDO FORM</h2>
+		<form action="./first" method="POST">
+			<div style="width: 600px; background-color: lightcoral; border-style:solid; border-width: 1px;">
+				<label>Seleziona ciò che ti piace tra le seguenti opzioni</label>
+				<div style="position: relative;">
+					<input type="checkbox" name="sport" id="sport1" value="calcio">
+					<label for="sport1">calcio</label><br>
+					<input type="checkbox" name="sport"id="sport2" value="pallavolo">
+					<label for="sport2">pallavolo</label><br>
+					<input type="checkbox" name="sport"id="sport3" value="tennis">
+					<label for="sport3">tennis</label><br>
+					<input type="checkbox" name="sport"id="sport4" value="rugby">
+					<label for="sport4">rugby</label><br>
+					<hr>
+					<input type="submit" name="form2" value="invio">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
 </body>
 </html>
