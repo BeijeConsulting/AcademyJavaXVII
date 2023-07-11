@@ -11,18 +11,22 @@
 
 <p>
 <%
-
+/*
 LocalDateTime now = LocalDateTime.now();
-
 List<String> list = null; //....
-
 String name = request.getParameter("name");
+System.out.println("Sono in index.jsp");
+*/
+//out.print(welcome + " " + name);
 
 String welcome = "BUONGIORNO";
+
 System.out.println("prova");
 //out.print(welcome + " " + name);
+
+String username = (String) session.getAttribute("username");
 %>
-<%= welcome %> <%= name %> !!
+<%= welcome %> <%= username %> !!
 </p>
 </body>
 </html>
