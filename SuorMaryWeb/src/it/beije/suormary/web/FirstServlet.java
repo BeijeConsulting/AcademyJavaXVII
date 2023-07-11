@@ -31,6 +31,8 @@ public class FirstServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("FirstServlet doGet");
 		
+		System.out.println("JSESSIONID: " + request.getSession().getId());
+		
 		//....
 		String adesso = LocalTime.now().toString();
 		
