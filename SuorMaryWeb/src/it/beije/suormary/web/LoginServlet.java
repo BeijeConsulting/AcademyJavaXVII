@@ -6,6 +6,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class LoginServlet
@@ -20,35 +21,42 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("LoginServlet doGet");
 		
-		String form =
-		"<!DOCTYPE html>\r\n" + 
-		"<html>\r\n" + 
-		"<head>\r\n" + 
-		"<meta charset=\"ISO-8859-1\">\r\n" + 
-		"<title>Login Servlet Page</title>\r\n" + 
-		"</head>\r\n" + 
-		"<body>\r\n" + 
-		"\r\n" + 
-		"<form action=\"./first\" method=\"POST\">\r\n" + 
-		"  <label for=\"fname\">First name:</label><br>\r\n" + 
-		"  <input type=\"text\" name=\"fname\" ><br>\r\n" + 
-		"  <label for=\"lname\">Last name:</label><br>\r\n" + 
-		"  <input type=\"text\" name=\"lname\" ><br><br>\r\n" + 
-		"  <input type=\"submit\" value=\"Submit\">\r\n" + 
-		"</form> \r\n" + 
-		"\r\n" + 
-		"</body>\r\n" + 
-		"</html>";
+		HttpSession session = request.getSession();
+		String username = (String) session.getAttribute("username");
 		
-		response.getWriter().append(form);
+		if (username != null) { //utente loggato
+			response.sendRedirect("welcome.jsp");
+		} else { //non loggato
+			response.sendRedirect("login.jsp");
+		}
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		System.out.println("LoginServlet doPost");
+		
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		System.out.println("username : " + username);
+		System.out.println("password : " + password);
+		
+		HttpSession session = request.getSession();
+		System.out.println("JSESSIONID: " + session.getId());
+		
+		//SELECT * from Users WHERE username = :username AND password = :password
+		if (username != null && username.equalsIgnoreCase("pippo@beije.it") && password != null && password.equals("12345")) { //OK
+			session.setAttribute("username", username);
+			
+			response.sendRedirect("welcome.jsp");
+		} else { //KO
+			session.setAttribute("loginError", "CREDENZIALI NON VALIDE!!!");
+
+			response.sendRedirect("login.jsp");
+		}
+		
 	}
 
 }
