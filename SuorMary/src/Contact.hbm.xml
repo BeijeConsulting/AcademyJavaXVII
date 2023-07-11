@@ -9,7 +9,7 @@
       </meta>
       
       <id name = "id" type = "int" column = "id">
-         <generator class="native"/>
+         <generator class="native"/><!-- because it's the element that generates the primary key -->
       </id>
       
       <property name = "name" column = "nome" type = "string"/>
