@@ -16,13 +16,17 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/first")
 public class FirstServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	
+	//private String test;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public FirstServlet() {
-        super();
-        // TODO Auto-generated constructor stub
+    	
+    	System.out.println("FirstServlet...");
+    	
     }
 
 	/**
@@ -30,6 +34,7 @@ public class FirstServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("FirstServlet doGet");
+		//System.out.println("FirstServlet doGet, test = " + test);
 		
 		System.out.println("JSESSIONID: " + request.getSession().getId());
 		
@@ -37,6 +42,8 @@ public class FirstServlet extends HttpServlet {
 		String adesso = LocalTime.now().toString();
 		
 		String name = request.getParameter("name");
+		
+		//if (name != null) this.test = name;
 		
 		StringBuilder html = new StringBuilder("<html><body><p>")
 				.append("Ciao ").append(name).append("<br/>")
