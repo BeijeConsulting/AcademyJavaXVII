@@ -103,34 +103,29 @@ public class RubricaJPA {
 	    		 entityManager.close();
 	    	 }
 		}
-		public static void updateContact(EntityManager entityManager) {
-			 Scanner scanner = new Scanner(System.in);
-
+		public static void updateContact(String idString, String name, String surname, String email, String phone, String note,EntityManager entityManager) {
+			int id = Integer.parseInt(idString);
+			Contact c = null;
 			try {
-				 Contact c = findContactByNameSurname(entityManager);
+				Query query = entityManager.createQuery("SELECT c FROM Contact as c WHERE c.id = :id");
+				query.setParameter("id", id);
+				 c = (Contact) query.getSingleResult();
 				EntityTransaction transaction = entityManager.getTransaction();
 				transaction.begin();
-				System.out.print("Inserisci il campo che vuoi modificare : ");
-				String campo = scanner.nextLine();
-				System.out.print("Inserisci il nuovo valore del campo : ");
-				String valore = scanner.nextLine();
-				switch(campo) {
-				case "name" : c.setName(valore); break;
-				case "surname" : c.setSurname(valore); break;
-				case "email" : c.setEmail(valore); break;
-				case "phone" : c.setPhoneNumber(valore); break;
-				case "note" : c.setNote(valore); break;
-				}
-
+				 c.setName(name);
+				 c.setSurname(surname); 
+				 c.setEmail(email); 
+				 c.setPhoneNumber(phone);
+				 c.setNote(note); 
+				
 				entityManager.persist(c);
 			    transaction.commit();
-			    System.out.println("Modifica eseguita");
-			    System.out.print("Vuoi effettuare un'altra modifica? (si/no) : ");
-			    String mod = scanner.nextLine();
-			    if(mod.equals("si")) updateContact(entityManager);
+			    
 			} catch (Exception e) {
 				 System.out.println("Si è verificato un errore  : " + e.getMessage());
-			} 
+			} finally {
+				entityManager.close();
+			}
 		}
 		public static void deleteContact(EntityManager entityManager) {
 			Scanner scanner = new Scanner(System.in);

@@ -18,6 +18,7 @@ String id = request.getParameter("id");
 Contact c = RubricaJPA.findContactById(entityManager,id);
 %>
 <form action="updateContact" method="POST">
+<input type="hidden" name="id" value="<%= c.getId() %>">
 	<label for="name">Nome : </label>
  	<input type="text" name="name" value=<%= c.getName() %>> <br> <br>
  	<label for="surname">Cognome : </label>
