@@ -127,23 +127,22 @@ public class RubricaJPA {
 				entityManager.close();
 			}
 		}
-		public static void deleteContact(EntityManager entityManager) {
-			Scanner scanner = new Scanner(System.in);
+		public static void deleteContact(EntityManager entityManager, String idString) {
+			int id = Integer.parseInt(idString);
+			Contact c = null;
 			try {
-				 Contact c = findContactByNameSurname(entityManager);
+				Query query = entityManager.createQuery("SELECT c FROM Contact as c WHERE c.id = :id");
+				query.setParameter("id", id);
+				 c = (Contact) query.getSingleResult();
 				EntityTransaction transaction = entityManager.getTransaction();
 				transaction.begin();
-				System.out.print("Sei sicuro di voler eliminare il contatto? (si/no) : ");
-				String del = scanner.nextLine();
-				if(del.equals("si")) {
 					entityManager.remove(c);
 					transaction.commit();
-					System.out.println("Contatto eliminato");
-				}
-				else System.out.println("Contatto non eliminato");
 			} catch (Exception e) {
 				 System.out.println("Si è verificato un errore  : " + e.getMessage());
-			} 
+			} finally {
+				entityManager.close();
+			}
 		}
 		public static Contact findContactById(EntityManager entityManager,String idString) {
 			int id = Integer.parseInt(idString);

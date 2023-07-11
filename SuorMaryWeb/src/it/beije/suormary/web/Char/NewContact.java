@@ -10,19 +10,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class updateContact
+ * Servlet implementation class newContact
  */
-@WebServlet("/updateContact")
-public class updateContact extends HttpServlet {
+@WebServlet("/newContact")
+public class NewContact extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-  
+       
+
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+
 	}
 
 	/**
@@ -35,9 +35,9 @@ public class updateContact extends HttpServlet {
 		 String email = request.getParameter("email");
 		 String phone = request.getParameter("phone");
 		 String note = request.getParameter("note");
-		 String id = request.getParameter("id");
-		 RubricaJPA.updateContact(id,name, surname, email, phone, note, entityManager);
+		 RubricaJPA.createContact(name, surname, email, phone, note, entityManager);
 		 response.sendRedirect("home.jsp");
+		 
 	}
 
 }
