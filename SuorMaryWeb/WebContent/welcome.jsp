@@ -9,12 +9,12 @@
 
 <p>
 <%
-String username = (String) session.getAttribute("username");
-if (username == null) response.sendRedirect("login");
+String nome = (String) session.getAttribute("nome");
+if (nome == null) response.sendRedirect("login");
 
 String welcome = "BUONGIORNO";
 %>
-<%= welcome %> <%= username %> !!
+<%= welcome %> <%= nome %> !!
 </p>
 </body>
 </html>
