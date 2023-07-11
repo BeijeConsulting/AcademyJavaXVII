@@ -21,8 +21,8 @@ for(Contact c : contacts){
 }
 
 %>
-<form action="./newContact" method="POSZT">
-
+<form action="./newContact.jsp" method="GET">
+<input type="submit" value="Crea nuovo contatto">
 </form>
 </body>
 </html>

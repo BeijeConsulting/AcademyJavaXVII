@@ -82,20 +82,10 @@ public class RubricaJPA {
 				 System.out.println("Si è verificato un errore  : " + e.getMessage());
 			}
 		}
-		public static void createContact(EntityManager entityManager) {
-			 Scanner scanner = new Scanner(System.in);
+		public static void createContact(String name, String surname, String email, String phone, String note, EntityManager entityManager) {
 	    	 List<Contact> listContacts = null;
 	    	 try {
-	    		 System.out.print("Inserisci il nome : ");
-	    		 String name = scanner.nextLine();
-	    		 System.out.print("Inserisci il cognome : ");
-	    		 String surname = scanner.nextLine();
-	    		 System.out.print("Inserisci l'email : ");
-	    		 String email = scanner.nextLine();
-	    		 System.out.print("Inserisci il numero di telefono : ");
-	    		 String phone = scanner.nextLine();
-	    		 System.out.print("Inserisci delle note : ");
-	    		 String note = scanner.nextLine();
+	    		
 	    		 EntityTransaction transaction = entityManager.getTransaction();
 	    		 transaction.begin();
 	    		 Contact c = new Contact();
@@ -104,16 +94,9 @@ public class RubricaJPA {
 	    		 c.setEmail(email);
 	    		 c.setPhoneNumber(phone);
 	    		 c.setNote(note);
-	    		 System.out.println("Informazioni riguardo al nuovo contatto");
 	    		 System.out.println(c);
-	    		 System.out.print("Vuoi salvare il contatto? (si/no) : ");
-	    		 String salva = scanner.nextLine();
-	    		 if(salva.equals("si")) {
 	    			 entityManager.persist(c);
 	    			 transaction.commit();
-	    			 System.out.println("Contatto salvato correttamente");
-	    		 }
-	    		 else System.out.println("Contatto non salvato");
 	    		 
 	    	 } catch(Exception e) {
 	    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
