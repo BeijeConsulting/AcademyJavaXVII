@@ -1,10 +1,14 @@
-package it.beije.suormary.rubrica.Char;
+package it.beije.suormary.web.Char;
 
 import java.util.List;
+
+
 
 import java.util.Scanner;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 import org.hibernate.Session;
 
@@ -33,7 +37,7 @@ public class GestoreRubricaJPA {
             scelta = scanner.nextLine();
            
       try {
-    	   entityManager = JPAmanagerFactory.createEntityManager();
+   	      entityManager = JPAmanagerFactory.createEntityManager();
     	   switch(scelta) {
           case "lista contatti" :List<Contact> contacts =  RubricaJPA.loadRubricaJPA(entityManager); for(Contact c : contacts) System.out.println(c); break;
           case "cerca contatto" : RubricaJPA.findContact(entityManager); break;
