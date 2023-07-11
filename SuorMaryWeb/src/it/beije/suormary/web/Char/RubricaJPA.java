@@ -94,12 +94,13 @@ public class RubricaJPA {
 	    		 c.setEmail(email);
 	    		 c.setPhoneNumber(phone);
 	    		 c.setNote(note);
-	    		 System.out.println(c);
 	    			 entityManager.persist(c);
 	    			 transaction.commit();
 	    		 
 	    	 } catch(Exception e) {
 	    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
+	    	 } finally {
+	    		 entityManager.close();
 	    	 }
 		}
 		public static void updateContact(EntityManager entityManager) {

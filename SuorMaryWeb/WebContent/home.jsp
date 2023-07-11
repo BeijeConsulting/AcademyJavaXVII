@@ -19,6 +19,7 @@ List<Contact> contacts =  RubricaJPA.loadRubricaJPA(entityManager);
 for(Contact c : contacts){
 	out.println("<h2>" +  c.getName() + " " + c.getSurname() +  "</h2>");
 }
+entityManager.close();
 
 %>
 <form action="./newContact.jsp" method="GET">
