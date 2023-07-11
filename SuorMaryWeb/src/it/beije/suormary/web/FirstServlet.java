@@ -41,9 +41,10 @@ public class FirstServlet extends HttpServlet {
 				.append("sono le ").append(adesso)
 				.append("</p></body></html>");
 
-		
-		response.getWriter().append(html.toString());
-	}
+		//String c = "ciao";
+		//response.getWriter().append(html.toString());
+		//response.getWriter(c);
+		}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
