@@ -47,7 +47,7 @@ public class LoginServlet extends HttpServlet {
 		System.out.println("JSESSIONID: " + session.getId());
 		
 		//SELECT * from Users WHERE username = :username AND password = :password
-		if (username != null && username.equalsIgnoreCase("pippo@beije.it") && password != null && password.equals("12345")) { //OK
+		if (username != null && username.equalsIgnoreCase("martina") && password != null && password.equals("12345")) { //OK
 			session.setAttribute("username", username);
 			
 			response.sendRedirect("welcome.jsp");
