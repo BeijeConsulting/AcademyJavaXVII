@@ -27,7 +27,7 @@ public class LoginServ extends HttpServlet {
             		+ "</head>\r\n"
             		+ "<body>\r\n"
             		+ "\r\n"
-            		+ "<form action=\"./home\" method=\"POST\">\r\n"
+            		+ "<form action=\"./home\" method=\"GET\">\r\n"
             		+ "  <label for=\"fname\">First name:</label><br>\r\n"
             		+ "  <input type=\"text\" name=\"name\" ><br>\r\n"
             		+ "  <label for=\"lname\">Last name:</label><br>\r\n"

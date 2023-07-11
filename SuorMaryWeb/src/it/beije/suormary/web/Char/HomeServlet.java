@@ -20,7 +20,17 @@ public class HomeServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+//System.out.println("FirstServlet doPost");
+//		
+//		String fname = request.getParameter("name");
+//		String lname = request.getParameter("surname");
+//		
+//		StringBuilder html = new StringBuilder("<html><body><p>")
+//				.append("Ciao ").append(fname).append(" ").append(lname).append("!!!")
+//				.append("</p></body></html>");
+//
+//		
+//		response.getWriter().append(html.toString());
 		
 	}
 
