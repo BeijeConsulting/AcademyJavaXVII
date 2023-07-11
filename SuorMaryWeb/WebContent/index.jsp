@@ -19,8 +19,7 @@ List<String> list = null; //....
 String name = request.getParameter("name");
 
 String welcome = "BUONGIORNO";
-System.out.println("Sono in index.jsp");
-
+System.out.println("prova");
 //out.print(welcome + " " + name);
 %>
 <%= welcome %> <%= name %> !!

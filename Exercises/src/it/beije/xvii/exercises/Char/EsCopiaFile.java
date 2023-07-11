@@ -15,7 +15,7 @@ public class EsCopiaFile {
 		File oldFile;
 		FileReader fileReader;
 		FileWriter newFileWriter;
-		if(files.isBlank()) {
+		if(files.isEmpty()) {
 			 oldFile = new File(args[0]);
 			 fileReader = new FileReader(oldFile);
 			 newFileWriter = new FileWriter(args[1]);
