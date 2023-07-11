@@ -23,21 +23,9 @@ public class RubricaJPA {
 	    	 try {
 	    		 CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 	    		 CriteriaQuery<Contact> criteriaQuery = criteriaBuilder.createQuery(Contact.class);
-	    		 Root<Contact> contactRoot = criteriaQuery.from(Contact.class);
-	    		 System.out.print("Vuoi ordinare i contatti per nome e cognome? (si/no) : ");
-	    		 String ord = scanner.nextLine();
-
-	    		 if(ord.equals("si")) {
-	    			 criteriaQuery.select(contactRoot).orderBy(criteriaBuilder.asc(contactRoot.get("name")), criteriaBuilder.asc(contactRoot.get("surname")));
-	    			 listContacts = entityManager.createQuery(criteriaQuery).getResultList();
-	    		 }
-	    		 
-	    		 else {
+	    		 Root<Contact> contactRoot = criteriaQuery.from(Contact.class);    		 
 	    			 criteriaQuery.select(contactRoot);
 	    			 listContacts = entityManager.createQuery(criteriaQuery).getResultList();
-	    		 }
-	    		 
-	    		 
 	    	 } catch(Exception e) {
 	    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
 	    	 } 
