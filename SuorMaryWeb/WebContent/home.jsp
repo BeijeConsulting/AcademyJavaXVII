@@ -16,14 +16,22 @@
 <%
 EntityManager entityManager = JPAmanagerFactory.createEntityManager();
 List<Contact> contacts =  RubricaJPA.loadRubricaJPA(entityManager);
+%>
+<% 
 for(Contact c : contacts){
 	out.println("<h2>" +  c.getName() + " " + c.getSurname() +  "</h2>");
+%>
+<form action="./updateContact.jsp" method="GET">
+<input type="hidden" name="id" value="<%= c.getId() %>">
+<input type="submit" value="Modifica Contatto">
+</form>
+<% 
 }
 entityManager.close();
 
 %>
 <form action="./newContact.jsp" method="GET">
-<input type="submit" value="Crea nuovo contatto">
+<input type="submit"  value="Crea nuovo contatto">
 </form>
 </body>
 </html>

@@ -150,6 +150,21 @@ public class RubricaJPA {
 				 System.out.println("Si è verificato un errore  : " + e.getMessage());
 			} 
 		}
+		public static Contact findContactById(EntityManager entityManager,String idString) {
+			int id = Integer.parseInt(idString);
+			Contact c = null;
+			try {
+				Query query = entityManager.createQuery("SELECT c FROM Contact as c WHERE c.id = :id");
+				query.setParameter("id", id);
+				 c = (Contact) query.getSingleResult();
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				entityManager.close();
+			}
+			return c;
+		}
 		public static List<Contact> findDuplicatedContacts(EntityManager entityManager) {
 			List<Contact> duplicatedContacts = new ArrayList<>();
 			List<Contact> contacts = loadRubricaJPA(entityManager);
