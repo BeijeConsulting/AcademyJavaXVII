@@ -30,7 +30,7 @@ public class EditServlet extends HttpServlet {
 		System.out.println(strId);
 		int id = Integer.valueOf(strId); 
 		Contact contact = JPAUtils.getContact(id);
-		System.out.println(contact);
+		//System.out.println(contact);
 		request.setAttribute("contact", contact);
 		request.getRequestDispatcher("./modificaContatto.jsp").forward(request, response);
 	}
@@ -39,7 +39,33 @@ public class EditServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		
+		String button = request.getParameter("saveContact");
+		
+		if(button != null) { // caso saveContact
+			int id = Integer.valueOf(request.getParameter("id"));
+			String name = request.getParameter("nome");
+			String surname = request.getParameter("cognome");
+			String notes = request.getParameter("note");
+			
+			Contact contact = JPAUtils.getContact(id);
+			JPAUtils.editContact(contact, name, surname, notes);
+			
+		} else { // caso saveRef
+			System.out.println("id" + request.getParameter("idRef"));
+			System.out.println("label" + request.getParameter("label"));
+			System.out.println("detail" + request.getParameter("detail"));
+			int idDetail = Integer.valueOf(request.getParameter("idRef"));
+			
+			String label = request.getParameter("label");
+			String detail = request.getParameter("detail");
+			String type = request.getParameter("type");
+			
+			ContactDetail cd = JPAUtils.getContactDetail(idDetail);
+			JPAUtils.editContactDetail(cd, label, detail, type);
+		}
+		request.setAttribute("message", "Modifica salvata correttamente");
+		
 		doGet(request, response);
 	}
 

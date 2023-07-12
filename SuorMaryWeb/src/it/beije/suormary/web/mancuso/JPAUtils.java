@@ -224,12 +224,58 @@ public class JPAUtils {
 			TypedQuery<Contact> typedQuery = entityManager.createQuery(cq);
 			contact = typedQuery.getSingleResult();*/
 			
+			List<ContactDetail> cds = new ArrayList<ContactDetail>();
+			Query query = entityManager.createQuery("SELECT cd FROM ContactDetail AS cd WHERE id_contact = :contact");
+			query.setParameter("contact", contact.getId());
+			
+			cds = query.getResultList();
+			contact.setDetail(cds);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			//entityManager.close();
 		}
 		return contact;
+	}
+	
+	public static ContactDetail getContactDetail(int id) {
+		EntityManager entityManager = null;
+		ContactDetail contactDetail = null;
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();
+	
+			contactDetail = entityManager.find(ContactDetail.class, id);		
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//entityManager.close();
+		}
+		return contactDetail;
+	}
+	
+	public static void editContactDetail(ContactDetail cd, String label, String detail, String type) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			
+			transaction.begin();
+			
+			cd.setLabel(label);
+			cd.setDetail(detail);
+			//c.setEmail(email);
+			//c.setPhoneNumber(phone);
+			cd.setType(type.charAt(0));
+
+			entityManager.persist(cd);
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//entityManager.close();
+		}
 	}
 	
 }

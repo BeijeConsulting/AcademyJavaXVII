@@ -15,7 +15,7 @@ public class JPAManagerFactory {
 			EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMaryWeb");
 			instance = entityManagerFactory.createEntityManager();
 		}
-		
+		//System.out.println(instance);
 		return instance;
 	}
 }
