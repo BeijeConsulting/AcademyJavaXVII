@@ -15,6 +15,7 @@ public class Home extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
 	private static String purple = "#6B07B1";
+	private static String thatName = "Lara";
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -28,6 +29,7 @@ public class Home extends HttpServlet {
     	StringBuilder html = new StringBuilder();
 		
     	boolean empty = true;
+    	boolean thatOne = false;
     	
 		html.append("<!DOCTYPE html><html>");
 		
@@ -54,6 +56,9 @@ public class Home extends HttpServlet {
 		if(name != "") {
 			body.append(" ").append(name);
 			empty = false;
+			if(name.equals(thatName)) {
+				thatOne = true;
+			}
 		}
 		body.append("!</h1>");
 		
@@ -62,7 +67,12 @@ public class Home extends HttpServlet {
 		if(empty) {
 			body.append("What's your name?");
 		}else {
-			body.append("That's a cool name!");
+			if(!thatOne) {
+				body.append("That is, indeed, a name.");
+			}else {
+				body.append("That's a cool name!");
+			}
+			
 		}
 		
 		body.append("</h2>");
