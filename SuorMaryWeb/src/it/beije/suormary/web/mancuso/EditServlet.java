@@ -26,8 +26,13 @@ public class EditServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		String strId = (String)(request.getParameter("id"));
+		System.out.println(strId);
+		int id = Integer.valueOf(strId); 
+		Contact contact = JPAUtils.getContact(id);
+		System.out.println(contact);
+		request.setAttribute("contact", contact);
+		request.getRequestDispatcher("./modificaContatto.jsp").forward(request, response);
 	}
 
 	/**

@@ -44,7 +44,7 @@
 					  }
 				%></td>
 				<td style="border: 1px solid; border-collapse: collapse;"><%=c.getNotes() %></td>
-				<td style="text-align: center"><a href="./modificaContatto.jsp?id=<%=c.getId()%>"><button style="background-color: #EBBF66;">Modifica</button></a></td>
+				<td style="text-align: center"><a href="./EditServlet?id=<%=c.getId()%>"><button style="background-color: #EBBF66;">Modifica</button></a></td>
 				<td style="text-align: center"><a href="#"><button style="background-color: #EB6666;">Elimina</button></a></td>
 			</tr>
 		<%} %>

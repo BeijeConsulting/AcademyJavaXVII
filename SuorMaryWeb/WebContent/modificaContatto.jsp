@@ -1,3 +1,4 @@
+<%@page import="it.beije.suormary.web.mancuso.ContactDetail"%>
 <%@page import="it.beije.suormary.web.mancuso.JPAUtils"%>
 <%@page import="it.beije.suormary.web.mancuso.Contact"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -10,15 +11,58 @@
 </head>
 <body style="background-color: black; color: #C6C6C6; font-family: Arial, Helvetica, sans-serif;">
 	<% 
-	String strId = (String)(request.getAttribute("id"));
-	System.out.println(strId);
-	int id = Integer.valueOf(strId); 
-	   Contact contact = JPAUtils.getContact(id);
+	   Contact contact = (Contact)request.getAttribute("contact");
+	   
 	%>
 	<div style="margin: auto; padding: 50px;">
+		<h2>Modifica Contatto</h2>
+	</div>
+	<div style="margin: auto; padding: 50px; background-color: #404040">
 		<form method="POST" action="./modificaServlet">
-			<input type="text" name="nome" value="<%=contact.getFirstName()%>"/>
+			<table>
+				<tr >
+					<td style="padding: 10px;"><label>Nome</label></td>
+					<td><input type="text" name="nome" style="background-color: #2A2A2A; color: #C6C6C6" value="<%=contact.getFirstName()%>"/></td>
+				</tr>
+				<tr>
+					<td style="padding: 10px;">Cognome</td>
+					<td><input type="text" name="cognome" style="background-color: #2A2A2A; color: #C6C6C6" value="<%=contact.getLastName()%>"/></td>
+				</tr>
+				<tr>
+					<td style="padding: 10px;">Note</td>
+					<td><textarea name="cognome" cols=30 rows=5 style="background-color: #2A2A2A; color: #C6C6C6"><%=contact.getNotes()%></textarea></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td style="text-align: right"><input style="width: 100px; text-align: center; font-size: 16px;" type="submit" name="saveContact" value="Salva" /></td>
+				</tr>
+			</table>
+			
 		</form>
+	</div>
+	<div style="margin: auto; padding: 50px; background-color: #404040">
+		<%for(ContactDetail cd : contact.getDetail()){%>
+			<div style="display: inline-block; *display: inline; zoom: 1; vertical-align: top; padding: 10px; margin-right: 15px; border: 1px solid;">
+				<b>Ref. Contatto</b>
+				<hr/>
+				<br/>
+				<form method="POST" action="./modificaServlet">
+				<label>Label</label>
+				<input style="float: right; background-color: #2A2A2A; color: #C6C6C6" type="text" value="<%=cd.getLabel()%>"/><br/><br/>
+				<label style="margin-right: 10px">Contatto</label>
+				<input style="float: right; background-color: #2A2A2A; color: #C6C6C6" type="text" value="<%=cd.getDetail()%>"/><br/><br/>
+				<label>Tipo</label><br/>
+				<input type="radio" value="T" name="type" <%=(cd.getType() == 'T'?"checked":"")%>/>
+				<label>Telefono</label><br/>
+				<input type="radio" value="E" name="type" <%=(cd.getType() == 'E'?"checked":"")%>/>
+				<label>Email</label><br/><br/>
+				<input style="width: 100px; text-align: center; font-size: 16px; float:right" name="saveRef" type="submit" value="Salva" />
+			</form>
+			</div>
+				
+		<%}%>
+		
+		
 	</div>
 </body>
 </html>
