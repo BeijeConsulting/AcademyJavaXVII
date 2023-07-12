@@ -12,6 +12,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<h1>Modifica riferimento</h1>
 <%
   String idString = request.getParameter("id");
   int id = Integer.parseInt(idString);
