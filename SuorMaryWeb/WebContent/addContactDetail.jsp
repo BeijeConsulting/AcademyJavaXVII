@@ -16,6 +16,7 @@ EntityManager entityManager = JPAmanagerFactory.createEntityManager();
 String id = request.getParameter("id");
 Contact c = RubricaJPA.findContactById(entityManager,id);
 %>
+<h1>Crea un riferimento per il contatto</h1>
 <form action="./AddContactDetail" method="POST">
   <input type="hidden" name="id_rubrica" value = <%= c.getId() %> />
     <label for = "contatto">Contatto : </label>
@@ -24,6 +25,7 @@ Contact c = RubricaJPA.findContactById(entityManager,id);
   <input type="text" name="tipo" /> <br> <br>
     <label for = "label">Label : </label>
   <input type="text" name="label" /> <br> <br>
+  <input type="submit" value="crea" />
 </form>
 </body>
 </html>

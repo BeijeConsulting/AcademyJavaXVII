@@ -116,6 +116,25 @@ public class RubricaJPA {
 	    		 entityManager.close();
 	    	 }
 		}
+		public static void createContactDetail(String idRubricaString, String contatto, String tipoString, String label, EntityManager entityManager) {
+			int idRubrica = Integer.parseInt(idRubricaString);
+			char tipo =  tipoString.charAt(0);
+			try {
+				EntityTransaction transaction = entityManager.getTransaction();
+				transaction.begin();
+				 ContactDetail contactDetail = new ContactDetail();
+				 contactDetail.setContatto(contatto);
+				 contactDetail.setId_rubrica(idRubrica);
+				 contactDetail.setTipo(tipo);
+				 contactDetail.setLabel(label);
+				 entityManager.persist(contactDetail);
+				 transaction.commit();
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				entityManager.close();
+			}
+		}
 		public static void updateContact(String idString, String name, String surname, String email, String phone, String note,EntityManager entityManager) {
 			int id = Integer.parseInt(idString);
 			Contact c = null;
