@@ -16,6 +16,9 @@
 	<div style="margin: auto; padding: 25px;">
 		<h2>Modifica Contatto</h2>
 	</div>
+	<div style="margin: auto; padding: 25px;">
+		<a href="./RubricaServlet"><button style="background-color: #2A2A2A"><span style="color: #C6C6C6">Indietro</span></button></a>
+	</div>
 	<% if(request.getAttribute("message") != null){ %>
 	<div style="margin: auto; padding: 25px;">
 		<p style="color: red"><%=request.getAttribute("message")%></p>

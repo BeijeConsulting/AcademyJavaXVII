@@ -66,7 +66,7 @@ public class EditServlet extends HttpServlet {
 		}
 		request.setAttribute("message", "Modifica salvata correttamente");
 		
-		doGet(request, response);
+		response.sendRedirect("./EditServlet?id=" + request.getParameter("id"));
 	}
 
 }
