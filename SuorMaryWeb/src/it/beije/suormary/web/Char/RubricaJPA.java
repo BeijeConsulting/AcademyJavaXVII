@@ -118,7 +118,7 @@ public class RubricaJPA {
 		}
 		public static void createContactDetail(String idRubricaString, String contatto, String tipoString, String label, EntityManager entityManager) {
 			int idRubrica = Integer.parseInt(idRubricaString);
-			char tipo =  tipoString.charAt(0);
+			Character tipo =  tipoString.charAt(0);
 			try {
 				EntityTransaction transaction = entityManager.getTransaction();
 				transaction.begin();
@@ -159,6 +159,39 @@ public class RubricaJPA {
 				entityManager.close();
 			}
 		}
+		public static void updateContactDetail(String idString, String contatto, String tipoString, String label, EntityManager entityManager) {
+			int id = Integer.parseInt(idString);
+			ContactDetail cd = null;
+			Character tipo = tipoString.charAt(0);
+			try {
+				EntityTransaction transaction = entityManager.getTransaction();
+				transaction.begin();
+				 Query query = entityManager.createQuery("Select c FROM ContactDetail as c WHERE c.id = :id");
+				 query.setParameter("id", id);
+				 cd = (ContactDetail) query.getSingleResult();
+				 cd.setContatto(contatto);
+				 cd.setLabel(label);
+				 cd.setTipo(tipo);
+				 transaction.commit();
+			}catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				entityManager.close();
+			}
+		}
+		public static ContactDetail findContactDetail(EntityManager entityManager, int id) {
+			ContactDetail cd = null;
+			try {
+				Query query = entityManager.createQuery("SELECT cd FROM ContactDetail as cd WHERE cd.id = :id");
+				query.setParameter("id", id);
+				 cd = (ContactDetail)query.getSingleResult();
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				entityManager.close();
+			}
+			return cd;
+		}
 		public static void deleteContact(EntityManager entityManager, String idString) {
 			int id = Integer.parseInt(idString);
 			Contact c = null;
@@ -194,71 +227,7 @@ public class RubricaJPA {
 			}
 			return c;
 		}
-		public static List<Contact> findDuplicatedContacts(EntityManager entityManager) {
-			List<Contact> duplicatedContacts = new ArrayList<>();
-			List<Contact> contacts = loadRubricaJPA(entityManager);
 
-			 for (int i = 0; i < contacts.size(); i++) {
-			        for (int j = i + 1; j < contacts.size(); j++) {
-			            if (contacts.get(i).equals(contacts.get(j))) {
-			                duplicatedContacts.add(contacts.get(i));
-			                break; 
-			            }
-			        }
-			    }
-			 if(duplicatedContacts.size() == 0) {
-				 System.out.println("Non sono stati trovati contatti duplicati"); 
-			 }
-			 else {
-				 System.out.println("Contatti duplicati trovati : ");
-					for(Contact c : duplicatedContacts) {
-						System.out.println(c);
-					} 
-			 }
-			return duplicatedContacts;
-			
-		}
-		public static void mergeDuplicatedContacts(EntityManager entityManager) {
-			List<Contact> duplicatedContacts = findDuplicatedContacts(entityManager);
-
-			try {
-				if(duplicatedContacts.size() > 0) {
-					EntityTransaction  transaction = null;
-			    
-				//elimino tutti i contatti duplicati
-			    for (Contact c : duplicatedContacts) {
-			    	 transaction = entityManager.getTransaction();
-			    	transaction.begin();
-			    	Query query = entityManager.createQuery("DELETE FROM Contact WHERE name = :name AND surname = :surname AND email = :email AND note = :note AND phone = :phone");
-			    	query.setParameter("name", c.getName());
-			    	query.setParameter("surname", c.getSurname());
-//			    	query.setParameter("email", c.getEmail());
-//			    	query.setParameter("phone", c.getPhoneNumber());
-			    	query.setParameter("note", c.getNote());
-			    	query.executeUpdate();
-			    	transaction.commit();
-			    	
-			    }
-			    for (Contact c : duplicatedContacts) {
-			    	Contact newContact = new Contact();
-			    	newContact.setName(c.getName());
-			    	newContact.setSurname(c.getSurname());
-//			    	newContact.setPhoneNumber(c.getPhoneNumber());
-			    	newContact.setNote(c.getNote());
-//			    	newContact.setEmail(c.getEmail());
-			    	 transaction = entityManager.getTransaction();
-				    	transaction.begin();
-			    	entityManager.persist(newContact);
-			    	transaction.commit();
-			    }
-			    System.out.println("I contatti duplicati sono stati uniti");
-			}
-				
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.out.println("Si è verificato un errore nell`inserimento dei dati : " + e.getMessage());
-			} 
-		}
 		 public static void exportDbToCSV (EntityManager entityManager) {
 		  	   Scanner scanner = new Scanner(System.in);
 		  	   System.out.print("Indica il path del file CSV : ");

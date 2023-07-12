@@ -28,11 +28,19 @@ for(Contact c : contacts){
 	<h2><%= c.getName() + " " + c.getSurname() %></h2>
 	<%
 	for(ContactDetail cd : c.getContactDetails()){
-		if(cd.getTipo().equals('T')) out.println("<h4>" + "Telefono " + cd.getLabel() + " : " + cd.getContatto() + "</h4>");
-		else if (cd.getTipo().equals('E')) out.println("<h4>" + "Email " + cd.getLabel() + " : " + cd.getContatto()  + "</h4>");
-		else  out.println("<h4>" + cd.getLabel() + " : " +  cd.getContatto() + "</h4>");
+		if(cd.getTipo().equals('T')) out.print("<span>" + "Telefono " + cd.getLabel() + " : " + cd.getContatto() + "</span>");
+		else if (cd.getTipo().equals('E')) out.print("<span>" + "Email " + cd.getLabel() + " : " + cd.getContatto()  + "</span>");
+		else  out.print("<h4>" + cd.getLabel() + " : " +  cd.getContatto() + "</h4>");
+		%>
+		<form action="updateContactDetail.jsp" method= "GET">
+		<input type="hidden" name="id" value="<%= cd.getId() %>">
+		<input type="submit" value="Modifica riferimento" /> <br> <br>
+		</form>
+		<%
 	}
-	%>
+		%>
+	
+	
 	<form action="./addContactDetail.jsp" method="GET">
 <input type="hidden" name="id" value="<%= c.getId() %>">
 <input type="submit" value="Aggiungi un riferimento"> <br> <br>
