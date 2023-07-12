@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.jasper.tagplugins.jstl.core.If;
 
 /**
  * Servlet implementation class RubricaServlet
@@ -29,24 +28,55 @@ public class RubricaServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		String sceltaString = request.getParameter("scelta");
+		if (sceltaString ==null) {
+		response.sendRedirect("menuscelta.jsp");
+		} 
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String scelta = request.getParameter("scelta");
-		StringBuilder contatti = new StringBuilder();
+//		String scelta = request.getParameter("scelta");
+//		StringBuilder contatti = new StringBuilder();
+//		
+//		if (scelta!=null && scelta.equals("Visualizza lista contatti completa")) {
+//		List<Contact> rubrica = DBthroughHBM.listContacts();
+//		for(Contact contact : rubrica) {
+//			contatti.append(contact.toString()).append(" \n");
+//		}	
+//		response.getWriter().append(contatti.toString());
 		
-		if (scelta!=null && scelta.equals("Visualizza lista contatti completa")) {
-		List<Contact> rubrica = DBthroughHBM.listContacts();
-		for(Contact contact : rubrica) {
-			contatti.append(contact.toString());
-		}
 		
-		response.getWriter().append(contatti.toString());
-		
+		String sceltaString = request.getParameter("scelta");
+		if (sceltaString!=null) {
+			switch (sceltaString) {
+			case "Visualizza lista contatti completa":
+				response.sendRedirect("elencorubrica.jsp");
+				break;
+			case "Cerca contatto":
+				
+				break;
+			case "Inserisci nuovo contatto":
+				
+				break;
+			case "Modifica contatto":
+
+				break;
+			case "Cancella contatto":
+				
+				break;
+			case "Trova contatti doppi":
+				
+				break;
+			case "Unisci contatti doppi":
+				
+				break;
+			default: response.sendRedirect("menuscelta.jsp");
+				break;
+			}
+
 		}
 	}
 

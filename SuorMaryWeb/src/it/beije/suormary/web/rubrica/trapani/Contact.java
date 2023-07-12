@@ -92,7 +92,7 @@ public class Contact {
 				.append(", phoneNumber : ").append(phoneNumber)
 				.append(", email : ").append(email)
 				.append(", note : ").append(note)
-				.append(" }");
+				.append(" }").append("\n");
 		
 		return builder.toString();
 	}
@@ -103,7 +103,7 @@ public class Contact {
 				.append(", phoneNumber : ").append(phoneNumber)
 				.append(", email : ").append(email)
 				.append(", note : ").append(note)
-				.append(" }");
+				.append(" }").append("\n");
 		
 		return builder.toString();
 	}
