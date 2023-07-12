@@ -1,6 +1,7 @@
 package it.beije.suormary.web.ceccarelli;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -29,15 +30,58 @@ public class rubricaServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
+		// lista con HBM
+//		DbWithHBM mr = new DbWithHBM();
+//		//List<Contact> contact = mr.listContactJoinHBM();
+//		for(Contact c : contact) {
+//			System.out.println(c);
+//		}
+//		
+//		if (contact != null) {
+//			request.getSession().setAttribute("contacts", contact);
+//			
+//		}
+//		response.sendRedirect("contactPage.jsp");
 		
-		DbWithHBM mr = new DbWithHBM();
-		List<Contact> contact = mr.listContactHBM();
-		
-		if (contact != null) {
-			request.getSession().setAttribute("contacts", contact);
-			
+		//lista con JDBC
+		NuovaRubricaMetodi mr = new NuovaRubricaMetodi();
+		List<Contact2> contact = null;
+		try {
+			contact = mr.contactNew();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		for(Contact2 c2 : contact ) {
+			System.out.println(c2);
+		}
+		
+		if(contact !=null) {
+			request.getSession().setAttribute("contactNew", contact);
+		}
+		
+		//response.sendRedirect("contactPage.jsp");
+		
+		//lista con JDBC con JOIN
+				
+		List<Contact2> contactJOIN = null;
+		try {
+			contactJOIN = mr.contactNewJOIN();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(Contact2 c2 : contactJOIN ) {
+			System.out.println(c2);
+		}
+		
+		if(contact !=null) {
+			request.getSession().setAttribute("contactNewJOIN", contactJOIN);
+		}
+		
 		response.sendRedirect("contactPage.jsp");
+		
+				
 		
 	}
 

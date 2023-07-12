@@ -234,4 +234,26 @@ public class DbWithHBM {
 		return occCon;
 	}
 	
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	// metodi per la servlet
+	
+	// mostrare lista contatti ma con la join
+//	public List<Contact2> listContactJoinHBM() {
+//		List<Contact2> contacts = null;
+//		try {
+//			session = HBMsessionFactory.openSession();
+//			//transaction = session.beginTransaction();
+//			
+//			//SELECT HQL
+//			Query<Contact2> query = session.createQuery("SELECT c from Contact2 as r JOIN riferimento as rif ON r.id = rif.id_rubrica ");
+//			contacts = query.getResultList();
+//			
+//		}catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			session.close();
+//		}
+//		return contacts;
+//	}
 }
