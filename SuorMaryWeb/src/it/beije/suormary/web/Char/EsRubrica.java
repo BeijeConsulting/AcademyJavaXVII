@@ -55,8 +55,8 @@ public class EsRubrica {
 					switch(arrPrimaRiga[j]) {
 					case "NAME" : con.setName(arrspl[j]); break;
 					case "SURNAME" : con.setSurname(arrspl[j]); break;
-					case "PHONE" : con.setPhoneNumber(arrspl[j]); break;
-					case "EMAIL" : con.setEmail(arrspl[j]); break;
+//					case "PHONE" : con.setPhoneNumber(arrspl[j]); break;
+//					case "EMAIL" : con.setEmail(arrspl[j]); break;
 					case "NOTE" : con.setNote(arrspl[j]); break;
 					}
 				}
@@ -98,8 +98,8 @@ public class EsRubrica {
 				switch(elem.getTagName()) {
 				case "name" : c.setName(elem.getTextContent()); break;
 				case "surname" : c.setSurname(elem.getTextContent()); break;
-				case "email" : c.setEmail(elem.getTextContent()); break;
-				case "phone" : c.setPhoneNumber(elem.getTextContent()); break;
+//				case "email" : c.setEmail(elem.getTextContent()); break;
+//				case "phone" : c.setPhoneNumber(elem.getTextContent()); break;
 				case "note" : c.setNote(elem.getTextContent()); break;
 				default : System.out.println("Il tag non è stato riconosciuto"); break;
 				}
@@ -134,7 +134,7 @@ public class EsRubrica {
 		 File file = new File(pathFile);
 		 fileWriter = new FileWriter(file,true);
 		for(Contact contatto : contatti) {
-			fileWriter.write(contatto.getSurname() + separator + contatto.getName() + separator + contatto.getPhoneNumber() + separator + contatto.getEmail()  + (contatto.getNote() == null ? "" : separator + contatto.getNote()) + "\n");
+			fileWriter.write(contatto.getSurname() + separator + contatto.getName() + separator + (contatto.getNote() == null ? "" : separator + contatto.getNote()) + "\n");
 			fileWriter.flush();
 		}
 		System.out.println("Contatti inseriti nel file indicato");
@@ -172,16 +172,16 @@ public class EsRubrica {
 				surname.setTextContent(c.getSurname());
 				contact.appendChild(surname);
 			}
-			if(c.getEmail() != null) {
-				Element email = document.createElement("email");
-				email.setTextContent(c.getEmail());
-				contact.appendChild(email);
-			}
-			if(c.getPhoneNumber() != null) {
-				Element phone = document.createElement("phone");
-				phone.setTextContent(c.getPhoneNumber());
-				contact.appendChild(phone);
-			}
+//			if(c.getEmail() != null) {
+//				Element email = document.createElement("email");
+//				email.setTextContent(c.getEmail());
+//				contact.appendChild(email);
+//			}
+//			if(c.getPhoneNumber() != null) {
+//				Element phone = document.createElement("phone");
+//				phone.setTextContent(c.getPhoneNumber());
+//				contact.appendChild(phone);
+//			}
 			if(c.getNote() != null) {
 				Element note = document.createElement("note");
 				note.setTextContent(c.getNote());

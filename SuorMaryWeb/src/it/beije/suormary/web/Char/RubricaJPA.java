@@ -93,8 +93,8 @@ public class RubricaJPA {
 	    		 Contact c = new Contact();
 	    		 c.setName(name);
 	    		 c.setSurname(surname);
-	    		 c.setEmail(email);
-	    		 c.setPhoneNumber(phone);
+//	    		 c.setEmail(email);
+//	    		 c.setPhoneNumber(phone);
 	    		 c.setNote(note);
 	    			 entityManager.persist(c);
 	    			 transaction.commit();
@@ -116,8 +116,8 @@ public class RubricaJPA {
 				transaction.begin();
 				 c.setName(name);
 				 c.setSurname(surname); 
-				 c.setEmail(email); 
-				 c.setPhoneNumber(phone);
+//				 c.setEmail(email); 
+//				 c.setPhoneNumber(phone);
 				 c.setNote(note); 
 				
 				entityManager.persist(c);
@@ -199,8 +199,8 @@ public class RubricaJPA {
 			    	Query query = entityManager.createQuery("DELETE FROM Contact WHERE name = :name AND surname = :surname AND email = :email AND note = :note AND phone = :phone");
 			    	query.setParameter("name", c.getName());
 			    	query.setParameter("surname", c.getSurname());
-			    	query.setParameter("email", c.getEmail());
-			    	query.setParameter("phone", c.getPhoneNumber());
+//			    	query.setParameter("email", c.getEmail());
+//			    	query.setParameter("phone", c.getPhoneNumber());
 			    	query.setParameter("note", c.getNote());
 			    	query.executeUpdate();
 			    	transaction.commit();
@@ -210,9 +210,9 @@ public class RubricaJPA {
 			    	Contact newContact = new Contact();
 			    	newContact.setName(c.getName());
 			    	newContact.setSurname(c.getSurname());
-			    	newContact.setPhoneNumber(c.getPhoneNumber());
+//			    	newContact.setPhoneNumber(c.getPhoneNumber());
 			    	newContact.setNote(c.getNote());
-			    	newContact.setEmail(c.getEmail());
+//			    	newContact.setEmail(c.getEmail());
 			    	 transaction = entityManager.getTransaction();
 				    	transaction.begin();
 			    	entityManager.persist(newContact);
