@@ -118,7 +118,9 @@ public class JPAUtils {
 			
 			for(int i=0; i<contacts.size(); i++) {
 				List<ContactDetail> cds = new ArrayList<ContactDetail>();
-				query = entityManager.createQuery("SELECT cd FROM ContactDetail AS cd ");
+				query = entityManager.createQuery("SELECT cd FROM ContactDetail AS cd WHERE id_contact = :contact");
+				query.setParameter("contact", contacts.get(i).getId());
+				
 				cds = query.getResultList();
 				contacts.get(i).setDetail(cds);
 			}

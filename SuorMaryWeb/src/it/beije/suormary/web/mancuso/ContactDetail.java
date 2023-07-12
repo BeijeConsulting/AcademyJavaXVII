@@ -1,10 +1,31 @@
 package it.beije.suormary.web.mancuso;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "riferimento")
 public class ContactDetail {
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
 	private int id;
+	
+	@Column(name="id_rubrica")
 	private int id_contact;
+	
+	@Column(name="contatto")
 	private String detail;
+	
+	@Column(name="tipo")
 	private Character type;
+	
+	@Column(name="label")
 	private String label;
 	
 	public int getId() {
