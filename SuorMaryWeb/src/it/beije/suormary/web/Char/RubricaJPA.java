@@ -19,6 +19,7 @@ public class RubricaJPA {
 		public static List<Contact> loadRubricaJPA(EntityManager entityManager) {
 			Scanner scanner = new Scanner(System.in);
             List<Contact> listContacts = null;
+            List<ContactDetail> listContactDetails = null;
 
 	    	 try {
 	    		 CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -26,6 +27,18 @@ public class RubricaJPA {
 	    		 Root<Contact> contactRoot = criteriaQuery.from(Contact.class);    		 
 	    			 criteriaQuery.select(contactRoot);
 	    			 listContacts = entityManager.createQuery(criteriaQuery).getResultList();
+	    			 
+		    		 CriteriaQuery<ContactDetail> criteriaQuery2 = criteriaBuilder.createQuery(ContactDetail.class);
+		    		 Root<ContactDetail> contactDetailRoot = criteriaQuery2.from(ContactDetail.class);    		 
+		    			 criteriaQuery2.select(contactDetailRoot);
+		    			 listContactDetails = entityManager.createQuery(criteriaQuery2).getResultList();
+		    			 for(Contact c : listContacts) {
+		    				 for(ContactDetail cd : listContactDetails) {
+		    					 if(cd.getId_rubrica() == c.getId()) {
+		    						 c.addContactDetail(cd);
+		    					 }
+		    				 }
+		    			 }
 	    	 } catch(Exception e) {
 	    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
 	    	 }  finally {

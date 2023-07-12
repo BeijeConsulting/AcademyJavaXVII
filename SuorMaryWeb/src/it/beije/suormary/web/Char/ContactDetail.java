@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "riferimento")
+@Table(name ="riferimento")
 public class ContactDetail {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -20,6 +20,8 @@ public class ContactDetail {
 	private String contatto;
 	@Column
 	private Character tipo;
+	@Column
+	private String label;
 	
 	public int getId() {
 		return id;
@@ -51,7 +53,6 @@ public class ContactDetail {
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	@Column
-	private String label;
+
 
 }

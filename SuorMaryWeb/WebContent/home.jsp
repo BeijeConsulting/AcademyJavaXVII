@@ -5,6 +5,7 @@
      <%@page import="it.beije.suormary.web.Char.JPAmanagerFactory" %>
       <%@page import="java.util.List" %>
       <%@page import="it.beije.suormary.web.Char.Contact" %>
+      <%@page import="it.beije.suormary.web.Char.ContactDetail" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,8 +24,13 @@ List<Contact> contacts = RubricaJPA.loadRubricaJPA(entityManager);
 %>
 <% 
 for(Contact c : contacts){
-	out.println("<h2>" +  c.getName() + " " + c.getSurname() +  "</h2>");
-%>
+	%>
+	<h2><%= c.getName() + " " + c.getSurname() %></h2>
+	<%
+	for(ContactDetail cd : c.getContactDetails()){
+		out.println("<h4>" + cd.getContatto() + "</h4>");
+	}
+	%>
 <form action="./updateContact.jsp" method="GET">
 <input type="hidden" name="id" value="<%= c.getId() %>">
 <input type="submit" value="Modifica Contatto"> <br> <br>

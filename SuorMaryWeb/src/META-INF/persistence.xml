@@ -3,6 +3,7 @@
 	<persistence-unit name="SuorMary">
 		
 		<class>it.beije.suormary.web.Char.Contact</class>
+		<class>it.beije.suormary.web.Char.ContactDetail</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		
 		<properties>
