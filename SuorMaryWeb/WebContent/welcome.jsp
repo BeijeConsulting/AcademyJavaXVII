@@ -10,12 +10,10 @@
 
 <p>
 <%
-
-
+/*
 String username = (String) session.getAttribute("username");
 if (username == null) response.sendRedirect("login");
-
-
+*/
 String welcome = "BUONGIORNO";
 
 /*
@@ -26,13 +24,9 @@ if (user == null) {
 }
 */
 %>
-<<<<<<< HEAD
-<%= welcome %> <%= nome %> !!
-=======
 
 <jsp:useBean id="user" class="it.beije.suormary.web.User" scope="session"></jsp:useBean>
 <%= welcome %> <jsp:getProperty property="name" name="user"/> <jsp:getProperty property="surname" name="user"/> !!
->>>>>>> refs/remotes/origin/main
 </p>
 </body>
 </html>
