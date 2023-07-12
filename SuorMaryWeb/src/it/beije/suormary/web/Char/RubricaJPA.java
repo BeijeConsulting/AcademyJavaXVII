@@ -106,8 +106,6 @@ public class RubricaJPA {
 	    		 Contact c = new Contact();
 	    		 c.setName(name);
 	    		 c.setSurname(surname);
-//	    		 c.setEmail(email);
-//	    		 c.setPhoneNumber(phone);
 	    		 c.setNote(note);
 	    			 entityManager.persist(c);
 	    			 transaction.commit();

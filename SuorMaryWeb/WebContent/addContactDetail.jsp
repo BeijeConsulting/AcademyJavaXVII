@@ -8,24 +8,22 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Modifica contatto</title>
+<title>riferimento contatto</title>
 </head>
 <body>
-<h1>Modifica contatto</h1>
 <%
 EntityManager entityManager = JPAmanagerFactory.createEntityManager();
 String id = request.getParameter("id");
 Contact c = RubricaJPA.findContactById(entityManager,id);
 %>
-<form action="updateContact" method="POST">
-<input type="hidden" name="id" value="<%= c.getId() %>">
-	<label for="name">Nome : </label>
- 	<input type="text" name="name" value=<%= c.getName() %>> <br> <br>
- 	<label for="surname">Cognome : </label>
- 	<input type="text" name="surname" value=<%= c.getSurname() %>> <br> <br>
-	<label for="email">Email : </label> 
-	<input type="text" name="note" value=<%= c.getNote() %>> <br>  <br>
-	<input type="submit" value="Modifica">
+<form action="./AddContactDetail" method="POST">
+  <input type="hidden" name="id_rubrica" value = <%= c.getId() %> />
+    <label for = "contatto">Contatto : </label>
+  <input type="text" name="contatto" /> <br> <br>
+  <label for = "tipo">Tipo : </label>
+  <input type="text" name="tipo" /> <br> <br>
+    <label for = "label">Label : </label>
+  <input type="text" name="label" /> <br> <br>
 </form>
 </body>
 </html>

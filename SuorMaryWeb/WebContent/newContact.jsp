@@ -13,10 +13,6 @@
  	<input type="text" name="name"> <br> <br>
  	<label for="surname">Cognome : </label>
  	<input type="text" name="surname"> <br> <br>
-	<label for="email">Email : </label> 
-	<input type="text" name="email"> <br> <br>
-	<label for="phone">Numero di telefono : </label>
-	<input type="text" name="phone"> <br> <br>
 	<label for="note">Note : </label>
 	<input type="text" name="note"> <br>  <br>
 	<input type="submit" value="Crea">
