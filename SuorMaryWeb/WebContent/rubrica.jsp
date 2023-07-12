@@ -14,14 +14,14 @@
 <div style="margin: auto; padding: 20px; text-align: center">
 	<h2>Rubrica Contatti</h2>
 </div>
-<div style="margin: auto; padding: 50px;">
-	<table style="border: 1px solid; border-collapse: collapse; width: 50%; margin: auto; background-color: #404040">
-		<tr style="border: 1px solid; border-collapse: collapse; text-align: center; background-color: #C6C6C6; color:#2A2A2A">
-			<th style="border: 1px solid; border-collapse: collapse; padding: 3px">Nome</th>
-			<th style="border: 1px solid; border-collapse: collapse;">Cognome</th>
-			<th style="border: 1px solid; border-collapse: collapse;">Telefono</th>
-			<th style="border: 1px solid; border-collapse: collapse;">Email</th>
-			<th style="border: 1px solid; border-collapse: collapse;">Note</th>
+<div style="margin: auto; padding: 50px; background-color: #404040">
+	<table style="border: 1px solid; border-collapse: collapse; width: 50%; margin: auto; background-color: #232323">
+		<tr style="border: 1px solid #C6C6C; border-collapse: collapse; text-align: center; background-color: #C6C6C6; color:#2A2A2A">
+			<th style="border: 1px solid #C6C6C; border-collapse: collapse; padding: 3px">Nome</th>
+			<th style="border: 1px solid #C6C6C; border-collapse: collapse;">Cognome</th>
+			<th style="border: 1px solid #C6C6C; border-collapse: collapse;">Telefono</th>
+			<th style="border: 1px solid #C6C6C; border-collapse: collapse;">Email</th>
+			<th style="border: 1px solid #C6C6C; border-collapse: collapse;">Note</th>
 			<th></th>
 			<th></th>
 		</tr>
@@ -33,13 +33,13 @@
 				<td style="border: 1px solid; border-collapse: collapse;"><%=c.getLastName() %></td>
 				<td style="border: 1px solid; border-collapse: collapse;"><%for(ContactDetail cd : c.getDetail()){
 						if(cd.getType() == 'T'){
-					  		out.println(cd.getDetail() + "<br>");
+					  		out.println(cd.getDetail() + "<br/>");
 						}
 					  }
 				%></td>
 				<td style="border: 1px solid; border-collapse: collapse;"><%for(ContactDetail cd : c.getDetail()){
 						if(cd.getType() == 'E'){
-					  		out.println(cd.getDetail());
+					  		out.println(cd.getDetail() + "<br/>");
 						}
 					  }
 				%></td>

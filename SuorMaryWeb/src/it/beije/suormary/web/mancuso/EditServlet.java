@@ -27,7 +27,7 @@ public class EditServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String strId = (String)(request.getParameter("id"));
-		System.out.println(strId);
+		//System.out.println(strId);
 		int id = Integer.valueOf(strId); 
 		Contact contact = JPAUtils.getContact(id);
 		//System.out.println(contact);
@@ -52,9 +52,9 @@ public class EditServlet extends HttpServlet {
 			JPAUtils.editContact(contact, name, surname, notes);
 			
 		} else { // caso saveRef
-			System.out.println("id" + request.getParameter("idRef"));
-			System.out.println("label" + request.getParameter("label"));
-			System.out.println("detail" + request.getParameter("detail"));
+			//System.out.println("id" + request.getParameter("idRef"));
+			//System.out.println("label" + request.getParameter("label"));
+			//System.out.println("detail" + request.getParameter("detail"));
 			int idDetail = Integer.valueOf(request.getParameter("idRef"));
 			
 			String label = request.getParameter("label");
