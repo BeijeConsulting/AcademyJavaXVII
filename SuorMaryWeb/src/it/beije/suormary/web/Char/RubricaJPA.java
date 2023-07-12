@@ -97,7 +97,7 @@ public class RubricaJPA {
 				 System.out.println("Si è verificato un errore  : " + e.getMessage());
 			}
 		}
-		public static void createContact(String name, String surname, String email, String phone, String note, EntityManager entityManager) {
+		public static void createContact(String name, String surname, String note, EntityManager entityManager) {
 	    	 List<Contact> listContacts = null;
 	    	 try {
 	    		
@@ -135,7 +135,7 @@ public class RubricaJPA {
 				entityManager.close();
 			}
 		}
-		public static void updateContact(String idString, String name, String surname, String email, String phone, String note,EntityManager entityManager) {
+		public static void updateContact(String idString, String name, String surname, String note,EntityManager entityManager) {
 			int id = Integer.parseInt(idString);
 			Contact c = null;
 			try {
@@ -168,10 +168,13 @@ public class RubricaJPA {
 				 c = (Contact) query.getSingleResult();
 				EntityTransaction transaction = entityManager.getTransaction();
 				transaction.begin();
+				Query query2 = entityManager.createQuery("DELETE FROM ContactDetail cd  WHERE cd.id_rubrica = :id");
+				query2.setParameter("id", id);
+				query2.executeUpdate();
 					entityManager.remove(c);
 					transaction.commit();
 			} catch (Exception e) {
-				 System.out.println("Si è verificato un errore  : " + e.getMessage());
+				 e.printStackTrace();
 			} finally {
 				entityManager.close();
 			}

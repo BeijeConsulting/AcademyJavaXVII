@@ -32,10 +32,8 @@ public class NewContact extends HttpServlet {
 		EntityManager entityManager = JPAmanagerFactory.createEntityManager();
 		 String name = request.getParameter("name");
 		 String surname = request.getParameter("surname");
-		 String email = request.getParameter("email");
-		 String phone = request.getParameter("phone");
 		 String note = request.getParameter("note");
-		 RubricaJPA.createContact(name, surname, email, phone, note, entityManager);
+		 RubricaJPA.createContact(name, surname, note, entityManager);
 		 response.sendRedirect("home.jsp");
 		 
 	}
