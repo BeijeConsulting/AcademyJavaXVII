@@ -29,7 +29,7 @@ Contact c = RubricaJPA.findContactById(entityManager,id);
 	<input type="text" name="phone" value=<%= c.getPhoneNumber() %>> <br> <br>
 	<label for="note">Note : </label>
 	<input type="text" name="note" value=<%= c.getNote() %>> <br>  <br>
-	<input type="submit" value="Crea">
+	<input type="submit" value="Modifica">
 </form>
 </body>
 </html>

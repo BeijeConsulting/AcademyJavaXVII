@@ -16,9 +16,10 @@
 <form action="./newContact.jsp" method="GET">
 <input type="submit"  value="Crea nuovo contatto"> <br>
 </form>
+
 <%
 EntityManager entityManager = JPAmanagerFactory.createEntityManager();
-List<Contact> contacts =  RubricaJPA.loadRubricaJPA(entityManager);
+List<Contact> contacts = RubricaJPA.loadRubricaJPA(entityManager);
 %>
 <% 
 for(Contact c : contacts){
@@ -34,7 +35,6 @@ for(Contact c : contacts){
 </form>
 <% 
 }
-entityManager.close();
 
 %>
 

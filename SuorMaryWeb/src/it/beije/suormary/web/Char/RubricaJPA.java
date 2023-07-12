@@ -28,7 +28,9 @@ public class RubricaJPA {
 	    			 listContacts = entityManager.createQuery(criteriaQuery).getResultList();
 	    	 } catch(Exception e) {
 	    		 System.out.println("Si è verificato un errore  : " + e.getMessage());
-	    	 } 
+	    	 }  finally {
+	    		 entityManager.close();
+	    	 }
 	    	 return listContacts;
 		}
 		public static void writeRubricaJPA(List<Contact> contacts, EntityManager entityManager) {
