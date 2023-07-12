@@ -85,41 +85,41 @@ public class DbWithJPA {
 	// search contact with name and surname
 	public List<Contact> searchContactsNameSurname(String name, String surname){
 		List<Contact> selected= new ArrayList<Contact>();
-			try {
-				entityManager = JPAEntityFactory.openEntity();
-				entityManager = JPAEntityFactory.openEntity();
-				CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-				CriteriaQuery<Contact> query = cb.createQuery(Contact.class);
-				Root<Contact> root = query.from(Contact.class);
-				Predicate condition1 = cb.equal(root.get("name"), name);
-				Predicate condition2 = cb.equal(root.get("surname"), surname);
-				selected = entityManager.createQuery(query.select(root).where(cb.and(condition1,condition2))).getResultList();
+		try {
+			entityManager = JPAEntityFactory.openEntity();
+			entityManager = JPAEntityFactory.openEntity();
+			CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+			CriteriaQuery<Contact> query = cb.createQuery(Contact.class);
+			Root<Contact> root = query.from(Contact.class);
+			Predicate condition1 = cb.equal(root.get("name"), name);
+			Predicate condition2 = cb.equal(root.get("surname"), surname);
+			selected = entityManager.createQuery(query.select(root).where(cb.and(condition1,condition2))).getResultList();
 //				Query query = entityManager.createQuery("SELECT c from Contact as c WHERE c.name = :nome and c.surname = :cognome");
 //				query.setParameter("nome", name);
 //				query.setParameter("cognome", surname);
-				
-				//selected = query.getResultList();
-			}catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				entityManager.close();
-			}
-		return selected;
-	}
-	
-	//insert contact
-	public void insertContacts(Contact contact) {
-		try {
-			entityManager = JPAEntityFactory.openEntity();
-			EntityTransaction transaction = entityManager.getTransaction();
-			transaction.begin();
-			entityManager.persist(contact);
-			transaction.commit();
+			
+			//selected = query.getResultList();
 		}catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			entityManager.close();
 		}
+		return selected;
+	}
+	
+	//insert contact
+	public void insertContacts(Contact contact) {
+	try {
+		entityManager = JPAEntityFactory.openEntity();
+		EntityTransaction transaction = entityManager.getTransaction();
+		transaction.begin();
+		entityManager.persist(contact);
+		transaction.commit();
+	}catch (Exception e) {
+		e.printStackTrace();
+	} finally {
+		entityManager.close();
+	}
 	}
 	
 	//update contact

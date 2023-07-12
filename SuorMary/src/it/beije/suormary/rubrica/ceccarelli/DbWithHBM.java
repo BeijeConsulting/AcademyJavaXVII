@@ -81,30 +81,6 @@ public class DbWithHBM {
 		return contacts;
 	}
 	
-	
-	
-	//delete Contact equal
-	public void deleteContactEqual(Contact contact) {
-		try {
-			session = HBMsessionFactory.openSession();
-			//transaction = session.beginTransaction();
-			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.id != :ID and c.name = :nome and c.surname = :cognome and c.phoneNumber = :telefono and c.email = :mail and c.note = :note");
-			query.setParameter("nome", contact.getName());
-			query.setParameter("cognome", contact.getSurname());
-			query.setParameter("telefono", contact.getPhoneNumber());
-			query.setParameter("mail", contact.getEmail());
-			query.setParameter("note", contact.getNote());
-			query.setParameter("ID", contact.getId());
-			List<Contact> toDelete = query.getResultList();
-			deleteContact(toDelete);
-			//transaction.commit();
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			session.close();
-		}
-	}
 	// search contact with name
 	public List<Contact> searchContactsName(String name){
 		List<Contact> selected= new ArrayList<Contact>();
@@ -122,102 +98,101 @@ public class DbWithHBM {
 	}
 	
 	// search contact with surnname
-		public List<Contact> searchContactsSurname(String surname){
-			List<Contact> selected= new ArrayList<Contact>();
-			
-				try {
-					session = HBMsessionFactory.openSession();
-					Query<Contact> query =session.createQuery("SELECT c from Contact as c WHERE c.surname = :cognome");
-					query.setParameter("cognome", surname);
-					selected = query.getResultList();
-				}catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					session.close();
-				}
-			return selected;
+	public List<Contact> searchContactsSurname(String surname){
+		List<Contact> selected= new ArrayList<Contact>();
+		try {
+			session = HBMsessionFactory.openSession();
+			Query<Contact> query =session.createQuery("SELECT c from Contact as c WHERE c.surname = :cognome");
+			query.setParameter("cognome", surname);
+			selected = query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
 		}
+		return selected;
+	}
 		
 	// search contact with name and surname
 	public List<Contact> searchContactsNameSurname(String name, String surname){
-				List<Contact> selected= new ArrayList<Contact>();
-					try {
-						session = HBMsessionFactory.openSession();
-						Query<Contact> query = session.createQuery("SELECT c from Contact as c WHERE c.name = :nome and c.surname = :cognome");
-						query.setParameter("nome", name);
-						query.setParameter("cognome", surname);
-						
-						selected = query.getResultList();
-					}catch (Exception e) {
-						e.printStackTrace();
-					} finally {
-						session.close();
-					}
-				return selected;
-			}
+		List<Contact> selected= new ArrayList<Contact>();
+		try {
+			session = HBMsessionFactory.openSession();
+			Query<Contact> query = session.createQuery("SELECT c from Contact as c WHERE c.name = :nome and c.surname = :cognome");
+			query.setParameter("nome", name);
+			query.setParameter("cognome", surname);
+			
+			selected = query.getResultList();
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return selected;
+	}
 	
 	//inserti contact
 	public void insertContacts(List<Contact> contact) {
-			try {
-				session = HBMsessionFactory.openSession();
-				transaction = session.beginTransaction();
-				for(Contact c : contact) {
-					session.save(c);
-					transaction.commit();
-				}
-				System.out.println("Contatto/i inserito/i");
-			}catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				session.close();
+		try {
+			session = HBMsessionFactory.openSession();
+			transaction = session.beginTransaction();
+			for(Contact c : contact) {
+				session.save(c);
+				transaction.commit();
 			}
+			System.out.println("Contatto/i inserito/i");
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
 	}
 //	
 	//update contact
 	public void updateContact(Contact contact) {
 		System.out.println(contact.getId());
-			try {
-				session = HBMsessionFactory.openSession();
-				transaction = session.beginTransaction();
-				Query<Contact> query = session.createQuery("SELECT c from Contact as c WHERE c.id = :id");
-				query.setParameter("id", contact.getId());
-				List<Contact> selected= new ArrayList<Contact>();
-				selected = query.getResultList();
-				Contact c = selected.get(0);
-				System.out.println("contact PRE UPDATE: " + c);
-				c.setName(contact.getName());
-				c.setPhoneNumber(contact.getPhoneNumber());;
-				c.setSurname(contact.getSurname());
-				c.setEmail(contact.getEmail());
-				c.setNote(contact.getNote());
-				System.out.println("contact POST UPDATE: " + c);
-				
-				session.save(c);
-				transaction.commit();
-				System.out.println("Contatto modificato");
-			}catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				session.close();
-			}
+		try {
+			session = HBMsessionFactory.openSession();
+			transaction = session.beginTransaction();
+			Query<Contact> query = session.createQuery("SELECT c from Contact as c WHERE c.id = :id");
+			query.setParameter("id", contact.getId());
+			List<Contact> selected= new ArrayList<Contact>();
+			selected = query.getResultList();
+			Contact c = selected.get(0);
+			System.out.println("contact PRE UPDATE: " + c);
+			c.setName(contact.getName());
+			c.setPhoneNumber(contact.getPhoneNumber());;
+			c.setSurname(contact.getSurname());
+			c.setEmail(contact.getEmail());
+			c.setNote(contact.getNote());
+			System.out.println("contact POST UPDATE: " + c);
+			
+			session.save(c);
+			transaction.commit();
+			System.out.println("Contatto modificato");
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
 	}
 	
 	//delete contact
 	public void deleteContact(List<Contact> contact) {
-			try {
-				session = HBMsessionFactory.openSession();
-				
-				for(Contact c : contact) {
-					transaction = session.beginTransaction();
-					session.delete(c);
-					transaction.commit();
-				}
-				System.out.println("Contatto/i eliminato/i");
-			}catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				session.close();
+		try {
+			session = HBMsessionFactory.openSession();
+			
+			for(Contact c : contact) {
+				transaction = session.beginTransaction();
+				session.delete(c);
+				transaction.commit();
 			}
+			System.out.println("Contatto/i eliminato/i");
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
 	}
 	
 	//find multiple contacts
@@ -235,5 +210,28 @@ public class DbWithHBM {
 		}
 		return occCon;
 	}
+	
+	//delete Contact equal
+		public void deleteContactEqual(Contact contact) {
+			try {
+				session = HBMsessionFactory.openSession();
+				//transaction = session.beginTransaction();
+				Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.id != :ID and c.name = :nome and c.surname = :cognome and c.phoneNumber = :telefono and c.email = :mail and c.note = :note");
+				query.setParameter("nome", contact.getName());
+				query.setParameter("cognome", contact.getSurname());
+				query.setParameter("telefono", contact.getPhoneNumber());
+				query.setParameter("mail", contact.getEmail());
+				query.setParameter("note", contact.getNote());
+				query.setParameter("ID", contact.getId());
+				List<Contact> toDelete = query.getResultList();
+				deleteContact(toDelete);
+				//transaction.commit();
+				
+			}catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				session.close();
+			}
+		}
 	
 }
