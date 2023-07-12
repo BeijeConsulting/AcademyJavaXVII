@@ -405,10 +405,65 @@ public class RubricaUtils {
 				
 				Query<Contatto> query=null;
 				
-				query = session.createQuery("SELECT c FROM Contact as c");
+				query = session.createQuery("SELECT c FROM Contatto as c");
 				
 				
 				contacts = query.getResultList();
+							
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				session.close();
+			}
+			
+		return contacts;
+	}
+	
+public List<Contatto> loadRubricaFromDBJOIN(){
+		
+		//Configuration configuration = new Configuration().configure("/hibernate.cfg.xml")
+					//.addAnnotatedClass(Contact.class);
+			
+		//	SessionFactory factory = configuration.buildSessionFactory();
+			
+			Session session = null;
+			List<Contatto> contacts=null;
+			List<ContactDetail>contactd=null;
+			
+			try {
+				session = HBMsessionFactory.openSession();
+				
+			
+				//Transaction transaction = session.beginTransaction();
+				
+				Contatto contact = null;
+				
+				Query<Contatto> query=null;
+				
+				query = session.createQuery("SELECT c FROM Contatto as c");
+				
+				//SELECT c FROM Contact as c
+				contacts = query.getResultList();
+				
+				/*for(int i=0; i<contacts.size(); i++) {
+					List<ContactDetail> cd = new ArrayList<ContactDetail>();
+					query = session.createQuery("SELECT cd FROM ContactDetail AS cd WHERE id_rubrica=");
+				}*/
+				
+				ContactDetail cd = null;
+				Query<ContactDetail> q = null;
+				q=session.createQuery("SELECT cd FROM ContactDetail as cd");
+				contactd = q.getResultList();
+				
+				
+				for(Contatto c: contacts) {
+					for(ContactDetail c1 : contactd) {
+						if(c.getId()==c1.getId_contact()) {
+							c.
+						}
+					}
+				}
 							
 				
 			} catch (Exception e) {

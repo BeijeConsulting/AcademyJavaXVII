@@ -1,11 +1,15 @@
 package it.beije.suormary.web.sala;
 
-	import javax.persistence.Column;
+	import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Column;
 	import javax.persistence.Entity;
 	import javax.persistence.GeneratedValue;
 	import javax.persistence.GenerationType;
 	import javax.persistence.Id;
-	import javax.persistence.Table;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 	import javax.persistence.Transient;
 
 
@@ -17,7 +21,18 @@ package it.beije.suormary.web.sala;
 		@GeneratedValue(strategy=GenerationType.IDENTITY)
 		@Column(name = "id")
 		private int id;
+		
+		@Transient
+		private List<ContactDetail> detail;
 
+		public List<ContactDetail> getDetail() {
+			return detail;
+		}
+
+		public void setDetail(List<ContactDetail> detail) {
+			//this.detail = detail;
+			this.detail=new 
+		}
 		@Column(name = "nome")
 		private String name;
 		
@@ -57,6 +72,7 @@ package it.beije.suormary.web.sala;
 		    //}
 		    this.name = name;
 		    this.surname=surname;
+		    this.detail= new ArrayList<>();
 		}
 		
 		public Contatto(String name, String surname, String phoneNumber ) {
@@ -70,6 +86,7 @@ package it.beije.suormary.web.sala;
 		    this.phoneNumber=phoneNumber;
 		    this.email=email;
 		    this.note=note;
+		    this.detail= new ArrayList<>();
 		}
 		@Transient
 		private long count;
@@ -80,6 +97,7 @@ package it.beije.suormary.web.sala;
 		    this.email=email;
 		    this.note=note;
 		    this.count=count;
+		    this.detail= new ArrayList<>();
 		}
 		
 		public Contatto() {
@@ -89,6 +107,7 @@ package it.beije.suormary.web.sala;
 		    this.phoneNumber=phoneNumber;
 		    this.email=email;
 		    this.note=note;
+		    this.detail= new ArrayList<>();
 		}
 		public int getId() {
 			return id;

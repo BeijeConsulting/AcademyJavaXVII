@@ -137,7 +137,9 @@ public class GestoreRubrica {
 		//List<Contatto> contatti=RubricaUtilsJPA.loadRubricaFromDBOrdinata(ordine);
 		//List<Contatto> contatti=RubricaUtilsJPA.loadRubricaFromDBOrdinataCON(ordine);
 		
-		List<Contatto> contatti=RubricaUtilsJPA.loadRubricaFromDBCON();
+		//List<Contatto> contatti=RubricaUtilsJPA.loadRubricaFromDBCON();
+		
+		List<Contatto> contatti=ru.loadRubricaFromDBJOIN();
 		
 		//MOSTRO QUELLI CHE HO NEL DB
 		 
