@@ -48,6 +48,8 @@ public class EditServlet extends HttpServlet {
 
 			JPAUtils.editContact(id, name, surname, notes);
 			
+			request.getSession().setAttribute("message", "Modifica contatto salvata correttamente");
+			
 		} else { 
 			if(request.getParameter("saveRef") != null){
 				// caso saveRef
@@ -62,24 +64,38 @@ public class EditServlet extends HttpServlet {
 
 				JPAUtils.editContactDetail(idDetail, label, detail, type);
 				
+				request.getSession().setAttribute("message", "Modifica ref. contatto salvata correttamente");
+				
 			}else {
-				String label = request.getParameter("label");
-				String detail = request.getParameter("detail");
-				String type = request.getParameter("type");
 				
-				int idContact = Integer.valueOf((String)request.getParameter("id"));
-				
-				ContactDetail cd = new ContactDetail();
-				cd.setId_contact(idContact);
-				cd.setLabel(label);
-				cd.setType(type.charAt(0));
-				cd.setDetail(detail);
-				
-				JPAUtils.addContactDetail(cd);
+				if(request.getParameter("saveNewRef") != null) {
+					String label = request.getParameter("label");
+					String detail = request.getParameter("detail");
+					String type = request.getParameter("type");
+					
+					int idContact = Integer.valueOf((String)request.getParameter("id"));
+					
+					ContactDetail cd = new ContactDetail();
+					cd.setId_contact(idContact);
+					cd.setLabel(label);
+					cd.setType(type.charAt(0));
+					cd.setDetail(detail);
+					
+					JPAUtils.addContactDetail(cd);
+					
+					request.getSession().setAttribute("message", "Ref. contatto inserito correttamente");
+					
+				}else {
+					int idDetail = Integer.valueOf(request.getParameter("idRef"));
+					JPAUtils.deleteContactDetail(idDetail);
+					
+					request.getSession().setAttribute("message", "Ref. contatto eliminato correttamente");
+				}	
+			
 			}
 			
 		}
-		request.getSession().setAttribute("message", "Modifica salvata correttamente");
+		
 		
 		response.sendRedirect("./EditServlet?id=" + request.getParameter("id"));
 	}

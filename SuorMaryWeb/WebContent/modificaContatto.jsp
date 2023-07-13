@@ -24,7 +24,7 @@
 	if (message != null) {
 		%>
 		<div style="margin: auto; padding: 25px;">
-			<p style="color:red"><%= message %></p>
+			<p style="color:green"><%= message %></p>
 		</div>
 		
 		<%
@@ -74,6 +74,7 @@
 				<label>Telefono</label><br/>
 				<input type="radio" value="E" name="type" <%=(cd.getType() == 'E'?"checked":"")%>/>
 				<label>Email</label><br/><br/>
+				<input style="width: 100px; text-align: center; font-size: 16px; float:left; background-color: #EB6666" name="deleteRef" type="submit" value="Elimina" />
 				<input style="width: 100px; text-align: center; font-size: 16px; float:right" name="saveRef" type="submit" value="Salva" />
 			</form>
 			</div>

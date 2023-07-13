@@ -267,4 +267,23 @@ public class JPAUtils {
 		}
 	}
 	
+	public static void deleteContactDetail(int idCd) {
+		EntityManager entityManager = null;
+		ContactDetail contactDetail = null;
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();
+			
+			contactDetail = entityManager.find(ContactDetail.class, idCd);	
+			
+			EntityTransaction transaction = entityManager.getTransaction();
+			
+			transaction.begin();
+			entityManager.remove(contactDetail);
+			transaction.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
+	}
 }
