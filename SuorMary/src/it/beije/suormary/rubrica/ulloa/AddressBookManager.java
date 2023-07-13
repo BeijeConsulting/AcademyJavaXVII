@@ -73,7 +73,7 @@ public class AddressBookManager {
 	                running = false;
 	                System.out.println("Arrivederci!");
 	                scanner.close();
-	                RubricaUtils.closeEntityManager();
+	                //RubricaUtils.closeEntityManager();
 	                break;
 	            default:
 	                System.out.println("Scelta non valida.");

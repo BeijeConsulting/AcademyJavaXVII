@@ -70,7 +70,7 @@ public class RubricaUtils {
 	}
 	
 	public static void closeEntityManager() {
-		EntityManager entityManager = JPAentityManager.getEntityManager();
+		EntityManager entityManager = JPAentityManagerFactory.getEntityManager();
 		entityManager.close();
 	}
 	
@@ -268,7 +268,7 @@ public class RubricaUtils {
 		try {
 			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
 			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
-			entityManager = JPAentityManager.getEntityManager();
+			entityManager = JPAentityManagerFactory.getEntityManager();
 			//EntityTransaction transaction = entityManager.getTransaction();
 			//transaction.begin();
 			
@@ -278,13 +278,13 @@ public class RubricaUtils {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		} /*finally {
+		} finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}*/
+		}
 		return contatti;
 	}
 	
@@ -514,7 +514,7 @@ public class RubricaUtils {
 		try {
 			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
 			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
-			entityManager = JPAentityManager.getEntityManager();
+			entityManager = JPAentityManagerFactory.getEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
 			
 			Contact contact;
@@ -543,13 +543,13 @@ public class RubricaUtils {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		} /*finally {
+		} finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}*/
+		}
 	}
 	
 	public void writeRubricaXML(List<Contact> contatti, String pathFile) {
@@ -730,7 +730,7 @@ public class RubricaUtils {
 		try {
 			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
 			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
-			entityManager = JPAentityManager.getEntityManager();
+			entityManager = JPAentityManagerFactory.getEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
 			
@@ -757,13 +757,13 @@ public class RubricaUtils {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		} /*finally {
+		} finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}*/
+		}
 	}
 	
 	public void updateContactJDBC(int id, Contact contatto) {
@@ -879,7 +879,7 @@ public class RubricaUtils {
 		try {
 			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
 			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
-			entityManager = JPAentityManager.getEntityManager();
+			entityManager = JPAentityManagerFactory.getEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
 			Contact contact = null;
@@ -904,13 +904,13 @@ public class RubricaUtils {
 				}	
 		} catch (Exception e) {
 			e.printStackTrace();
-		} /*finally {
+		} finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}*/
+		}
 	}
 	
 	public void deleteContactJDBC(int id) {
@@ -991,7 +991,7 @@ public class RubricaUtils {
 		try {
 			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
 			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
-			entityManager = JPAentityManager.getEntityManager();
+			entityManager = JPAentityManagerFactory.getEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
 			
@@ -1009,13 +1009,13 @@ public class RubricaUtils {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		} /*finally {
+		} finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}*/
+		}
 	}
 	
 	public void deleteContactJDBC(List<Contact> contatti) {
@@ -1116,7 +1116,7 @@ public class RubricaUtils {
 		try {
 			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
 			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
-			entityManager = JPAentityManager.getEntityManager();
+			entityManager = JPAentityManagerFactory.getEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
 			Contact contact = null;
 			
@@ -1141,13 +1141,13 @@ public class RubricaUtils {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		} /*finally {
+		} finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}*/
+		}
 	}
 	
 	public List<Contact> getDuplicateContacts() {
@@ -1157,7 +1157,7 @@ public class RubricaUtils {
 		try {
 			/*EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
 			EntityManager entityManager = entityManagerFactory.createEntityManager();*/
-			entityManager = JPAentityManager.getEntityManager();
+			entityManager = JPAentityManagerFactory.getEntityManager();
 			transaction = entityManager.getTransaction();
 	        transaction.begin();
 	        
@@ -1196,13 +1196,13 @@ public class RubricaUtils {
 	            transaction.rollback();
 	        }
 			e.printStackTrace();
-		} /*finally {
+		} finally {
 			try {
 				entityManager.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}*/
+		}
 		return contatti;
 	}
 	
