@@ -9,15 +9,14 @@ public class JPAentity {
 	
 	private JPAentity() {};
 	
-	private static EntityManager entityManager;
+	private static EntityManagerFactory entityManagerFactory;
 	
 	public static EntityManager getEntityManager() {
-		if(entityManager == null) {
-			EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
-			
-			entityManager = entityManagerFactory.createEntityManager();
+		if(entityManagerFactory == null) {
+			entityManagerFactory = Persistence.createEntityManagerFactory("SuorMary");
+
 		}
-		return entityManager;
+		return entityManagerFactory.createEntityManager();
 	}
 
 }

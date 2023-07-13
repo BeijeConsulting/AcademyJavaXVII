@@ -42,42 +42,48 @@ public class RubricaServlet extends HttpServlet {
 //		StringBuilder contatti = new StringBuilder();
 //		
 //		if (scelta!=null && scelta.equals("Visualizza lista contatti completa")) {
-//		List<Contact> rubrica = DBthroughHBM.listContacts();
+//		List<Contact> rubrica = DBthroughJPA.listContacts();
 //		for(Contact contact : rubrica) {
 //			contatti.append(contact.toString()).append(" \n");
 //		}	
 //		response.getWriter().append(contatti.toString());
-		
 		
 		String sceltaString = request.getParameter("scelta");
 		if (sceltaString!=null) {
 			switch (sceltaString) {
 			case "Visualizza lista contatti completa":
 				response.sendRedirect("elencorubrica.jsp");
+				sceltaString = null;
 				break;
 			case "Cerca contatto":
-				
+				response.sendRedirect("ricerca_contatto.jsp");
+				sceltaString = null;
 				break;
 			case "Inserisci nuovo contatto":
-				
+				response.sendRedirect("insert_contact.jsp");
+				sceltaString = null;
 				break;
 			case "Modifica contatto":
 
+				sceltaString = null;
 				break;
 			case "Cancella contatto":
-				
+				response.sendRedirect("delete_contact.jsp");
+				sceltaString = null;
 				break;
 			case "Trova contatti doppi":
 				
+				sceltaString = null;
 				break;
 			case "Unisci contatti doppi":
-				
+				sceltaString = null;
 				break;
 			default: response.sendRedirect("menuscelta.jsp");
+				sceltaString = null;
 				break;
-			}
-
-		}
+		} 		
+	} else {
+		doGet(request,response);
 	}
 
-}
+	}}

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.persistence.EntityTransaction;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -42,9 +44,11 @@ public class DBthroughHBM {
 			
 			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c"); //SELECT * FROM rubrica
 			contacts = query.getResultList();
+			session.close();
 		} else {
 			System.out.println("errore connesione");
 		}
+		
 		return contacts;
 		
 	}
@@ -74,6 +78,7 @@ public class DBthroughHBM {
 			
 			for (Contact c : contacts) 
 				System.out.println(c);
+			session.close();
 		} else {
 			System.out.println("errore connesione");
 		}
@@ -263,8 +268,87 @@ public class DBthroughHBM {
 			
 		} else 
 			System.out.println("errore connesione");
-		
-		
 	}	
 	
+	public static List<Contact> findContacts(String search) {
+		List<Contact> contacts = null;
+		
+		if(connection()) {
+			SessionFactory factory = configuration.buildSessionFactory();
+			
+			Session session = factory.openSession();
+
+			
+			Query query = session.createQuery("SELECT c from Contact as c WHERE c.name LIKE :nome OR c.surname LIKE :cognome "
+					+ "OR c.phoneNumber LIKE :telefono OR c.email LIKE :email OR c.note LIKE :note");
+						
+			query.setParameter("nome", search);
+			query.setParameter("cognome", search);
+			query.setParameter("telefono", search);
+			query.setParameter("email", search);
+			query.setParameter("note", search);
+
+			contacts = query.getResultList();
+			session.close();
+			
+		} else {
+			System.out.println("errore connesione");
+		}
+		return contacts;
+		
+	}
+	
+	public static void insertContact(Contact contact) {
+		if(connection()) {
+			SessionFactory factory = configuration.buildSessionFactory();
+			
+			Session session = factory.openSession();
+		
+		Transaction transaction = session.beginTransaction();
+		
+		session.save(contact);
+		
+		transaction.commit();
+		session.close();
+		} else {
+			System.out.println("errore connesione");
+		}
+		
+	}
+
+	public static boolean deleteContact(int id) {
+		
+		List<Contact> contatti = null;
+		Contact contact = null;
+		
+		if(connection()) {
+			SessionFactory factory = configuration.buildSessionFactory();
+			
+			Session session = factory.openSession();
+			Transaction transaction = session.beginTransaction();
+			
+			Query<Contact> query = session.createQuery("SELECT c FROM Contact as c WHERE c.id LIKE :id"); //SELECT * FROM rubrica
+			query.setParameter("id", id);
+			contact = query.getSingleResult();
+		
+		
+		session.delete(contact);
+		
+		
+		transaction.commit();
+		session.close();
+			
+		return true;
+		} else {
+			System.out.println("errore connesione");
+			return false;
+		}
+		
+	}
+
+	public static Contact getContactFromId(int id) {
+		
+		
+		return contact
+	}
 }

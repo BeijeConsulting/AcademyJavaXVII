@@ -6,7 +6,7 @@
 <meta charset="ISO-8859-1">
 <title>MenuScelta</title>
 </head>
-<body>
+<body style="font-size:20px;">
 <p>
 
 	<form action="./rubrica" method="POST">
@@ -24,7 +24,7 @@
 		<label for="scelta">Trova contatti doppi</label><br>
 		<input type="radio" id="scelta" name="scelta" value="Unisci contatti doppi">
 		<label for="scelta">Unisci contatti doppi</label><br>
-	<input type="submit" value="invio">
+		<input type="submit" value="invio">
 	</form>
 </p>
 </body>

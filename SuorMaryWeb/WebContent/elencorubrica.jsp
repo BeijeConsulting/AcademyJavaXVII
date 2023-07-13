@@ -10,12 +10,11 @@
 <title>Elenco Contatti</title>
 
 </head>
-<body>
+<body style="font-size:20px;">
 	
 <p>
 <%
 		String elenco ="";
-		StringBuilder contatti = new StringBuilder();
 		List<Contact> rubrica = DBthroughHBM.listContacts();
 		for(Contact contact : rubrica) {
 			//contatti.append(contact.toString() + " \n").append(" \n");
@@ -25,6 +24,8 @@
 		//elenco=contatti.toString();%>
 
 </p>
-
+<form action="./rubrica" method="post">
+	<input type="submit" value="Indietro">
+</form>
 </body>
 </html>
