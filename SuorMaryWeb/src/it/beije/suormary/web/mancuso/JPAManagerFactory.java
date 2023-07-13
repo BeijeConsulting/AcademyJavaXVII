@@ -8,14 +8,14 @@ public class JPAManagerFactory {
 	
 	private JPAManagerFactory() {}
 	
-	private static EntityManager instance;
+	private static EntityManagerFactory instance;
 	
 	public static EntityManager getEntityManager() {
 		if(instance == null) {
-			EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("SuorMaryWeb");
-			instance = entityManagerFactory.createEntityManager();
+			instance = Persistence.createEntityManagerFactory("SuorMaryWeb");
+			
 		}
 		//System.out.println(instance);
-		return instance;
+		return instance.createEntityManager();
 	}
 }

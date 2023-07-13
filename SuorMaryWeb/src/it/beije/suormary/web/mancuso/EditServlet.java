@@ -47,9 +47,8 @@ public class EditServlet extends HttpServlet {
 			String name = request.getParameter("nome");
 			String surname = request.getParameter("cognome");
 			String notes = request.getParameter("note");
-			
-			Contact contact = JPAUtils.getContact(id);
-			JPAUtils.editContact(contact, name, surname, notes);
+
+			JPAUtils.editContact(id, name, surname, notes);
 			
 		} else { // caso saveRef
 			//System.out.println("id" + request.getParameter("idRef"));
@@ -60,11 +59,10 @@ public class EditServlet extends HttpServlet {
 			String label = request.getParameter("label");
 			String detail = request.getParameter("detail");
 			String type = request.getParameter("type");
-			
-			ContactDetail cd = JPAUtils.getContactDetail(idDetail);
-			JPAUtils.editContactDetail(cd, label, detail, type);
+
+			JPAUtils.editContactDetail(idDetail, label, detail, type);
 		}
-		request.setAttribute("message", "Modifica salvata correttamente");
+		request.getSession().setAttribute("message", "Modifica salvata correttamente");
 		
 		response.sendRedirect("./EditServlet?id=" + request.getParameter("id"));
 	}

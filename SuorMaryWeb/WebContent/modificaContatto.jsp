@@ -19,11 +19,19 @@
 	<div style="margin: auto; padding: 25px;">
 		<a href="./RubricaServlet"><button style="background-color: #2A2A2A"><span style="color: #C6C6C6">Indietro</span></button></a>
 	</div>
-	<% if(request.getAttribute("message") != null){ %>
-	<div style="margin: auto; padding: 25px;">
-		<p style="color: red"><%=request.getAttribute("message")%></p>
-	</div>
-	<%} %>
+	<%
+	String message = (String) session.getAttribute("message");
+	if (message != null) {
+		%>
+		<div style="margin: auto; padding: 25px;">
+			<p style="color:red"><%= message %></p>
+		</div>
+		
+		<%
+		
+		session.removeAttribute("message");
+	}
+	%>
 	<div style="margin: auto; padding: 50px; background-color: #404040">
 		<form method="POST" action="./EditServlet">
 			<input type="hidden" name="id" value="<%=contact.getId() %>" />

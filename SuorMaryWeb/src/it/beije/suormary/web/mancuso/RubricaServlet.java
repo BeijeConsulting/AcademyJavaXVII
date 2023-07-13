@@ -38,8 +38,13 @@ public class RubricaServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		int idContatto = Integer.valueOf((String)(request.getParameter("idContatto")));
+		
+		JPAUtils.deleteContact(idContatto);
+		
+		request.getSession().setAttribute("message", "Contatto eliminato");
+		
+		response.sendRedirect("./rubrica.jsp");
 	}
 
 }

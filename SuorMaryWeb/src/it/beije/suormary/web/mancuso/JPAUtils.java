@@ -63,7 +63,7 @@ public class JPAUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			//entityManager.close();
+			entityManager.close();
 		}
 		return contacts;
 	}
@@ -91,7 +91,7 @@ public class JPAUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			//entityManager.close();
+			entityManager.close();
 		}
 		return contacts;
 	}
@@ -101,17 +101,6 @@ public class JPAUtils {
 		List<Contact> contacts = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
-			
-			/*CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-			
-			CriteriaQuery<Contact> cq = cb.createQuery(Contact.class);
-			Root<Contact> from = cq.from(Contact.class);
-			
-			cq.select(from);
-			
-			TypedQuery<Contact> typedQuery = entityManager.createQuery(cq);
-			contacts = typedQuery.getResultList();*/
-			
 			
 			Query query = entityManager.createQuery("SELECT c FROM Contact as c ");
 			contacts = query.getResultList();
@@ -128,36 +117,20 @@ public class JPAUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			//entityManager.close();
+			entityManager.close();
 		}
 		return contacts;
 	}
 	
 	// c must have been previously read by the db
-	public static void editContact(Contact c, String name, String surname, String notes) {
+	public static void editContact(int id, String name, String surname, String notes) {
 		EntityManager entityManager = null;
+		Contact c = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
+			c = entityManager.find(Contact.class, id);		
+			
 			EntityTransaction transaction = entityManager.getTransaction();
-			
-			/*CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-				
-			CriteriaUpdate<Contact> criteriaUpdate = cb.createCriteriaUpdate(Contact.class);
-			
-			Root<Contact> contact = criteriaUpdate.from(Contact.class);
-			
-			transaction.begin();
-			
-			criteriaUpdate.set(contact.get("firstName"), name)
-				.set(contact.get("lastName"), surname)
-				.set(contact.get("phoneNumber"), phone)
-				.set(contact.get("email"), email)
-				.set(contact.get("notes"), notes)
-				.where(cb.equal(contact.get("id"), c.getId()));
-			
-			int i = entityManager.createQuery(criteriaUpdate).executeUpdate();
-			
-			transaction.commit();*/
 			
 			transaction.begin();
 			
@@ -172,7 +145,7 @@ public class JPAUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			//entityManager.close();
+			entityManager.close();
 		}
 	}
 	
@@ -187,22 +160,25 @@ public class JPAUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			//entityManager.close();
+			entityManager.close();
 		}
 	}
 	
-	public static void deleteContact(Contact c) {
+	public static void deleteContact(int id) {
 		EntityManager entityManager = null;
+		Contact contact = null;
 		try {
-			entityManager = JPAManagerFactory.getEntityManager();	
+			entityManager = JPAManagerFactory.getEntityManager();
+			contact = entityManager.find(Contact.class, id);		
+
 			EntityTransaction transaction = entityManager.getTransaction();
 			transaction.begin();
-			entityManager.remove(c);
+			entityManager.remove(contact);
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			//entityManager.close();
+			entityManager.close();
 		}
 	}
 	
@@ -214,16 +190,6 @@ public class JPAUtils {
 	
 			contact = entityManager.find(Contact.class, id);		
 
-			/*CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-			
-			CriteriaQuery<Contact> cq = cb.createQuery(Contact.class);
-			Root<Contact> rootContact = cq.from(Contact.class);
-			
-			cq.select(rootContact).where(cb.equal(rootContact.get("id"), id));
-			
-			TypedQuery<Contact> typedQuery = entityManager.createQuery(cq);
-			contact = typedQuery.getSingleResult();*/
-			
 			List<ContactDetail> cds = new ArrayList<ContactDetail>();
 			Query query = entityManager.createQuery("SELECT cd FROM ContactDetail AS cd WHERE id_contact = :contact");
 			query.setParameter("contact", contact.getId());
@@ -234,7 +200,7 @@ public class JPAUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			//entityManager.close();
+			entityManager.close();
 		}
 		return contact;
 	}
@@ -250,31 +216,33 @@ public class JPAUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			//entityManager.close();
+			entityManager.close();
 		}
 		return contactDetail;
 	}
 	
-	public static void editContactDetail(ContactDetail cd, String label, String detail, String type) {
+	public static void editContactDetail(int idCd, String label, String detail, String type) {
 		EntityManager entityManager = null;
+		ContactDetail contactDetail = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
+			
+			contactDetail = entityManager.find(ContactDetail.class, idCd);	
+			
 			EntityTransaction transaction = entityManager.getTransaction();
 			
 			transaction.begin();
 			
-			cd.setLabel(label);
-			cd.setDetail(detail);
-			//c.setEmail(email);
-			//c.setPhoneNumber(phone);
-			cd.setType(type.charAt(0));
+			contactDetail.setLabel(label);
+			contactDetail.setDetail(detail);
+			contactDetail.setType(type.charAt(0));
 
-			entityManager.persist(cd);
+			entityManager.persist(contactDetail);
 			transaction.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			//entityManager.close();
+			entityManager.close();
 		}
 	}
 	
