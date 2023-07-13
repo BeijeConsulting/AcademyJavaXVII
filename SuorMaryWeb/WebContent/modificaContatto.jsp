@@ -9,7 +9,7 @@
 <meta charset="ISO-8859-1">
 <title>Modifica</title>
 </head>
-<body style="background-color: black; color: #C6C6C6; font-family: Arial, Helvetica, sans-serif;">
+<body style="background-color: #0E0E0E; color: #C6C6C6; font-family: Arial, Helvetica, sans-serif;">
 	<% 
 	   Contact contact = (Contact)request.getAttribute("contact");
 	%>
@@ -58,7 +58,7 @@
 	</div>
 	<div style="margin: auto; padding: 25px; background-color: #404040">
 		<%for(ContactDetail cd : contact.getDetail()){%>
-			<div style="display: inline-block; *display: inline; zoom: 1; vertical-align: top; padding: 10px; margin-right: 15px; border: 1px solid;">
+			<div style="display: inline-block; *display: inline; zoom: 1; vertical-align: top; padding: 10px; margin-right: 15px; border: 1px solid; background-color: #1B1B1B">
 				<b>Ref. Contatto</b>
 				<hr/>
 				<br/>
@@ -82,7 +82,7 @@
 		<%}%>
 		
 		<div style="display: inline-block; *display: inline; zoom: 1; vertical-align: top; padding: 10px; margin-right: 15px; border: 1px solid; background-color: #1B1B1B">
-				<b>Nuovo Ref. Contatto</b>
+				<b><span style="color: green">Nuovo Ref. Contatto</span></b>
 				<hr/>
 				<br/>
 				<form method="POST" action="./EditServlet">

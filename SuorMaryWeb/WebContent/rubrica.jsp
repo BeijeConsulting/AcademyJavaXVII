@@ -10,7 +10,7 @@
 <meta charset="ISO-8859-1">
 <title>Rubrica</title>
 </head>
-<body style="background-color: black; color: #C6C6C6; font-family: Arial, Helvetica, sans-serif;">
+<body style="background-color: #0E0E0E; color: #C6C6C6; font-family: Arial, Helvetica, sans-serif;">
 <div style="margin: auto; padding: 20px; text-align: center">
 	<h2>Rubrica Contatti</h2>
 </div>
