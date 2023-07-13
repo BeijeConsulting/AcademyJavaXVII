@@ -40,9 +40,7 @@ public class EditServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String button = request.getParameter("saveContact");
-		
-		if(button != null) { // caso saveContact
+		if(request.getParameter("saveContact") != null) { // caso saveContact
 			int id = Integer.valueOf(request.getParameter("id"));
 			String name = request.getParameter("nome");
 			String surname = request.getParameter("cognome");
@@ -50,17 +48,36 @@ public class EditServlet extends HttpServlet {
 
 			JPAUtils.editContact(id, name, surname, notes);
 			
-		} else { // caso saveRef
-			//System.out.println("id" + request.getParameter("idRef"));
-			//System.out.println("label" + request.getParameter("label"));
-			//System.out.println("detail" + request.getParameter("detail"));
-			int idDetail = Integer.valueOf(request.getParameter("idRef"));
-			
-			String label = request.getParameter("label");
-			String detail = request.getParameter("detail");
-			String type = request.getParameter("type");
+		} else { 
+			if(request.getParameter("saveRef") != null){
+				// caso saveRef
+				//System.out.println("id" + request.getParameter("idRef"));
+				//System.out.println("label" + request.getParameter("label"));
+				//System.out.println("detail" + request.getParameter("detail"));
+				int idDetail = Integer.valueOf(request.getParameter("idRef"));
+				
+				String label = request.getParameter("label");
+				String detail = request.getParameter("detail");
+				String type = request.getParameter("type");
 
-			JPAUtils.editContactDetail(idDetail, label, detail, type);
+				JPAUtils.editContactDetail(idDetail, label, detail, type);
+				
+			}else {
+				String label = request.getParameter("label");
+				String detail = request.getParameter("detail");
+				String type = request.getParameter("type");
+				
+				int idContact = Integer.valueOf((String)request.getParameter("id"));
+				
+				ContactDetail cd = new ContactDetail();
+				cd.setId_contact(idContact);
+				cd.setLabel(label);
+				cd.setType(type.charAt(0));
+				cd.setDetail(detail);
+				
+				JPAUtils.addContactDetail(cd);
+			}
+			
 		}
 		request.getSession().setAttribute("message", "Modifica salvata correttamente");
 		

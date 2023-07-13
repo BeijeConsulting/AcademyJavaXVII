@@ -149,7 +149,7 @@ public class JPAUtils {
 		}
 	}
 	
-	public static void addContact(Contact c) {
+	public static int addContact(Contact c) {
 		EntityManager entityManager = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();	
@@ -157,11 +157,13 @@ public class JPAUtils {
 			transaction.begin();
 			entityManager.persist(c);
 			transaction.commit();
+			entityManager.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			entityManager.close();
 		}
+		return c.getId();
 	}
 	
 	public static void deleteContact(int id) {
@@ -219,6 +221,25 @@ public class JPAUtils {
 			entityManager.close();
 		}
 		return contactDetail;
+	}
+	
+	public static int addContactDetail(ContactDetail cd) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			
+			transaction.begin();
+			entityManager.persist(cd);
+			transaction.commit();
+			
+			entityManager.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
+		return cd.getId();
 	}
 	
 	public static void editContactDetail(int idCd, String label, String detail, String type) {

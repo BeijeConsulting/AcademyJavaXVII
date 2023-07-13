@@ -80,6 +80,25 @@
 				
 		<%}%>
 		
+		<div style="display: inline-block; *display: inline; zoom: 1; vertical-align: top; padding: 10px; margin-right: 15px; border: 1px solid; background-color: #1B1B1B">
+				<b>Nuovo Ref. Contatto</b>
+				<hr/>
+				<br/>
+				<form method="POST" action="./EditServlet">
+				<input type="hidden" name="id" value="<%=contact.getId() %>" />
+				<label>Label</label>
+				<input style="float: right; background-color: #2A2A2A; color: #C6C6C6" name="label" type="text"/><br/><br/>
+				<label style="margin-right: 10px">Contatto</label>
+				<input style="float: right; background-color: #2A2A2A; color: #C6C6C6" name="detail" type="text"/><br/><br/>
+				<label>Tipo</label><br/>
+				<input type="radio" value="T" name="type" checked/>
+				<label>Telefono</label><br/>
+				<input type="radio" value="E" name="type"/>
+				<label>Email</label><br/><br/>
+				<input style="width: 100px; text-align: center; font-size: 16px; float:right" name="saveNewRef" type="submit" value="Salva" />
+			</form>
+			</div>
+		
 		
 	</div>
 </body>

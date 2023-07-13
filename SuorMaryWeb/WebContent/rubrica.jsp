@@ -27,7 +27,9 @@ if (message != null) {
 	session.removeAttribute("message");
 }
 %>
+
 <div style="margin: auto; padding: 50px; background-color: #404040">
+	
 	<table style="border: 1px solid; border-collapse: collapse; width: 50%; margin: auto; background-color: #232323">
 		<tr style="border: 1px solid #C6C6C; border-collapse: collapse; text-align: center; background-color: #C6C6C6; color:#2A2A2A">
 			<th style="border: 1px solid #C6C6C; border-collapse: collapse; padding: 3px">Nome</th>
@@ -36,7 +38,7 @@ if (message != null) {
 			<th style="border: 1px solid #C6C6C; border-collapse: collapse;">Email</th>
 			<th style="border: 1px solid #C6C6C; border-collapse: collapse;">Note</th>
 			<th></th>
-			<th></th>
+			<th><a href="./NewContactServlet"><button style="background-color: #A8DC9A">Nuovo contatto</button></a></th>
 		</tr>
 		<%
 		List<Contact> contacts = JPAUtils.getAllContacts();
