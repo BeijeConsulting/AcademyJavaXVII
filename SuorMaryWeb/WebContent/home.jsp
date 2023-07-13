@@ -38,6 +38,10 @@ for(Contact c : contacts){
 		<input type="hidden" name="id" value="<%= cd.getId() %>">
 		<input type="submit" value="Modifica riferimento" class="button"/> <br> <br>
 		</form>
+		<form action="DeleteContactDetail" method= "GET">
+		<input type="hidden" name="id" value="<%= cd.getId() %>">
+		<input type="submit" value="Elimina riferimento" class="button"/> <br> <br>
+		</form>
 		<%
 		out.println("</div>");
 	}

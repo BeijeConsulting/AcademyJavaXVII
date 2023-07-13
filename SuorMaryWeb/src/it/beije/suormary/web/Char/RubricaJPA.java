@@ -212,6 +212,23 @@ public class RubricaJPA {
 				entityManager.close();
 			}
 		}
+		public static void deleteContactDetail(String idString, EntityManager entityManager) {
+			int id = Integer.parseInt(idString);
+			try {
+				Query query = entityManager.createQuery("SELECT cd FROM ContactDetail as cd WHERE cd.id = :id");
+				query.setParameter("id", id);
+				EntityTransaction transaction = entityManager.getTransaction();
+				transaction.begin();
+				ContactDetail contactDetail = (ContactDetail) query.getSingleResult();
+				entityManager.remove(contactDetail);
+				transaction.commit();
+				
+			} catch(Exception e) {
+				e.printStackTrace();
+			} finally {
+				entityManager.close();
+			}
+		}
 		public static Contact findContactById(EntityManager entityManager,String idString) {
 			int id = Integer.parseInt(idString);
 			Contact c = null;
