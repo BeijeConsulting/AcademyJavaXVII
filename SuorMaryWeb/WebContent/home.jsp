@@ -10,6 +10,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="style.css">
 <title>Rubrica</title>
 </head>
 <body>
@@ -28,15 +29,17 @@ for(Contact c : contacts){
 	<h2><%= c.getName() + " " + c.getSurname() %></h2>
 	<%
 	for(ContactDetail cd : c.getContactDetails()){
+		out.println("<div class='cont'>");
 		if(cd.getTipo().equals('T')) out.print("<span>" + "Telefono " + cd.getLabel() + " : " + cd.getContatto() + "</span>");
 		else if (cd.getTipo().equals('E')) out.print("<span>" + "Email " + cd.getLabel() + " : " + cd.getContatto()  + "</span>");
 		else  out.print("<h4>" + cd.getLabel() + " : " +  cd.getContatto() + "</h4>");
 		%>
 		<form action="updateContactDetail.jsp" method= "GET">
 		<input type="hidden" name="id" value="<%= cd.getId() %>">
-		<input type="submit" value="Modifica riferimento" /> <br> <br>
+		<input type="submit" value="Modifica riferimento" class="button"/> <br> <br>
 		</form>
 		<%
+		out.println("</div>");
 	}
 		%>
 	
@@ -55,6 +58,7 @@ for(Contact c : contacts){
 </form>
 <% 
 }
+
 
 %>
 
