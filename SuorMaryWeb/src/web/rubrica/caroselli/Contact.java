@@ -1,6 +1,7 @@
 package web.rubrica.caroselli;
 
-import java.util.Objects;
+
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,123 +9,96 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "rubrica")
 public class Contact {
-	
-	  @Id
-	  @GeneratedValue(strategy=GenerationType.IDENTITY)
-	  @Column(name = "id")
-	  private int id;
-	  
-	  @Column(name = "name")
-	  private String name;
-	  
-	  @Column(name = "surname")
-	  private String surname;
-	  
-	  @Column(name = "phone")
-	  private String phone;
-	  
-	  @Column(name = "email")
-	  private String email;
-	  
-	  @Column(name = "note")
-	  private String note;
-	
-	  
-	  public Contact() {
-	    }
 
-	    public Contact( String name, String surname, String phone, String email, String note) {
-	        this.name = name;
-	        this.surname = surname;
-	        this.phone = phone;
-	        this.email = email;
-	        this.note = note;
-	    }
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
+	private int id;
 
-	    public Contact(int id, String name, String surname, String phone, String email, String note) {
-	        this.id = id;
-	        this.name = name;
-	        this.surname = surname;
-	        this.phone = phone;
-	        this.email = email;
-	        this.note = note;
-	    }
+	@Column(name = "name")
+	private String name;
 
+	@Column(name = "surname")
+	private String surname;
 
+	@Column(name = "note")
+	private String note;
 
-	    public int getId() {
-	        return id;
-	    }
-	    
+	@Transient
+	private List<ContactDetail> details;
 
-		public String getName() {
-	        return name;
-	    }
-	    
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 
-	    public void setName(String name) {
-	        this.name = name;
-	    }
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 
-	    public String getSurname() {
-	        return surname;
-	    }
+	public String getSurname() {
+		return surname;
+	}
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
 
-	    public void setSurname(String surname) {
-	        this.surname = surname;
-	    }
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 
-	    public String getPhone() {
-	        return phone;
-	    }
+	public List<ContactDetail> getDetails() {
+		return details;
+	}
+	public void setDetails(List<ContactDetail> details) {
+		this.details = details;
+	}
+	public Contact() {
 
-	    public void setPhone(String phone) {
-	        this.phone = phone;
-	    }
+	}
 
-	    public String getEmail() {
-	        return email;
-	    }
+	public Contact(String name, String surname, String note) {
+		super();
+		this.name = name;
+		this.surname = surname;
+		this.note = note;
+	}
 
-	    public void setEmail(String email) {
-	        this.email = email;
-	    }
-
-	    public String getNote() {
-	        return note;
-	    }
-
-	    public void setNote(String note) {
-	        this.note = note;
-	    }
+	public Contact(int id, String name, String surname, String note) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.note = note;
+	}
 
 
-	    @Override
-	    public String toString() {
-	        return "Contact : " +
-	                " name = '" + name + '\'' +
-	                ", surname = '" + surname + '\'' +
-	                ", phone = '" + phone + '\'' +
-	                ", email = '" + email + '\'' +
-	                ", note = '" + note + '\'';
-	    }
 
-	    @Override
-	    public boolean equals(Object o) {
-	        if (this == o) return true;
-	        if (o == null || getClass() != o.getClass()) return false;
-	        Contact contact = (Contact) o;
-	        return Objects.equals(name, contact.name) && Objects.equals(surname, contact.surname) && Objects.equals(phone, contact.phone) && Objects.equals(email, contact.email) ;
-	    }
 
-	    @Override
-	    public int hashCode() {
-	        return Objects.hash(id, name, surname, phone, email, note);
-	    }
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder("{ ")
+				.append("id : ").append(id)
+				.append(", name : ").append(name)
+				.append(", surname : ").append(surname)
+				.append(", note : ").append(note)
+				.append(", details : ").append(details)
+				.append(" }");
+
+		return builder.toString();
+	}
 
 }

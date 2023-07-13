@@ -13,7 +13,7 @@ import java.util.List;
 //@Entity
 //@Table(name = "rubrica")
 public class Contact {
-	
+
 //	@Id
 //	@GeneratedValue(strategy=GenerationType.IDENTITY)
 //	@Column(name = "id")
@@ -21,16 +21,16 @@ public class Contact {
 
 //	@Column(name = "nome")
 	private String name;
-	
+
 //	@Column(name = "cognome")
 	private String surname;
-	
+
 //	@Column(name = "note")
 	private String note;
-	
+
 //	@Transient
 	private List<ContactDetail> details;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -44,14 +44,14 @@ public class Contact {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getSurname() {
 		return surname;
 	}
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	
+
 	public String getNote() {
 		return note;
 	}
@@ -59,7 +59,8 @@ public class Contact {
 		this.note = note;
 	}
 
-	
+
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
@@ -68,7 +69,7 @@ public class Contact {
 				.append(", note : ").append(note)
 				.append(", details : ").append(details)
 				.append(" }");
-		
+
 		return builder.toString();
 	}
 }

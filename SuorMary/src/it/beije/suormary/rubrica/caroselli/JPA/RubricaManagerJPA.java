@@ -10,9 +10,7 @@ public class RubricaManagerJPA {
 	public static final Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) throws Exception {
-		
 	
-		EntityManager entityManager = PersistenceManagerJPA.getEntityManager();
 
 		boolean exit = false;
 
@@ -73,6 +71,5 @@ public class RubricaManagerJPA {
 		}
 
 	scanner.close();
-	entityManager.close();
 	}
 }

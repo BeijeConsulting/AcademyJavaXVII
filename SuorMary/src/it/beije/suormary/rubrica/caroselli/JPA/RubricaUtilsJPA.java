@@ -21,7 +21,6 @@ import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Subquery;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -72,6 +71,8 @@ public class RubricaUtilsJPA {
 			} catch (Exception e) {
 				transaction.rollback();
 				e.printStackTrace();
+			} finally {
+				entityManager.close();
 			}
 
 		}
@@ -114,6 +115,8 @@ public class RubricaUtilsJPA {
 				transaction.commit();
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally {
+				entityManager.close();
 			}
 
 		}
@@ -169,6 +172,9 @@ public class RubricaUtilsJPA {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally {
+			entityManager.close();
+		}
 		for (Contact c : contacts) {
 			System.out.println(c.toString());
 		}
@@ -209,6 +215,8 @@ public class RubricaUtilsJPA {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			entityManager.close();
 		}
 
 	}
@@ -307,6 +315,8 @@ public class RubricaUtilsJPA {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally {
+				entityManager.close();
 			}
 
 		}
@@ -378,6 +388,8 @@ public class RubricaUtilsJPA {
 
 			} catch (Exception e) {
 				e.printStackTrace();
+			}finally {
+				entityManager.close();
 			}
 		}
 
@@ -451,6 +463,8 @@ public class RubricaUtilsJPA {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			entityManager.close();
 		}
 		return duplicateContacts;
 	}
@@ -495,6 +509,8 @@ public class RubricaUtilsJPA {
 				System.out.println("Eliminati " + deletedCount + " contatti duplicati.");
 			} catch (Exception e) {
 				e.printStackTrace();
+			} finally {
+				entityManager.close();
 			}
 			System.out.println("Operazione completata!");
 		} else {
@@ -533,14 +549,14 @@ public class RubricaUtilsJPA {
 
 	public static void exportContactsFromDbToCSV(String path) {
 
-		try {
+//		try {
 
 			List<Contact> contacts = readContactsFromDb();
 			writeRubricaCSV(contacts, path, ";");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	public static void exportContactsFromDbToXML(String path) {
@@ -573,6 +589,8 @@ public class RubricaUtilsJPA {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			entityManager.close();
 		}
 
 	}
@@ -609,6 +627,8 @@ public class RubricaUtilsJPA {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			entityManager.close();
 		}
 
 	}
