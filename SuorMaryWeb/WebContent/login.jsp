@@ -18,9 +18,9 @@ if (loginError != null) {
 }
 %>
 
-<form action="./login" method="POST">
-  <label for="username">Username:</label><br>
-  <input type="text" name="username" ><br>
+<form action="./LoginServlet" method="POST">
+  <label for="email">Email:</label><br>
+  <input type="text" name="email" ><br>
   <label for="password">Password:</label><br>
   <input type="text" name="password" ><br><br>
   <input type="submit" value="Submit">
