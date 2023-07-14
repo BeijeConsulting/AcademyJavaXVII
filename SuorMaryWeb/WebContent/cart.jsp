@@ -1,3 +1,4 @@
+<%@page import="java.util.Map"%>
 <%@page import="it.beije.suormary.bookstore1.Book"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -6,7 +7,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Shop</title>
+<title>Cart</title>
 </head>
 <body>
 	<ul>
@@ -17,29 +18,30 @@
 	</ul>
 	<hr/>
 	<%
-	List<Book> books = (List<Book>)session.getAttribute("books"); 
+	Map<Book,Integer> books = (Map<Book,Integer>)session.getAttribute("books"); 
 	
-	for(Book b : books){
+	for (Map.Entry<Book, Integer> entry : books.entrySet()) {
 	%>
 	<div style="border: 1px solid; margin-bottom: 10px; padding: 5px;">
-		<h2><%=b.getTitle()%></h2>
-		<h3>di <%=b.getAuthor().getName()%> <%=b.getAuthor().getSurname()%></h3>
-		<p><%=b.getDescription() %></p>
-		<p><%=b.getEditor() %></p>
+		<h2><%=entry.getKey().getTitle()%></h2>
+		<h3>di <%=entry.getKey().getAuthor().getName()%> <%=entry.getKey().getAuthor().getSurname()%></h3>
+		<p><%=entry.getKey().getDescription() %></p>
+		<p><%=entry.getKey().getEditor() %></p>
+		<p>Qty: <%=entry.getValue() %></p>
 		<form method="POST" action="./ShopServlet">
-			<input type="hidden" value="<%=b.getId() %>" name="bookId" />
+			<input type="hidden" value="<%=entry.getKey().getId() %>" name="bookId" />
 			<select name="quantity" >
 				<%
-				for(int i=1; i<=b.getQuantity(); i++){
+				for(int i=1; i<=entry.getValue(); i++){
 				%>
 					<option value="<%=i %>"><%=i %></option>
 				<%} %>
 			</select>
-			<input type="submit" name="addBook" value="Aggiungi" />
+			<input type="submit" name="removeBook" value="Rimuovi" />
 		</form>
 	</div>
 	<%} 
-	session.removeAttribute("books");
-	%>
+	
+	session.removeAttribute("books");%>
 </body>
 </html>
