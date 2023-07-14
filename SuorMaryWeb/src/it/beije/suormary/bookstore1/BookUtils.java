@@ -18,7 +18,7 @@ public class BookUtils {
 			
 			for(int i=0; i<books.size(); i++) {
 				query = entityManager.createQuery("SELECT a FROM Author as a WHERE a.id = :authId ");
-				query.setParameter(1, books.get(i).getAuthorId());
+				query.setParameter("authId", books.get(i).getAuthorId());
 				Author a = (Author) query.getSingleResult();
 				books.get(i).setAuthor(a);
 			}

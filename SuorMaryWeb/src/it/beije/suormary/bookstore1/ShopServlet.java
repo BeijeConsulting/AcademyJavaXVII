@@ -39,8 +39,11 @@ public class ShopServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		int bookId = Integer.valueOf(request.getParameter("bookId"));
+		int quantity = Integer.valueOf(request.getParameter("quantity"));
+		
+		
+		
 	}
 
 }
