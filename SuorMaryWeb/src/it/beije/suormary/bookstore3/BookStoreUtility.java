@@ -62,4 +62,19 @@ public class BookStoreUtility {
     	    }
     	    return listBooks;
        }
+       public static List<Author> getAuthors(){
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   List<Author> listAuthors = null;
+    	    try {
+    	    	Query query = entityManager.createQuery("SELECT a FROM Author as a");
+    	    	listAuthors = query.getResultList();
+  	
+    	    } catch(Exception e) {
+    	    	e.printStackTrace();
+    	    	
+    	    } finally {
+    	    	entityManager.close();
+    	    }
+    	    return listAuthors;
+       }
 }
