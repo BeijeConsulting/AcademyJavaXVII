@@ -1,7 +1,7 @@
-package it.beije.suormary.bookstore;
+package it.beije.suormary.bookstore3;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
@@ -11,40 +11,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- * Servlet implementation class RegisterServlet
- */
-@WebServlet("/register")
-public class RegisterServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+import it.beije.suormary.bookstore.Book;
 
+/**
+ * Servlet implementation class WelcomeServlet
+ */
+@WebServlet("/welcome")
+public class WelcomeServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-            if(session.getAttribute("email") != null) {
-            	 response.sendRedirect("welcome");
-             }
-             else response.sendRedirect("register");
-		
+		if(session.getAttribute("email") == null) {
+			response.sendRedirect("login");
+		}
+		List<Book> books = BookStoreUtility.loadBooks();
+		if (books != null) {
+		    session.setAttribute("books", books);
+		}
+		response.sendRedirect("welcome.jsp");
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name=request.getParameter("name");
-		String surname = request.getParameter("surname");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		LocalDateTime date = LocalDateTime.now();
-		BookStoreUtility.registerUser(name, surname, email, password, date);
-		HttpSession session = request.getSession();
-		session.setAttribute("email", email);
-		System.out.println(session.getAttribute("email"));
-		response.sendRedirect("welcome");
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

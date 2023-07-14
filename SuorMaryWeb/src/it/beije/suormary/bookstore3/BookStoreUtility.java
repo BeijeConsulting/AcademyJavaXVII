@@ -1,10 +1,13 @@
-package it.beije.suormary.bookstore;
+package it.beije.suormary.bookstore3;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+
+import it.beije.suormary.bookstore.Book;
+import it.beije.suormary.bookstore.User;
 public class BookStoreUtility {
        public static void registerUser(String name, String surname, String email, String password, LocalDateTime date) {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();

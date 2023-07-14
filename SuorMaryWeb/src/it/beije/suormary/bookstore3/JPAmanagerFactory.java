@@ -1,4 +1,4 @@
-package it.beije.suormary.bookstore;
+package it.beije.suormary.bookstore3;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
