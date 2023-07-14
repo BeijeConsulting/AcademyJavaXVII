@@ -66,7 +66,6 @@ public class DbWithJPA {
 //			EntityTransaction transaction = JPAEntityFactory.openEntity().getTransaction();
 //			transaction.begin();
 			entityManager = JPAEntityFactory.openEntity();
-			entityManager = JPAEntityFactory.openEntity();
 			CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 			CriteriaQuery<Contact> query = cb.createQuery(Contact.class);
 			Root<Contact> root = query.from(Contact.class);
