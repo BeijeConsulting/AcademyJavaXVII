@@ -14,6 +14,9 @@ HttpSession currSession = request.getSession();
 List<Book> books = (List) currSession.getAttribute("books");
 %>
 <h1>Welcome <%= currSession.getAttribute("email") %></h1>
+<form action="/createBook.jsp" method ="GET">
+<input type="submit" value="aggiungi un libro">
+</form>
 
 <%
  for(Book b : books){
