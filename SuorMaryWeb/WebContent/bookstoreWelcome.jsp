@@ -45,7 +45,7 @@ if (user == null) {
 		for (Book b : books) {
 	%>
 	<p>
-		Element:
+		Book:
 		<%=b.getTitle()%>
 	
 	</p>

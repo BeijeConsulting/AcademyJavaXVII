@@ -14,7 +14,7 @@ import it.beije.suormary.bookstore2.model.Book;
 /**
  * Servlet implementation class WelcomeServlet
  */
-@WebServlet("/WelcomeServlet")
+@WebServlet("/bookstoreWelcome")
 public class WelcomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -32,7 +32,12 @@ public class WelcomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("Welcome doGet");
 
-		response.sendRedirect("bookstoreWelcome.jsp");
+		List<Book> books = BookstoreUtility.readBooksFromDb();
+		request.setAttribute("books", books);
+		// chiama la jsp
+		request.getRequestDispatcher("bookstoreWelcome.jsp").forward(request, response);
+		
+//		response.sendRedirect("bookstoreWelcome.jsp");
 
 	}
 
@@ -40,12 +45,12 @@ public class WelcomeServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		List<Book> books = BookstoreUtility.readBooksFromDb();
-		request.setAttribute("books", books);
-		// chiama la jsp
-		request.getRequestDispatcher("bookstoreWelcome.jsp").forward(request, response);
+//		List<Book> books = BookstoreUtility.readBooksFromDb();
+//		request.setAttribute("books", books);
+//		// chiama la jsp
+//		request.getRequestDispatcher("bookstoreWelcome.jsp").forward(request, response);
 
-		doGet(request, response);
+		//doGet(request, response);
 	}
 
 }
