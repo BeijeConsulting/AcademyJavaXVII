@@ -29,8 +29,9 @@ public class RubricaServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-
-		response.sendRedirect("./rubrica.jsp");
+		List<Contact> contacts = JPAUtils.getAllContacts();
+		request.setAttribute("contacts", contacts);
+		request.getRequestDispatcher("./rubrica.jsp").forward(request, response);
 		
 	}
 
