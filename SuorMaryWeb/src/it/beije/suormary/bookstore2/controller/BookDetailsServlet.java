@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import it.beije.suormary.bookstore2.model.Book;
+
 /**
  * Servlet implementation class BookDetailsServlet
  */
@@ -21,20 +23,28 @@ public class BookDetailsServlet extends HttpServlet {
 
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+    	
+    	int bookId = Integer.parseInt(request.getParameter("id"));
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+ 
+        Book book = BookstoreUtility.findBook(bookId);
+        System.out.println("book: " + book);
+        request.setAttribute("book", book);
+
+        // Forward the request to the JSP page for displaying book details
+        request.getRequestDispatcher("bookstoreBookDetails.jsp").forward(request, response);
+    
+    }
+
+   
+//	/**
+//	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+//	 */
+//	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//		// TODO Auto-generated method stub
+//		doGet(request, response);
+//	}
 
 }
