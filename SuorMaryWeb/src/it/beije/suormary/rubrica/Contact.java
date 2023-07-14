@@ -1,4 +1,4 @@
-package it.beije.suormary.web.rubrica;
+package it.beije.suormary.rubrica;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
