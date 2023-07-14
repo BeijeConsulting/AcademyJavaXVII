@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
 	<persistence-unit name="SuorMaryWeb">
-		<class>it.beije.suormary.bookstore.Author</class>
-		<class>it.beije.suormary.bookstore.Book</class>
-		<class>it.beije.suormary.bookstore.Order</class>
-		<class>it.beije.suormary.bookstore.OrderItem</class>
-		<class>it.beije.suormary.bookstore.User</class>
+		<class>it.beije.suormary.bookstore1.Author</class>
+		<class>it.beije.suormary.bookstore1.Book</class>
+		<class>it.beije.suormary.bookstore1.Order</class>
+		<class>it.beije.suormary.bookstore1.OrderItem</class>
+		<class>it.beije.suormary.bookstore1.User</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		
 		<properties>
