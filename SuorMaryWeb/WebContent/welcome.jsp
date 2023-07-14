@@ -7,26 +7,11 @@
 <title>WELCOME</title>
 </head>
 <body>
-
-<p>
 <%
-/*
-String username = (String) session.getAttribute("username");
-if (username == null) response.sendRedirect("login");
-*/
-String welcome = "BUONGIORNO";
-
-/*
-User user = (User) session.getAttribute("user");
-if (user == null) {
-	user = new User();
-	session.setAttribute("user", user);
-}
-*/
+HttpSession currSession = request.getSession();
 %>
+<h1>Welcome <%= currSession.getAttribute("email") %></h1>
 
-<jsp:useBean id="user" class="it.beije.suormary.web.User" scope="session"></jsp:useBean>
-<%= welcome %> <jsp:getProperty property="name" name="user"/> <jsp:getProperty property="surname" name="user"/> !!
-</p>
+
 </body>
 </html>

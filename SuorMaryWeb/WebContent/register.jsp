@@ -3,10 +3,10 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Login Page JSP</title>
+<title>Register Page</title>
 </head>
 <body>
-
+<h1>Register</h1>
 <%
 String loginError = (String) session.getAttribute("loginError");
 if (loginError != null) {
@@ -17,15 +17,18 @@ if (loginError != null) {
 	session.removeAttribute("loginError");
 }
 %>
-<h3>Non hai un account? <a href="http://localhost:8080/SuorMaryWeb/register">Registrati</a></h3>
-<form action="./login" method="POST">
-  <label for="email">email:</label><br>
+
+<form action="./register" method="POST">
+  <label for="name">Name:</label><br>
+  <input type="text" name="name" ><br>
+   <label for="username">Surname:</label><br>
+  <input type="text" name="surname" ><br>
+  <label for="email">Email:</label><br>
   <input type="text" name="email" ><br>
   <label for="password">Password:</label><br>
   <input type="text" name="password" ><br><br>
   <input type="submit" value="Submit">
 </form> 
-
 
 </body>
 </html>
