@@ -71,6 +71,28 @@ public class DbWithSQL {
 		return elements;
 	}
 	
+	
+	//lista contatti nuovi
+	public List<Contact> listContact() throws SQLException {
+		List<Contact> contacts = new ArrayList<>();
+		Contact c = null;
+		if(connectionCheck()) {
+			ResultSet rs = statement.executeQuery("SELECT * FROM rubrica");
+			while (rs.next()) {
+				c = new Contact();
+				//System.out.println(rs.getInt("id"));
+				c.setId(rs.getInt("id"));
+				c.setName(rs.getString("nome"));
+				c.setSurname(rs.getString("cognome"));
+				c.setNote(rs.getString("note"));
+				//System.out.println(c);
+				contacts.add(c);
+				}
+		} else {
+			throw new SQLException();
+		}
+		return contacts;
+	}
 	//import data from DB
 	public List<Contact> loadRubricaFromDb() throws SQLException {
 		List<Contact> contacts = new ArrayList<>();

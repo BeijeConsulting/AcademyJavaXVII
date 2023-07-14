@@ -10,14 +10,14 @@
 <div>
 	
 	<label>Scegli tra le seguenti opzioni: </label>
-	<a href="./rubricaServlet"><button name="listaContatti">Visualizza lista contatti</button></a>
-	<a href="./rubricaServlet"><button name="cercaContatto">Cerca contatto</button></a>
-	<a href="./rubricaServlet"><button name="inserisciContatto">Inserisci nuovo contatto</button></a>
-	<a href="./rubricaServlet"><button name="modificaContatto">Modifica contatto</button></a>
-	<a href="./rubricaServlet"><button  name="cancellaContatto">Cancella contatto</button></a>
-	<a href="./rubricaServlet"><button name="contattiDuplicati">Trova contatti duplicati</button></a>
-	<a href="./rubricaServlet"><button name="unisciContatti">Unisci contatti duplicati</button></a>
-	<a href="./rubricaServlet"><button  name="esci">Esci</button></a>
+	<a href="./rubricaServlet"><button name="selection" value="listaContatti">Visualizza lista contatti</button></a>
+	<a href="./rubricaServlet"><button name="selection" value="cercaContatto">Cerca contatto</button></a>
+	<a href="./rubricaServlet"><button name="selection" value="inserisciContatto">Inserisci nuovo contatto</button></a>
+	<a href="./rubricaServlet"><button name="selection" value="modificaContatto">Modifica contatto</button></a>
+	<a href="./rubricaServlet"><button  name="selection" value="cancellaContatto">Cancella contatto</button></a>
+	<a href="./rubricaServlet"><button name="selection" value="contattiDuplicati">Trova contatti duplicati</button></a>
+	<a href="./rubricaServlet"><button name="selection" value="unisciContatti">Unisci contatti duplicati</button></a>
+	<a href="./rubricaServlet"><button  name="selection">Esci</button></a>
 </div>
 </body>
 </html>

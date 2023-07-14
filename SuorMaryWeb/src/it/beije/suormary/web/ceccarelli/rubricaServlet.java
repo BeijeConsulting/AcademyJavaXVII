@@ -42,7 +42,12 @@ public class rubricaServlet extends HttpServlet {
 //			
 //		}
 //		response.sendRedirect("contactPage.jsp");
-		
+//		String[] s = request.getParameterValues("selection");
+//		System.out.println(s.length);
+//		for(String ss : s) {
+//			System.out.println(ss);
+//		}
+		//switch(s)
 		//lista con JDBC
 		NuovaRubricaMetodi mr = new NuovaRubricaMetodi();
 		List<Contact2> contact = null;
@@ -81,6 +86,9 @@ public class rubricaServlet extends HttpServlet {
 		
 		response.sendRedirect("contactPage.jsp");
 		
+		//ricerca contatto con JDBC
+		
+		
 				
 		
 	}
@@ -96,5 +104,10 @@ public class rubricaServlet extends HttpServlet {
 		//String[] but = request.getParameter().;
 		doGet(request, response);
 	}
+	
+	
+	
+	
+	
 
 }
