@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /*
 
@@ -51,7 +52,9 @@ public class Book {
 
 	@Column(name = "author_id")
 	private int authorId;
-
+	
+	@Transient
+	private Author author;
 	
 	public int getId() {
 		return id;
@@ -109,7 +112,14 @@ public class Book {
 		this.authorId = authorId;
 	}
 	
-	
+	public Author getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
