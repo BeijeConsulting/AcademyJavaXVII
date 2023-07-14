@@ -55,6 +55,7 @@ public class MenuServlet extends HttpServlet {
                 request.getRequestDispatcher("insertContact.jsp").forward(request, response);
                 break;
 				
+               
 			}
 			
 	
