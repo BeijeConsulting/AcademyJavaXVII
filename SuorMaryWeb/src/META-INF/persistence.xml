@@ -3,7 +3,7 @@
 	<persistence-unit name="SuorMaryWeb">
 
 	<class>it.beije.suormary.web.rubrica.trapani.Contact</class>
-	<class>it.beije.suormary.bookstore.Author</class>
+		<class>it.beije.suormary.bookstore.Author</class>
 		<class>it.beije.suormary.bookstore.Book</class>
 		<class>it.beije.suormary.bookstore.Order</class>
 		<class>it.beije.suormary.bookstore.OrderItem</class>
