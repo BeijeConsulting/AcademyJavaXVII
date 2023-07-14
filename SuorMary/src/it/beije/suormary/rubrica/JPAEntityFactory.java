@@ -1,13 +1,13 @@
-package it.beije.suormary.bookstore4_ceccarelli_iannetta;
+package it.beije.suormary.rubrica;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 
-public class HBMsessionFactory {
+public class JPAEntityFactory {
 
-	private HBMsessionFactory() {}
+	private JPAEntityFactory() {}
 	
 	private static SessionFactory sessionFactory;
 	
@@ -16,7 +16,7 @@ public class HBMsessionFactory {
 			System.out.println("creo SessionFactory...");
 			
 			Configuration configuration = new Configuration().configure()
-					.addAnnotatedClass(User.class);
+					.addAnnotatedClass(Contact.class);
 
 			sessionFactory = configuration.buildSessionFactory();
 		}

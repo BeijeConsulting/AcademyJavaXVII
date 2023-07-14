@@ -2,34 +2,38 @@ package it.beije.suormary.bookstore4_ceccarelli_iannetta;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
+import javax.persistence.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+
 
 public class EcommerceManager {
 
-    private Session session;
-    private Transaction transaction;
+    private EntityManager em;
+    private EntityTransaction transaction;
     
     public User isUser(String email, String password) {
-    	session = HBMsessionFactory.openSession();
-    	Query<User> query = session.createQuery("SELECT u FROM User as u "
-    										  + "WHERE email=:email AND "
-    										  + "password=:password");
+    	em = JPAEntityFactory.openEntity();
+        transaction = em.getTransaction();
+        transaction.begin();
+    	Query query = em.createQuery("SELECT u from User as u WHERE u.email = :email AND password = :password");
+
     	query.setParameter("email", email);
     	query.setParameter("password", password);
 
     	if (query.getResultList().size() == 0) return null;
-    	return query.getResultList().get(0);
+    	List <User> users = query.getResultList();
+    	
+    	return users.get(0);
     }
     
 
     public User insertUser(String name, String surname, String email, String password) {
-    	session = HBMsessionFactory.openSession();
-        transaction = session.beginTransaction();
+    	em = JPAEntityFactory.openEntity();
+        transaction = em.getTransaction();
+        transaction.begin();
 //        Query<User> query = session.createQuery("SELECT u FROM User as u "
 //				  + "WHERE email=:email");
         User user = new User();
@@ -40,13 +44,13 @@ public class EcommerceManager {
     	user.setCreationDate(LocalDateTime.now());
     	
     	try {
-    		session.save(user);
+    		em.persist(user);
     		transaction.commit();
     	} catch (Exception e) {
     		System.out.println("Non va bene");
     		user = null;
     	} finally {
-        	session.close();    		
+        	em.close();    		
     	}
     
     	return user;
