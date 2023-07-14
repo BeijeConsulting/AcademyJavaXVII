@@ -1,4 +1,4 @@
-package it.beije.suormary.bookstore2;
+package it.beije.suormary.bookstore2.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class CartServlet
+ * Servlet implementation class WelcomeServlet
  */
-@WebServlet("/CartServlet")
-public class CartServlet extends HttpServlet {
+@WebServlet("/WelcomeServlet")
+public class WelcomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CartServlet() {
+    public WelcomeServlet() {
         super();
         // TODO Auto-generated constructor stub
     }

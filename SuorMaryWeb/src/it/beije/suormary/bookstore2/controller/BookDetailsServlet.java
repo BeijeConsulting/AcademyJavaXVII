@@ -1,4 +1,4 @@
-package it.beije.suormary.bookstore2;
+package it.beije.suormary.bookstore2.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
