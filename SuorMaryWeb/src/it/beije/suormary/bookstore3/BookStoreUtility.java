@@ -77,4 +77,28 @@ public class BookStoreUtility {
     	    }
     	    return listAuthors;
        }
+       public static void addBook(String title, String description, String editor, String priceString, String quantityString, String authorIdStr) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   int authorId = Integer.parseInt(authorIdStr);
+    	   double price = Double.parseDouble(priceString);
+    	   int quantity = Integer.parseInt(quantityString);
+    	   try {
+    		   EntityTransaction transaction = entityManager.getTransaction();
+    		   transaction.begin();
+    		   Book book = new Book();
+    		   book.setTitle(title);
+    		   book.setDescription(description);
+    		   book.setEditor(editor);
+    		   book.setQuantity(quantity);
+    		   book.setPrice(price);
+    		   book.setAuthorId(authorId);
+    		   entityManager.persist(book);
+    		   transaction.commit();
+    		   
+    	   } catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+       }
 }

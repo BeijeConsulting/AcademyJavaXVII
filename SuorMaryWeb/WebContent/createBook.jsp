@@ -16,25 +16,26 @@ List<Author> authors = (List) session.getAttribute("authors");
 %>
 <h1>Aggiungi un libro</h1>
 <form action="createBook" method="POST">
-<label for="title">TItolo : </label>
+<label for="title">Titolo : </label>
 <input type="text" name="title" /> <br> <br>
 <label for="description">Descrizione : </label>
 <input type="text" name="description" /> <br> <br>
 <label for="editor">Editore : </label> 
 <input type="text" name="editor" /> <br> <br>
 <label for="price">Prezzo : </label>
-<input type="number" name="price" /> <br> <br>
+<input type="text" name="price" /> <br> <br>
 <label for="quantity">Quantità : </label>
 <input type="number" name="quantity" /> <br> <br>
 <label for="quantity">Scegli un autore : </label> <br>
 <%
 for(Author author : authors){
 %>
-<label for ="author_id"><%=author.getName() %></label> 
-<input type="radio"  name="author_id" value=<%= author.getId() %>> <br>
+<label for ="authorId"><%=author.getName() %></label> 
+<input type="radio"  name="authorId" value=<%= author.getId() %>> <br>
 <%
 }
 %>
+<input type="submit" value="Aggiungi libro" />
 </form>
 </body>
 </html>

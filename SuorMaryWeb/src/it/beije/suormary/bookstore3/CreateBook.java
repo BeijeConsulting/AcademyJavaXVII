@@ -36,7 +36,14 @@ public class CreateBook extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		String title = request.getParameter("title");
+		String description = request.getParameter("description");
+		String editor = request.getParameter("editor");
+		String price = request.getParameter("price");
+		String quantity = request.getParameter("quantity");
+		String authorId = request.getParameter("authorId");
+		BookStoreUtility.addBook(title, description, editor, price, quantity, authorId);
+		response.sendRedirect("welcome.jsp");
 	}
 
 }
