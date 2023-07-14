@@ -18,17 +18,20 @@ List<Book> books = (List) currSession.getAttribute("books");
 <form action="./createBook" method ="GET">
 <input type="submit" value="aggiungi un libro">
 </form>
+<form action="newOrder" method ="GET">
+<input type="submit" value="crea un ordine">
+</form>
 
 <%
  for(Book b : books){
 	 %>
    <h2><%= b.getTitle() %></h2>
    <form action="updateBook" action="GET">
-   <input type="hidden" name="id" value=<%=b.getId() %> />
+   <input type="hidden" name="id" value="<%=b.getId() %>" />
    <input type="submit" value="Modifica libro" />
    </form>
       <form action="deleteBook" action="GET">
-   <input type="hidden" name="id" value=<%=b.getId() %> />
+   <input type="hidden" name="id" value="<%=b.getId() %>"/>
    <input type="submit" value="Elimina libro" />
    </form>
 	 

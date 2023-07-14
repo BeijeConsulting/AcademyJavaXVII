@@ -163,4 +163,25 @@ public class BookStoreUtility {
     		   entityManager.close();
     	   }
        }
+       public static Order createOrder(String email) {
+    	   Order order = null;
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   try {
+    		   Query query = entityManager.createQuery("SELECT u FROM User as u WHERE u.email = :email");
+    		   query.setParameter("email", email);
+    		   User user =(User) query.getSingleResult();
+                order = new Order();
+               LocalDateTime date = LocalDateTime.now();
+               order.setDate(date);
+               order.setStatus('I');
+               order.setUserId(user.getId());
+
+    		   
+    	   } catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+    	   return order;
+       }
 }
