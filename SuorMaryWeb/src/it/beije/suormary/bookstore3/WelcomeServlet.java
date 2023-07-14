@@ -27,13 +27,13 @@ public class WelcomeServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		if(session.getAttribute("email") == null) {
-			response.sendRedirect("login");
+			response.sendRedirect("login.jsp");
 		}
-		List<Book> books = BookStoreUtility.loadBooks();
-		if (books != null) {
-		    session.setAttribute("books", books);
+		else{
+			List<Book> books = BookStoreUtility.loadBooks();
+		    session.setAttribute("books", books);		
+		    response.sendRedirect("welcome.jsp");
 		}
-		response.sendRedirect("welcome.jsp");
 	}
 
 	/**

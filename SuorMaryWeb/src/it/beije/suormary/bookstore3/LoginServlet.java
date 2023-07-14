@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
 		if(session.getAttribute("email") != null) {
 			response.sendRedirect("welcome");
 		}
-		else response.sendRedirect("login");
+		else response.sendRedirect("login.jsp");
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class LoginServlet extends HttpServlet {
 		User user = BookStoreUtility.loginUser(email, password);
 		HttpSession session = request.getSession();
 		if(user != null) {
-		    session.setAttribute(email, "email");
+		    session.setAttribute("email", email);
 			response.sendRedirect("welcome");
 		}
 		else {

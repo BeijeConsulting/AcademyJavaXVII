@@ -27,7 +27,7 @@ public class RegisterServlet extends HttpServlet {
             if(session.getAttribute("email") != null) {
             	 response.sendRedirect("welcome");
              }
-             else response.sendRedirect("register");
+             else response.sendRedirect("register.jsp");
 		
 	}
 
