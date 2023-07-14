@@ -18,9 +18,9 @@ if (loginError != null) {
 }
 %>
 
-<form action="./bookstore/login" method="POST">
+<form action="./bookstoreLogin" method="POST">
   <label for="email">email:</label><br>
-  <input type="text" name="username" ><br>
+  <input type="text" name="email" ><br>
   <label for="password">Password:</label><br>
   <input type="text" name="password" ><br><br>
   <input type="submit" value="Submit">
