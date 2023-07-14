@@ -16,11 +16,11 @@
       <!-- Assume test is the database name -->
       
       <property name = "hibernate.connection.url">
-         jdbc:mysql://localhost:3306/suor_mary
+        jdbc:mysql://bookstore.cvzu4xrxvkdz.eu-south-1.rds.amazonaws.com:3306/bookstore1
       </property>
       
-      <property name = "hibernate.connection.username">root</property>
-      <property name = "hibernate.connection.password">myDatabase1</property>
+      <property name = "hibernate.connection.username">admin</property>
+      <property name = "hibernate.connection.password">tltBJwVWgoY62y08brB1</property>
       
       <!-- List of XML mapping files -->
       <!-- mapping resource = "Contact.hbm.xml"/ -->

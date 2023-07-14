@@ -14,8 +14,7 @@ public class UserUtils {
 		
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
-			Query query = entityManager.createQuery("SELECT u FROM Users as u WHERE u.email = :email AND u.password"
-					+ "= :password ");
+			Query query = entityManager.createQuery("SELECT u FROM User as u WHERE u.email = :email AND u.password = :password ");
 			query.setParameter("email", email);
 			query.setParameter("password", password);
 			user = (User) query.getSingleResult();

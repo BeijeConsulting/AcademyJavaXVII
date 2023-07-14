@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
 		
 		User user = UserUtils.checkUser(email, password);
 		
-		
+		System.out.println(user);
 		
 		if (user!=null) { //OK
 			session.setAttribute("email", email);
