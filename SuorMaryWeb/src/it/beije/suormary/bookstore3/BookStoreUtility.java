@@ -145,4 +145,22 @@ public class BookStoreUtility {
     		   entityManager.close();
     	   }
        }
+       public static void deleteBook(String idStr) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   int id = Integer.parseInt(idStr);
+    	   try {
+    		   EntityTransaction transaction = entityManager.getTransaction();
+    		   transaction.begin();
+    		   Query query = entityManager.createQuery("SELECT b FROM Book as b WHERE b.id= :id");
+    		   query.setParameter("id", id);
+    		   Book book = (Book)query.getSingleResult();
+    		   entityManager.remove(book);
+    		   transaction.commit();
+    		   
+    	   } catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+       }
 }

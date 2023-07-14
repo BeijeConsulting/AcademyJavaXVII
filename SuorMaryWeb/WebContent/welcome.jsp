@@ -27,6 +27,10 @@ List<Book> books = (List) currSession.getAttribute("books");
    <input type="hidden" name="id" value=<%=b.getId() %> />
    <input type="submit" value="Modifica libro" />
    </form>
+      <form action="deleteBook" action="GET">
+   <input type="hidden" name="id" value=<%=b.getId() %> />
+   <input type="submit" value="Elimina libro" />
+   </form>
 	 
 <% 
  }
