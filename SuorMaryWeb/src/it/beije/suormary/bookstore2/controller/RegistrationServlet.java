@@ -39,8 +39,8 @@ public class RegistrationServlet extends HttpServlet {
 		// Recupera i valori inseriti dall'utente nel form
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        String nome = request.getParameter("nome");
-        String cognome = request.getParameter("cognome");
+        String nome = request.getParameter("name");
+        String cognome = request.getParameter("surname");
 
         // Crea un oggetto Utente con i dati inseriti
         User user = new User();
@@ -48,6 +48,9 @@ public class RegistrationServlet extends HttpServlet {
         user.setPassword(password);
         user.setName(nome);
         user.setSurname(cognome);
+        
+        UserUtility.insertUser(user);
+        response.sendRedirect("bookstoreLogin.jsp");
 	}
 
 }
