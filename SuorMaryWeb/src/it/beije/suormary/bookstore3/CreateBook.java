@@ -43,7 +43,7 @@ public class CreateBook extends HttpServlet {
 		String quantity = request.getParameter("quantity");
 		String authorId = request.getParameter("authorId");
 		BookStoreUtility.addBook(title, description, editor, price, quantity, authorId);
-		response.sendRedirect("welcome.jsp");
+		response.sendRedirect("welcome");
 	}
 
 }

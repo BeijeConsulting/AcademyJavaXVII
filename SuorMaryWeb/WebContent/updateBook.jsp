@@ -18,16 +18,17 @@ HttpSession currSession = request.getSession();
  List<Author> authors = (List) session.getAttribute("authors");
 %>
 <form action="updateBook" method="POST">
+<input type="hidden" name="id" value="<%=book.getId() %>" />
 <label for="title">Titolo : </label>
-<input type="text" name="title" value=<%= book.getTitle() %>/> <br> <br>
+<input type="text" name="title" value="<%= book.getTitle() %>"/> <br> <br>
 <label for="description">Descrizione : </label>
-<input type="text" name="description" value=<%= book.getDescription() %>/> <br> <br>
+<input type="text" name="description" value="<%= book.getDescription() %>"/> <br> <br>
 <label for="editor">Editore : </label> 
-<input type="text" name="editor" value=<%= book.getEditor() %>/> <br> <br>
+<input type="text" name="editor" value="<%= book.getEditor() %>"/> <br> <br>
 <label for="price">Prezzo : </label>
-<input type="text" name="price" value=<%= book.getPrice() %>/> <br> <br>
+<input type="text" name="price" value="<%= book.getPrice() %>"/> <br> <br>
 <label for="quantity">Quantità : </label>
-<input type="text" name="quantity" value=<%= book.getQuantity() %>/> <br> <br>
+<input type="text" name="quantity" value="<%= book.getQuantity() %>"/> <br> <br>
 <label for="quantity">Scegli un autore : </label> <br>
 <%
 for(Author author : authors){
@@ -38,13 +39,13 @@ for(Author author : authors){
 	    
 	%>
 	<label for ="authorId"><%=author.getName() %></label> 
-	<input type="radio"  name="authorId" value=<%= author.getId() %> checked> <br>
+	<input type="radio"  name="authorId" value="<%= author.getId() %>" checked> <br>
 	<%
      }
 	 else {
 		 %>
 		<label for ="authorId"><%=author.getName() %></label> 
-<input type="radio"  name="authorId" value=<%= author.getId() %>> <br> 
+<input type="radio"  name="authorId" value="<%= author.getId() %>"> <br> 
 	<% 
 	 }
 	%>

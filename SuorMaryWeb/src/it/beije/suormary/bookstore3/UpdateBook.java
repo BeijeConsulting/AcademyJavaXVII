@@ -24,6 +24,7 @@ public class UpdateBook extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idStr = request.getParameter("id");
 		Book book = BookStoreUtility.getBookById(idStr);
+		System.out.println(book.getPrice());
 		HttpSession session = request.getSession();
 		session.setAttribute("book", book);
 		List<Author> authors = BookStoreUtility.getAuthors();
@@ -35,8 +36,15 @@ public class UpdateBook extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String bookId = request.getParameter("id");
+		String title = request.getParameter("title");
+		String description = request.getParameter("description");
+		String editor = request.getParameter("editor");
+		String price = request.getParameter("price");
+		String quantity = request.getParameter("quantity");
+		String authorId = request.getParameter("authorId");
+		BookStoreUtility.updateBook(title, description, editor, price, quantity, authorId,bookId);
+		response.sendRedirect("welcome");
 	}
 
 }

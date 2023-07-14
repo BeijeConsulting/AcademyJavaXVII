@@ -31,7 +31,7 @@ List<Author> authors = (List) session.getAttribute("authors");
 for(Author author : authors){
 %>
 <label for ="authorId"><%=author.getName() %></label> 
-<input type="radio"  name="authorId" value=<%= author.getId() %>> <br>
+<input type="radio"  name="authorId" value="<%= author.getId() %>"> <br>
 <%
 }
 %>

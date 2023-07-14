@@ -119,4 +119,30 @@ public class BookStoreUtility {
     	   }
     	   return book;
        }
+       public static void updateBook(String title, String description, String editor, String priceString, String quantityString, String authorIdStr,String bookIdStr) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   int authorId = Integer.parseInt(authorIdStr);
+    	   int bookId = Integer.parseInt(bookIdStr);
+    	   double price = Double.parseDouble(priceString);
+    	   int quantity = Integer.parseInt(quantityString);
+    	   try {
+    		   EntityTransaction transaction = entityManager.getTransaction();
+    		   transaction.begin();
+    		   Query query = entityManager.createQuery("SELECT b FROM Book as b WHERE b.id= :id");
+    		   query.setParameter("id", bookId);
+    		   Book book = (Book)query.getSingleResult();
+    		   book.setTitle(title);
+    		   book.setDescription(description);
+    		   book.setEditor(editor);
+    		   book.setQuantity(quantity);
+    		   book.setPrice(price);
+    		   book.setAuthorId(authorId);
+    		   transaction.commit();
+    		   
+    	   } catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+       }
 }

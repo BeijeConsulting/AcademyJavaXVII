@@ -9,6 +9,7 @@
 <title>WELCOME</title>
 </head>
 <body>
+<%@ include file="header.jsp" %>
 <%
 HttpSession currSession = request.getSession();
 List<Book> books = (List) currSession.getAttribute("books");
