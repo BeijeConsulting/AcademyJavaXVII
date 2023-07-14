@@ -8,6 +8,8 @@
 </head>
 <body>
 <h1>Aggiungi un libro</h1>
-
+<form action="createBook" method="POST">
+<label for="title"></label>
+</form>
 </body>
 </html>
