@@ -31,7 +31,7 @@ import javax.persistence.Table;
 
 		public void setDetail(List<ContactDetail> detail) {
 			//this.detail = detail;
-			this.detail=new 
+			this.detail=detail;
 		}
 		@Column(name = "nome")
 		private String name;
@@ -108,6 +108,10 @@ import javax.persistence.Table;
 		    this.email=email;
 		    this.note=note;
 		    this.detail= new ArrayList<>();
+		}
+		
+		public void addContactDetails(ContactDetail cd) {
+			detail.add(cd);
 		}
 		public int getId() {
 			return id;

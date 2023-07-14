@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "riferimento")
@@ -18,7 +19,17 @@ public class ContactDetail {
 	@Column(name = "id")
 	private int id;
 	
+	@Transient
+	private Contatto contatto;
 	
+	public Contatto getContatto() {
+		return contatto;
+	}
+
+	public void setContatto(Contatto contatto) {
+		this.contatto = contatto;
+	}
+
 	@Column(name = "id_rubrica")
 	private int id_contact;
 	

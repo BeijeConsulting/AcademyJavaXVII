@@ -460,7 +460,7 @@ public List<Contatto> loadRubricaFromDBJOIN(){
 				for(Contatto c: contacts) {
 					for(ContactDetail c1 : contactd) {
 						if(c.getId()==c1.getId_contact()) {
-							c.
+							c.addContactDetails(cd);
 						}
 					}
 				}
