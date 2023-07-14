@@ -25,9 +25,9 @@ public class RegisterServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
             if(session.getAttribute("email") != null) {
-            	 response.sendRedirect("welcome.jsp");
+            	 response.sendRedirect("welcome");
              }
-             else response.sendRedirect("register.jsp");
+             else response.sendRedirect("register");
 		
 	}
 
@@ -35,17 +35,16 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		EntityManager entityManager = JPAmanagerFactory.createEntityManager();
 		String name=request.getParameter("name");
 		String surname = request.getParameter("surname");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		LocalDateTime date = LocalDateTime.now();
-		BookStoreUtility.registerUser(name, surname, email, password, date,entityManager);
+		BookStoreUtility.registerUser(name, surname, email, password, date);
 		HttpSession session = request.getSession();
 		session.setAttribute("email", email);
 		System.out.println(session.getAttribute("email"));
-		response.sendRedirect("welcome.jsp");
+		response.sendRedirect("welcome");
 	}
 
 }

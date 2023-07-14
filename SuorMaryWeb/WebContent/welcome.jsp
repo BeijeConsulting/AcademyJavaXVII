@@ -1,4 +1,6 @@
-<%@page import="it.beije.suormary.web.User"%>
+<%@page import="it.beije.suormary.bookstore.User"%>
+<%@page import="it.beije.suormary.bookstore.Book"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -9,9 +11,20 @@
 <body>
 <%
 HttpSession currSession = request.getSession();
+List<Book> books = (List) currSession.getAttribute("books");
 %>
 <h1>Welcome <%= currSession.getAttribute("email") %></h1>
 
+<%
+ for(Book b : books){
+	 %>
+   <h2><%= b.getTitle() %></h2>
+	 
+<% 
+ }
+%>
+ 
+ 
 
 </body>
 </html>

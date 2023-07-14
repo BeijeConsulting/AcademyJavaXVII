@@ -6,7 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 public class BookStoreUtility {
-       public static void registerUser(String name, String surname, String email, String password, LocalDateTime date,EntityManager entityManager) {
+       public static void registerUser(String name, String surname, String email, String password, LocalDateTime date) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   try {
     		   EntityTransaction transaction = entityManager.getTransaction();
     		   transaction.begin();
@@ -26,7 +27,8 @@ public class BookStoreUtility {
     	   }
     	   
        }
-       public static User loginUser(String email, String password, EntityManager entityManager) {
+       public static User loginUser(String email, String password) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   User user = null;
     	   try {
     		   Query query = entityManager.createQuery("SELECT u FROM User as u WHERE u.email = :email AND u.password = :password");
@@ -42,13 +44,15 @@ public class BookStoreUtility {
     	   }
     	   return user;
        }
-       public static List<Book> loadBooks(EntityManager entityManager){
+       public static List<Book> loadBooks(){
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   List<Book> listBooks = null;
     	    try {
-    	    	Query queryBook = entityManager.createQuery("SELECT b FROM Book as b");
-    	    	listBooks = queryBook.getResultList();
+    	    	Query query = entityManager.createQuery("SELECT b FROM Book as b");
+    	    	listBooks = query.getResultList();
   	
     	    } catch(Exception e) {
+    	    	e.printStackTrace();
     	    	
     	    } finally {
     	    	entityManager.close();
