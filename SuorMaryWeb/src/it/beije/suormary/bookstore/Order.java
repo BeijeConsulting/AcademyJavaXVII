@@ -17,12 +17,13 @@ CREATE TABLE `orders` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL,
   `user_id` int(11) NOT NULL,
-  `status` varchar(45) NOT NULL,
-  `amount` decimal(10,2) DEFAULT NULL,
+  `status` char(1) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `shipping_address` varchar(200) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id_fk_idx` (`user_id`),
   CONSTRAINT `user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB 
+) ENGINE=InnoDB
 
 */
 
@@ -42,11 +43,19 @@ public class Order {
 	private int userId;
 
 	@Column(name = "status")
-	private String status;
+	private char status;
+	/*
+	 * I - Inserted
+	 * P - Paid
+	 * C - Cancelled
+	 */
 
 	@Column(name = "amount")
 	private double amount;
 	
+	@Column(name = "shipping_address")
+	private String shippingAddress;
+
 	@Transient
 	private List<OrderItem> items;
 
@@ -75,11 +84,11 @@ public class Order {
 		this.userId = userId;
 	}
 
-	public String getStatus() {
+	public char getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(char status) {
 		this.status = status;
 	}
 
@@ -108,6 +117,7 @@ public class Order {
 				.append(", date : ").append(date)
 				.append(", status : ").append(status)
 				.append(", amount : ").append(amount)
+				.append(", shippingAddress : ").append(shippingAddress)
 				.append(", items : ").append(items)
 				.append(" }");
 		
