@@ -32,27 +32,28 @@ if (user == null) {
 <%= welcome %> <jsp:getProperty property="name" name="user"/> <jsp:getProperty property="surname" name="user"/> !!
 </p>
 
+<% List<Book> books = (List<Book>) request.getAttribute("books");%> 
 
-<p>Hello world</p>
-	
-	<% List<Book> books = (List<Book>) request.getAttribute("books");%> 
-	
+<% if (books != null && !books.isEmpty()) { %>
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+        <% for (Book book : books) { %>
+            <div style="width: 300px; border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;">
+                <p><strong>Title:</strong> <%= book.getTitle() %></p>
+                <p><strong>Author:</strong> <%= book.getAuthorId() %></p>
+              	<p><strong>Description:</strong> <%= book.getDescription() %></p>
+              	<p><strong>Editor:</strong> <%= book.getEditor() %></p>
+              	<p><strong>Price:</strong> <%= book.getPrice() %></p>
+              	<p><strong>Quantity:</strong> <%= book.getQuantity() %></p>
+              	<a href="BookDetailsServlet?id=<%= book.getId() %>">View Details</a>
+
+            </div>
+        <% } %>
+    </div>
+<% } else { %>
+    <p>No books found.</p>
+<% } %>
 
 
-	<%
-	if (books != null) {
-		
-		for (Book b : books) {
-	%>
-	<p>
-		Book:
-		<%=b.getTitle()%>
-	
-	</p>
-	<%
-	}
-	}
-	%>
 
 </body>
 </html>

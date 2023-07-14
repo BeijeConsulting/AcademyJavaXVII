@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class BookDetailsServlet
  */
-@WebServlet("/BookDetailsServlet")
+@WebServlet("/bookstoreBookDetails")
 public class BookDetailsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -18,8 +18,7 @@ public class BookDetailsServlet extends HttpServlet {
      * @see HttpServlet#HttpServlet()
      */
     public BookDetailsServlet() {
-        super();
-        // TODO Auto-generated constructor stub
+
     }
 
 	/**
