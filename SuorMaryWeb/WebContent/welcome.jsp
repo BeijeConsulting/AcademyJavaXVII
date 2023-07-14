@@ -1,5 +1,5 @@
-<%@page import="it.beije.suormary.bookstore.User"%>
-<%@page import="it.beije.suormary.bookstore.Book"%>
+<%@page import="it.beije.suormary.bookstore3.User"%>
+<%@page import="it.beije.suormary.bookstore3.Book"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -22,6 +22,10 @@ List<Book> books = (List) currSession.getAttribute("books");
  for(Book b : books){
 	 %>
    <h2><%= b.getTitle() %></h2>
+   <form action="updateBook" action="GET">
+   <input type="hidden" name="id" value=<%=b.getId() %> />
+   <input type="submit" value="Modifica libro" />
+   </form>
 	 
 <% 
  }

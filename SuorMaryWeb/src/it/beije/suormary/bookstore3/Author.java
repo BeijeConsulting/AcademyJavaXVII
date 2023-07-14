@@ -1,4 +1,5 @@
-package it.beije.suormary.bookstore3;
+package it.beije.suormary.bookstore3
+;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore3;
 
 import java.io.IOException;
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -11,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import it.beije.suormary.bookstore.Book;
 
 /**
  * Servlet implementation class WelcomeServlet
@@ -31,8 +31,11 @@ public class WelcomeServlet extends HttpServlet {
 		}
 		else{
 			List<Book> books = BookStoreUtility.loadBooks();
-		    session.setAttribute("books", books);		
-		    response.sendRedirect("welcome.jsp");
+			if(books != null) {
+				  session.setAttribute("books", books);		
+				  response.sendRedirect("welcome.jsp");
+			}
+		  
 		}
 	}
 
