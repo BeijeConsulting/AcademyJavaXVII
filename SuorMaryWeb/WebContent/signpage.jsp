@@ -4,36 +4,23 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Login</title>
+<title>Sign up</title>
 </head>
-
 <body>
-
-<%
-String loginError = (String) session.getAttribute("loginError");
-if (loginError != null) {
-	%>
-	<p style="color:red"><%= loginError %></p>
-	<%
-	session.removeAttribute("loginError");
-}
-%>
 
 <div>
 	<form action="./homeservlet" method="POST">
+		  <label for="name">Name:</label><br>
+		  <input type="text" name="name" required><br>
+		  <label for="surname">Surname:</label><br>
+		  <input type="text" name="surname" required><br>
 		  <label for="email">Email:</label><br>
 		  <input type="text" name="email" required><br>
 		  <label for="password">Password:</label><br>
 		  <input type="text" name="password" required><br><br>
-		  <input type="submit" value="Login">
+		  <input type="submit" value="Sign up">
 	</form>
-	<br>
-	<a href="signpage.jsp">
-	<button name="selection" value="listaContatti" style="color:blue"><u>Sign up</u></button>
-	</a>
 </div>
 
 </body>
-
-
 </html>

@@ -14,7 +14,9 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/homeservlet")
 public class HomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	EcommerceManager em = new EcommerceManager();
+	User user = null;
+	
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -37,15 +39,57 @@ public class HomeServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("HomeServlet doPost");
 		
-		HttpSession session = request.getSession();
-
-		String username = (String) request.getParameter("username");
+		//HttpSession session = request.getSession();
 		
-		if (username != null) { //logged
-			response.sendRedirect("listpage.jsp");
-		} else { //non logged
-			response.sendRedirect("loginpage.jsp");
-		}
+		String name = (String) request.getParameter("name");
+		String surname = (String) request.getParameter("surname");
+		String email = (String) request.getParameter("email");
+		String password = (String) request.getParameter("password");
+		
+		
+		String nextPage;
+		if(name == null) nextPage = nextPage(request, email, password);
+		else nextPage = subscribe(request, name, surname, email, password);
+	
+		response.sendRedirect(nextPage);
+
 	}
+	
+	
+	private String nextPage(HttpServletRequest request, String email, String password) {
+		HttpSession session = request.getSession();
+		String nextPage = null;
+		if (email == null && password == null) {
+			nextPage = "loginpage.jsp";
+		}
+		else {
+			user = em.isUser(email, password);
+			if(user != null) {
+				session.setAttribute("user", user);
+				nextPage = "listpage.jsp";
+			}
+			else {
+				session.setAttribute("loginError", "Email or password incorrect");
+				nextPage = "loginpage.jsp";
+			}
+		}	
+		return nextPage;
+	}
+	
+	private String subscribe(HttpServletRequest request, String name, String surname, String email, String password) {
+		System.out.println("subcribe");
+		String nextPage;
+		HttpSession session = request.getSession();
+		
+		user = em.insertUser(name, surname, email, password);
+		if (user == null) {
+			session.setAttribute("loginError", "Email already exists");
+			nextPage = "loginpage.jsp";
+		}
+		else nextPage = "listpage.jsp";
+		return nextPage;
+	}
+	
+	
 
 }
