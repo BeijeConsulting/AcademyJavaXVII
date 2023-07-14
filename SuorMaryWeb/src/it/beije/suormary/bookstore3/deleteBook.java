@@ -1,23 +1,17 @@
 package it.beije.suormary.bookstore3;
 
 import java.io.IOException;
-
-import java.util.List;
-
-import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 
 /**
- * Servlet implementation class WelcomeServlet
+ * Servlet implementation class deleteBook
  */
-@WebServlet("/welcome")
-public class WelcomeServlet extends HttpServlet {
+@WebServlet("/deleteBook")
+public class deleteBook extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
@@ -25,18 +19,9 @@ public class WelcomeServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		if(session.getAttribute("email") == null) {
-			response.sendRedirect("login.jsp");
-		}
-		else{
-			List<Book> books = BookStoreUtility.loadBooks();
-			if(books != null) {
-				  session.setAttribute("books", books);		
-				  response.sendRedirect("welcome.jsp");
-			}
-		  
-		}
+		String id = request.getParameter("id");
+		BookStoreUtility.deleteBook(id);
+		response.sendRedirect("welcome");
 	}
 
 	/**

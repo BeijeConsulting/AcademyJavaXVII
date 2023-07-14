@@ -1,10 +1,8 @@
 package it.beije.suormary.bookstore3;
 
 import java.io.IOException;
+import java.util.List;
 
-import java.time.LocalDateTime;
-
-import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,22 +11,24 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class RegisterServlet
+ * Servlet implementation class CreateBook
  */
-@WebServlet("/register")
-public class RegisterServlet extends HttpServlet {
+@WebServlet("/createBook")
+public class CreateBook extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-            if(session.getAttribute("email") != null) {
-            	 response.sendRedirect("welcome");
-             }
-             else response.sendRedirect("register.jsp");
+		if(session.getAttribute("email") != null) {
+			List<Author> authors = BookStoreUtility.getAuthors();
+			session.setAttribute("authors", authors);
+			response.sendRedirect("createBook.jsp");
+		}
+		else response.sendRedirect("login.jsp");
 		
 	}
 
@@ -36,15 +36,13 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name=request.getParameter("name");
-		String surname = request.getParameter("surname");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		LocalDateTime date = LocalDateTime.now();
-		BookStoreUtility.registerUser(name, surname, email, password, date);
-		HttpSession session = request.getSession();
-		session.setAttribute("email", email);
-		System.out.println(session.getAttribute("email"));
+		String title = request.getParameter("title");
+		String description = request.getParameter("description");
+		String editor = request.getParameter("editor");
+		String price = request.getParameter("price");
+		String quantity = request.getParameter("quantity");
+		String authorId = request.getParameter("authorId");
+		BookStoreUtility.addBook(title, description, editor, price, quantity, authorId);
 		response.sendRedirect("welcome");
 	}
 
