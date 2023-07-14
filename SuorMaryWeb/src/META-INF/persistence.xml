@@ -20,7 +20,7 @@
 
 			<property name="javax.persistence.jdbc.password" value="password"/>
 
-			<property name="javax.persistence.jdbc.password" value="beije"/>
+			<!--<property name="javax.persistence.jdbc.password" value="beije"/>-->
 
 		</properties>
 	</persistence-unit>
