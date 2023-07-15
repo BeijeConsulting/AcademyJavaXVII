@@ -9,6 +9,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import it.beije.suormary.bookstore2.model.Book;
+import it.beije.suormary.bookstore2.model.Order;
+import it.beije.suormary.bookstore2.model.OrderItem;
 import it.beije.suormary.bookstore2.model.PersistenceManagerJPA;
 
 public class BookstoreUtility {
@@ -73,6 +75,40 @@ public class BookstoreUtility {
 	
 	}
 	
+	
+	public static List<Order> readOrdersFromDb() {
+
+		List<Order> orders = new ArrayList<>();
+		List<OrderItem> booksInOrder = new ArrayList<>();
+		EntityTransaction transaction = null;
+		EntityManager entityManager = null;
+
+			try {
+
+				entityManager = PersistenceManagerJPA.getEntityManager();
+				transaction = entityManager.getTransaction();
+				transaction.begin();
+				Query query = entityManager.createQuery("SELECT o FROM Order as o WHERE user_id = 2");
+				orders = query.getResultList();
+				System.out.println(orders);
+				for (Order o : orders) {
+					Query query2 = entityManager.createQuery("SELECT oi FROM OrderItem as oi WHERE order_id = '" + o.getId() + "'");
+					booksInOrder = query2.getResultList();
+					o.setItems(booksInOrder);
+					System.out.println(booksInOrder);
+				}
+
+				transaction.commit();
+			} catch (Exception e) {
+				transaction.rollback();
+				e.printStackTrace();
+			} finally {
+				entityManager.close();
+			}
+
+
+		return orders;
+	}
 	
 
 }
