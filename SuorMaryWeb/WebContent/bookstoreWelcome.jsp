@@ -31,6 +31,9 @@ if (user == null) {
 <jsp:useBean id="user" class="it.beije.suormary.bookstore2.model.User" scope="session"></jsp:useBean>
 <%= welcome %> <jsp:getProperty property="name" name="user"/> <jsp:getProperty property="surname" name="user"/> !!
 </p>
+                <form style="text-align: center" action="bookstoreOrderList" method="get">
+                    <button type="submit" style="background-color: #2c5e29; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">View Order List</button>
+                </form>
 
 <% List<Book> books = (List<Book>) request.getAttribute("books");%> 
 

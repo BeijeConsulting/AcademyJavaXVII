@@ -28,7 +28,7 @@ if (loginError != null) {
   <input type="submit" value="Login">
 </form> 
 <br>
-<button type="button" onclick="window.location.href='bookStoreRegistration.jsp'">Vuoi registrarti?</button>
+<button type="button" onclick="window.location.href='bookstoreRegistration.jsp'">Vuoi registrarti?</button>
 
 
 </body>

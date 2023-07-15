@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 		String email = (String) session.getAttribute("email");
 
 		if (email != null) { // utente loggato
-			response.sendRedirect("bookstoreWelcome.jsp");
+			response.sendRedirect("bookstoreWelcome");
 		} else { // non loggato
 			response.sendRedirect("bookstoreLogin.jsp");
 		}
@@ -56,7 +56,7 @@ public class LoginServlet extends HttpServlet {
 		if (user != null ) { // OK
 			session.setAttribute("email", email);
 
-			response.sendRedirect("bookstoreWelcome.jsp");
+			response.sendRedirect("bookstoreWelcome");
 			
 		} else { // KO
 			session.setAttribute("loginError", "CREDENZIALI NON VALIDE!!!");
