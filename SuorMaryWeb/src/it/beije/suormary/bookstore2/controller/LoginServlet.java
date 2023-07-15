@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import it.beije.suormary.bookstore2.model.User;
+
 /**
  * Servlet implementation class LoginServlet
  */
@@ -49,12 +51,13 @@ public class LoginServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		System.out.println("JSESSIONID: " + session.getId());
-
+		User user = UserUtility.checkUser(email, password);
 		
-		if (email != null && email.equalsIgnoreCase("pippo@beije.it") && password != null && password.equals("12345")) { // OK
+		if (user != null ) { // OK
 			session.setAttribute("email", email);
 
 			response.sendRedirect("bookstoreWelcome.jsp");
+			
 		} else { // KO
 			session.setAttribute("loginError", "CREDENZIALI NON VALIDE!!!");
 

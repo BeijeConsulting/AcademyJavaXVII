@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import it.beije.suormary.bookstore2.model.PersistenceManagerJPA;
 import it.beije.suormary.bookstore2.model.User;
@@ -49,5 +50,30 @@ public class UserUtility {
 			}
 		}
 	}
+	
+	public static User checkUser(String email, String password) {
+		EntityManager entityManager = null;
+		User user=null;
+		try {
+			entityManager = PersistenceManagerJPA.getEntityManager();
+			// Recupera l'utente dal database utilizzando JPA
+
+	        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email AND u.password = :password", User.class);
+	        query.setParameter("email", email);
+	        query.setParameter("password", password);
+	        user = (User) query.getSingleResult();
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				entityManager.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return user;
+	}
+	
 
 }

@@ -19,12 +19,17 @@ if (loginError != null) {
 %>
 
 <form action="./bookstoreLogin" method="POST">
-  <label for="email">email:</label><br>
-  <input type="text" name="email" ><br>
+  <label for="email">Email:</label><br>
+  <input type="email" name="email" id="email" required><br>
+  
   <label for="password">Password:</label><br>
-  <input type="text" name="password" ><br><br>
-  <input type="submit" value="Submit">
+  <input type="password" name="password" id="password" required><br><br>
+  
+  <input type="submit" value="Login">
 </form> 
+<br>
+<button type="button" onclick="window.location.href='bookStoreRegistration.jsp'">Vuoi registrarti?</button>
+
 
 </body>
 </html>
