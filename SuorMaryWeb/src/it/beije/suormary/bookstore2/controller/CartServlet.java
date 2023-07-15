@@ -56,7 +56,7 @@ public class CartServlet extends HttpServlet {
 	    System.out.println("Added to cart");
 
 	    // Redirect back to the previous page or any other desired page
-	    response.sendRedirect(request.getContextPath() + "/bookstoreBookDetails.jsp?id=" + bookId);
+	    response.sendRedirect(request.getContextPath() + "/bookstoreBookDetails?id=" + bookId);
 	
 		//doGet(request, response);
 	}

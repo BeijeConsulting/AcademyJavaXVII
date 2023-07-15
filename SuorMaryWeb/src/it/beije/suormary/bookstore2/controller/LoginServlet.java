@@ -47,15 +47,15 @@ public class LoginServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		System.out.println("email : " + email);
-		System.out.println("password : " + password);
+		//System.out.println("password : " + password);
 
 		HttpSession session = request.getSession();
 		System.out.println("JSESSIONID: " + session.getId());
 		User user = UserUtility.checkUser(email, password);
 		
 		if (user != null ) { // OK
-			session.setAttribute("email", email);
-
+			user.setPassword("");
+			session.setAttribute("user", user);
 			response.sendRedirect("bookstoreWelcome");
 			
 		} else { // KO

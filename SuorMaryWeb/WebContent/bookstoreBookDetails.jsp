@@ -24,7 +24,7 @@
             <p style="text-align: center"><strong>Editor:</strong> <%= book.getEditor() %></p>
             <p style="text-align: center"><strong>Price:</strong> $<%= book.getPrice() %></p>
             <p style="text-align: center"><strong>Quantity:</strong> <%= book.getQuantity() %></p>
-            <form style="text-align: center" action="CartServlet" method="post">
+            <form style="text-align: center" action="./CartServlet" method="post">
                     <input type="hidden" name="id" value="<%= book.getId() %>">
              		<button type="submit" style="background-color: #2c5e29; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">Add to Cart</button>
             </form>
