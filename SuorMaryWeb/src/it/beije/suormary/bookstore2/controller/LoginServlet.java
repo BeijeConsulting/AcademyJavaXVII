@@ -23,7 +23,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("LoginServlet doGet");
+		System.out.println("bookstoreLogin doGet");
 
 		HttpSession session = request.getSession();
 		String email = (String) session.getAttribute("email");
@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("LoginServlet doPost");
+		System.out.println("bookstoreLogin doPost");
 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");

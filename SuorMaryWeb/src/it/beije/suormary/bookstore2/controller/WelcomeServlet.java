@@ -30,7 +30,7 @@ public class WelcomeServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Welcome doGet");
+		System.out.println("bookstoreWelcome doGet");
 
 		List<Book> books = BookstoreUtility.readBooksFromDb();
 		request.setAttribute("books", books);

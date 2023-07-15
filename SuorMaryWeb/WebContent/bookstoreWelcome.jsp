@@ -14,8 +14,8 @@
 <p>
 <%
 /*
-String username = (String) session.getAttribute("username");
-if (username == null) response.sendRedirect("login");
+String email = (String) session.getAttribute("email");
+if (email == null) response.sendRedirect("bookstoreLogin");
 */
 String welcome = "BUONGIORNO";
 
@@ -29,11 +29,14 @@ if (user == null) {
 %>
 
 <jsp:useBean id="user" class="it.beije.suormary.bookstore2.model.User" scope="session"></jsp:useBean>
-<%= welcome %> <jsp:getProperty property="name" name="user"/> <jsp:getProperty property="surname" name="user"/> !!
+<%= welcome %> 
+<jsp:getProperty property="name" name="user"/> 
+<jsp:getProperty property="surname" name="user"/> !!
 </p>
-                <form style="text-align: center" action="bookstoreOrderList" method="get">
-                    <button type="submit" style="background-color: #2c5e29; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">View Order List</button>
-                </form>
+
+<form style="text-align: center" action="./bookstoreOrderList">
+	<button type="submit" style="background-color: #2c5e29; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">View Order List</button>
+</form>
 
 <% List<Book> books = (List<Book>) request.getAttribute("books");%> 
 
@@ -45,7 +48,7 @@ if (user == null) {
                 <hr>
                 <p style="text-align: center"><strong>AuthorId:</strong> <%= book.getAuthorId() %></p>
                 <p style="text-align: center"><strong>Description:</strong> <%= book.getDescription() %></p>
-                <form style="text-align: center" action="bookstoreBookDetails" method="get">
+                <form style="text-align: center" action="./bookstoreBookDetails" method="get">
                     <input type="hidden" name="id" value="<%= book.getId() %>">
                     <button type="submit" style="background-color: #2c5e29; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">View Details</button>
                 </form>
