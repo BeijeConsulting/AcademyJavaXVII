@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Query;
+
+import org.hibernate.internal.build.AllowSysOut;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
@@ -18,14 +21,17 @@ public class EcommerceManager {
     	em = JPAEntityFactory.openEntity();
         transaction = em.getTransaction();
         transaction.begin();
+        System.out.println("1");
     	Query query = em.createQuery("SELECT u from User as u WHERE u.email = :email AND password = :password");
-
+    	System.out.println("2");
     	query.setParameter("email", email);
     	query.setParameter("password", password);
-
-    	if (query.getResultList().size() == 0) return null;
-    	List <User> users = query.getResultList();
+    	System.out.println("3");
     	
+    	List <User> users = query.getResultList();
+    	for (User u : users) System.out.println(u);
+    	if (users.size() == 0) return null;
+    	System.out.println("4");    	
     	return users.get(0);
     }
     

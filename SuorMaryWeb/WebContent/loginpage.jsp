@@ -24,8 +24,18 @@ if (loginError != null) {
 		  <label for="email">Email:</label><br>
 		  <input type="text" name="email" required><br>
 		  <label for="password">Password:</label><br>
-		  <input type="text" name="password" required><br><br>
-		  <input type="submit" value="Login">
+		  <input type="password" name="password" id="id" required>
+		  <input type="checkbox" onclick="myFunction()">Show Password<br/><br/>
+		  
+			<script>
+			function myFunction(){
+			  var x = document.getElementById("id");
+			  if (x.type == "password") x.type = "text";
+			  else x.type = "password";
+			}
+			</script>
+			<input type="submit" value="Login">
+			
 	</form>
 	<br>
 	<a href="signpage.jsp">
