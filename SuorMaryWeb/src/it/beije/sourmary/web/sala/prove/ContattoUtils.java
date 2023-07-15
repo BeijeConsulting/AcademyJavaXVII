@@ -19,6 +19,8 @@ public class ContattoUtils {
 			query.setParameter("nome", nome); //il primo rappresenta il parametro nella query e il secondo quello passato dal metodo
 			query.setParameter("cognome", cognome);
 			c = (Contatto)query.getSingleResult();
+			
+			System.out.println(c.getName());
 					
 			
 		} catch(Exception e){

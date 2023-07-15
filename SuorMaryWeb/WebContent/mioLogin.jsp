@@ -7,8 +7,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-<form action="./login" method="POST">
+<% HttpSession sessione = request.getSession();
+String errore = (String) sessione.getAttribute("errore");
+if(errore!=null){
+	%><pstyle="color:red"><%= errore%></p>
+<% sessione.removeAttribute("errore");
+}
+%>
+<form action="./LogServlet" method="POST">
   <label for="username">Username:</label><br>
   <input type="text" name="username" ><br>
   <label for="password">Password:</label><br>
