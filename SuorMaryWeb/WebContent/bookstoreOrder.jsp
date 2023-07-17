@@ -53,10 +53,10 @@
               <h2 class = "title">Books in order <%= order.getId()%> </h2>
               <p class = "title"><strong>amount</strong> <%= order.getAmount()%></p>
                      <div class="container">
-
-					
-					  <% for (OrderItem orderItem : orderItems) { %>
-					 	<% for (Book b : books) { %>
+                     <% for (int i = 0; i < orderItems.size(); i ++) {
+                    	 OrderItem orderItem = orderItems.get(i);
+                    	 Book b = books.get(i);
+                    	 %>
 					    <div class = "order_container">
 					      <p class ="title"><strong>Order creation date : </strong> <%= formattedDate%></p>
 					      <p class = "paragraph"><strong>Book title :</strong> <%= b.getTitle()%></p>
@@ -64,7 +64,6 @@
 					      <p class = "paragraph"><strong>Price :</strong> <%= orderItem.getPrice() %> $ </p>
 					      <p class = "paragraph"><strong>Quantity :</strong> <%= orderItem.getQuantity() %></p>
 					    </div>
-					  	<% } %>
 					  <% } %>
 					</div>
 						               

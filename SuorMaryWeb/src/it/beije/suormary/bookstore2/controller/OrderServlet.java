@@ -50,45 +50,53 @@ public class OrderServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		User user = (User) session.getAttribute("user");
 	    Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
+	    
+	    String action = request.getParameter("action");
+	    
+	    if (action != null && action.equals("cancel")) {
+	        int orderId = Integer.parseInt(request.getParameter("id"));
+	        // Esegui l'operazione di cancellazione dell'ordine con l'ID specificato
+	        UserUtility.cancelOrder(orderId);
+	    } else {
+	    	// Creazione di un nuovo ordine nel database
+	        Order newOrder = new Order();
+	        newOrder.setUserId(user.getId());
+	        newOrder.setDate(LocalDateTime.now());
+	        newOrder.setStatus("I"); // Stato "Inserito" per il nuovo ordine
 
-	 // Creazione di un nuovo ordine nel database
-        Order newOrder = new Order();
-        newOrder.setUserId(user.getId());
-        newOrder.setDate(LocalDateTime.now());
-        newOrder.setStatus("I"); // Stato "Inserito" per il nuovo ordine
+	        // Calcolo del totale dell'ordine
+	        double totalAmount = 0.0;
+	        List<OrderItem> orderItems = new ArrayList<>();
 
-        // Calcolo del totale dell'ordine
-        double totalAmount = 0.0;
-        List<OrderItem> orderItems = new ArrayList<>();
+	        for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
+	            int bookId = entry.getKey();
+	            int quantity = entry.getValue();
+	            Book book = BookstoreUtility.findBook(bookId);
+	            double price = book.getPrice();
+	            
+	         // Creazione di un oggetto OrderItem per ogni libro nel carrello
+	            OrderItem orderItem = new OrderItem();
+	            orderItem.setBookId(bookId);
+	            orderItem.setQuantity(quantity);
+	            orderItem.setPrice(price);
+	            orderItems.add(orderItem);
 
-        for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
-            int bookId = entry.getKey();
-            int quantity = entry.getValue();
-            Book book = BookstoreUtility.findBook(bookId);
-            double price = book.getPrice();
-            
-         // Creazione di un oggetto OrderItem per ogni libro nel carrello
-            OrderItem orderItem = new OrderItem();
-            orderItem.setBookId(bookId);
-            orderItem.setQuantity(quantity);
-            orderItem.setPrice(price);
-            orderItems.add(orderItem);
+	            // Calcolo del totale dell'ordine aggiungendo il prezzo del libro moltiplicato per la quantità
+	            totalAmount += price * quantity;
+	        }
 
-            // Calcolo del totale dell'ordine aggiungendo il prezzo del libro moltiplicato per la quantità
-            totalAmount += price * quantity;
-        }
+	        newOrder.setItems(orderItems);
+	        newOrder.setAmount(totalAmount);
+	        
+	        // Salvataggio dell'ordine nel database
+	        int orderId = UserUtility.insertOrder(newOrder);
 
-        newOrder.setItems(orderItems);
-        newOrder.setAmount(totalAmount);
-        
-        // Salvataggio dell'ordine nel database
-        int orderId = UserUtility.insertOrder(newOrder);
-
-        // Rimozione del carrello dalla sessione
-        session.removeAttribute("cart");
-        
-        // Reindirizzamento alla pagina di visualizzazione degli ordini
-        response.sendRedirect(request.getContextPath() + "/bookstoreOrderList");
+	        // Rimozione del carrello dalla sessione
+	        session.removeAttribute("cart");
+	        
+	    }
+	    // Reindirizzamento alla pagina di visualizzazione degli ordini
+	    response.sendRedirect(request.getContextPath() + "/bookstoreOrderList");
         
 	}
 }

@@ -43,6 +43,12 @@
         border-radius: 4px;
         cursor: pointer;
         }
+        
+        .button[disabled] {
+          background-color: #ccc;
+          color: #666;
+          cursor: not-allowed;
+        }
     </style>
 
 </head>
@@ -64,6 +70,20 @@
                     <input type="hidden" name="id" value="<%= order.getId() %>">
                     <button type="submit" class= "button">View Details</button>
                 </form>
+                <br>
+                <% if(order.getStatus().equals("I")) { %>
+                <form class="paragraph" action="./bookstoreOrderList" method="post">
+                	<input type="hidden" name="id" value="<%= order.getId() %>">
+                	<button type="submit" class="button" name="action" value="cancel"
+                	onclick="return confirm('Are you sure you want to cancel this order?')">Cancel</button>
+        		</form>
+        		<% } else {%>
+        		<form class="paragraph">
+                	<button type="submit" class="button" 
+                	title="Order cannot be canceled as it is already processed."
+                	disabled>Cancel</button>
+        		</form>
+        		<% }%>
             
             </div>
         <% } %>

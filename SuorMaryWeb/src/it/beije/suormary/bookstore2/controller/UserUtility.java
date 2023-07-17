@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore2.controller;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -89,11 +90,6 @@ public class UserUtility {
 			if(order!=null) {
 				try {
 					entityManager.persist(order); // salva l'order nel database
-//					for (OrderItem orderItem : order.getItems()) {
-//						entityManager.persist(orderItem);
-//						Book book = entityManager.find(Book.class, orderItem.getBookId());
-//						book.setQuantity(book.getQuantity()-orderItem.getQuantity());
-//			        }
 					transaction.commit();
 					orderId = order.getId();
 					for (OrderItem orderItem : order.getItems()) {
@@ -108,7 +104,7 @@ public class UserUtility {
 				} 
 					
 			} else {
-				System.out.println("User mancante");
+				System.out.println("Order mancante");
 			}
 			
 		} catch (Exception e) {
@@ -144,7 +140,7 @@ public class UserUtility {
 				} 
 					
 			} else {
-				System.out.println("User mancante");
+				System.out.println("OrderItem mancante");
 			}
 			
 		} catch (Exception e) {
@@ -157,4 +153,40 @@ public class UserUtility {
 			}
 		}
 	}
+	
+	public static void cancelOrder(int orderId) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = PersistenceManagerJPA.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
+			
+			try {
+				Order order = entityManager.find(Order.class, orderId);
+				List<OrderItem> items = BookstoreUtility.getOrderFromId(orderId).getItems();
+				order.setStatus("C");
+				order.setItems(items);
+	            for (OrderItem orderItem : order.getItems()) {
+	            	Book book = entityManager.find(Book.class, orderItem.getBookId());
+	                book.setQuantity(book.getQuantity() + orderItem.getQuantity());
+	            }
+	            transaction.commit();
+
+				} catch (Exception e) {
+					System.out.println("Aggiornamento Cancel Order non valido id:" + orderId);
+					transaction.rollback();
+					throw e; //rilancia eccezione al catch più esterno
+				} 
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				entityManager.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 }

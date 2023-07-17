@@ -98,7 +98,7 @@ public class CartServlet extends HttpServlet {
                 System.out.println("Added to cart: bookId=" + bookId + ", quantity=" + (quantity + 1));
         	} else {
         		System.out.println("Maximum quantity reached for bookId=" + bookId);
-        		session.setAttribute("cartError", "maximum amount of books reached for the book "+book.getTitle());
+        		//session.setAttribute("cartError", "maximum amount of books reached for the book "+book.getTitle());
         	}
         	
             if (action.equals("addFromBookDet")) {

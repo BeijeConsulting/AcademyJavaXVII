@@ -2,6 +2,7 @@
 <%@page import="it.beije.suormary.bookstore2.model.Book"%>
 <%@page import="it.beije.suormary.bookstore2.model.Author"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.Map"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -31,12 +32,18 @@
         	text-align: center;
         }
         .button {
-        	background-color: #2c5e29; 
-        	color: white; 
-        	border: none; 
-        	padding: 8px 16px; 
-        	border-radius: 4px; 
-        	cursor: pointer;
+        background-color: #2c5e29;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        }
+        
+        .button[disabled] {
+          background-color: #ccc;
+          color: #666;
+          cursor: not-allowed;
         }
        
 	</style>
@@ -45,16 +52,6 @@
 
 <% Book book = (Book) request.getAttribute("book");%> 
 <% Author author = (Author) request.getAttribute("author");%> 
-<%
-String cartError = (String) session.getAttribute("cartError");
-if (cartError != null) {
-	%>
-	<p style="color:red"><%= cartError %></p>
-	<%
-	
-	session.removeAttribute("cartError");
-}
-%>
    <div class = "container">
 
     <% if (book != null) { %>
@@ -66,11 +63,29 @@ if (cartError != null) {
             <p class = "paragraph"><strong>Editor :</strong> <%= book.getEditor() %></p>
             <p class = "paragraph"><strong>Price :</strong> $<%= book.getPrice() %></p>
             <p class = "paragraph"><strong>Quantity :</strong> <%= book.getQuantity() %></p>
+            
+            <% 
+            Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
+            int quantity = -1;
+            if (cart != null) {
+            	quantity = cart.getOrDefault(book.getId(), 0);
+            }
+            int maxQuantity = book.getQuantity();
+            boolean addButtonDisabled = quantity >= maxQuantity;
+            if (addButtonDisabled) {%>
+            <form class="paragraph">
+                	<button type="submit" class="button" 
+                	title="Maximum amount of books reached for this book."
+                	disabled>Add to Cart</button>
+        		</form>
+            <%} else{ %>
+            
             <form class = "paragraph" action="./cart" method="post">
                     <input type="hidden" name="id" value="<%= book.getId() %>">
                     <input type="hidden" name="action" value="addFromBookDet">
              		<button type="submit" class = "button">Add to Cart</button>
-             </form>
+            </form>
+            <%} %>
         </div>
     <% } else { %>
        <div class = "paragraph">
