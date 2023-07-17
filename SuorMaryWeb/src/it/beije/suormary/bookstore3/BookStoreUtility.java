@@ -62,30 +62,53 @@ public class BookStoreUtility {
     	    return listBooks;
        }
 
-       private static Order createOrder(int userId) {
-    	   Order order= new Order(); 
-    	   LocalDateTime dateTime = LocalDateTime.now();
-    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
-    	   try {
-    		   EntityTransaction transaction = entityManager.getTransaction();
-    		   transaction.begin();
-    		   order.setDate(dateTime);
-    		   order.setUserId(userId);
-    		   order.setStatus('I');
-    		   order.setAmount(0);
-    		   order.setItems(null);
-    		   entityManager.persist(order);
-    		   transaction.commit();
-    		   	   
-    	   } catch(Exception e) {
-    		   e.printStackTrace();
-    	   } finally {
-    		   entityManager.close();
-    	   }
-		return order;
-	}
-       
-      
+//       private static Order createOrder(int userId, List<OrderItem> cart) {
+//    	   Order order= new Order(); 
+//    	   LocalDateTime dateTime = LocalDateTime.now();
+//    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+//    	   try {
+//    		   EntityTransaction transaction = entityManager.getTransaction();
+//    		   transaction.begin();
+//    		   order.setDate(dateTime);
+//    		   order.setUserId(userId);
+//    		   order.setStatus('I');
+//    		   order.setAmount(0);
+//    		   order.setItems(null);
+//    		   entityManager.persist(order);
+//    		   transaction.commit();
+//    		   	   
+//    	   } catch(Exception e) {
+//    		   e.printStackTrace();
+//    	   } finally {
+//    		   entityManager.close();
+//    	   }
+//		return order;
+//	}
+//       
+//       public static List<OrderItem> selectedItems(List<Book> selectedBooks ) {
+//    	   List<OrderItem> cart = null;
+//    	   OrderItem bookItem = null;
+//    	   for(Book b: selectedBooks) {
+//    		   if(!cart.contains(b.getId())){
+//	    		  bookItem =new OrderItem();
+//	    		  bookItem.setBookId(b.getId());
+//	    		  bookItem.setPrice(b.getPrice());
+//	    		  bookItem.setQuantity(1);
+//	    		  cart.add(bookItem);
+//    		   } else {
+//    			 bookItem = cart.get(cart.indexOf(b.getId()));
+//    			 bookItem.setPrice(bookItem.getPrice()+b.getPrice());
+//    			 bookItem.setQuantity(bookItem.getQuantity()+1);
+//        	   }
+//    	   }
+//    	   
+//		return cart;
+//	}
+//       
+//       public static Order createOrder(int userId, List<Book> selectedBooks) {
+//    	   
+//		return null;
+//	}
        
        public static List<Author> getAuthors(){
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
