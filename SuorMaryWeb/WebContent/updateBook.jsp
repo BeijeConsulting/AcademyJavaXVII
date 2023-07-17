@@ -13,9 +13,10 @@
 <%@ include file="header.jsp" %>
 <h1>Modifica libro</h1>
 <%
-HttpSession currSession = request.getSession();
- Book book = (Book) currSession.getAttribute("book"); 
+//HttpSession currSession = request.getSession();
+ Book book = (Book) session.getAttribute("book"); 
  List<Author> authors = (List) session.getAttribute("authors");
+ 
 %>
 <form action="updateBook" method="POST">
 <input type="hidden" name="id" value="<%=book.getId() %>" />
@@ -32,8 +33,7 @@ HttpSession currSession = request.getSession();
 <label for="quantity">Scegli un autore : </label> <br>
 <%
 for(Author author : authors){
-	%>
-	<%
+
 	 if(author.getId() == book.getAuthorId()){
 		    
 	    

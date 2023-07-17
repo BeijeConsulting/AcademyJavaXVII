@@ -1,10 +1,8 @@
 package it.beije.suormary.bookstore3;
 
 import java.io.IOException;
-
 import java.util.List;
 
-import javax.persistence.EntityManager;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,29 +10,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 /**
- * Servlet implementation class WelcomeServlet
+ * Servlet implementation class RecapOrder
  */
-@WebServlet("/welcome")
-public class WelcomeServlet extends HttpServlet {
+@WebServlet("/recapOrder")
+public class RecapOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		if(session.getAttribute("email") == null) {
-			response.sendRedirect("login.jsp");
-		}
-		else{
-			List<Book> books = BookStoreUtility.loadBooks();
-				  session.setAttribute("books", books);		
-				  response.sendRedirect("welcome.jsp");
-		  
-		}
+		List<Book> booksOrder = (List) session.getAttribute("booksOrder");
+		Order order =(Order) session.getAttribute("order");
+		System.out.println("Order  : " + order);
+		System.out.println(booksOrder.size());
+		BookStoreUtility.createOrderItems(booksOrder,order);
+		response.sendRedirect("welcome.jsp");
 	}
 
 	/**

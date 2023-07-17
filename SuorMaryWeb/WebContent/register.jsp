@@ -6,7 +6,7 @@
 <title>Register Page</title>
 </head>
 <body>
-<h1>Register</h1>
+<h1>Registrati</h1>
 <%
 String loginError = (String) session.getAttribute("loginError");
 if (loginError != null) {
@@ -19,15 +19,15 @@ if (loginError != null) {
 %>
 
 <form action="./register" method="POST">
-  <label for="name">Name:</label><br>
+  <label for="name">Nome:</label><br>
   <input type="text" name="name" ><br>
-   <label for="username">Surname:</label><br>
+   <label for="username">Cognome:</label><br>
   <input type="text" name="surname" ><br>
   <label for="email">Email:</label><br>
   <input type="text" name="email" ><br>
   <label for="password">Password:</label><br>
-  <input type="text" name="password" ><br><br>
-  <input type="submit" value="Submit">
+  <input type="password" name="password" ><br><br>
+  <input type="submit" value="Registrati">
 </form> 
 
 </body>

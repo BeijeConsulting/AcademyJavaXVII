@@ -1,7 +1,7 @@
 package it.beije.suormary.bookstore3;
 
 import java.time.LocalDateTime;
-
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -59,6 +59,13 @@ public class Order {
 
 	@Transient
 	private List<OrderItem> items;
+	public Order() {
+		items = new ArrayList<>();
+	}
+	
+	public void addOrderItem(OrderItem orderItem) {
+		items.add(orderItem);
+	}
 
 	
 	public int getId() {
