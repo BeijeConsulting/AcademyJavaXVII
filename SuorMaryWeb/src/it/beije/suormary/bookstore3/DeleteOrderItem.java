@@ -27,6 +27,9 @@ public class DeleteOrderItem extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	      String id = request.getParameter("orderItemId");
+	      System.out.println(id);
+	      BookStoreUtility.deleteOrderItem(id);
+	      response.sendRedirect("updateOrder");
 	      
 	}
 

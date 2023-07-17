@@ -253,12 +253,13 @@ public class BookStoreUtility {
     	   }
     	   return order;
        }
-       public static void createOrderItems(List<Book> booksOrder, Order order) {
+       public static void createOrderItems(List<Book> booksOrder, int orderId) {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   OrderItem orderItem = null;
     	   EntityTransaction transaction = entityManager.getTransaction();
     	   transaction.begin();
     	   try {		   
+    		   Order order = entityManager.find(Order.class, orderId);
    	       for(Book b : booksOrder) {
     	    	    orderItem = new OrderItem();
     	    	   orderItem.setBookId(b.getId());
@@ -273,10 +274,7 @@ public class BookStoreUtility {
    	       for(OrderItem orderIt : order.getItems()) {
    	    	   amount += orderIt.getPrice();
    	       } 
-   	       Query query = entityManager.createQuery("SELECT o FROM Order as o WHERE o.id = :id");
-   	       query.setParameter("id", order.getId());
-   	       Order orderr = (Order) query.getSingleResult();
-    	   orderr.setAmount(amount);
+    	   order.setAmount(amount);
     	   transaction.commit();
  		   
     	   } catch(Exception e) {
@@ -300,14 +298,13 @@ public class BookStoreUtility {
     	   return orderFound;
 		
 	}
-       public static void payment(Order order) {
+       public static void payment(int orderId) {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
-    	   Order orderFound = null;
-    	   EntityTransaction transaction = entityManager.getTransaction();
-    	   transaction.begin();
-    	   try {		
-    		   orderFound = entityManager.find(Order.class, order.getId());
-    		   orderFound.setStatus('P');
+    	   try {	
+    		   EntityTransaction transaction = entityManager.getTransaction();
+        	   transaction.begin();
+    		   Order order = entityManager.find(Order.class, orderId);
+    		   order.setStatus('P');
     		   transaction.commit();
     	   } catch(Exception e) {
     		   e.printStackTrace();
@@ -331,12 +328,10 @@ public class BookStoreUtility {
     	   }
     	   return author;
        }
-       public static void deleteOrder(Order order) {
+       public static void deleteOrder(int orderId) {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   try {
-    		   Query query = entityManager.createQuery("SELECT o FROM Order as o WHERE o.id = :id");
-       	       query.setParameter("id", order.getId());
-       	       Order orderFound = (Order) query.getSingleResult();
+    		   Order orderFound = entityManager.find(Order.class, orderId);
        	       EntityTransaction transaction = entityManager.getTransaction();
        	       transaction.begin();
        	       for(OrderItem orderItem : orderFound.getItems()) {
@@ -355,9 +350,13 @@ public class BookStoreUtility {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   int id = Integer.parseInt(idStr);
     	   try {
-    		   Query query = entityManager.createQuery("SELECT or FROM Order as or WHERE or.id = :id");
-    		   query.setParameter("id", id);
-    		   OrderItem orderItem = (OrderItem) query.getSingleResult();
+    		   OrderItem orderItem = entityManager.find(OrderItem.class, id);
+    		   Order order = entityManager.find(Order.class, orderItem.getOrderId());
+    		   for(OrderItem ord : order.getItems()) {
+    			   if(ord.getId() == orderItem.getId()) {
+    				   order.getItems().remove(ord);
+    			   }
+    		   }
     		   EntityTransaction transaction = entityManager.getTransaction();
     		   transaction.begin();
     		   entityManager.remove(orderItem);
@@ -369,6 +368,24 @@ public class BookStoreUtility {
 			   entityManager.close();
 		   }
     	   
+       }
+       public static Order getOrderById(int orderId) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   Order order = null;
+    	   try {
+    		  order = entityManager.find(Order.class, orderId);
+    		  Query query = entityManager.createQuery("SELECT o FROM OrderItem as o WHERE o.orderId = :id");
+    		  query.setParameter("id", order.getId());
+    		  List<OrderItem> orderItems= query.getResultList();
+    		  for(OrderItem orderItem : orderItems) {
+    			  order.addOrderItem(orderItem);
+    		  }
+    	   }catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+    	   return order;
        }
 
 }

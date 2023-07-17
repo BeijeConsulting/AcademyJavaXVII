@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class UpdateOrder
  */
-@WebServlet("/UpdateOrder")
+@WebServlet("/updateOrder")
 public class UpdateOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -20,6 +20,11 @@ public class UpdateOrder extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		int id = (int) session.getAttribute("orderId");
+		Order order = BookStoreUtility.getOrderById(id);
+		System.out.println("order id " + order.getId());
+		session.setAttribute("order", order);
 		response.sendRedirect("updateOrder.jsp");
 		
 	}

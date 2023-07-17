@@ -21,13 +21,12 @@ public class RecapOrder extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		HttpSession session = request.getSession();
 		List<Book> booksOrder = (List) session.getAttribute("booksOrder");
-		Order order =(Order) session.getAttribute("order");
-		System.out.println("Order  : " + order);
+		int orderId = (int) session.getAttribute("orderId");
 		System.out.println(booksOrder.size());
-		BookStoreUtility.createOrderItems(booksOrder,order);
+		BookStoreUtility.createOrderItems(booksOrder,orderId);
 		response.sendRedirect("recap.jsp");
 	}
 

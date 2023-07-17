@@ -25,7 +25,7 @@
 	   <h3><%= book.getTitle() %></h3>
 	   <form action="deleteOrderItem" method="get">
 	   <input type="hidden" name="orderItemId" value="<%= orderItem.getId() %>" />
-	   <input type="submit" value="rimuovi dall`ordine" />
+	   <input type="submit" value="rimuovi dall`ordine" /> <br>
 	   </form>
 	   <%
    }

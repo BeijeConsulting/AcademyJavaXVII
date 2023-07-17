@@ -23,8 +23,8 @@ public class Payment extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Order order =(Order) session.getAttribute("order");
-		BookStoreUtility.payment(order);
+		int orderId = (int) session.getAttribute("orderId");
+		BookStoreUtility.payment(orderId);
 		response.sendRedirect("recap.jsp");
 	}
 

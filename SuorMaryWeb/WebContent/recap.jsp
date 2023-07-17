@@ -14,8 +14,8 @@
 <body>
 
     <% 
-   		Order order =(Order) session.getAttribute("order");
-        Order orderfound = BookStoreUtility.findOrder(order);
+   		int orderId = (int) session.getAttribute("orderId");
+        Order orderfound = BookStoreUtility.getOrderById(orderId);
      
         List<Book> booksOrder = (List<Book>) session.getAttribute("booksOrder");
  
