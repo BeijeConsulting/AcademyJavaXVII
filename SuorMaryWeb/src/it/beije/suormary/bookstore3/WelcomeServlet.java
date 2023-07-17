@@ -31,10 +31,8 @@ public class WelcomeServlet extends HttpServlet {
 		}
 		else{
 			List<Book> books = BookStoreUtility.loadBooks();
-			if(books != null) {
 				  session.setAttribute("books", books);		
 				  response.sendRedirect("welcome.jsp");
-			}
 		  
 		}
 	}

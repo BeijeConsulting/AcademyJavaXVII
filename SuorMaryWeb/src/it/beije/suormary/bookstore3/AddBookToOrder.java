@@ -26,10 +26,15 @@ public class AddBookToOrder extends HttpServlet {
 		HttpSession session = request.getSession();
 		List<Book> booksOrder = (List)session.getAttribute("booksOrder");
 		String id = request.getParameter("bookOrderId");
-		System.out.println("aa" + id);
+		String quantity = request.getParameter("quantity");
 		Book book = BookStoreUtility.getBookById(id);
+		int quantityInt = Integer.parseInt(quantity);
+		book.setQuantity(quantityInt);
 		booksOrder.add(book);
-		System.out.println(booksOrder.size());
+		for(Book b : booksOrder) {
+			System.out.println(b.getId() +  " " + b.getQuantity());
+		}
+		session.removeAttribute("quantity");
 		response.sendRedirect("newOrder.jsp");
 	}
 

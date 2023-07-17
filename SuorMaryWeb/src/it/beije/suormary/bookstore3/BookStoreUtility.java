@@ -164,8 +164,8 @@ public class BookStoreUtility {
     	   }
        }
        public static Order createOrder(String email) {
-    	   Order order = null;
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   Order order = null;
     	   try {
     		   Query query = entityManager.createQuery("SELECT u FROM User as u WHERE u.email = :email");
     		   query.setParameter("email", email);
@@ -175,6 +175,10 @@ public class BookStoreUtility {
                order.setDate(date);
                order.setStatus('I');
                order.setUserId(user.getId());
+    		   EntityTransaction transaction = entityManager.getTransaction();
+    		   transaction.begin();
+               entityManager.persist(order);
+               transaction.commit();
 
     		   
     	   } catch(Exception e) {
@@ -183,5 +187,34 @@ public class BookStoreUtility {
     		   entityManager.close();
     	   }
     	   return order;
+       }
+       public static void createOrderItems(List<Book> booksOrder, Order order) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   OrderItem orderItem = null;
+    	   EntityTransaction transaction = entityManager.getTransaction();
+    	   transaction.begin();
+    	   try {		   
+   	       for(Book b : booksOrder) {
+    	    	    orderItem = new OrderItem();
+    	    	   orderItem.setBookId(b.getId());
+    	    	   orderItem.setOrderId(order.getId());
+    	    	   orderItem.setQuantity(b.getQuantity());
+    	    	   orderItem.setPrice(b.getPrice() * b.getQuantity());
+    	    	   entityManager.persist(orderItem);
+    	    	   order.addOrderItem(orderItem);
+    	       }
+   	       double amount = 0;
+   	       System.out.println(order.getItems().size());
+   	       for(OrderItem orderIt : order.getItems()) {
+   	    	   amount += orderIt.getPrice();
+   	       } 
+    	   order.setAmount(amount);
+    	   transaction.commit();
+ 		   
+    	   } catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
        }
 }
