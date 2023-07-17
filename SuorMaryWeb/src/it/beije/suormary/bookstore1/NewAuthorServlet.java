@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class AddAuthor
+ * Servlet implementation class NewAuthorServlet
  */
-@WebServlet("/AddAuthor")
-public class AddAuthor extends HttpServlet {
+@WebServlet("/NewAuthorServlet")
+public class NewAuthorServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddAuthor() {
+    public NewAuthorServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -25,7 +25,7 @@ public class AddAuthor extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("./new_author.jsp").forward(request, response);
 	}
 
@@ -37,7 +37,11 @@ public class AddAuthor extends HttpServlet {
 		String surname = request.getParameter("surname");
 		String description = request.getParameter("description");
 		
+		AuthorUtils.addAuthor(name, surname, description);
 		
+		request.getSession().setAttribute("newAuthorMessage", "L'autore " + name + " " + surname + " è stato inserito con successo.");
+		
+		response.sendRedirect("./NewAuthorServlet");
 	}
 
 }
