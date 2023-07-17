@@ -30,6 +30,7 @@ public class OrderServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
 	}
 
 	/**
@@ -40,14 +41,14 @@ public class OrderServlet extends HttpServlet {
 		
 		switch(status) {
 			case "Invia":
-				
 				String address = request.getParameter("address");
+				OrderUtils.createOrder(address, request);
 				break;
 			case "Paga":
-				
+				OrderUtils.editStatus('P', Integer.valueOf(request.getParameter("orderId")));
 				break;
 			case "Annulla":
-				
+				OrderUtils.editStatus('C', Integer.valueOf(request.getParameter("orderId")));
 				break;
 			default:
 				System.out.println("Errore");
