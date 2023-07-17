@@ -11,21 +11,23 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class Payment
+ * Servlet implementation class MyOrders
  */
-@WebServlet("/payment")
-public class Payment extends HttpServlet {
+@WebServlet("/myOrders")
+public class MyOrders extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-      
-   
+       
+
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		HttpSession session = request.getSession();
-//		Order order =(Order) session.getAttribute("order");
-//		BookStoreUtility.payment(order);
-		response.sendRedirect("payment.jsp");
+		HttpSession session = request.getSession();
+		String email = (String) session.getAttribute("email");
+		List<Order> orders = BookStoreUtility.usersOrders(email);
+		session.setAttribute("orders", orders);
+		response.sendRedirect("myOrders.jsp");
 	}
 
 	/**

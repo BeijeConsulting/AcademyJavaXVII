@@ -9,10 +9,11 @@
 <html>
 <head>
     <meta charset="ISO-8859-1">
+    <link rel="stylesheet" type="text/css" href="style.css">
     <title>Recap Order</title>
 </head>
 <body>
-
+<%@ include file="header.jsp" %>
     <% 
    		Order order =(Order) session.getAttribute("order");
         Order orderfound = BookStoreUtility.findOrder(order);
@@ -29,6 +30,7 @@
         <% } %>
         Stato Ordine: <%= orderfound.getStatus() %><br/>
         Totale acquisto: <%= orderfound.getAmount() %> <br/>
+        Indirizzo Spedizione: <%= orderfound.getShippingAddress()%><br/>
     </h3>
     <form action="deleteOrder" action="GET">
    <input type="submit" value="Cancella Ordine" />

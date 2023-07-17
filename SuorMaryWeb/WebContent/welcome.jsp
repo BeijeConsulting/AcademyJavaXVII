@@ -22,10 +22,15 @@ List<Book> books = (List) currSession.getAttribute("books");
 <form action="./createBook" method ="GET">
 <input type="submit" value="aggiungi un libro" class="button">
 </form>
+<br/>
 <form action="newOrder" method ="GET">
 <input type="submit" value="crea un ordine" class="button">
 </form>
 
+<br/>
+<form action="myOrders" method ="GET">
+<input type="submit" value="I miei ordini" class="button">
+</form>
  <h2>Libri disponibili:</h2>
     <% 
     for (Book b : books) {

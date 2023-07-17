@@ -251,7 +251,7 @@ public class BookStoreUtility {
     	   return orderFound;
 		
 	}
-       public static void payment(Order order) {
+       public static void payment(Order order, String address) {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   Order orderFound = null;
     	   EntityTransaction transaction = entityManager.getTransaction();
@@ -259,6 +259,7 @@ public class BookStoreUtility {
     	   try {		
     		   orderFound = entityManager.find(Order.class, order.getId());
     		   orderFound.setStatus('P');
+    		   orderFound.setShippingAddress(address);
     		   transaction.commit();
     	   } catch(Exception e) {
     		   e.printStackTrace();
@@ -321,5 +322,26 @@ public class BookStoreUtility {
 		   }
     	   
        }
+
+       public static List<Order> usersOrders(String email) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   List<Order> myOrders = null;
+    	   try {
+    		   User user = loginUser(email);
+    		   Query query = entityManager.createQuery("SELECT o FROM Order as o WHERE o.userId = :userId");
+       	       query.setParameter("userId", user.getId());
+    		   myOrders = query.getResultList();
+    		   
+    	   } catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+
+    	   return myOrders;
+		
+	}
+      
+       
 
 }
