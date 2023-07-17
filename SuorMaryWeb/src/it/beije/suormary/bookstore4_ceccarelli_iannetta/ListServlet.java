@@ -81,6 +81,11 @@ public class ListServlet extends HttpServlet {
 			int bookId = ((Book) session.getAttribute("book")).getId();
 			em.updateBook(bookId, price, quantity);
 		}
+		else if (form.equals("updateauthor")) {
+			String description = request.getParameter("description");
+			int authorId = ((Author) session.getAttribute("author")).getId();
+			em.updateAuthor(authorId, description);
+		}
 		
 		response.sendRedirect("./listservlet");
 	}

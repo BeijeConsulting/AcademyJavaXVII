@@ -65,7 +65,7 @@ List<Book> books = (ArrayList<Book>)(session.getAttribute("allBooks"));
 	            <td ><%=books.get(i).getPrice()%></td>
 	            <td ><%=books.get(i).getQuantity()%></td>
 	            <%session.setAttribute("book", books.get(i));%>
-	            <td><a href="updatepage.jsp" ><button>E</button></a></td>
+	            <td><a href="updatebook.jsp" ><button>E</button></a></td>
 		    </tr>
 		<%	}	
 	}%>	</tbody>
@@ -103,6 +103,8 @@ if (authors == null) {
 	            <td><%=authors.get(i).getSurname() %></td>
 	            <td><%=authors.get(i).getName()%></td>
 	            <td ><%=authors.get(i).getDescription()%></td>
+	            <%session.setAttribute("author", authors.get(i));%>
+	            <td><a href="updateauthor.jsp" ><button>E</button></a></td>
 		    </tr>
 		<%	}
 			

@@ -7,10 +7,12 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Add book</title>
 </head>
 <body>
-<h1>NEW BOOK</h1>
+<h3>NEW BOOK</h3>
+
+<%session.setAttribute("form", "book");%>
 <div>
 	<form action="./listservlet" name="book" method="POST">
 		  <label for="title">Title:</label><br>
@@ -41,7 +43,7 @@
 		  <input type="submit" value="Add">		
 	</form>
 	<br>
-	<%session.setAttribute("form", "book");%>
+
 </div>
 
 </body>

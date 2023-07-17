@@ -159,4 +159,39 @@ public class EcommerceManager {
         	em.close();    		
     	}
     }
+    
+    public void updateAuthor(int authorId, String description) {
+    	em = JPAEntityFactory.openEntity();
+    	EntityTransaction transaction = em.getTransaction();
+    	transaction.begin();
+    	
+    	Author author = em.find(Author.class, authorId);
+   
+    	author.setDescription(description);
+    	
+    	try {
+    		em.persist(author);
+    		transaction.commit();
+    	} catch (Exception e) {
+    		System.out.println("Non va bene");
+    	} finally {
+        	em.close();    		
+    	}
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

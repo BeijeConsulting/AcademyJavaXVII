@@ -5,16 +5,16 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Update book</title>
 </head>
 <body>
 
 
-<h1>UPDATE BOOK</h1>
+<h3>UPDATE BOOK</h3>
 
 
-<% Book book = (Book) session.getAttribute("book");%>
-
+<% Book book = (Book) session.getAttribute("book");
+session.setAttribute("form", "updatebook");%>
 <div>
 	<form action="./listservlet" name="book" method="POST">
 		  <label for="title">Title:</label><br>
@@ -38,7 +38,7 @@
 		  <input type="submit" value="Save">		
 	</form>
 	<br>
-	<%session.setAttribute("form", "updatebook");%>
+	
 </div>
 </body>
 </html>
