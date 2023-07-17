@@ -20,7 +20,7 @@
 <%
 	String address = request.getParameter("address");
 	Order order =(Order) session.getAttribute("order");
-	BookStoreUtility.payment(order, address);
+
 %>
 <form action="./welcome" action="GET">
    <input type="submit" value="Torna alla Home" class="button" onclick="alert:('Ordine Pagato!')"/>

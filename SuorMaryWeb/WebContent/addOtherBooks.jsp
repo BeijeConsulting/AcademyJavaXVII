@@ -33,13 +33,13 @@ if (ErrorQuantity != null) {
    <h2><%= b.getTitle() %></h2>
    <h5><%= "Quantità disponibile : " + (b.getQuantity()) %></h5>
 
-   <form action="quantityBook" method="get">
+   <form action="quantityBookModOrder" method="get">
    <input type="hidden" name="bookId" value= "<%= b.getId() %>" />
    <label>Inserisci quantità : </label>
    <input type="number" name="quantity" />
    <input type="submit" value="inserisci" />
    </form>
-   <form action="addBookToOrder" action="GET">
+   <form action="addBookToModOrder" action="GET">
    <input type="hidden" name="bookOrderId" value="<%=b.getId() %>" />
    <input type="hidden" name="quantity" value = "<%= session.getAttribute("quantity") %>" />
    <input type="submit" value="Aggiungi all`ordine" />
@@ -50,10 +50,8 @@ if (ErrorQuantity != null) {
  }
 %>
   <form action="recapOrder" action="GET">
-   <input type="submit" value="Recap Ordine" />
+   <input type="submit" value="Salva modifica" /> 
    </form>
-  <form action="deleteOrder" action="GET">
-   <input type="submit" value="Cancella Ordine" />
-   </form>
+
 </body>
 </html>
