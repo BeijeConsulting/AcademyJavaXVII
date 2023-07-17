@@ -237,11 +237,11 @@ public class BookStoreUtility {
     	   }
        }
 
-       public static Order findOrder(Order order) {
+       public static Order findOrder(int orderId) {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   Order orderFound = null;
     	   try {		
-    		   orderFound = entityManager.find(Order.class, order.getId());
+    		   orderFound = entityManager.find(Order.class, orderId);
    	       System.out.println(orderFound.toString());
     	   } catch(Exception e) {
     		   e.printStackTrace();

@@ -20,7 +20,13 @@ public class DeleteOrder extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Order order = (Order) session.getAttribute("order");	
+		if(request.getParameter("order")!=null){
+			String orId = request.getParameter("order");
+			int orderId= Integer.parseInt(orId);
+			Order order = BookStoreUtility.findOrder(orderId);
+			session.setAttribute("order", order);
+		}
+		Order order = (Order) session.getAttribute("order");
 		BookStoreUtility.deleteOrder(order);
 		response.sendRedirect("welcome.jsp");
 	}

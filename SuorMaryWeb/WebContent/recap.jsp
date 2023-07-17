@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@page import="it.beije.suormary.bookstore3.Book"%>
 <%@page import="it.beije.suormary.bookstore3.Order"%>
+<%@page import="it.beije.suormary.bookstore3.OrderItem"%>
 <%@page import="it.beije.suormary.bookstore3.BookStoreUtility"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
@@ -16,7 +17,7 @@
 <%@ include file="header.jsp" %>
     <% 
    		Order order =(Order) session.getAttribute("order");
-        Order orderfound = BookStoreUtility.findOrder(order);
+        Order orderfound = BookStoreUtility.findOrder(order.getId());
      
         List<Book> booksOrder = (List<Book>) session.getAttribute("booksOrder");
  
@@ -28,6 +29,7 @@
         <% for (Book b : booksOrder) { %>
             <%= b.getTitle() %><br/>
         <% } %>
+        
         Stato Ordine: <%= orderfound.getStatus() %><br/>
         Totale acquisto: <%= orderfound.getAmount() %> <br/>
         Indirizzo Spedizione: <%= orderfound.getShippingAddress()%><br/>

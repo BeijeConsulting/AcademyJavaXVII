@@ -20,7 +20,15 @@ public class UpdateOrder extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		if(request.getParameter("order")!=null){
+			HttpSession session = request.getSession();
+			String orId = request.getParameter("order");
+			int orderId= Integer.parseInt(orId);
+			Order order = BookStoreUtility.findOrder(orderId);
+			session.setAttribute("order", order);
+		}
 		response.sendRedirect("updateOrder.jsp");
+		
 		
 	}
 
