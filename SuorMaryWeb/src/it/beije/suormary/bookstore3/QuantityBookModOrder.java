@@ -9,25 +9,39 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class UpdateOrder
+ * Servlet implementation class QuantityBookModOrder
  */
-@WebServlet("/updateOrder")
-public class UpdateOrder extends HttpServlet {
+@WebServlet("/quantityBookModOrder")
+public class QuantityBookModOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public QuantityBookModOrder() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		int id = (int) session.getAttribute("orderId");
-		Order order = BookStoreUtility.getOrderById(id);
-		System.out.println("order id " + order.getId());
-		session.setAttribute("order", order);
-		response.sendRedirect("updateOrder.jsp");
-		
+		String quantity = request.getParameter("quantity");
+		String idStr = request.getParameter("bookId");
+		Book book = BookStoreUtility.getBookById(idStr);
+		int quantityId = Integer.parseInt(quantity);
+		if(quantityId > book.getQuantity() ) {
+			session.setAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
+		}
+		else {
+			session.setAttribute("quantity", quantityId);
+		}
+		response.sendRedirect("addOtherBooks.jsp");
+
 	}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

@@ -1,6 +1,8 @@
 package it.beije.suormary.bookstore3;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,24 +11,37 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class UpdateOrder
+ * Servlet implementation class AddBookToModOrder
  */
-@WebServlet("/updateOrder")
-public class UpdateOrder extends HttpServlet {
+@WebServlet("/addBookToModOrder")
+public class AddBookToModOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AddBookToModOrder() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		int id = (int) session.getAttribute("orderId");
-		Order order = BookStoreUtility.getOrderById(id);
-		System.out.println("order id " + order.getId());
-		session.setAttribute("order", order);
-		response.sendRedirect("updateOrder.jsp");
-		
+		List<Book> booksOrder = (List)session.getAttribute("booksOrder");
+		String id = request.getParameter("bookOrderId");
+		String quantity = request.getParameter("quantity");
+		Book book = BookStoreUtility.getBookById(id);
+		int quantityInt = Integer.parseInt(quantity);
+		book.setQuantity(quantityInt);
+		booksOrder.add(book);
+		for(Book b : booksOrder) {
+			System.out.println(b.getId() +  " " + b.getQuantity());
+		}
+		session.removeAttribute("quantity");
+		response.sendRedirect("addOtherBooks.jsp");
 	}
 
 	/**
