@@ -268,4 +268,34 @@ public class BookStoreUtility {
     		   entityManager.close();
     	   }
        }
+       public static Order findOrder(Order order) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   Order orderFound = null;
+    	   try {		
+    		   orderFound = entityManager.find(Order.class, order.getId());
+   	       System.out.println(orderFound.toString());
+    	   } catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+    	   return orderFound;
+		
+	}
+       public static void payment(Order order) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   Order orderFound = null;
+    	   EntityTransaction transaction = entityManager.getTransaction();
+    	   transaction.begin();
+    	   try {		
+    		   orderFound = entityManager.find(Order.class, order.getId());
+    		   orderFound.setStatus('P');
+    		   transaction.commit();
+    	   } catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+    	 
+	}
 }
