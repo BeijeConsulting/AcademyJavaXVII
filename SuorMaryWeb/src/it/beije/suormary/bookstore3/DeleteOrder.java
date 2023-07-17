@@ -6,22 +6,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class deleteBook
+ * Servlet implementation class DeleteOrder
  */
-@WebServlet("/deleteBook")
-public class deleteBook extends HttpServlet {
+@WebServlet("/deleteOrder")
+public class DeleteOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("id");
-		BookStoreUtility.deleteBook(id);
-		response.sendRedirect("welcome");
+		HttpSession session = request.getSession();
+		Order order = (Order) session.getAttribute("order");	
+		BookStoreUtility.deleteOrder(order);
+		response.sendRedirect("welcome.jsp");
 	}
 
 	/**

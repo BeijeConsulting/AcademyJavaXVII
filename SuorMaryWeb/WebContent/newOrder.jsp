@@ -67,10 +67,10 @@ if (ErrorQuantity != null) {
  }
 %>
   <form action="recapOrder" action="GET">
-   <input type="submit" value="Recap Ordine" />
+   <input type="submit" value="Recap Ordine" class="button"/>
    </form>
   <form action="deleteOrder" action="GET">
-   <input type="submit" value="Cancella Ordine" />
+   <input type="submit" value="Cancella Ordine" class="button" />
    </form>
 </body>
 </html>

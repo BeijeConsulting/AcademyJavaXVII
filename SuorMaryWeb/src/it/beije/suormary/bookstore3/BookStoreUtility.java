@@ -234,4 +234,24 @@ public class BookStoreUtility {
     	   }
     	   return author;
        }
+       public static void deleteOrder(Order order) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   try {
+    		   Query query = entityManager.createQuery("SELECT o FROM Order as o WHERE o.id = :id");
+       	       query.setParameter("id", order.getId());
+       	       Order orderFound = (Order) query.getSingleResult();
+       	       EntityTransaction transaction = entityManager.getTransaction();
+       	       transaction.begin();
+       	       for(OrderItem orderItem : orderFound.getItems()) {
+       	    	  entityManager.remove(orderItem);    	              	       
+       	       }
+       	       entityManager.remove(orderFound);
+       	       transaction.commit();
+    		   
+    	   } catch(Exception e) {
+    		 e.printStackTrace();
+    	   }  finally {
+			   entityManager.close();
+		   }
+       }
 }
