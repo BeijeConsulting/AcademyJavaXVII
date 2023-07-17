@@ -19,6 +19,16 @@ HttpSession currSession = request.getSession();
 List<Book> books = (List) currSession.getAttribute("books");
 %>
 <h1>Welcome <%= currSession.getAttribute("email") %></h1>
+<%
+  if(session.getAttribute("ordinePagato") != null){
+	  %>  
+	  <h3 style="color:green;font-weight:bold;"><%= session.getAttribute("ordinePagato") %></h3>
+	  <%
+	  session.removeAttribute("ordinePagato");
+  }
+	  %>
+  
+
 <form action="./createBook" method ="GET">
 <input type="submit" value="aggiungi un libro" class="button">
 </form>

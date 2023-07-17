@@ -64,5 +64,9 @@
 		.flex{
 			display: flex;
 		}
+		.ord{
+			color:green;
+			font-weight: bold;
+		}
         
         

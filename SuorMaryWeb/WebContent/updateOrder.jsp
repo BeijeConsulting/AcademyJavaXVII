@@ -14,7 +14,7 @@
 <%
   Order order = (Order) session.getAttribute("order");
 %>
-<form action="addOrderItems" action="get">
+<form action="addOtherBooks" action="get">
 <input type="submit" value="Aggiungi altri libri" />
 </form>
 <%

@@ -31,6 +31,7 @@ public class AddBookToOrder extends HttpServlet {
 		Book book = BookStoreUtility.getBookById(id);
 		int quantityInt = Integer.parseInt(quantity);
 		book.setQuantity(quantityInt);
+		System.out.println("Quantita libro : " + book.getQuantity());
 		booksOrder.add(book);
 		for(Book b : booksOrder) {
 			System.out.println(b.getId() +  " " + b.getQuantity());

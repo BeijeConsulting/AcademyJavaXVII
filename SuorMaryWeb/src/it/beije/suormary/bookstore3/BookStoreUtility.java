@@ -334,7 +334,10 @@ public class BookStoreUtility {
     		   Order orderFound = entityManager.find(Order.class, orderId);
        	       EntityTransaction transaction = entityManager.getTransaction();
        	       transaction.begin();
-       	       for(OrderItem orderItem : orderFound.getItems()) {
+       	       Query query = entityManager.createQuery("SELECT o FROM OrderItem as o WHERE o.orderId = :id");
+       	       query.setParameter("id", orderFound.getId());
+       	       List<OrderItem> orderItems = query.getResultList();
+       	       for(OrderItem orderItem : orderItems) {
        	    	  entityManager.remove(orderItem);    	              	       
        	       }
        	       entityManager.remove(orderFound);
@@ -386,6 +389,36 @@ public class BookStoreUtility {
     		   entityManager.close();
     	   }
     	   return order;
+       }
+       public static void saveOrderModified(List<Book> booksOrder, int orderId) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   OrderItem orderItem = null;
+    	   EntityTransaction transaction = entityManager.getTransaction();
+    	   transaction.begin();
+    	   try {		   
+    		   Order order = entityManager.find(Order.class, orderId);
+   	       for(Book b : booksOrder) {
+    	    	    orderItem = new OrderItem();
+    	    	   orderItem.setBookId(b.getId());
+    	    	   orderItem.setOrderId(order.getId());
+    	    	   orderItem.setQuantity(b.getQuantity());
+    	    	   orderItem.setPrice(b.getPrice() * b.getQuantity());
+    	    	   entityManager.persist(orderItem);
+    	    	   order.addOrderItem(orderItem);
+    	       }
+   	       double amount = 0;
+   	       System.out.println(order.getItems().size());
+   	       for(OrderItem orderIt : order.getItems()) {
+   	    	   amount += orderIt.getPrice();
+   	       } 
+    	   order.setAmount(amount);
+    	   transaction.commit();
+ 		   
+    	   } catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
        }
 
 }

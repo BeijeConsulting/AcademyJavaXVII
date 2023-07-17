@@ -11,23 +11,29 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class RecapOrder
+ * Servlet implementation class SaveModifiedOrder
  */
-@WebServlet("/recapOrder")
-public class RecapOrder extends HttpServlet {
+@WebServlet("/saveModifiedOrder")
+public class SaveModifiedOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public SaveModifiedOrder() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		List<Book> booksOrder = (List) session.getAttribute("booksOrder");
 		int orderId = (int) session.getAttribute("orderId");
-		//System.out.println(booksOrder.size());
 		BookStoreUtility.createOrderItems(booksOrder,orderId);
-		response.sendRedirect("recap.jsp");
+		response.sendRedirect("updateOrder");
 	}
 
 	/**
