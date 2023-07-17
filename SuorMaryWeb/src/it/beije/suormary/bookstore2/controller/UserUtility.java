@@ -6,6 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+import it.beije.suormary.bookstore2.model.Book;
+import it.beije.suormary.bookstore2.model.Order;
+import it.beije.suormary.bookstore2.model.OrderItem;
 import it.beije.suormary.bookstore2.model.PersistenceManagerJPA;
 import it.beije.suormary.bookstore2.model.User;
 
@@ -75,5 +78,83 @@ public class UserUtility {
 		return user;
 	}
 	
-
+	public static int insertOrder(Order order) {
+		EntityManager entityManager = null;
+		int orderId = -1;
+		try {
+			entityManager = PersistenceManagerJPA.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
+			
+			if(order!=null) {
+				try {
+					entityManager.persist(order); // salva l'order nel database
+//					for (OrderItem orderItem : order.getItems()) {
+//						entityManager.persist(orderItem);
+//						Book book = entityManager.find(Book.class, orderItem.getBookId());
+//						book.setQuantity(book.getQuantity()-orderItem.getQuantity());
+//			        }
+					transaction.commit();
+					orderId = order.getId();
+					for (OrderItem orderItem : order.getItems()) {
+						orderItem.setOrderId(orderId);
+						UserUtility.insertOrderItem(orderItem);
+			        }
+					
+				} catch (Exception e) {
+					System.out.println("Insert non valido: " + order.toString());
+					transaction.rollback();
+					throw e; //rilancia eccezione al catch più esterno
+				} 
+					
+			} else {
+				System.out.println("User mancante");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				entityManager.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return orderId;
+	}
+	
+	public static void insertOrderItem(OrderItem orderItem) {
+		EntityManager entityManager = null;
+		try {
+			entityManager = PersistenceManagerJPA.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
+			
+			if(orderItem!=null) {
+				try {
+					entityManager.persist(orderItem); // salva l'order nel database
+					Book book = entityManager.find(Book.class, orderItem.getBookId());
+					book.setQuantity(book.getQuantity()-orderItem.getQuantity());
+					transaction.commit();
+				} catch (Exception e) {
+					System.out.println("Insert non valido: " + orderItem.toString());
+					transaction.rollback();
+					throw e; //rilancia eccezione al catch più esterno
+				} 
+					
+			} else {
+				System.out.println("User mancante");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				entityManager.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

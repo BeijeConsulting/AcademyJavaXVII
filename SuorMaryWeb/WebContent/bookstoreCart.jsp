@@ -8,13 +8,59 @@
 <head>
 <meta charset="UTF-8">
 <title>Cart</title>
+<style>
+        body {
+            font-family: "Roboto", sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            height: 100vh;
+            padding: 16px;
+            border-radius: 14px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin: 0;
+        }
+
+        .button-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .button-container button {
+            background-color: #04AA6D;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+    </style>
 </head>
 <body>
 <% List<Book> books = (List<Book>) request.getAttribute("books");%> 
 <% List<Author> authors = (List<Author>) request.getAttribute("authors");%> 
 <% List<Integer> quantities = (List<Integer>) request.getAttribute("quantities");%> 
 <h1>Cart</h1>
-    
+<%
+String cartError = (String) session.getAttribute("cartError");
+if (cartError != null) {
+	%>
+	<p style="color:red"><%= cartError %></p>
+	<%
+	
+	session.removeAttribute("cartError");
+}
+%>
 
 	<% if (books != null && !books.isEmpty()) { %>
     <div style="display: flex; flex-wrap: wrap; gap: 20px;">
@@ -40,6 +86,11 @@
             </form>
         </div>
         <% } %>
+        <div class="button-container">
+            <form action="./bookstoreOrderList" method="POST">
+                <button type="submit">Order</button>
+            </form>
+        </div>
     </div>
 <% } else { %>
         <div style="text-align: center;">

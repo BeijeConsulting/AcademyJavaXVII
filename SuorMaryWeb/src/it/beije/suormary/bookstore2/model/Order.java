@@ -43,6 +43,11 @@ public class Order {
 
 	@Column(name = "status")
 	private String status;
+	/*
+	 * I - Inserted
+	 * P - Paid
+	 * C - Cancelled
+	 */
 
 	@Column(name = "amount")
 	private double amount;

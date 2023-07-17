@@ -89,10 +89,18 @@ public class CartServlet extends HttpServlet {
 
 	 // Add the book to the cart and update the quantity
         int quantity = cart.getOrDefault(bookId, 0);
+        Book book = BookstoreUtility.findBook(bookId);
+        int maxQuantity = book.getQuantity();
         
         if (action.equals("add") || action.equals("addFromBookDet")) {
-            cart.put(bookId, quantity + 1);
-            System.out.println("Added to cart: bookId=" + bookId + ", quantity=" + (quantity + 1));
+        	if (quantity < maxQuantity) {
+        		cart.put(bookId, quantity + 1);
+                System.out.println("Added to cart: bookId=" + bookId + ", quantity=" + (quantity + 1));
+        	} else {
+        		System.out.println("Maximum quantity reached for bookId=" + bookId);
+        		session.setAttribute("cartError", "maximum amount of books reached for the book "+book.getTitle());
+        	}
+        	
             if (action.equals("addFromBookDet")) {
                 // Redirect back to the previous page or any other desired page
                 response.sendRedirect(request.getContextPath() + "/bookstoreBookDetails?id=" + bookId);
@@ -103,6 +111,9 @@ public class CartServlet extends HttpServlet {
             if (quantity > 0) {
                 cart.put(bookId, quantity - 1);
                 System.out.println("Removed from cart: bookId=" + bookId + ", quantity=" + (quantity - 1));
+                if (quantity - 1 == 0) {
+                	cart.remove(bookId);
+                }
             }
             response.sendRedirect(request.getContextPath() + "/cart");
         } else {

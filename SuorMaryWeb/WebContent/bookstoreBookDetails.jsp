@@ -45,7 +45,16 @@
 
 <% Book book = (Book) request.getAttribute("book");%> 
 <% Author author = (Author) request.getAttribute("author");%> 
-
+<%
+String cartError = (String) session.getAttribute("cartError");
+if (cartError != null) {
+	%>
+	<p style="color:red"><%= cartError %></p>
+	<%
+	
+	session.removeAttribute("cartError");
+}
+%>
    <div class = "container">
 
     <% if (book != null) { %>
