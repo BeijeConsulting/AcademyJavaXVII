@@ -167,6 +167,23 @@ public class BookStoreUtility {
     	   }
     	   return book;
        }
+       public static Book getBookById(int id) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   Book book = null;
+    	   
+    	   try {
+    		   Query query = entityManager.createQuery("SELECT b FROM Book as b WHERE b.id = :id ");
+    		   query.setParameter("id", id);
+    		   book = (Book) query.getSingleResult();
+    		    		   
+    	   } catch(Exception e) {
+    		   
+    	   } finally {
+    		   entityManager.close();
+    		   
+    	   }
+    	   return book;
+       }
        public static void updateBook(String title, String description, String editor, String priceString, String quantityString, String authorIdStr,String bookIdStr) {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   int authorId = Integer.parseInt(authorIdStr);
@@ -268,6 +285,7 @@ public class BookStoreUtility {
     		   entityManager.close();
     	   }
        }
+
        public static Order findOrder(Order order) {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   Order orderFound = null;
@@ -298,4 +316,59 @@ public class BookStoreUtility {
     	   }
     	 
 	}
+
+       public static Author getAuthorById(int id) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   Author author = null;
+    	   try {
+    		   Query query = entityManager.createQuery("SELECT a FROM Author as a WHERE a.id = :id");
+    		   query.setParameter("id", id);
+    		    author = (Author) query.getSingleResult();
+    	   }catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+    	   return author;
+       }
+       public static void deleteOrder(Order order) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   try {
+    		   Query query = entityManager.createQuery("SELECT o FROM Order as o WHERE o.id = :id");
+       	       query.setParameter("id", order.getId());
+       	       Order orderFound = (Order) query.getSingleResult();
+       	       EntityTransaction transaction = entityManager.getTransaction();
+       	       transaction.begin();
+       	       for(OrderItem orderItem : orderFound.getItems()) {
+       	    	  entityManager.remove(orderItem);    	              	       
+       	       }
+       	       entityManager.remove(orderFound);
+       	       transaction.commit();
+    		   
+    	   } catch(Exception e) {
+    		 e.printStackTrace();
+    	   }  finally {
+			   entityManager.close();
+		   }
+       }
+       public static void deleteOrderItem(String idStr) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   int id = Integer.parseInt(idStr);
+    	   try {
+    		   Query query = entityManager.createQuery("SELECT or FROM Order as or WHERE or.id = :id");
+    		   query.setParameter("id", id);
+    		   OrderItem orderItem = (OrderItem) query.getSingleResult();
+    		   EntityTransaction transaction = entityManager.getTransaction();
+    		   transaction.begin();
+    		   entityManager.remove(orderItem);
+    		   transaction.commit();
+    				   
+    	   } catch(Exception e) {
+    		 e.printStackTrace();
+    	   }  finally {
+			   entityManager.close();
+		   }
+    	   
+       }
+
 }
