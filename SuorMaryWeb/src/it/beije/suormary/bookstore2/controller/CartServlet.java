@@ -55,9 +55,9 @@ public class CartServlet extends HttpServlet {
         		for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
         			Book book = BookstoreUtility.findBook(entry.getKey());
                     int quantity = entry.getValue();
-                    //Author author = BookstoreUtility.findAuthor(book.getAuthorId());
+                    Author author = BookstoreUtility.findAuthorFromId(book.getAuthorId());
                     books.add(book);
-                    //authors.add(author);
+                    authors.add(author);
                     quantities.add(quantity);
         		}
         	}
