@@ -5,6 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+	body {
+    	background-color: #FADAFF;
+	}
+</style>
 <meta charset="ISO-8859-1">
 <title>Shop</title>
 </head>
@@ -21,7 +26,7 @@
 	
 	for(Book b : books){
 	%>
-	<div style="border: 1px solid; margin-bottom: 10px; padding: 5px;">
+	<div style="border: 1px solid; margin-bottom: 10px; padding: 5px; background-color: #C5F6FA">
 		<h2><%=b.getTitle()%></h2>
 		<h3>di <%=b.getAuthor().getName()%> <%=b.getAuthor().getSurname()%></h3>
 		<p><%=(b.getDescription() != null)? b.getDescription() : ""%></p>

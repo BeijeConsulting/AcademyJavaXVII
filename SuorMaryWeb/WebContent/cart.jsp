@@ -6,6 +6,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+	body {
+    	background-color: #FADAFF;
+	}
+</style>
 <meta charset="ISO-8859-1">
 <title>Cart</title>
 </head>
@@ -22,7 +27,7 @@
 	
 	for (Map.Entry<Book, Integer> entry : books.entrySet()) {
 	%>
-	<div style="border: 1px solid; margin-bottom: 10px; padding: 5px;">
+	<div style="border: 1px solid; margin-bottom: 10px; padding: 5px; background-color: #C5F6FA">
 		<h2><%=entry.getKey().getTitle()%></h2>
 		<h3>di <%=entry.getKey().getAuthor().getName()%> <%=entry.getKey().getAuthor().getSurname()%></h3>
 		<p><%=(entry.getKey().getDescription() != null)? entry.getKey().getDescription() : ""%></p>

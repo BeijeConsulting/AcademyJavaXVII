@@ -6,6 +6,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+	body {
+    	background-color: #FADAFF;
+	}
+</style>
 <meta charset="ISO-8859-1">
 <title>I miei ordini</title>
 </head>
@@ -20,7 +25,7 @@
 	
 	for(Order order: lo){%>
 		<div style="border:1px solid; margin-bottom:20px; padding:10px; background-color: #C5F6FA">
-			<div style="border:1px solid; margin-bottom:10px; padding:10px; background-color: #E8C5FA">
+			<div style="border:1px solid; margin-bottom:10px; padding:10px; background-color: #C3C5FF">
 				<h3><b>Numero ordine: <%=order.getId()%></b><br/></h3>
 				
 				<p><b>Indirizzo di spedizione</b>: <%=order.getShippingAddress() %></p>

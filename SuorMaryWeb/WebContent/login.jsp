@@ -2,6 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+	body {
+    	background-color: #FADAFF;
+	}
+</style>
 <meta charset="ISO-8859-1">
 <title>Login Page JSP</title>
 </head>
