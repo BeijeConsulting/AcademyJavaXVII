@@ -66,7 +66,7 @@ public class EcommerceManager {
     
     public List<Book> listBook(){
     	em = JPAEntityFactory.openEntity();
-    	Query query = em.createQuery("SELECT b from Book as b");
+    	Query query = em.createQuery("SELECT b from Book as b order by b.title");
     	List<Book> books = query.getResultList();
     	if (books.size() == 0) return null;
     	em.close();
@@ -79,7 +79,7 @@ public class EcommerceManager {
        //transaction = em.getTransaction();
         //transaction.begin();
 
-    	Query query = em.createQuery("SELECT a from Author as a");
+    	Query query = em.createQuery("SELECT a from Author as a order by a.surname");
     	List<Author> authors = query.getResultList();
     	if (authors.size() == 0) return null;
     	
