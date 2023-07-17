@@ -27,6 +27,15 @@ List<Book> books = (List) currSession.getAttribute("books");
 	  session.removeAttribute("ordinePagato");
   }
 	  %>
+	  <%
+  if(session.getAttribute("deleteOrder") != null){
+	  %>  
+	  <h3 style="color:green;font-weight:bold;"><%= session.getAttribute("deleteOrder") %></h3>
+	  <%
+	  session.removeAttribute("deleteOrder");
+  }
+	  %>
+	  
   
 
 <form action="./createBook" method ="GET">

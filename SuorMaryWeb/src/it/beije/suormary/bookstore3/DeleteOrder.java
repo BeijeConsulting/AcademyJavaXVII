@@ -18,15 +18,13 @@ public class DeleteOrder extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		HttpSession session = request.getSession();
-
-	if(request.getParameter("order")!=null){
-		int orderId= (int) session.getAttribute("orderId");	
+        int orderId= (int) session.getAttribute("orderId");	
 		BookStoreUtility.deleteOrder(orderId);
-
+        session.setAttribute("deleteOrder", "L`ordine è stato cancellato");
 		response.sendRedirect("welcome.jsp");
-	}
+	
 }
 
 	/**
