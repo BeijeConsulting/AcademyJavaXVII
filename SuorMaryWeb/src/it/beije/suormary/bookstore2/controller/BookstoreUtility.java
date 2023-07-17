@@ -159,5 +159,84 @@ public class BookstoreUtility {
 		return author;
 
 	}
+	
+	
+	public static void insertABook(Book book) {
+
+		EntityManager entityManager = null;
+
+		try {
+
+			entityManager = PersistenceManagerJPA.getEntityManager();
+
+			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
+			entityManager.persist(book);
+			transaction.commit();
+
+			System.out.println(book.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
+
+	}
+	
+	public static List<Author> getAllAuthor() {
+		List<Author> authors = new ArrayList<>();
+		EntityManager entityManager = null;
+		
+		try {
+
+			entityManager = PersistenceManagerJPA.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
+
+			Query query = entityManager.createQuery("SELECT a FROM Author as a");
+			authors = query.getResultList();
+			System.out.println(authors);
+
+			transaction.commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
+
+		
+		return authors;
+	}
+	
+	
+	
+	
+	public static Author getAuthorFromId(int authorId) {
+		Author author = new Author();
+		EntityManager entityManager = null;
+		
+		try {
+
+			entityManager = PersistenceManagerJPA.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
+
+			author = entityManager.find(Author.class, authorId);
+
+			transaction.commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
+
+		
+		return author;
+	}
+	
+	
 
 }

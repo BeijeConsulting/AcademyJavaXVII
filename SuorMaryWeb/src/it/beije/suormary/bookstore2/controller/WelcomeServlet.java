@@ -23,12 +23,9 @@ import it.beije.suormary.bookstore2.model.User;
 public class WelcomeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+ 
     public WelcomeServlet() {
-        super();
-        // TODO Auto-generated constructor stub
+
     }
 
 	/**
