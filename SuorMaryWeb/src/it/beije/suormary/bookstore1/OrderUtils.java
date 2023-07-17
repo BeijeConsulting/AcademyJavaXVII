@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore1;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -41,12 +42,14 @@ public class OrderUtils {
 			
 			order.setAmount(amount);
 			em.persist(order);
-			transaction.commit();
 			em.flush();
+			transaction.commit();
+			
 			
 			int idOrder = order.getId();
 			
-			insertOrderItems(idOrder, books);
+			System.out.println("Ordine inserito, inizio gli item");
+			insertOrderItems(idOrder, books, em);
 			
 		} catch(Exception e) {
 			if(transaction != null) {
@@ -58,15 +61,13 @@ public class OrderUtils {
 		}
 	}
 	
-	public static void insertOrderItems(int orderId, Map<Book,Integer> books) {
-		EntityManager em = null;
+	public static void insertOrderItems(int orderId, Map<Book,Integer> books, EntityManager em) {
 		EntityTransaction transaction = null;
 		try {
-			em = JPAManagerFactory.getEntityManager();
 			transaction = em.getTransaction();
 
 			transaction.begin();
-			
+			System.out.println("Item iniziati");
 			OrderItem om = null;
 			Book book = null;
 			for (Map.Entry<Book, Integer> entry : books.entrySet()) {
@@ -84,9 +85,9 @@ public class OrderUtils {
 				book.setQuantity(book.getQuantity() - entry.getValue());
 				em.persist(book);
 			}
-			
+			System.out.println("Item finiti");
 			transaction.commit();
-			
+			System.out.println("Item committati");
 		} catch(Exception e) {
 			if(transaction != null) {
 				transaction.rollback();
@@ -144,6 +145,28 @@ public class OrderUtils {
 		} finally {
 			em.close();
 		}
+	}
+	
+	public static List<Order> getOrders(int userId){
+		EntityManager em = null;
+		List<Order> orders = null;
+		try {
+			em = JPAManagerFactory.getEntityManager();
+					
+			Query query = em.createQuery("SELECT o FROM Order as o WHERE o.userId = :id");
+			query.setParameter("id", userId);
+			orders = (List<Order>) query.getResultList();
+			
+			for(int i=0; i<orders.size(); i++) {
+				orders.get(i).setItems(OrderItemUtils.getOrderItems(orders.get(i)));
+			}
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return orders;
 	}
 	
 }

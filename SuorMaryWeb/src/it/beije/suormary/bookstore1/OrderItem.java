@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /*
 
@@ -45,6 +46,8 @@ public class OrderItem {
 	@Column(name = "quantity")
 	private int quantity;
 
+	@Transient
+	private Book book;
 	
 	public int getId() {
 		return id;
