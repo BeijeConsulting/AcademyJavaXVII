@@ -54,15 +54,22 @@ public class ListServlet extends HttpServlet {
 		String form = (String) session.getAttribute("form");
 		
 		if (form.equals("author")) {
-			
+			String name = request.getParameter("name");
+			String surname = request.getParameter("surname");
+			String description = request.getParameter("description");
+			em.addAuthor(name, surname, description);
 		}
 		else if (form.equals("book")) {
-			
+			String title = request.getParameter("title");
+			String description = request.getParameter("description");
+			int idAuthor = Integer.parseInt(request.getParameter("author"));
+			String editor = request.getParameter("editor");
+			double price = Double.parseDouble(request.getParameter("price"));
+			int quantity = Integer.parseInt(request.getParameter("quantity"));
+			em.addBook(title, description, idAuthor, editor, price, quantity);
 		}
 		
-		
-		
-		doGet(request, response);
+		response.sendRedirect("./listservlet");
 	}
 	
 	

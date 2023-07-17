@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.transaction.Transaction;
 
 
 public class EcommerceManager {
@@ -37,7 +38,6 @@ public class EcommerceManager {
     	return users.get(0);
     }
     
-
     public User insertUser(String name, String surname, String email, String password) {
     	em = JPAEntityFactory.openEntity();
         transaction = em.getTransaction();
@@ -88,6 +88,53 @@ public class EcommerceManager {
 	}
         
     public void addAuthor(String name, String surname, String description) {
-    	Author author
+    	Author author = new Author();
+    	
+    	author.setName(name);
+    	author.setSurname(surname);
+    	author.setDescription(description);
+    	
+    	em = JPAEntityFactory.openEntity();
+    	EntityTransaction transaction = em.getTransaction();
+    	transaction.begin();
+    	
+    	try {
+    		em.persist(author);
+    		transaction.commit();
+    	} catch (Exception e) {
+    		System.out.println("Non va bene");
+    		author = null;
+    	} finally {
+        	em.close();    		
+    	}
+    	
+    	
+    }
+    
+    public void addBook(String title, String description, int idAuthor, String editor, double price, int quantity) {
+    	Book book = new Book();
+    	
+    	book.setTitle(title);
+    	
+    	//book.setAuthorId(0);
+    	
+    	book.setDescription(description);
+    	book.setEditor(editor);
+    	book.setPrice(price);
+    	book.setQuantity(quantity);
+    	
+    	em = JPAEntityFactory.openEntity();
+    	EntityTransaction transaction = em.getTransaction();
+    	transaction.begin();
+    	
+    	try {
+    		em.persist(book);
+    		transaction.commit();
+    	} catch (Exception e) {
+    		System.out.println("Non va bene");
+    		book = null;
+    	} finally {
+        	em.close();    		
+    	}
     }
 }

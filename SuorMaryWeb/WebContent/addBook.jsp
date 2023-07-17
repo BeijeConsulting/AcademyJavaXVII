@@ -19,12 +19,13 @@
 		  <input type="text" name="description"><br><br>
 		  
 		  <label for="author">Author:</label><br>
-		  <select id="author" style="width:135pt;" required>
+		  <select name="author" style="width:135pt;" required>
 		  <%
 		  List<Author> authors = (ArrayList<Author>)(session.getAttribute("allAuthors")); 
 		  for(int i=0;i<authors.size();i++){
-			 %> <option><%=authors.get(i).getSurname() %></option>
-		  <% }%>
+			 %> <option value="<%=authors.get(i).getId()%>"><%=authors.get(i).getSurname()%></option>
+		  <% }
+		  %>
 		  </select>
 		  <br><br>
 		  
