@@ -21,23 +21,11 @@
 <%	for(Order o : orders){
 		%> Ordine numero: <%= o.getId()%><br/>
 		Stato Ordine: <%= o.getStatus() %><br/>
-		<%if (o.getStatus()=='I' ){
-		%>	
-			<form action="payment" action="GET">
-			   <input type="hidden" name="order" value="<%= o.getId() %>" />
-			   <input type="submit" value="Paga Ordine" class="button"/>
-			</form> 
-			<form action="updateOrder" action="GET">
-				<input type="hidden" name="order" value="<%= o.getId() %>" />
-  				<input type="submit" value="Modifica ordine" class="button"/>
-			</form> 
-			<form action="deleteOrder" action="GET">
-				<input type="hidden" name="order" value="<%= o.getId() %>" />
-   				<input type="submit" value="Cancella Ordine" class="button"/>
-   			</form>
-		<%}%>
-		
 		Totale: <%= o.getAmount() %><br/>
+		<form action="recapOrder" action="GET">
+			   <input type="hidden" name="order" value="<%= o.getId() %>" />
+			   <input type="submit" value="Visualizza Dettagli Ordine" class="button"/>
+			</form> 
 		<br/><hr><br/>
 	<%}%>
 </body>

@@ -15,8 +15,10 @@
 </head>
 <body>
 <%@ include file="header.jsp" %>
-    <% 
 
+
+    <% 
+    
    		int orderId = (int) session.getAttribute("orderId");
         Order orderfound = BookStoreUtility.getOrderById(orderId);
 
@@ -25,6 +27,11 @@
     %>
 
     <h2>Riepilogo Ordine n° <%= orderfound.getId() %></h2>
+
+
+    <h3>Acquistati <%= booksOrder.size() %> libri:<br/>
+        
+
 
 <% for(OrderItem orderItem :orderfound.getItems()){ Book book = BookStoreUtility.getBookById(orderItem.getBookId());%> 
        <%= book.getTitle() %>
@@ -37,17 +44,28 @@
         Totale acquisto: <%= orderfound.getAmount() %> <br/>
         Indirizzo Spedizione: <%= orderfound.getShippingAddress()%><br/>
     </h3>
-
-    <form action="deleteOrder" action="GET">
-   <input type="submit" value="Cancella Ordine" />
+    <hr><br/>
+    <% if(orderfound.getStatus()=='I'){%>
+<form>
+<label for="address">Indirizzo Spedizione:</label><br>
+  <input type="text" id="address" name="address"><br>
+<input type="submit" value="Conferma" class="button">
+</form>
+<form action="payment" action="GET">
+   <input type="hidden" name="sAddress" value="<%= request.getParameter("address") %>" />
+   <input type="submit" value="Paga Ordine" class="button"/>
+</form> 
+<form action="deleteOrder" action="GET">
+   <input type="submit" value="Cancella Ordine" class="button"/>
    </form>
 <form action="updateOrder" action="GET">
-   <input type="submit" value="Modifica ordine" />
+   <input type="submit" value="Modifica ordine" class="button"/>
 </form> 
-   <form action="payment" action="GET">
-   <input type="submit" value="Paga Ordine" />
-</form> 
-
-    
+<%} else {%>
+<form action="myOrders" action="GET">
+   <input type="submit" value="Torna Ai Miei Ordini" class="button"/>
+</form>
+ <%}%>   
+ 
 </body>
 </html>

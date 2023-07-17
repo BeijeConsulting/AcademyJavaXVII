@@ -20,12 +20,12 @@ public class DeleteOrder extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		HttpSession session = request.getSession();
-        int orderId= (int) session.getAttribute("orderId");	
+        int orderId= (int) session.getAttribute("orderId");			
 		BookStoreUtility.deleteOrder(orderId);
         session.setAttribute("deleteOrder", "L`ordine è stato cancellato");
-		response.sendRedirect("welcome.jsp");
-	
-}
+		response.sendRedirect("welcome.jsp");	
+	}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
