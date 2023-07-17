@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import antlr.Parser;
+
 /**
  * Servlet implementation class Payment
  */
@@ -23,11 +25,13 @@ public class Payment extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+		if(request.getParameter("order")!=null){
 		HttpSession session = request.getSession();
 		int orderId = (int) session.getAttribute("orderId");
 		BookStoreUtility.payment(orderId,"a");
 		session.setAttribute("ordinePagato", "Ordine pagato con successo");
 		response.sendRedirect("welcome.jsp");
+		}
 	}
 
 	/**

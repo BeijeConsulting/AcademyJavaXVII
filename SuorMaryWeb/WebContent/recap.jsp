@@ -16,19 +16,30 @@
 <body>
 <%@ include file="header.jsp" %>
     <% 
+
    		int orderId = (int) session.getAttribute("orderId");
         Order orderfound = BookStoreUtility.getOrderById(orderId);
+
         List<Book> booksOrder = (List<Book>) session.getAttribute("booksOrder");
  
     %>
 
     <h2>Riepilogo Ordine n° <%= orderfound.getId() %></h2>
+
+
+    <h3>Acquistati <%= booksOrder.size() %> libri:<br/>
+        <% for (Book b : booksOrder) { %>
+            <%= b.getTitle() %><br/>
+        <% } %>
+        
+
 <% for(OrderItem orderItem :orderfound.getItems()){ Book book = BookStoreUtility.getBookById(orderItem.getBookId());%> 
        <%= book.getTitle() %>
              <%=" - " + "Quantità : " +  orderItem.getQuantity() %><br/>
 	<%
 	}
 	%>
+
         Stato Ordine: <%= orderfound.getStatus() %><br/>
         Totale acquisto: <%= orderfound.getAmount() %> <br/>
         Indirizzo Spedizione: <%= orderfound.getShippingAddress()%><br/>

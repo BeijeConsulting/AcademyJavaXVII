@@ -22,16 +22,21 @@
 		%> Ordine numero: <%= o.getId()%><br/>
 		Stato Ordine: <%= o.getStatus() %><br/>
 		<%if (o.getStatus()=='I' ){
-		%>	<form action="deleteOrder" action="GET">
-			   <input type="submit" value="Cancella Ordine" />
-			   </form>
+		%>	
+			<form action="payment" action="GET">
+			   <input type="hidden" name="order" value="<%= o.getId() %>" />
+			   <input type="submit" value="Paga Ordine" class="button"/>
+			</form> 
 			<form action="updateOrder" action="GET">
-			   <input type="submit" value="Modifica ordine" />
+				<input type="hidden" name="order" value="<%= o.getId() %>" />
+  				<input type="submit" value="Modifica ordine" class="button"/>
 			</form> 
-			   <form action="payment" action="GET">
-			   <input type="submit" value="Paga Ordine" />
-			</form> 
+			<form action="deleteOrder" action="GET">
+				<input type="hidden" name="order" value="<%= o.getId() %>" />
+   				<input type="submit" value="Cancella Ordine" class="button"/>
+   			</form>
 		<%}%>
+		
 		Totale: <%= o.getAmount() %><br/>
 		<br/><hr><br/>
 	<%}%>
