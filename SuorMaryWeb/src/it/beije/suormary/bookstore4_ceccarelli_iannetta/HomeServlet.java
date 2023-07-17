@@ -69,11 +69,11 @@ public class HomeServlet extends HttpServlet {
 			user = em.isUser(email, password);
 			if(user != null) {
 				session.setAttribute("user", user);
-				nextPage = "listpage.jsp";
+				nextPage = "./listservlet";
 			}
 			else {
 				session.setAttribute("loginError", "Email or password incorrect");
-				nextPage = "loginpage.jsp";
+				nextPage = "./listservlet";
 			}
 		}	
 		return nextPage;

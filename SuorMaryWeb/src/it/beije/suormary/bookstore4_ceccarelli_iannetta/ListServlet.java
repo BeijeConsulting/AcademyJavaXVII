@@ -1,18 +1,24 @@
 package it.beije.suormary.bookstore4_ceccarelli_iannetta;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class ListServlet
  */
-@WebServlet("/ListServlet")
+@WebServlet("/listservlet")
 public class ListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	EcommerceManager em = new EcommerceManager();
+	List<Book> books = null;
+	List<Author> authors = null;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -27,7 +33,13 @@ public class ListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		HttpSession session = request.getSession();
+		books = em.listBook();
+		session.setAttribute("allBooks", books);
+		authors = em.listAuthor();
+		session.setAttribute("allAuthors", authors);
+		response.sendRedirect("listpage.jsp");
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -39,5 +51,18 @@ public class ListServlet extends HttpServlet {
 		
 		doGet(request, response);
 	}
+	
+	
+//	private void allBook(HttpServletRequest request) {
+//		HttpSession session = request.getSession();
+//		books = em.listBook();
+//		session.setAttribute("allBooks", books);
+//	}
+//	
+//	private void allAuthors(HttpServletRequest request) {
+//		HttpSession session = request.getSession();
+//		books = em.listBook();
+//		session.setAttribute("allBooks", books);
+//	}
 
 }
