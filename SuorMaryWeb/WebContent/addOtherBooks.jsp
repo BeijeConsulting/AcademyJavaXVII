@@ -4,10 +4,13 @@
 <%@page import="it.beije.suormary.bookstore3.Book"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="it.beije.suormary.bookstore3.Author"%>
+<%@page import="it.beije.suormary.bookstore3.BookStoreUtility"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="style.css">
 <title>Insert title here</title>
 </head>
 <body>
@@ -29,10 +32,22 @@ if (ErrorQuantity != null) {
 %>
 <%
  for(Book b : books){
+	 Author author = BookStoreUtility.getAuthorById(b.getAuthorId());
 	 %>
-   <h2><%= b.getTitle() %></h2>
+   <div class="card">
+    <h3><%= b.getTitle() %></h3>
    <h5><%= "Quantità disponibile : " + (b.getQuantity()) %></h5>
-
+   <h4><%="Autore : " +  author.getName()%></h4>
+               <%
+              if(b.getDescription() != null){
+            	  
+             %>
+             <span class="desc">Descrizione : </span>
+             <span><%= b.getDescription() %></span>
+             <%
+              }
+             %>
+   <div class="buttons">
    <form action="quantityBookModOrder" method="get">
    <input type="hidden" name="bookId" value= "<%= b.getId() %>" />
    <label>Inserisci quantità : </label>
@@ -45,12 +60,14 @@ if (ErrorQuantity != null) {
    <input type="submit" value="Aggiungi all`ordine" />
 
    </form>
+   </div>
+   </div>
 	 
 <% 
  }
 %>
   <form action="recapOrder" action="GET">
-   <input type="submit" value="Salva modifica" /> 
+   <input type="submit" value="Salva modifica" class="button" /> 
    </form>
 
 </body>

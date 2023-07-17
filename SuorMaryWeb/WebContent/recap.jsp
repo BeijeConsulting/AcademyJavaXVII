@@ -39,13 +39,13 @@
     </h3>
 
     <form action="deleteOrder" action="GET">
-   <input type="submit" value="Cancella Ordine" />
+   <input type="submit" value="Cancella Ordine" class="button"/>
    </form>
 <form action="updateOrder" action="GET">
-   <input type="submit" value="Modifica ordine" />
+   <input type="submit" value="Modifica ordine" class="button"/>
 </form> 
    <form action="payment" action="GET">
-   <input type="submit" value="Paga Ordine" />
+   <input type="submit" value="Paga Ordine" class="button"/>
 </form> 
 
     
