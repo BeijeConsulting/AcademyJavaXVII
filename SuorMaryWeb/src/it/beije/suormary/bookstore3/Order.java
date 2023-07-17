@@ -57,6 +57,8 @@ public class Order {
 	@Column(name = "shipping_address")
 	private String shippingAddress;
 
+	
+
 	@Transient
 	private List<OrderItem> items;
 	public Order() {
@@ -108,6 +110,14 @@ public class Order {
 		this.amount = amount;
 	}
 	
+	public String getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
+
 
 	public List<OrderItem> getItems() {
 		return items;

@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-
 public class BookStoreUtility {
        public static void registerUser(String name, String surname, String email, String password, LocalDateTime date) {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
@@ -30,13 +29,13 @@ public class BookStoreUtility {
     	   }
     	   
        }
-       public static User loginUser(String email, String password) {
+       public static User loginUser(String email) {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   User user = null;
     	   try {
-    		   Query query = entityManager.createQuery("SELECT u FROM User as u WHERE u.email = :email AND u.password = :password");
+    		   Query query = entityManager.createQuery("SELECT u FROM User as u WHERE u.email = :email");
     		   query.setParameter("email", email);
-    		   query.setParameter("password", password);
+    		  // query.setParameter("password", password);
     		    user = (User) query.getSingleResult();
     		   
     	   }catch(Exception e) {
@@ -62,6 +61,57 @@ public class BookStoreUtility {
     	    }
     	    return listBooks;
        }
+
+       
+
+//       private static Order createOrder(int userId, List<OrderItem> cart) {
+//    	   Order order= new Order(); 
+//    	   LocalDateTime dateTime = LocalDateTime.now();
+//    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+//    	   try {
+//    		   EntityTransaction transaction = entityManager.getTransaction();
+//    		   transaction.begin();
+//    		   order.setDate(dateTime);
+//    		   order.setUserId(userId);
+//    		   order.setStatus('I');
+//    		   order.setAmount(0);
+//    		   order.setItems(null);
+//    		   entityManager.persist(order);
+//    		   transaction.commit();
+//    		   	   
+//    	   } catch(Exception e) {
+//    		   e.printStackTrace();
+//    	   } finally {
+//    		   entityManager.close();
+//    	   }
+//		return order;
+//	}
+//       
+//       public static List<OrderItem> selectedItems(List<Book> selectedBooks ) {
+//    	   List<OrderItem> cart = null;
+//    	   OrderItem bookItem = null;
+//    	   for(Book b: selectedBooks) {
+//    		   if(!cart.contains(b.getId())){
+//	    		  bookItem =new OrderItem();
+//	    		  bookItem.setBookId(b.getId());
+//	    		  bookItem.setPrice(b.getPrice());
+//	    		  bookItem.setQuantity(1);
+//	    		  cart.add(bookItem);
+//    		   } else {
+//    			 bookItem = cart.get(cart.indexOf(b.getId()));
+//    			 bookItem.setPrice(bookItem.getPrice()+b.getPrice());
+//    			 bookItem.setQuantity(bookItem.getQuantity()+1);
+//        	   }
+//    	   }
+//    	   
+//		return cart;
+//	}
+//       
+//       public static Order createOrder(int userId, List<Book> selectedBooks) {
+//    	   
+//		return null;
+//	}
+       
        public static List<Author> getAuthors(){
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   List<Author> listAuthors = null;
@@ -220,4 +270,34 @@ public class BookStoreUtility {
     		   entityManager.close();
     	   }
        }
+       public static Order findOrder(Order order) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   Order orderFound = null;
+    	   try {		
+    		   orderFound = entityManager.find(Order.class, order.getId());
+   	       System.out.println(orderFound.toString());
+    	   } catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+    	   return orderFound;
+		
+	}
+       public static void payment(Order order) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   Order orderFound = null;
+    	   EntityTransaction transaction = entityManager.getTransaction();
+    	   transaction.begin();
+    	   try {		
+    		   orderFound = entityManager.find(Order.class, order.getId());
+    		   orderFound.setStatus('P');
+    		   transaction.commit();
+    	   } catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+    	 
+	}
 }
