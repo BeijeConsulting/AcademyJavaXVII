@@ -60,13 +60,13 @@ public class Book {
 		
 	}
 	
-	public Book(String title, String description, String editor, double price, int quantity, Author a) {
+	public Book(String title, String description, String editor, double price, int quantity, int authorId) {
 		this.title=title;
 		this.description=description;
 		this.editor=editor;
 		this.price=price;
 		this.quantity=quantity;
-		this.author=a;	
+		this.authorId=authorId;	
 	}
 	
 	public int getId() {

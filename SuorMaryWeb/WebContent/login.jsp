@@ -43,7 +43,8 @@ if (registrationSuccess != null) {
 </form> 
 <br><br>
 <a href="./RegisterServlet">Non ho un account</a><br/><br/>
-<a href="./NewAuthorServlet">Aggiungi un autore</a>
+<a href="./NewAuthorServlet">Aggiungi un autore</a><br/><br/>
+<a href="./BookServlet">Aggiungi un libro</a>
 </div>
 </body>
 </html>

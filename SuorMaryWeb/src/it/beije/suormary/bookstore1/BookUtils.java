@@ -70,7 +70,7 @@ public class BookUtils {
 	
 
 	
-	public static void addNewBook(String title, String description, String editor, double price, int quantity, Author a){
+	public static void addNewBook(String title, String description, String editor, double price, int quantity, int authorId){
 		EntityManager em = null;
 		Book book = null;
 		try {
@@ -78,15 +78,14 @@ public class BookUtils {
 			EntityTransaction transaction = em.getTransaction();
 			transaction.begin();
 			
-			book=new Book(title, description, editor, price, quantity, a);
+			book=new Book(title, description, editor, price, quantity, authorId);
 			
 			
 			
 			em.persist(book);
 			
 			transaction.commit();
-			
-			book.setAuthor(a);			
+						
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {

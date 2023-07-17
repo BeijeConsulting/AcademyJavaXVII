@@ -1,7 +1,10 @@
 package it.beije.suormary.bookstore1;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 public class AuthorUtils {
 	
@@ -28,6 +31,22 @@ public class AuthorUtils {
 		} finally {
 			entityManager.close();
 		}
+	}
+	
+	public static List<Author> getAuthorList(){
+		EntityManager entityManager = null;
+		List<Author> la = null;
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();
+			Query query = entityManager.createQuery("SELECT a FROM Author as a");
+			la=query.getResultList();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
+		return la;
 	}
 	
 }
