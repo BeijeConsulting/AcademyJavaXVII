@@ -42,7 +42,8 @@ if (registrationSuccess != null) {
   <input type="submit" value="Submit">
 </form> 
 <br><br>
-<a href="./RegisterServlet">Non ho un account</a>
+<a href="./RegisterServlet">Non ho un account</a><br/><br/>
+<a href="./NewAuthorServlet">Aggiungi un autore</a>
 </div>
 </body>
 </html>

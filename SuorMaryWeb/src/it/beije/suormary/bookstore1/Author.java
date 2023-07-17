@@ -69,7 +69,14 @@ public class Author {
 		this.description = description;
 	}
 
-
+	public Author() {}
+	
+	public Author(String name, String surname, String description) {
+		this.name = name;
+		this.surname = surname;
+		this.description = description;
+	}
+	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
