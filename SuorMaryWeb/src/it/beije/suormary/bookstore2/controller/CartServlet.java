@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import it.beije.suormary.bookstore2.model.Author;
+import it.beije.suormary.bookstore2.model.Book;
+import it.beije.suormary.bookstore2.model.User;
+
 /**
  * Servlet implementation class CartServlet
  */
@@ -33,7 +37,37 @@ public class CartServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		System.out.println("cart doGet");
+		
+		HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        
+        if (user == null) {
+            // Utente non autenticato, reindirizza alla pagina di login
+            response.sendRedirect("bookstoreLogin.jsp");
+        } else {
+        	Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
+        	System.out.println("cart: " + cart);
+        	List<Book> books =  new ArrayList<>();
+        	List<Author> authors =  new ArrayList<>();
+        	List<Integer> quantities =  new ArrayList<>();
+        	if (cart != null && !cart.isEmpty()) {
+        		for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
+        			Book book = BookstoreUtility.findBook(entry.getKey());
+                    int quantity = entry.getValue();
+                    //Author author = BookstoreUtility.findAuthor(book.getAuthorId());
+                    books.add(book);
+                    //authors.add(author);
+                    quantities.add(quantity);
+        		}
+        	}
+        	request.setAttribute("books", books);
+        	request.setAttribute("authors", authors);
+        	request.setAttribute("quantities", quantities);
+            
+         // chiama la jsp
+            request.getRequestDispatcher("bookstoreCart.jsp").forward(request, response);
+        }
 	}
 
 	/**
@@ -42,6 +76,7 @@ public class CartServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int bookId = Integer.parseInt(request.getParameter("id"));
+		String action = request.getParameter("action");
 
 	    HttpSession session = request.getSession();
 
@@ -54,15 +89,26 @@ public class CartServlet extends HttpServlet {
 
 	 // Add the book to the cart and update the quantity
         int quantity = cart.getOrDefault(bookId, 0);
-        cart.put(bookId, quantity + 1);
-
-        System.out.println("Added to cart: bookId=" + bookId + ", quantity=" + (quantity));
-
-
-	    // Redirect back to the previous page or any other desired page
-	    response.sendRedirect(request.getContextPath() + "/bookstoreBookDetails?id=" + bookId);
-	
-		//doGet(request, response);
+        
+        if (action.equals("add") || action.equals("addFromBookDet")) {
+            cart.put(bookId, quantity + 1);
+            System.out.println("Added to cart: bookId=" + bookId + ", quantity=" + (quantity + 1));
+            if (action.equals("addFromBookDet")) {
+                // Redirect back to the previous page or any other desired page
+                response.sendRedirect(request.getContextPath() + "/bookstoreBookDetails?id=" + bookId);
+            } else {
+                response.sendRedirect(request.getContextPath() + "/cart");
+            }
+        } else if (action.equals("remove")) {
+            if (quantity > 0) {
+                cart.put(bookId, quantity - 1);
+                System.out.println("Removed from cart: bookId=" + bookId + ", quantity=" + (quantity - 1));
+            }
+            response.sendRedirect(request.getContextPath() + "/cart");
+        } else {
+            // Gestire l'azione sconosciuta o altri casi
+            response.sendRedirect(request.getContextPath() + "/cart");
+        }
 	}
 
 }

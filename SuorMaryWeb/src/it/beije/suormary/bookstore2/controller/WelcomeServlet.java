@@ -44,7 +44,7 @@ public class WelcomeServlet extends HttpServlet {
             // Utente non autenticato, reindirizza alla pagina di login
             response.sendRedirect("bookstoreLogin.jsp");
         } else {
-            List<Book> books = BookstoreUtility.readBooksFromDb();
+        	List<Book> books = BookstoreUtility.readBooksFromDb();
             request.setAttribute("books", books);
          // chiama la jsp
             request.getRequestDispatcher("bookstoreWelcome.jsp").forward(request, response);

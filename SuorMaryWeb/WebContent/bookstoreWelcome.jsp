@@ -64,10 +64,10 @@ if (user == null) response.sendRedirect("bookstoreLogin.jsp");
             <form action="./bookstoreOrderList" method="GET">
                 <button type="submit">View Order List</button>
             </form>
-            <form action="./cart">
+            <form action="./cart" >
                 <button type="submit">Cart</button>
             </form>
-            <form action="./logout">
+            <form action="./logout" method="GET">
                 <button type="submit">Logout</button>
             </form>
         </div>
