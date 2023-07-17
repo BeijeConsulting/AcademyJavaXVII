@@ -11,23 +11,37 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class Payment
+ * Servlet implementation class AddBookToModOrder
  */
-@WebServlet("/payment")
-public class Payment extends HttpServlet {
+@WebServlet("/addBookToModOrder")
+public class AddBookToModOrder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-      
-   
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public AddBookToModOrder() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		HttpSession session = request.getSession();
-		int orderId = (int) session.getAttribute("orderId");
-		BookStoreUtility.payment(orderId,"a");
-		session.setAttribute("ordinePagato", "Ordine pagato con successo");
-		response.sendRedirect("welcome.jsp");
+		List<Book> booksOrder = (List)session.getAttribute("booksOrder");
+		String id = request.getParameter("bookOrderId");
+		String quantity = request.getParameter("quantity");
+		Book book = BookStoreUtility.getBookById(id);
+		int quantityInt = Integer.parseInt(quantity);
+		book.setQuantity(quantityInt);
+		booksOrder.add(book);
+		for(Book b : booksOrder) {
+			System.out.println(b.getId() +  " " + b.getQuantity());
+		}
+		session.removeAttribute("quantity");
+		response.sendRedirect("addOtherBooks.jsp");
 	}
 
 	/**

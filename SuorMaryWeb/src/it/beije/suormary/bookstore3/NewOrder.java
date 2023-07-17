@@ -22,14 +22,20 @@ public class NewOrder extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		HttpSession session = request.getSession();
+		if(session.getAttribute("email") == null) {
+			response.sendRedirect("login");
+		}
+		else {		
 		List<Book> booksOrder = new ArrayList<>();
 		session.setAttribute("booksOrder", booksOrder);
 		String email = (String) session.getAttribute("email");
 		Order order = BookStoreUtility.createOrder(email);
-		session.setAttribute("order", order);
+		session.setAttribute("orderId", order.getId());
+		//session.setAttribute("order", order);
 		response.sendRedirect("newOrder.jsp");
+	    }
 		
 	}
 
