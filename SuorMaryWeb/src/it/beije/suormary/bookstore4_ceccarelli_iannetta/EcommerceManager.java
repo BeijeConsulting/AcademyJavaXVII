@@ -73,4 +73,19 @@ public class EcommerceManager {
     	return books;
     }
     
+    
+    public List<Author> listAuthor(){
+	   	em = JPAEntityFactory.openEntity();
+       //transaction = em.getTransaction();
+        //transaction.begin();
+
+    	Query query = em.createQuery("SELECT a from Author as a");
+    	List<Author> authors = query.getResultList();
+    	if (authors.size() == 0) return null;
+    	
+    	//transaction.commit();
+    	em.close();
+    	return authors;
+	}
+    
 }
