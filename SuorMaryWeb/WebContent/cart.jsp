@@ -28,7 +28,7 @@
 		<p><%=(entry.getKey().getDescription() != null)? entry.getKey().getDescription() : ""%></p>
 		<p><%=entry.getKey().getEditor() %></p>
 		<p>Qty: <%=entry.getValue() %></p>
-		<form method="POST" action="./ShopServlet">
+		<form method="POST" action="./CartServlet">
 			<input type="hidden" value="<%=entry.getKey().getId() %>" name="bookId" />
 			<select name="quantity" >
 				<%
@@ -43,5 +43,15 @@
 	<%} 
 	
 	session.removeAttribute("books");%>
+	<br/>
+	<hr/>
+	<br/>
+	<div style="margin-bottom: 20px; margin-top: 10px; padding: 5px;">
+		<form method="POST" action="">
+			<label>Indirizzo di consegna: </label>
+			<input type="text" name="address" style="width: 500px;" /> <br/><br/>
+			<input type="submit" name="updateOrder" value="Invia" style="width: 300px; font-size: 20px;" />
+		</form>
+	</div>
 </body>
 </html>

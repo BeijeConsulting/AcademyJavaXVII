@@ -27,5 +27,25 @@ public class UserUtils {
 		return user;
 	}
 	
+	public static int getUserId(String email) {
+		
+		EntityManager entityManager = null;
+		int id = -1;
+		
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();
+			Query query = entityManager.createQuery("SELECT u.id FROM User as u WHERE u.email = :email ");
+			query.setParameter("email", email);
+			id = (Integer) query.getSingleResult();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			entityManager.close();
+		}
+		return id;
+		
+	}
+	
 }
 

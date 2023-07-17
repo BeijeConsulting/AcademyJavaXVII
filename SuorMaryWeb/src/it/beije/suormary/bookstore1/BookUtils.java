@@ -1,7 +1,9 @@
 package it.beije.suormary.bookstore1;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -51,6 +53,18 @@ public class BookUtils {
 			entityManager.close();
 		}
 		return book;
+	}
+	
+	public static Map<Book,Integer> getBooks(Map<Integer,Integer> cart){
+		
+		Map<Book,Integer> books = new HashMap<>();
+		Book b = null;
+		for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
+			b = BookUtils.getBook(entry.getKey());
+			books.put(b, entry.getValue());
+		}
+		return books;
+		
 	}
 	
 }
