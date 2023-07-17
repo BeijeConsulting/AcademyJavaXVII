@@ -64,4 +64,13 @@ public class EcommerceManager {
     	return user;
     }
     
+    public List<Book> listBook(){
+    	em = JPAEntityFactory.openEntity();
+    	Query query = em.createQuery("SELECT b from Book as b");
+    	List<Book> books = query.getResultList();
+    	if (books.size() == 0) return null;
+    	em.close();
+    	return books;
+    }
+    
 }
