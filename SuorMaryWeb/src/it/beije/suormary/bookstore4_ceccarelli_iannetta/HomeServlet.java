@@ -73,7 +73,7 @@ public class HomeServlet extends HttpServlet {
 			}
 			else {
 				session.setAttribute("loginError", "Email or password incorrect");
-				nextPage = "./listservlet";
+				nextPage = "./loginpage.jsp";
 			}
 		}	
 		return nextPage;

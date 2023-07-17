@@ -16,7 +16,7 @@
 		  <label for="title">Title:</label><br>
 		  <input type="text" name="title" required><br><br>
 		  <label for="description">Description:</label><br>
-		  <input type="text" name="description"><br><br>
+		  <textarea name="description"></textarea><br><br>
 		  
 		  <label for="author">Author:</label><br>
 		  <select name="author" style="width:135pt;" required>
@@ -27,12 +27,15 @@
 		  <% }
 		  %>
 		  </select>
+		  <!-- <a href="addAuthor.jsp">
+				<button name="selection" value="addAuthor" >Add author</button>
+		  </a> -->
 		  <br><br>
 		  
 		  <label for="editor">Editor:</label><br>
 		  <input type="text" name="editor"><br><br>
 		  <label for="price">Price:</label><br>
-		  <input type="number" name="price" placeholder="00.00" min="0.00" required><br><br>
+		  <input type="number" step="0.01" name="price" placeholder="00.00" min="0.00" required><br><br>
 		  <label for="quantity">Quantity:</label><br>
 		  <input type="number" name="quantity" min="1" required><br><br>
 		  <input type="submit" value="Add">		

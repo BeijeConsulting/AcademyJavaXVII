@@ -35,6 +35,7 @@ public class EcommerceManager {
     	
     	//transaction.commit();
     	em.close();
+    	//System.out.println("USER:" + users.get(0));
     	return users.get(0);
     }
     
@@ -87,7 +88,7 @@ public class EcommerceManager {
     	return authors;
 	}
         
-    public void addAuthor(String name, String surname, String description) {
+    public Author addAuthor(String name, String surname, String description) {
     	Author author = new Author();
     	
     	author.setName(name);
@@ -107,17 +108,16 @@ public class EcommerceManager {
     	} finally {
         	em.close();    		
     	}
-    	
+    	return author;
     	
     }
     
-    public void addBook(String title, String description, int idAuthor, String editor, double price, int quantity) {
+    public Book addBook(String title, String description, int idAuthor, String editor, double price, int quantity) {
     	Book book = new Book();
     	
     	book.setTitle(title);
     	
-    	//book.setAuthorId(0);
-    	
+    	book.setAuthorId(idAuthor);
     	book.setDescription(description);
     	book.setEditor(editor);
     	book.setPrice(price);
@@ -136,5 +136,6 @@ public class EcommerceManager {
     	} finally {
         	em.close();    		
     	}
+    	return book;
     }
 }

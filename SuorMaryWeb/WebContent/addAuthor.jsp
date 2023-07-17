@@ -14,7 +14,7 @@
 		  <label for="surnmae">Surname:</label><br>
 		  <input type="text" name="surname" required><br><br>
 		  <label for="description">Description:</label><br>
-		  <input type="text" name="description"><br><br>
+		  <textarea name="description"></textarea><br><br>
 		  <input type="submit" value="Add">		
 	</form>
 	<%session.setAttribute("form", "author");%>

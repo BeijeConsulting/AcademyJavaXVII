@@ -13,7 +13,22 @@
 <body>
 
 <%
+String authorError = (String) session.getAttribute("AuthorError");
+if (authorError != null) {
+	%>
+	<h2 style="color:red; text-align: center"><%= authorError %></h2>
+	<%
+	session.removeAttribute("AuthorError");
+}
+String bookError = (String) session.getAttribute("BookError");
+if (bookError != null) {
+	%>
+	<h2 style="color:red; text-align: center"><%= bookError %></h2>
+	<%
+	session.removeAttribute("BookError");
+}
 List<Book> books = (ArrayList<Book>)(session.getAttribute("allBooks"));
+
 %>
 	<div style="width:100%">
 	<div style="width:62%; float:left">
@@ -47,8 +62,9 @@ List<Book> books = (ArrayList<Book>)(session.getAttribute("allBooks"));
 	            <td><%=books.get(i).getDescription()%></td>
 	            <td><%=books.get(i).getAuthorId() %></td>
 	            <td><%=books.get(i).getEditor()%></td>
-	            <td><%=books.get(i).getPrice()%></td>
-	            <td><%=books.get(i).getQuantity()%></td>
+	            <td ><%=books.get(i).getPrice()%></td>
+	            <td ><%=books.get(i).getQuantity()%></td>
+	            <td><a href="updatepage.jsp" ><button value="<%=books.get(i).getId() %>">E</button></a></td>
 		    </tr>
 		<%	}	
 	}%>	</tbody>
@@ -85,7 +101,7 @@ if (authors == null) {
 				<td><%=authors.get(i).getId() %></td>
 	            <td><%=authors.get(i).getSurname() %></td>
 	            <td><%=authors.get(i).getName()%></td>
-	            <td><%=authors.get(i).getDescription()%></td>
+	            <td ><%=authors.get(i).getDescription()%></td>
 		    </tr>
 		<%	}
 			
