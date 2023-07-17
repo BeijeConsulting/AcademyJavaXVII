@@ -43,14 +43,14 @@ public class OrderUtils {
 			order.setAmount(amount);
 			em.persist(order);
 			em.flush();
-			transaction.commit();
+			
 			
 			
 			int idOrder = order.getId();
 			
 			System.out.println("Ordine inserito, inizio gli item");
-			insertOrderItems(idOrder, books, em);
-			
+			insertOrderItems(idOrder, books, em, transaction);
+			transaction.commit();
 		} catch(Exception e) {
 			if(transaction != null) {
 				transaction.rollback();
@@ -61,12 +61,8 @@ public class OrderUtils {
 		}
 	}
 	
-	public static void insertOrderItems(int orderId, Map<Book,Integer> books, EntityManager em) {
-		EntityTransaction transaction = null;
-		try {
-			transaction = em.getTransaction();
+	public static void insertOrderItems(int orderId, Map<Book,Integer> books, EntityManager em, EntityTransaction transaction) throws Exception {
 
-			transaction.begin();
 			System.out.println("Item iniziati");
 			OrderItem om = null;
 			Book book = null;
@@ -86,18 +82,7 @@ public class OrderUtils {
 				em.persist(book);
 			}
 			System.out.println("Item finiti");
-			transaction.commit();
-			System.out.println("Item committati");
-		} catch(Exception e) {
-			if(transaction != null) {
-				transaction.rollback();
-				deleteOrder(orderId);
-				e.printStackTrace();
-			}
-		}finally {
-			em.close();
-		}
-		
+
 	}
 	
 	public static void deleteOrder(int idOrder) {

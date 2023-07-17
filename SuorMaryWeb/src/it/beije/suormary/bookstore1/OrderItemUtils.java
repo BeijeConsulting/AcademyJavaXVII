@@ -33,5 +33,4 @@ public class OrderItemUtils {
 		}
 		return loi;
 	}
-	}
 }
