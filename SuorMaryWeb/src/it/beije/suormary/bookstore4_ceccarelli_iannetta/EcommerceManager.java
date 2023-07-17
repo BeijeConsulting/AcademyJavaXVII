@@ -11,6 +11,7 @@ import javax.persistence.Query;
 import javax.transaction.Transaction;
 
 
+
 public class EcommerceManager {
 
     private EntityManager em;
@@ -137,5 +138,25 @@ public class EcommerceManager {
         	em.close();    		
     	}
     	return book;
+    }
+
+    public void updateBook(int bookId, double price, int quantity) {
+    	em = JPAEntityFactory.openEntity();
+    	EntityTransaction transaction = em.getTransaction();
+    	transaction.begin();
+    	
+    	Book book = em.find(Book.class, bookId);
+   
+    	book.setPrice(price);
+    	book.setQuantity(quantity);
+    	
+    	try {
+    		em.persist(book);
+    		transaction.commit();
+    	} catch (Exception e) {
+    		System.out.println("Non va bene");
+    	} finally {
+        	em.close();    		
+    	}
     }
 }

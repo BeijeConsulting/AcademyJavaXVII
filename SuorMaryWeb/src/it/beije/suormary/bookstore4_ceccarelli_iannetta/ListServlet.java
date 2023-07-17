@@ -66,7 +66,7 @@ public class ListServlet extends HttpServlet {
 			String title = request.getParameter("title");
 			String description = request.getParameter("description");
 			int idAuthor = Integer.parseInt(request.getParameter("author"));
-			System.out.println("ID AUTORE" + idAuthor);
+			System.out.println("ID AUTORE" + idAuthor); 
 			String editor = request.getParameter("editor");
 			double price = Double.parseDouble(request.getParameter("price"));
 			int quantity = Integer.parseInt(request.getParameter("quantity"));
@@ -74,6 +74,12 @@ public class ListServlet extends HttpServlet {
 			if(book == null) {
 				session.setAttribute("BookError", "Book already exists");
 			}
+		}
+		else if (form.equals("updatebook")) {
+			double price = Double.parseDouble(request.getParameter("price"));
+			int quantity = Integer.parseInt(request.getParameter("quantity"));
+			int bookId = ((Book) session.getAttribute("book")).getId();
+			em.updateBook(bookId, price, quantity);
 		}
 		
 		response.sendRedirect("./listservlet");

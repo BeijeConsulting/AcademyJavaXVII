@@ -15,31 +15,30 @@
 
 <% Book book = (Book) session.getAttribute("book");%>
 
-<div style="width:100%">
-	<table border="1">
-		<thead>
-	        <tr>
-	            <th>Title</th>        
-	            <th>Description</th>
-	            <th>Author ID</th>
-	            <th>Editor</th>
-	            <th>Price</th>
-	            <th>Quantity</th>
-	        </tr>
-	    </thead>
-	    <tr>
-            <td><%=book.getTitle() %></td>            
-            <td><%=book.getDescription()%></td>
-            <td><%=book.getAuthorId() %></td>
-            <td><%=book.getEditor()%></td>
-            <td contenteditable="true" name="price"><%=book.getPrice()%></td>
-            <td contenteditable="true"><%=book.getQuantity()%></td>
-	    </tr>
-	    
-	</table>
+<div>
+	<form action="./listservlet" name="book" method="POST">
+		  <label for="title">Title:</label><br>
+		  <input type="text" name="title" readonly><%=book.getTitle() %><br><br>
+		  
+		  <label for="description">Description:</label><br>
+		  <textarea name="description" readonly><%=book.getDescription()%></textarea><br><br>
+		  
+		  <label for="author">Author:</label><br>
+		  <input type="text" name="author" readonly><%=book.getAuthorId() %><br><br>
+	
+		  <label for="editor">Editor:</label><br>
+		  <input type="text" name="editor" readonly><%=book.getEditor()%><br><br>
+		  
+		  <label for="price">Price:</label><br>
+		  <input type="number" step="0.01" name="price" placeholder="00.00" min="0.00" value="<%=book.getPrice()%>"><br><br>
+		  
+		  <label for="quantity">Quantity:</label><br>
+		  <input type="number" name="quantity" min="1" value="<%=book.getQuantity()%>"><br><br>
+		  
+		  <input type="submit" value="Save">		
+	</form>
+	<br>
+	<%session.setAttribute("form", "updatebook");%>
 </div>
-
-<% book.setPrice();
-%>
 </body>
 </html>
