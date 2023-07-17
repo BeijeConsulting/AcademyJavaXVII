@@ -24,14 +24,15 @@ public class Payment extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		if(request.getParameter("order")!=null){
 		HttpSession session = request.getSession();
+		String address = request.getParameter("sAddress");
 		int orderId = (int) session.getAttribute("orderId");
-		BookStoreUtility.payment(orderId,"a");
+		
+		BookStoreUtility.payment(orderId,address);
+		
 		session.setAttribute("ordinePagato", "Ordine pagato con successo");
 		response.sendRedirect("welcome.jsp");
-		}
+	
 	}
 
 	/**

@@ -23,10 +23,17 @@ public class RecapOrder extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { 
 		HttpSession session = request.getSession();
-		List<Book> booksOrder = (List) session.getAttribute("booksOrder");
-		int orderId = (int) session.getAttribute("orderId");
-		//System.out.println(booksOrder.size());
-		BookStoreUtility.createOrderItems(booksOrder,orderId);
+		if(request.getParameter("order")==null){
+			List<Book> booksOrder = (List) session.getAttribute("booksOrder");
+			int orderId = (int) session.getAttribute("orderId");
+			//System.out.println(booksOrder.size());
+			BookStoreUtility.createOrderItems(booksOrder,orderId);
+		} else {
+			String orId = request.getParameter("order");
+			int orderId= Integer.parseInt(orId);
+			session.setAttribute("orderId", orderId);
+		}
+		
 		response.sendRedirect("recap.jsp");
 	}
 
