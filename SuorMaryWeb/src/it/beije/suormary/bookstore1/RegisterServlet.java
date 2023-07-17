@@ -26,7 +26,7 @@ public class RegisterServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("./register.jsp").forward(request, response);
+		request.getRequestDispatcher("./registration.jsp").forward(request, response);
 	}
 
 	/**
