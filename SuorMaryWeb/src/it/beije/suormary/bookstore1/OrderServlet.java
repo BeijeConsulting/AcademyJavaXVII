@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore1;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -28,7 +29,9 @@ public class OrderServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		List<Order> oi = OrderUtils.getOrders(UserUtils.getUserId((String)(request.getSession().getAttribute("email"))));
+		request.getSession().setAttribute("orders", oi);
+		request.getRequestDispatcher("./orders.jsp").forward(request, response);
 	}
 
 	/**
