@@ -71,7 +71,7 @@ public class OrderUtils {
 				om.setBookId(entry.getKey().getId());
 				om.setOrderId(orderId);
 				om.setPrice(entry.getKey().getPrice());
-				om.setQuantity(entry.getKey().getQuantity());
+				om.setQuantity(entry.getValue());
 				em.persist(om);
 				
 				Query query = em.createQuery("SELECT b FROM Book as b WHERE b.id = :id");
