@@ -64,7 +64,8 @@ List<Book> books = (ArrayList<Book>)(session.getAttribute("allBooks"));
 	            <td><%=books.get(i).getEditor()%></td>
 	            <td ><%=books.get(i).getPrice()%></td>
 	            <td ><%=books.get(i).getQuantity()%></td>
-	            <td><a href="updatepage.jsp" ><button value="<%=books.get(i).getId() %>">E</button></a></td>
+	            <%session.setAttribute("book", books.get(i));%>
+	            <td><a href="updatepage.jsp" ><button>E</button></a></td>
 		    </tr>
 		<%	}	
 	}%>	</tbody>
