@@ -13,7 +13,7 @@
 	<ul>
 		<li style="display: inline; margin-right:30px;"><a href="./ShopServlet">Shop</a></li>
 		<li style="display: inline; margin-right:30px;"><a href="./CartServlet">Cart</a></li>
-		<li style="display: inline; margin-right:30px;"><a href="#">Orders</a></li>
+		<li style="display: inline; margin-right:30px;"><a href="./OrderServlet">Orders</a></li>
 		<li style="display: inline;"><a href="./LogoutServlet">Logout</a></li>
 	</ul>
 	<hr/>
