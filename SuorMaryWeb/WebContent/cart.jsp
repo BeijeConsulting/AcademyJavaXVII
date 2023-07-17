@@ -25,7 +25,7 @@
 	<div style="border: 1px solid; margin-bottom: 10px; padding: 5px;">
 		<h2><%=entry.getKey().getTitle()%></h2>
 		<h3>di <%=entry.getKey().getAuthor().getName()%> <%=entry.getKey().getAuthor().getSurname()%></h3>
-		<p><%=entry.getKey().getDescription() %></p>
+		<p><%=(entry.getKey().getDescription() != null)? entry.getKey().getDescription() : ""%></p>
 		<p><%=entry.getKey().getEditor() %></p>
 		<p>Qty: <%=entry.getValue() %></p>
 		<form method="POST" action="./ShopServlet">
