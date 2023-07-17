@@ -220,4 +220,18 @@ public class BookStoreUtility {
     		   entityManager.close();
     	   }
        }
+       public static Author getAuthorById(int id) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   Author author = null;
+    	   try {
+    		   Query query = entityManager.createQuery("SELECT a FROM Author as a WHERE a.id = :id");
+    		   query.setParameter("id", id);
+    		    author = (Author) query.getSingleResult();
+    	   }catch(Exception e) {
+    		   e.printStackTrace();
+    	   } finally {
+    		   entityManager.close();
+    	   }
+    	   return author;
+       }
 }

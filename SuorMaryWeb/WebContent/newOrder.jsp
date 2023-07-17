@@ -4,16 +4,18 @@
 <%@page import="it.beije.suormary.bookstore3.Book"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="it.beije.suormary.bookstore3.Author"%>
+<%@page import="it.beije.suormary.bookstore3.BookStoreUtility"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>Ordine</title>
 </head>
 <body>
 <%@ include file="header.jsp" %>
 <%
-//HttpSession currSession = request.getSession();
 List<Book> books = (List) session.getAttribute("books");
 List<Book> booksOrder = (List)session.getAttribute("booksOrder");
 %>
@@ -29,22 +31,37 @@ if (ErrorQuantity != null) {
 %>
 <%
  for(Book b : books){
+	 Author author = BookStoreUtility.getAuthorById(b.getAuthorId());
 	 %>
-   <h2><%= b.getTitle() %></h2>
-   <h5><%= "Quantità disponibile : " + (b.getQuantity()) %></h5>
-
-   <form action="quantityBook" method="get">
+	  <div class="card">
+	  <h5><%= "Quantità disponibile : " + (b.getQuantity()) %></h5>
+            <h3><%= "Titolo : " + b.getTitle() %></h3>
+            <h4><%="Autore : " +  author.getName()%></h4>
+               <%
+              if(b.getDescription() != null){
+            	  
+             %>
+             <span class="desc">Descrizione : </span>
+             <span><%= b.getDescription() %></span>
+             <%
+              }
+             %>
+            <div class="buttons">
+           <form action="quantityBook" method="get">
    <input type="hidden" name="bookId" value= "<%= b.getId() %>" />
    <label>Inserisci quantità : </label>
    <input type="number" name="quantity" />
    <input type="submit" value="inserisci" />
    </form>
-   <form action="addBookToOrder" action="GET">
+            <form action="addBookToOrder" action="GET">
    <input type="hidden" name="bookOrderId" value="<%=b.getId() %>" />
    <input type="hidden" name="quantity" value = "<%= session.getAttribute("quantity") %>" />
    <input type="submit" value="Aggiungi all`ordine" />
 
    </form>
+            </div>
+        </div>
+
 	 
 <% 
  }
