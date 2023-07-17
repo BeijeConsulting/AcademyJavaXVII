@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 public class BookUtils {
@@ -65,6 +66,33 @@ public class BookUtils {
 		}
 		return books;
 		
+	}
+	
+
+	
+	public static void addNewBook(String title, String description, String editor, double price, int quantity, Author a){
+		EntityManager em = null;
+		Book book = null;
+		try {
+			em = JPAManagerFactory.getEntityManager();
+			EntityTransaction transaction = em.getTransaction();
+			transaction.begin();
+			
+			book=new Book(title, description, editor, price, quantity, a);
+			
+			
+			
+			em.persist(book);
+			
+			transaction.commit();
+			
+			book.setAuthor(a);			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			em.close();
+		}
+			
 	}
 	
 }

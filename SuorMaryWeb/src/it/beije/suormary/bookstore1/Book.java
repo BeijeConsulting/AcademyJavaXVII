@@ -56,6 +56,19 @@ public class Book {
 	@Transient
 	private Author author;
 	
+	public Book() {
+		
+	}
+	
+	public Book(String title, String description, String editor, double price, int quantity, Author a) {
+		this.title=title;
+		this.description=description;
+		this.editor=editor;
+		this.price=price;
+		this.quantity=quantity;
+		this.author=a;	
+	}
+	
 	public int getId() {
 		return id;
 	}
