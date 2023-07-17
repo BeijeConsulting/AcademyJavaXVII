@@ -6,49 +6,71 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Your ordes</title>
+<title>Your orders</title>
+	<style>
+        body {
+            font-family: "Roboto", sans-serif;
+        }
+         .container {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            flex-wrap: wrap; 
+            gap: 20px;
+            height: 100vh;
+            padding: 16px;
+        }
+        .orders {
+        	width: 300px;
+        	border: 1px solid #ccc; 
+        	padding: 10px; 
+        	background-color: #fafafa;
+        	border-radius: 14px;
+        }
+        
+        .title {
+        	text-align: center; 
+        	color: #333;
+        }
+        .paragraph {
+        	text-align: center;
+        }
+        .button {
+        background-color: #2c5e29;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        }
+    </style>
+
 </head>
 <body>
 
 <% List<Order> orders = (List<Order>) request.getAttribute("orders");%> 
 
 <% if (orders != null && !orders.isEmpty()) { %>
-    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+    <div class="container">
         <% for (Order order : orders) { %>
-             <div style="width: 300px; border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;">
-                <h2 style="text-align: center; color: #333;"><strong>Order id:</strong><%= order.getId() %></h2>
+             <div class= "orders">
+             
+                <h2 class="title"><strong>Order id:</strong><%= order.getId() %></h2>
                 <hr>
-                <p style="text-align: center"><strong>Amount:</strong> <%= order.getAmount()%></p>
-                <p style="text-align: center"><strong>Status:</strong> <%= order.getStatus() %></p>
-                <p style="text-align: center"><strong>User_id:</strong> <%= order.getUserId() %></p>
-                
-               <% List<OrderItem> orderItems = order.getItems();%> 
-              <% if (orderItems != null && !orderItems.isEmpty()) { %>
-                     <div style = "background-color: #f9f9f9; padding: 20px; border-radius: 5px;">
-					  <h2>Books</h2>
-					
-					  <% for (OrderItem orderItem : orderItems) { %>
-					    <!-- Book List -->
-					    <div Style= "margin-top: 10px;padding: 10px;background-color: #fff;border: 1px solid #ccc;border-radius: 5px;">
-					      <p><strong>Book_id:</strong> <%= orderItem.getBookId()%></p>
-					      <p><strong>Price:</strong> <%= orderItem.getPrice() %></p>
-					      <p><strong>Quantity:</strong> <%= orderItem.getQuantity() %></p>
-					    </div>
-					  <% } %>
-					</div>
-						               
-                <% } else { %>
-                    <div style="text-align: center;">
-                        <p style="font-size: 18px; color: #555;">No order items found.</p>
-                    </div>
-                <% } %>
-              
+                <p class= "paragraph"><strong>Amount:</strong> <%= order.getAmount()%> $</p>
+                <p class= "paragraph"><strong>Status:</strong> <%= order.getStatus() %></p>
+                <p class= "paragraph"><strong>User_id:</strong> <%= order.getUserId() %></p>
+            	<form class= "paragraph" action="./bookstoreOrderDetails" method="get">
+                    <input type="hidden" name="id" value="<%= order.getId() %>">
+                    <button type="submit" class= "button">View Details</button>
+                </form>
+            
             </div>
         <% } %>
     </div>
 <% } else { %>
-    <div style="text-align: center;">
-        <p style="font-size: 18px; color: #555;">No order found.</p>
+    <div class="title">
+        <p>No order found.</p>
     </div>
 <% } %>
 

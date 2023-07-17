@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore2.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import it.beije.suormary.bookstore2.model.Author;
 import it.beije.suormary.bookstore2.model.Book;
 import it.beije.suormary.bookstore2.model.User;
 
@@ -38,6 +40,7 @@ public class WelcomeServlet extends HttpServlet {
 		HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
+        List<Author> authors = new ArrayList<>();
         System.out.println("user:" + user);
         System.out.println("cart:" + cart);
         if (user == null) {
@@ -45,7 +48,11 @@ public class WelcomeServlet extends HttpServlet {
             response.sendRedirect("bookstoreLogin.jsp");
         } else {
             List<Book> books = BookstoreUtility.readBooksFromDb();
+            for (Book book : books) {
+            	authors.add(BookstoreUtility.findAuthorFromId(book.getAuthorId()));
+            }
             request.setAttribute("books", books);
+            request.setAttribute("authors", authors);
          // chiama la jsp
             request.getRequestDispatcher("bookstoreWelcome.jsp").forward(request, response);
         }
