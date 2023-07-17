@@ -24,7 +24,7 @@
 	<div style="border: 1px solid; margin-bottom: 10px; padding: 5px;">
 		<h2><%=b.getTitle()%></h2>
 		<h3>di <%=b.getAuthor().getName()%> <%=b.getAuthor().getSurname()%></h3>
-		<p><%=b.getDescription() %></p>
+		<p><%=(b.getDescription() != null)? b.getDescription() : ""%></p>
 		<p><%=b.getEditor() %></p>
 		<form method="POST" action="./ShopServlet">
 			<input type="hidden" value="<%=b.getId() %>" name="bookId" />
