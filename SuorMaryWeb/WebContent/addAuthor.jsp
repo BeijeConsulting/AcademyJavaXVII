@@ -7,7 +7,17 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>NEW AUTHOR</h1>
+<div>
+	<form action="./listservlet" method="POST">
+		  <label for="name">Name:</label><br>
+		  <input type="text" name="name" required><br>
+		  <label for="surnmae">Surname:</label><br>
+		  <input type="text" name="surname" required>
+		  <label for="description">Description:</label><br>
+		  <input type="text" name="surname" required>
+		  <input type="submit" value="Login">		
+	</form>
+</div>
 
 </body>
 </html>

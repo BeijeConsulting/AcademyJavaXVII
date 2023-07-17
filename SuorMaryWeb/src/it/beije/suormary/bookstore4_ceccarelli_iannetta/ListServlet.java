@@ -32,6 +32,7 @@ public class ListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("ListServlet doGet");
 		
 		HttpSession session = request.getSession();
 		books = em.listBook();
@@ -46,7 +47,9 @@ public class ListServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("ListServlet doPost");
 		
+		HttpSession session = request.getSession();	
 		
 		
 		doGet(request, response);
