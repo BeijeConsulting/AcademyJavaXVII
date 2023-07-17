@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import it.beije.suormary.bookstore2.model.Author;
 import it.beije.suormary.bookstore2.model.Book;
 
 /**
@@ -30,8 +31,10 @@ public class BookDetailsServlet extends HttpServlet {
 
  
         Book book = BookstoreUtility.findBook(bookId);
+        Author author = BookstoreUtility.findAuthorFromId(book.getAuthorId());
         System.out.println("book: " + book);
         request.setAttribute("book", book);
+        request.setAttribute("author", author);
 
         // Forward the request to the JSP page for displaying book details
         request.getRequestDispatcher("bookstoreBookDetails.jsp").forward(request, response);
