@@ -8,7 +8,7 @@
 </head>
 <body>
 <div>
-	<form action="./listservlet" method="POST">
+	<form action="./listservlet" name="author" method="POST">
 		  <label for="name">Name:</label><br>
 		  <input type="text" name="name" required><br><br>
 		  <label for="surnmae">Surname:</label><br>
@@ -17,6 +17,7 @@
 		  <input type="text" name="description"><br><br>
 		  <input type="submit" value="Add">		
 	</form>
+	<%session.setAttribute("form", "author");%>
 </div>
 
 </body>

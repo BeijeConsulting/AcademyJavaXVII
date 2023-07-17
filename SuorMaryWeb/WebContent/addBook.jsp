@@ -12,7 +12,7 @@
 <body>
 <h1>NEW BOOK</h1>
 <div>
-	<form action="./listservlet" method="POST">
+	<form action="./listservlet" name="book" method="POST">
 		  <label for="title">Title:</label><br>
 		  <input type="text" name="title" required><br><br>
 		  <label for="description">Description:</label><br>
@@ -37,6 +37,7 @@
 		  <input type="submit" value="Add">		
 	</form>
 	<br>
+	<%session.setAttribute("form", "book");%>
 </div>
 
 </body>

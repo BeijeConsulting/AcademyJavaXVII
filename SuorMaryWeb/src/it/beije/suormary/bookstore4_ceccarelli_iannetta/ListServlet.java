@@ -51,6 +51,14 @@ public class ListServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();	
 		
+		String form = (String) session.getAttribute("form");
+		
+		if (form.equals("author")) {
+			
+		}
+		else if (form.equals("book")) {
+			
+		}
 		
 		
 		

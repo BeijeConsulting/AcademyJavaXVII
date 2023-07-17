@@ -88,6 +88,6 @@ public class EcommerceManager {
 	}
         
     public void addAuthor(String name, String surname, String description) {
-    	
+    	Author author
     }
 }
