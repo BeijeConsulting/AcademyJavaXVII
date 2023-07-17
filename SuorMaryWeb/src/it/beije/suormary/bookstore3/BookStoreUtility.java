@@ -208,7 +208,10 @@ public class BookStoreUtility {
    	       for(OrderItem orderIt : order.getItems()) {
    	    	   amount += orderIt.getPrice();
    	       } 
-    	   order.setAmount(amount);
+   	       Query query = entityManager.createQuery("SELECT o FROM Order as o WHERE o.id = :id");
+   	       query.setParameter("id", order.getId());
+   	       Order orderr = (Order) query.getSingleResult();
+    	   orderr.setAmount(amount);
     	   transaction.commit();
  		   
     	   } catch(Exception e) {
