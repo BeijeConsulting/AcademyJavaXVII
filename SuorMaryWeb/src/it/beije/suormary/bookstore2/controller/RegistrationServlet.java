@@ -34,9 +34,9 @@ public class RegistrationServlet extends HttpServlet {
 		System.out.println("bookstoreRegistration doGet");
 		
 		HttpSession session = request.getSession();
-		String email = (String) session.getAttribute("email");
+		User user = (User) session.getAttribute("user");
 
-		if (email != null) { // utente loggato
+		if (user != null) { // utente loggato
 			response.sendRedirect("bookstoreWelcome");
 		} else { // non loggato
 			response.sendRedirect("bookstoreRegistration.jsp");

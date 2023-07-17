@@ -26,9 +26,9 @@ public class LoginServlet extends HttpServlet {
 		System.out.println("bookstoreLogin doGet");
 
 		HttpSession session = request.getSession();
-		String email = (String) session.getAttribute("email");
-
-		if (email != null) { // utente loggato
+		User user = (User) session.getAttribute("user");
+		System.out.println("user " + user);
+		if (user != null) { // utente loggato
 			response.sendRedirect("bookstoreWelcome");
 		} else { // non loggato
 			response.sendRedirect("bookstoreLogin.jsp");

@@ -61,28 +61,28 @@ public class User {
 		return email;
 	}
 	public void setEmail(String email) {
-		this.email = email;
+		this.email = email.toLowerCase().trim();
 	}
 	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.trim();
 	}
 	
 	public String getSurname() {
 		return surname;
 	}
 	public void setSurname(String surname) {
-		this.surname = surname;
+		this.surname = surname.trim();
 	}
 	
 	public String getPassword() {
 		return password;
 	}
 	public void setPassword(String password) {
-		this.password = password;
+		this.password = password.trim();
 	}
 	
 	public LocalDateTime getCreationDate() {

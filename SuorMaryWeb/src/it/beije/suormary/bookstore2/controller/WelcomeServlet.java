@@ -2,6 +2,7 @@ package it.beije.suormary.bookstore2.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import it.beije.suormary.bookstore2.model.Book;
+import it.beije.suormary.bookstore2.model.User;
 
 /**
  * Servlet implementation class WelcomeServlet
@@ -32,25 +34,27 @@ public class WelcomeServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("bookstoreWelcome doGet");
-
-		List<Book> books = BookstoreUtility.readBooksFromDb();
-		request.setAttribute("books", books);
-		// chiama la jsp
-		request.getRequestDispatcher("bookstoreWelcome.jsp").forward(request, response);
 		
-//		response.sendRedirect("bookstoreWelcome.jsp");
-
+		HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
+        System.out.println("user:" + user);
+        System.out.println("cart:" + cart);
+        if (user == null) {
+            // Utente non autenticato, reindirizza alla pagina di login
+            response.sendRedirect("bookstoreLogin.jsp");
+        } else {
+            List<Book> books = BookstoreUtility.readBooksFromDb();
+            request.setAttribute("books", books);
+         // chiama la jsp
+            request.getRequestDispatcher("bookstoreWelcome.jsp").forward(request, response);
+        }
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//		List<Book> books = BookstoreUtility.readBooksFromDb();
-//		request.setAttribute("books", books);
-//		// chiama la jsp
-//		request.getRequestDispatcher("bookstoreWelcome.jsp").forward(request, response);
-
 		//doGet(request, response);
 	}
 

@@ -5,42 +5,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>WELCOME</title>
+    <meta charset="ISO-8859-1">
+    <title>Welcome</title>
+    <style>
+        body {
+            font-family: "Roboto", sans-serif;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            height: 100vh;
+            padding: 16px;
+        }
+
+        .welcome-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin: 0;
+        }
+
+        .button-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .button-container button {
+            background-color: #04AA6D;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+    </style>
 </head>
 <body>
-
-
-<p>
+<jsp:useBean id="user" class="it.beije.suormary.bookstore2.model.User" scope="session"></jsp:useBean>
 <%
-/*
-String email = (String) session.getAttribute("email");
-if (email == null) response.sendRedirect("bookstoreLogin");
-*/
-String welcome = "BUONGIORNO";
-
-/*
-User user = (User) session.getAttribute("user");
-if (user == null) {
-	user = new User();
-	session.setAttribute("user", user);
-}
-*/
+if (user == null) response.sendRedirect("bookstoreLogin.jsp");
 %>
 
-<jsp:useBean id="user" class="it.beije.suormary.bookstore2.model.User" scope="session"></jsp:useBean>
-<%= welcome %> 
-<jsp:getProperty property="name" name="user"/> 
-<jsp:getProperty property="surname" name="user"/> !!
-</p>
+<div class="container">
+    <div class="welcome-container">
+        <h1>Welcome, <%= user.getName() %> <%= user.getSurname() %>!</h1>
+        <div class="button-container">
+            <form action="./bookstoreOrderList" method="POST">
+                <button type="submit">View Order List</button>
+            </form>
+            <form action="./cart">
+                <button type="submit">Cart</button>
+            </form>
+            <form action="./logout">
+                <button type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
 
-<form style="text-align: center" action="./bookstoreOrderList">
-	<button type="submit" style="background-color: #2c5e29; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">View Order List</button>
-</form>
+    <% List<Book> books = (List<Book>) request.getAttribute("books");%>
 
-<% List<Book> books = (List<Book>) request.getAttribute("books");%> 
-
-<% if (books != null && !books.isEmpty()) { %>
+	<% if (books != null && !books.isEmpty()) { %>
     <div style="display: flex; flex-wrap: wrap; gap: 20px;">
         <% for (Book book : books) { %>
              <div style="width: 300px; border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;">
@@ -56,13 +91,10 @@ if (user == null) {
         <% } %>
     </div>
 <% } else { %>
-    <div style="text-align: center;">
-        <p style="font-size: 18px; color: #555;">No book found.</p>
-    </div>
-<% } %>
-
-
-
-
+        <div style="text-align: center;">
+            <p style="font-size: 18px; color: #555;">No book found.</p>
+        </div>
+    <% } %>
+</div>
 </body>
 </html>
