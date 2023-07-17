@@ -1,15 +1,13 @@
 package it.beije.suormary.bookstore4_ceccarelli_iannetta;
 
-import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.Query;
-
-import org.hibernate.internal.build.AllowSysOut;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 
 public class EcommerceManager {
@@ -19,19 +17,23 @@ public class EcommerceManager {
     
     public User isUser(String email, String password) {
     	em = JPAEntityFactory.openEntity();
-        transaction = em.getTransaction();
-        transaction.begin();
-        System.out.println("1");
+       //transaction = em.getTransaction();
+        //transaction.begin();
+        
+        //Query query = em.createQuery("SELECT u from User as u");
     	Query query = em.createQuery("SELECT u from User as u WHERE u.email = :email AND password = :password");
-    	System.out.println("2");
+
     	query.setParameter("email", email);
     	query.setParameter("password", password);
-    	System.out.println("3");
+
     	
-    	List <User> users = query.getResultList();
-    	for (User u : users) System.out.println(u);
+    	List<User> users = query.getResultList();
+    	
+    	//for (User u : users) System.out.println(u);
     	if (users.size() == 0) return null;
-    	System.out.println("4");    	
+    	
+    	//transaction.commit();
+    	em.close();
     	return users.get(0);
     }
     

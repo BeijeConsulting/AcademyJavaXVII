@@ -16,6 +16,7 @@ public class JPAEntityFactory {
 			
 			entityManagerFactory = Persistence.createEntityManagerFactory("SuorMaryWeb");
 			//entityManager = entityManagerFactory.createEntityManager();
+			System.out.println("creato");
 		}
 		return entityManagerFactory.createEntityManager();
 	}
