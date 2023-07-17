@@ -38,7 +38,7 @@ List<Book> books = (List) currSession.getAttribute("books");
 <% 
  }
 %>
- 
+ </form>
  
 
 </body>

@@ -44,8 +44,8 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email=request.getParameter("email");
-		String password = request.getParameter("password");
-		User user = BookStoreUtility.loginUser(email, password);
+		//String password = request.getParameter("password");
+		User user = BookStoreUtility.loginUser(email);
 		HttpSession session = request.getSession();
 		if(user != null) {
 		    session.setAttribute("email", email);

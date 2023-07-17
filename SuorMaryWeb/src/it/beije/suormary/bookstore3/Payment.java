@@ -11,23 +11,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class RecapOrder
+ * Servlet implementation class Payment
  */
-@WebServlet("/recapOrder")
-public class RecapOrder extends HttpServlet {
+@WebServlet("/payment")
+public class Payment extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-
+      
+   
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		List<Book> booksOrder = (List) session.getAttribute("booksOrder");
 		Order order =(Order) session.getAttribute("order");
-		System.out.println("Order  : " + order);
-		System.out.println(booksOrder.size());
-		BookStoreUtility.createOrderItems(booksOrder,order);
+		BookStoreUtility.payment(order);
 		response.sendRedirect("recap.jsp");
 	}
 

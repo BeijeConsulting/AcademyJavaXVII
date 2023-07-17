@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>New Order</title>
 </head>
 <body>
 <%@ include file="header.jsp" %>
