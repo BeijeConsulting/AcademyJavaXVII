@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 public class UserUtils {
@@ -27,6 +28,27 @@ public class UserUtils {
 		return user;
 	}
 	
+	public static boolean userExists(String email) {
+		EntityManager entityManager = null;
+		User user = null;
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();
+			Query query = entityManager.createQuery("SELECT u FROM User as u WHERE u.email = :email");
+			query.setParameter("email", email);
+			user = (User) query.getSingleResult();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			entityManager.close();
+		}
+		if(user == null) {
+			return false;
+		}else {
+			return true;
+		}
+	}
+	
 	public static int getUserId(String email) {
 		
 		EntityManager entityManager = null;
@@ -45,6 +67,28 @@ public class UserUtils {
 		}
 		return id;
 		
+	}
+	
+	public static void createUser(String email, String password, String name, String surname) {
+		EntityManager entityManager = null;
+		User user = null;
+		try {
+			entityManager = JPAManagerFactory.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			
+			transaction.begin();
+			
+			user = new User(email,password,name,surname);
+			
+			entityManager.persist(user);
+			
+			transaction.commit();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			entityManager.close();
+		}
 	}
 	
 }
