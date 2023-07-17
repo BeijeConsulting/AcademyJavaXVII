@@ -119,6 +119,23 @@ public class BookStoreUtility {
     	   }
     	   return book;
        }
+       public static Book getBookById(int id) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   Book book = null;
+    	   
+    	   try {
+    		   Query query = entityManager.createQuery("SELECT b FROM Book as b WHERE b.id = :id ");
+    		   query.setParameter("id", id);
+    		   book = (Book) query.getSingleResult();
+    		    		   
+    	   } catch(Exception e) {
+    		   
+    	   } finally {
+    		   entityManager.close();
+    		   
+    	   }
+    	   return book;
+       }
        public static void updateBook(String title, String description, String editor, String priceString, String quantityString, String authorIdStr,String bookIdStr) {
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
     	   int authorId = Integer.parseInt(authorIdStr);
@@ -253,5 +270,24 @@ public class BookStoreUtility {
     	   }  finally {
 			   entityManager.close();
 		   }
+       }
+       public static void deleteOrderItem(String idStr) {
+    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+    	   int id = Integer.parseInt(idStr);
+    	   try {
+    		   Query query = entityManager.createQuery("SELECT or FROM Order as or WHERE or.id = :id");
+    		   query.setParameter("id", id);
+    		   OrderItem orderItem = (OrderItem) query.getSingleResult();
+    		   EntityTransaction transaction = entityManager.getTransaction();
+    		   transaction.begin();
+    		   entityManager.remove(orderItem);
+    		   transaction.commit();
+    				   
+    	   } catch(Exception e) {
+    		 e.printStackTrace();
+    	   }  finally {
+			   entityManager.close();
+		   }
+    	   
        }
 }

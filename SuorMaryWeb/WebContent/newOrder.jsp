@@ -72,5 +72,8 @@ if (ErrorQuantity != null) {
   <form action="deleteOrder" action="GET">
    <input type="submit" value="Cancella Ordine" class="button" />
    </form>
+    <form action="updateOrder" action="GET">
+   <input type="submit" value="Modifica Ordine" class="button" />
+   </form>
 </body>
 </html>

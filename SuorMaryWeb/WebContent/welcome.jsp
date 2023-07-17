@@ -43,6 +43,10 @@ List<Book> books = (List) currSession.getAttribute("books");
              <%
               }
              %>
+             <%
+             if(session.getAttribute("email") != null){
+            	 %> 
+             
             <div class="buttons">
                 <form action="updateBook" method="GET">
                     <input type="hidden" name="id" value="<%= b.getId() %>" />
@@ -53,6 +57,9 @@ List<Book> books = (List) currSession.getAttribute("books");
                     <input type="submit" value="Elimina libro" />
                 </form>
             </div>
+            <%
+    		}
+            %>
         </div>
     <% 
     }
