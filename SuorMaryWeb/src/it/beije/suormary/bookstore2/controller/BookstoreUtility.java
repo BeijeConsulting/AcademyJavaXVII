@@ -76,7 +76,7 @@ public class BookstoreUtility {
 	}
 	
 	
-	public static List<Order> readOrdersFromDb() {
+	public static List<Order> readOrdersFromDb(int userId) {
 
 		List<Order> orders = new ArrayList<>();
 		List<OrderItem> booksInOrder = new ArrayList<>();
@@ -88,7 +88,7 @@ public class BookstoreUtility {
 				entityManager = PersistenceManagerJPA.getEntityManager();
 				transaction = entityManager.getTransaction();
 				transaction.begin();
-				Query query = entityManager.createQuery("SELECT o FROM Order as o WHERE user_id = 2");
+				Query query = entityManager.createQuery("SELECT o FROM Order as o WHERE user_id = '" + userId + "'");
 				orders = query.getResultList();
 				System.out.println(orders);
 				for (Order o : orders) {

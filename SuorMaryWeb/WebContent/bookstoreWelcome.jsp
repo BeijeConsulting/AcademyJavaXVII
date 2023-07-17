@@ -61,7 +61,7 @@ if (user == null) response.sendRedirect("bookstoreLogin.jsp");
     <div class="welcome-container">
         <h1>Welcome, <%= user.getName() %> <%= user.getSurname() %>!</h1>
         <div class="button-container">
-            <form action="./bookstoreOrderList" method="POST">
+            <form action="./bookstoreOrderList" method="GET">
                 <button type="submit">View Order List</button>
             </form>
             <form action="./cart">
