@@ -14,22 +14,27 @@
 <div>
 	<form action="./listservlet" method="POST">
 		  <label for="title">Title:</label><br>
-		  <input type="text" name="title" required><br>
+		  <input type="text" name="title" required><br><br>
 		  <label for="description">Description:</label><br>
-		  <input type="description" name="description" id="id">
-		  <select id="author" required>
-		  <%List<Author> authors = (ArrayList<Author>)(session.getAttribute("allAuthors")); 
+		  <input type="text" name="description"><br><br>
+		  
+		  <label for="author">Author:</label><br>
+		  <select id="author" style="width:135pt;" required>
+		  <%
+		  List<Author> authors = (ArrayList<Author>)(session.getAttribute("allAuthors")); 
 		  for(int i=0;i<authors.size();i++){
 			 %> <option><%=authors.get(i).getSurname() %></option>
 		  <% }%>
 		  </select>
+		  <br><br>
+		  
 		  <label for="editor">Editor:</label><br>
-		  <input type="editor" name="editor" id="id">
-		  <label for="price">price:</label><br>
-		  <input type="price" name="price" id="id" required>
-		  <label for="quantity">quantity:</label><br>
-		  <input type="quantity" name="quantity" id="id" required>
-		  <input type="submit" value="Login">		
+		  <input type="text" name="editor"><br><br>
+		  <label for="price">Price:</label><br>
+		  <input type="number" name="price" placeholder="00.00" min="0.00" required><br><br>
+		  <label for="quantity">Quantity:</label><br>
+		  <input type="number" name="quantity" min="1" required><br><br>
+		  <input type="submit" value="Add">		
 	</form>
 	<br>
 </div>

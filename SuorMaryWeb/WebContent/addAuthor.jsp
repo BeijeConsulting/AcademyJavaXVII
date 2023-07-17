@@ -10,12 +10,12 @@
 <div>
 	<form action="./listservlet" method="POST">
 		  <label for="name">Name:</label><br>
-		  <input type="text" name="name" required><br>
+		  <input type="text" name="name" required><br><br>
 		  <label for="surnmae">Surname:</label><br>
-		  <input type="text" name="surname" required>
+		  <input type="text" name="surname" required><br><br>
 		  <label for="description">Description:</label><br>
-		  <input type="text" name="surname" required>
-		  <input type="submit" value="Login">		
+		  <input type="text" name="description"><br><br>
+		  <input type="submit" value="Add">		
 	</form>
 </div>
 

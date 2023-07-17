@@ -73,7 +73,6 @@ public class EcommerceManager {
     	return books;
     }
     
-    
     public List<Author> listAuthor(){
 	   	em = JPAEntityFactory.openEntity();
        //transaction = em.getTransaction();
@@ -87,5 +86,8 @@ public class EcommerceManager {
     	em.close();
     	return authors;
 	}
-    
+        
+    public void addAuthor(String name, String surname, String description) {
+    	
+    }
 }

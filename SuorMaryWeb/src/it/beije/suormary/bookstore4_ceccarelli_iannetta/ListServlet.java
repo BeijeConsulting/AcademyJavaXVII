@@ -52,6 +52,8 @@ public class ListServlet extends HttpServlet {
 		HttpSession session = request.getSession();	
 		
 		
+		
+		
 		doGet(request, response);
 	}
 	
