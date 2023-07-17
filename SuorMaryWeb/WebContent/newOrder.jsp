@@ -52,8 +52,6 @@ if (ErrorQuantity != null) {
   <form action="recapOrder" action="GET">
    <input type="submit" value="Recap Ordine" />
    </form>
-  <form action="deleteOrder" action="GET">
-   <input type="submit" value="Cancella Ordine" />
-   </form>
+  
 </body>
 </html>

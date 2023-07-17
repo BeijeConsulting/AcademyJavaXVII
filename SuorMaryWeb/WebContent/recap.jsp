@@ -12,9 +12,7 @@
     <title>Recap Order</title>
 </head>
 <body>
-<form action="payment" action="GET">
-   <input type="submit" value="Paga Ordine" />
-</form> 
+
     <% 
    		Order order =(Order) session.getAttribute("order");
         Order orderfound = BookStoreUtility.findOrder(order);
@@ -32,6 +30,15 @@
         Stato Ordine: <%= orderfound.getStatus() %><br/>
         Totale acquisto: <%= orderfound.getAmount() %> <br/>
     </h3>
+    <form action="deleteOrder" action="GET">
+   <input type="submit" value="Cancella Ordine" />
+   </form>
+<form action="updateOrder" action="GET">
+   <input type="submit" value="Modifica ordine" />
+</form> 
+   <form action="payment" action="GET">
+   <input type="submit" value="Paga Ordine" />
+</form> 
 
     
 </body>
