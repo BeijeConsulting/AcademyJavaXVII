@@ -51,6 +51,7 @@ public class Book {
 
 	@Column(name = "author_id")
 	private int authorId;
+	
 
 	
 	public int getId() {
@@ -108,8 +109,7 @@ public class Book {
 	public void setAuthorId(int authorId) {
 		this.authorId = authorId;
 	}
-	
-	
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)

@@ -1,3 +1,4 @@
+<%@page import="it.beije.suormary.controller.BookStoreUtility"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -9,16 +10,16 @@
 <body>
 
 <p>
-BUONGIORNO&nbsp;${loggedUser.fullName}&nbsp;!!<br/>
-<br/>
-Questi sono i libri che hai ordinato:<br/>
+<h1> WELCOME&nbsp;${loggedUser.name}!!</h1><br/>
 
-<%-- c:if test="${empty libri}">NESSUNO</c:if --%>
+<h2>Libri disponibili:</h2><br/>
+
 <c:choose>
-	<c:when test="${empty libri}">NESSUNO</c:when>
+	<c:when test="${empty books}"><h2>NESSUN LIBRO DISPONIBILE</h2></c:when>
 	<c:otherwise>
-		<c:forEach items="${libri}" var="libro">
-			${libro}<br/>
+		<c:forEach items="${books}" var="book">
+			<h3>Titolo:&nbsp;${book.title}</h3>
+			<h4>Descrizione:&nbsp;${book.description}</h4>
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
