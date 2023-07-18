@@ -1,6 +1,8 @@
 package it.beije.suormary.bookstore4_ceccarelli_iannetta;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -239,6 +241,19 @@ public class EcommerceManager {
      	return ;
     }
     
+//    public List<Book> itemToBook(List<OrderItem> orderItem){
+//    	HashMap<Book, Integer> book = null;
+//    	for(OrderItem oi : orderItem) {
+//    		if(book.containsKey(oi))
+//    	}
+//    	
+//    }
+//    
+//    
+//    public Book itemToBook(OrderItem oi) {
+//    	int idOrderItem = oi.getBookId();
+//    }
+//    
     
 }
 

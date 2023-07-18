@@ -3,6 +3,8 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="it.beije.suormary.bookstore4_ceccarelli_iannetta.Book"%>
+<%@ page import="it.beije.suormary.bookstore4_ceccarelli_iannetta.Order"%>
+<%@ page import="it.beije.suormary.bookstore4_ceccarelli_iannetta.OrderItem"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,14 +48,15 @@ if (books == null) {
 	            <td><%=books.get(i).getEditor()%></td>
 	            <td ><%=books.get(i).getPrice()%></td>
 	            <td ><%=books.get(i).getQuantity()%></td>
-	            <td><a href="./orderservlet?indexButton=<%=i%>" >+</a></td>
+	            <td><a href="./orderservlet?indexBook=<%=books.get(i).getId()%>" >+</a></td>
 	             <!--  <td><a href="updatebook.jsp?indexButton=<%=i%>" ><input type="button" name="indexButton" value="E"></a></td>-->
 		    </tr>
 		<%	}	
 	}%>	</tbody>
 	</table>
 	</div><%
-List<Book> cart = (ArrayList<Book>)(session.getAttribute("cartBooks"));
+Order basket = (Order)(session.getAttribute("basket"));
+	List<OrderItem> basketList = basket.getItems();
 %><div style="width:32%; float:right">
 	<h3 style="text-align: center">CART</h3>
 	<table border="1">
@@ -70,27 +73,27 @@ List<Book> cart = (ArrayList<Book>)(session.getAttribute("cartBooks"));
 	        
 	    </thead>
 	    <tbody><%
-if (cart == null) {
+if (basket == null) {
 	%>
 	<tr><td style="color:red">LISTA CARRELLO VUOTA</td></tr>
 	<%
 }else {%>
-		<%for(int i=0;i<cart.size();i++){
+		<%for(int i=0;i<basketList.size();i++){
 			%>
 			<tr>
-				<tr>
-	            <td><%=books.get(i).getTitle() %></td>            
-	            <td><%=books.get(i).getDescription()%></td>
-	            <td><%=books.get(i).getAuthorId() %></td>
-	            <td><%=books.get(i).getEditor()%></td>
-	            <td ><%=books.get(i).getPrice()%></td>
-	            <td ><%=books.get(i).getQuantity()%></td>
-	            <td><a href="./orderservlet?indexButton=<%=i%>" >Buy</a></td>
+	            <td><%=basketList.get(i).getBookId() %></td>            
+	            <td><%=basketList.get(i).getPrice()%></td>
+	            <td ><%=basketList.get(i).getQuantity()%></td>
 		    </tr>
 		<%}
 			
 	}%></tbody>
 	</table>
+	<!-- somma prezzi -->
+	<form action="./orderservlet" method="POST">
+	<input type="submit" value="Buy">
+	</form>
+	
 	</div>
 	</div>
 
