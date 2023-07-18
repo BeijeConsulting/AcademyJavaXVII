@@ -4,16 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class Cart {
 	
 	private Cart() {}
 	
-	public static Map<Integer,Integer> getCart(HttpServletRequest request){
-		Map<Integer,Integer> cart = (Map<Integer,Integer>)request.getSession().getAttribute("cart");
+	public static Map<Integer,Integer> getCart(HttpSession session){
+		Map<Integer,Integer> cart = (Map<Integer,Integer>)session.getAttribute("cart");
 		if(cart == null) {
 			cart = new HashMap<>();
-			request.getSession().setAttribute("cart", cart);
+			session.setAttribute("cart", cart);
 		}
 		return cart;
 	}
