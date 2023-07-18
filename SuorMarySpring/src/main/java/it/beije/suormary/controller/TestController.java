@@ -1,5 +1,8 @@
 package it.beije.suormary.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -48,6 +51,16 @@ public class TestController {
 		
 		//SELECT * from Users WHERE username = :username AND password = :password
 		if (username != null && username.equalsIgnoreCase("pippo@beije.it") && password != null && password.equals("12345")) { //OK
+			
+			
+			List<String> libri = new ArrayList<String>();
+			libri.add("I Promessi Sposi");
+			libri.add("La Divina Commedia");
+			libri.add("Manuale OCA");
+			libri.add("Tre metri sopra il cielo");
+			libri.add("Guida galattica per programmatori");
+			
+			model.addAttribute("libri", libri);
 			
 			User user = new User();
 			user.setEmail("pippo@beije.it");
