@@ -15,7 +15,7 @@ Questi sono i libri che hai ordinato:<br/>
 
 <%-- c:if test="${empty libri}">NESSUNO</c:if --%>
 <c:choose>
-	<c:when test="${empty libri}">NESSUNO</c:when>
+	<c:when test="${libri.size() < 0}">NESSUNO</c:when>
 	<c:otherwise>
 		<c:forEach items="${libri}" var="libro">
 			${libro}<br/>
