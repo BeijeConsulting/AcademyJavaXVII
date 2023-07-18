@@ -45,9 +45,9 @@ public class Order {
 	@Column(name = "status")
 	private char status;
 	/*
-	 * I - inserito
-	 * P - pagato
-	 * A - annullato
+	 * I - Inserted
+	 * P - Paid
+	 * C - Cancelled
 	 */
 
 	@Column(name = "amount")
