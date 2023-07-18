@@ -11,7 +11,7 @@ private JPAmanagerFactory() {}
 	
 	public static EntityManager createEntityManager() {
 		if (entityManagerFactory == null) {	
-		   entityManagerFactory = Persistence.createEntityManagerFactory("SuorMaryWeb");
+		   entityManagerFactory = Persistence.createEntityManagerFactory("SuorMarySpring");
 		}
 		
 		return entityManagerFactory.createEntityManager();
