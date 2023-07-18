@@ -13,21 +13,32 @@
 </head>
 <body>
 
+<div style="justify-content: space-between; align-items: center">
+<a href="infouserpage.jsp"><button style="border:solid; border-width: 1px; " disabled>Profile</button></a>
+<a href="buypage.jsp"><button style="border:solid; border-width: 1px; " >Buy books</button></a>
+<a href="/homeservlet"><button style="border:solid; border-width: 1px; " >Catalogue</button></a>
+</div>
+
+<br/><br/>
+
+<div>
 <%User user = (User) session.getAttribute("user");%>
 
-Name : <%user.getName();%> <br/>
-Surname : <%user.getSurname();%> <br/>
-Email : <%user.getEmail();%> <br/>
+Name : <%=user.getName()%><br/><br/>
+Surname : <%=user.getSurname()%><br/><br/>
+Email : <%=user.getEmail()%><br/><br/>
 
 <form action="/homeservlet" method="GET">
 <input type="button" onclick="<% session.removeAttribute("user");%>" value="Log out"> 
 </form>
+</div>
+
 <br/><br/>
 
 <%List<Order> orders = (ArrayList<Order>) session.getAttribute("orders");%>
 
 <div style="width:100%">
-<h3 style="text-align: center">ORDERS</h3>
+<h3 style="text-align: left">ORDERS</h3>
 	<table border="1">
 	    <!-- Intestazione della tabella -->
 	    <thead>

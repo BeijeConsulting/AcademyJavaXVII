@@ -12,6 +12,13 @@
 <title>Buy page</title>
 </head>
 <body>
+
+<div style="justify-content: space-between; align-items: center">
+<a href="infouserpage.jsp"><button style="border:solid; border-width: 1px; " >Profile</button></a>
+<a href="buypage.jsp"><button style="border:solid; border-width: 1px; " disabled>Buy books</button></a>
+<a href="/homeservlet"><button style="border:solid; border-width: 1px; " >Catalogue</button></a>
+</div>
+
 <%
 List<Book> books = (ArrayList<Book>) session.getAttribute("allBooks");
 if (books == null) {
@@ -21,7 +28,7 @@ if (books == null) {
 }else {
 %>
 	<div style="width:100%">
-		<div style="width:62%; float:left">
+		<div style="width:63%; float:left">
 			<h3 style="text-align: center">BOOKS</h3>
 			<table border="1">
 			    <!-- Intestazione della tabella -->
@@ -33,6 +40,7 @@ if (books == null) {
 			            <th>Editor</th>
 			            <th>Price</th>
 			            <th>Quantity</th>
+			            <th>Add to basket</th>
 			        </tr>
 			        
 			    </thead>
@@ -42,13 +50,15 @@ if (books == null) {
 		<%for(int i=0;i<books.size();i++){
 			%>
 			<tr>
-	            <td><%=books.get(i).getTitle() %></td>            
-	            <td><%=books.get(i).getDescription()%></td>
-	            <td><%=books.get(i).getAuthorId() %></td>
-	            <td><%=books.get(i).getEditor()%></td>
-	            <td ><%=books.get(i).getPrice()%></td>
-	            <td ><%=books.get(i).getQuantity()%></td>
-	            <td><a href="./orderservlet?indexBook=<%=books.get(i).getId()%>" >+</a></td>
+	            <td style="text-align: center"><%=books.get(i).getTitle() %></td>            
+	            <td style="text-align: center"><%=books.get(i).getDescription()%></td>
+	            <td style="text-align: center"><%=books.get(i).getAuthorId() %></td>
+	            <td style="text-align: center"><%=books.get(i).getEditor()%></td>
+	            <td style="text-align: center"><%=books.get(i).getPrice()%></td>
+	            <td style="text-align: center"><%=books.get(i).getQuantity()%></td>
+	            <%if (books.get(i).getQuantity() > 0) {%>
+	            <td style="text-align: center"><a href="./orderservlet?indexBook=<%=books.get(i).getId()%>" ><button>+</button></a></td>
+	            <% }%>
 	             <!--  <td><a href="updatebook.jsp?indexButton=<%=i%>" ><input type="button" name="indexButton" value="E"></a></td>-->
 		    </tr>
 		<%	}	
@@ -57,7 +67,7 @@ if (books == null) {
 	</div><%
 Order basket = (Order)(session.getAttribute("basket"));
 	List<OrderItem> basketList = basket.getItems();
-%><div style="width:32%; float:right">
+%><div style="width:33%; float:right">
 	<h3 style="text-align: center">CART</h3>
 	<table border="1">
 	    <!-- Intestazione della tabella -->

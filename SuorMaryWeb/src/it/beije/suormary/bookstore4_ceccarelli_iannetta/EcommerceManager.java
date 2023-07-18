@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -181,12 +181,47 @@ public class EcommerceManager {
     	}
     }
 
-    public Order basket(int userId){
+    public Map<Book, Integer> basket(int userId){
+    	Map<Book, Integer> basket = new HashMap<Book, Integer>();
     	em = JPAEntityFactory.openEntity();
-     	Query query = em.createQuery("SELECT o from Order as o WHERE o.userId = :userId AND status = :status");
+    	
+//    	List<Object[]> results = em.createQuery("SELECT p.firstName, p.lastName, n.phoneNumber "
+//    			+ "FROM Person p JOIN PhoneBookEntry n "
+//    			+ "ON p.firstName = n.firstName AND p.lastName = n.lastName")
+//    			.getResultList();
+//    	 
+//    	for (Object[] result : results) {
+//    	    log.info(result[0] + " " + result[1] + " - " + result[2]);
+//    	}
+    	
+     	Query query = em.createQuery("SELECT basket.bookId, basket.quantity "
+     								+ "FROM Basket basket JOIN Book book ON basket.bookId = book.id "
+     								+ "WHERE basket.userId = :userId");
+     	query.setParameter("userId", userId);
+
+     	List<Object[]> basketList = query.getResultList();
+     	
+     	for (Object[] object : basketList) {
+     		int bookId = (int) object[0];
+     		Book book = em.find(Book.class, bookId);
+     		int quantity = (int) object[1];
+     		basket.put(book, quantity);
+     	}
+
+     	return basket;
+    }
+    
+    
+    
+    
+
+
+/*    public Order basket(int userId){
+    	em = JPAEntityFactory.openEntity();
+     	Query query = em.createQuery("SELECT o from Order as o WHERE o.userId = :userId AND o.status = :status");
 
      	query.setParameter("userId", userId);
-     	query.setParameter("status", "B");
+     	query.setParameter("status", 'B');
 
      	List<Order> orders = query.getResultList();
      	if (orders.size() == 0) return null;
@@ -194,8 +229,9 @@ public class EcommerceManager {
 
      	return orders.get(0);
     }
-    
-    public void addToBasket(int bookId, int userId) {
+
+   
+   public void addToBasket(int bookId, int userId) {
     	em = JPAEntityFactory.openEntity();
     	EntityTransaction transaction = em.getTransaction();
     	Book book = em.find(Book.class, bookId);
@@ -253,7 +289,9 @@ public class EcommerceManager {
 //    public Book itemToBook(OrderItem oi) {
 //    	int idOrderItem = oi.getBookId();
 //    }
-//    
+    
+*/
+    
     
 }
 

@@ -14,6 +14,7 @@
 <div style="justify-content: space-between; align-items: center">
 <a href="infouserpage.jsp"><button style="border:solid; border-width: 1px; " >Profile</button></a>
 <a href="buypage.jsp"><button style="border:solid; border-width: 1px; " >Buy books</button></a>
+<a href="/homeservlet"><button style="border:solid; border-width: 1px; " disabled>Catalogue</button></a>
 </div>
 
 <%
@@ -35,18 +36,20 @@ List<Book> books = (ArrayList<Book>)(session.getAttribute("allBooks"));
 
 %>
 	<div style="width:100%">
-	<div style="width:62%; float:left">
+	<div style="width:58%; float:left">
 	<h3 style="text-align: center">BOOKS</h3>
 	<table border="1">
 	    <!-- Intestazione della tabella -->
 	    <thead>
 	        <tr>
+	        	<th>ID</th>
 	            <th>Title</th>        
 	            <th>Description</th>
 	            <th>Author ID</th>
 	            <th>Editor</th>
 	            <th>Price</th>
 	            <th>Quantity</th>
+	            <th>Edit</th>
 	        </tr>
 	        
 	    </thead>
@@ -62,13 +65,14 @@ List<Book> books = (ArrayList<Book>)(session.getAttribute("allBooks"));
 		<%for(int i=0;i<books.size();i++){
 			%>
 			<tr>
+			 	<td><%=books.get(i).getId() %></td>  
 	            <td><%=books.get(i).getTitle() %></td>            
 	            <td><%=books.get(i).getDescription()%></td>
 	            <td><%=books.get(i).getAuthorId() %></td>
 	            <td><%=books.get(i).getEditor()%></td>
 	            <td ><%=books.get(i).getPrice()%></td>
 	            <td ><%=books.get(i).getQuantity()%></td>
-	            <td><a href="updatebook.jsp?indexButton=<%=i%>" >E</a></td>
+	            <td><a href="updatebook.jsp?indexButton=<%=i%>" ><button>E</button></a></td>
 	             <!--  <td><a href="updatebook.jsp?indexButton=<%=i%>" ><input type="button" name="indexButton" value="E"></a></td>-->
 		    </tr>
 		<%	}	
@@ -81,7 +85,7 @@ List<Book> books = (ArrayList<Book>)(session.getAttribute("allBooks"));
 	
 	</div><%
 List<Author> authors = (ArrayList<Author>)(session.getAttribute("allAuthors"));
-%><div style="width:32%; float:right">
+%><div style="width:38%; float:right">
 	<h3 style="text-align: center">AUTHORS</h3>
 	<table border="1">
 	    <!-- Intestazione della tabella -->
@@ -91,6 +95,7 @@ List<Author> authors = (ArrayList<Author>)(session.getAttribute("allAuthors"));
 	            <th>Surname</th>
 	            <th>Name</th>
 	            <th>Description</th>
+	            <th>Edit</th>
 	        </tr>
 	        
 	    </thead>
@@ -107,7 +112,7 @@ if (authors == null) {
 	            <td><%=authors.get(i).getSurname() %></td>
 	            <td><%=authors.get(i).getName()%></td>
 	            <td ><%=authors.get(i).getDescription()%></td>
-	            <td><a href="updateauthor.jsp?indexButton=<%=i%>" >E</a></td>
+	            <td><a href="updateauthor.jsp?indexButton=<%=i%>"><button>E</button></a></td>
 		    </tr>
 		<%	}
 			
@@ -119,6 +124,7 @@ if (authors == null) {
 	</div>
 	
 	</div>
-	</div>
+</div>
+	
 </body>
 </html>

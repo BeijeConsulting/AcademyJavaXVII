@@ -6,6 +6,7 @@
 		<class>it.beije.suormary.bookstore4_ceccarelli_iannetta.Order</class>
 		<class>it.beije.suormary.bookstore4_ceccarelli_iannetta.OrderItem</class>
 		<class>it.beije.suormary.bookstore4_ceccarelli_iannetta.User</class>
+		<class>it.beije.suormary.bookstore4_ceccarelli_iannetta.Basket</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		
 		<properties>
