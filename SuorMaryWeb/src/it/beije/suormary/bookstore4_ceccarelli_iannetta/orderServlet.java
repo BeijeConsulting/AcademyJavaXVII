@@ -41,6 +41,7 @@ public class orderServlet extends HttpServlet {
 		//Order basket = em.basket(idUser);
 		
 		session.setAttribute("basket", basket);
+		session.setAttribute("basketAmount", em.getBasketAmount(idUser));
 		response.sendRedirect("buypage.jsp");
 	}
 

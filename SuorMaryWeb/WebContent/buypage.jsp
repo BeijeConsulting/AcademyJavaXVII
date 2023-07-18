@@ -110,7 +110,17 @@ if (basket == null) {
 
 
 <!-- QUESTO è IL NUOVO MA NON RIESCO A COMMENTARE IL VECCHIO!!!! -->
-
+ <thead>
+	        <tr>
+	        	<th>ID</th>
+	            <th>Title</th>      
+	            <th>Author ID</th>
+	            <th>Price</th>
+	            <th>Quantity</th>
+	        </tr>
+	        
+	    </thead>
+	    <tbody>
 <%
 if (basket.isEmpty()) {
 	%>
@@ -120,13 +130,20 @@ if (basket.isEmpty()) {
 		<%for (HashMap.Entry<Book, Integer> set : basket.entrySet()){
 			%>
 			<tr>
-	            <td><%=set.getKey().getTitle()%></td>            
+				<td><%=set.getKey().getId()%></td> 
+	            <td><%=set.getKey().getTitle()%></td> 
+	            <td><%=set.getKey().getAuthorId()%></td>            
 	            <td><%=set.getKey().getPrice()%></td>
 	            <td><%=set.getValue()%></td>
 		    </tr>
-		<%}
-			
-}%>
+		<%} %>
+			<tr>
+				<td></td> 
+		        <td></td> 
+		        <td></td>            
+		        <td><%=session.getAttribute("basketAmount")%></td>
+	        </tr>
+<%}%>
 
 
 

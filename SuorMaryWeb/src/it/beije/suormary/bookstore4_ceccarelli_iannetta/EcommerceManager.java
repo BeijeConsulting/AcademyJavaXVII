@@ -182,7 +182,7 @@ public class EcommerceManager {
     }
 
     public HashMap<Book, Integer> basket(int userId){
-    	Map<Book, Integer> basket = new HashMap<Book, Integer>();
+    	HashMap<Book, Integer> basket = new HashMap<Book, Integer>();
     	em = JPAEntityFactory.openEntity();
     	
 //    	List<Object[]> results = em.createQuery("SELECT p.firstName, p.lastName, n.phoneNumber "
@@ -240,6 +240,24 @@ public class EcommerceManager {
     		em.persist(bi);	
     	}
     	
+    }
+    
+    public double getBasketAmount(int userId) {
+    	em = JPAEntityFactory.openEntity();
+    	EntityTransaction transaction = em.getTransaction();
+    	transaction.begin();
+    	
+    	Query query = em.createQuery("SELECT SUM(book.price*bi.quantity) FROM Book as book "
+    			+ "JOIN Basket as bi "
+    			+ "ON book.id = bi.bookId "
+    			+ "WHERE bi.userId = :userId");
+    	query.setParameter("userId", userId);
+    	
+    	List<Double> amount = query.getResultList();
+    	
+    	if (amount.size() == 0) return 0.0;
+    	double basketAmount = (Double) query.getResultList().get(0);
+    	return basketAmount;
     }
     
     
