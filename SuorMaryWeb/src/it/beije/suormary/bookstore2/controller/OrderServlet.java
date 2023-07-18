@@ -56,7 +56,7 @@ public class OrderServlet extends HttpServlet {
 	    if (action != null && action.equals("cancel")) {
 	        int orderId = Integer.parseInt(request.getParameter("id"));
 	        // Esegui l'operazione di cancellazione dell'ordine con l'ID specificato
-	        UserUtility.cancelOrder(orderId);
+	        BookstoreUtility.cancelOrder(orderId);
 	    } else {
 	    	// Creazione di un nuovo ordine nel database
 	        Order newOrder = new Order();
@@ -89,7 +89,7 @@ public class OrderServlet extends HttpServlet {
 	        newOrder.setAmount(totalAmount);
 	        
 	        // Salvataggio dell'ordine nel database
-	        int orderId = UserUtility.insertOrder(newOrder);
+	        int orderId = BookstoreUtility.insertOrder(newOrder);
 
 	        // Rimozione del carrello dalla sessione
 	        session.removeAttribute("cart");

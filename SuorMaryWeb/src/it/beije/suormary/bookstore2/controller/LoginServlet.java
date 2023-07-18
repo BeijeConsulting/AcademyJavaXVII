@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		System.out.println("JSESSIONID: " + session.getId());
-		User user = UserUtility.checkUser(email, password);
+		User user = BookstoreUtility.checkUser(email, password);
 		
 		if (user != null ) { // OK
 			user.setPassword("");

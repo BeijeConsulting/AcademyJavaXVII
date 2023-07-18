@@ -62,7 +62,7 @@ public class RegistrationServlet extends HttpServlet {
         user.setName(nome);
         user.setSurname(cognome);
         
-        UserUtility.insertUser(user);
+        BookstoreUtility.insertUser(user);
         response.sendRedirect("bookstoreLogin.jsp");
 	}
 
