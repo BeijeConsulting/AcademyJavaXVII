@@ -2,6 +2,7 @@ package it.beije.suormary.bookstore4_ceccarelli_iannetta;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,7 +37,9 @@ public class orderServlet extends HttpServlet {
 		int idUser = ((User)session.getAttribute("user")).getId();
 		em.addToBasket(idBook, idUser );
 		
-		Order basket = em.basket(idUser);
+		HashMap<Book,Integer> basket = em.basket(idUser);
+		//Order basket = em.basket(idUser);
+		
 		session.setAttribute("basket", basket);
 		response.sendRedirect("buypage.jsp");
 	}

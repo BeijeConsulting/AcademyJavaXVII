@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.ArrayList"%>
+<%@ page import="java.util.HashMap"%>
 <%@ page import="it.beije.suormary.bookstore4_ceccarelli_iannetta.Book"%>
 <%@ page import="it.beije.suormary.bookstore4_ceccarelli_iannetta.Order"%>
 <%@ page import="it.beije.suormary.bookstore4_ceccarelli_iannetta.OrderItem"%>
@@ -64,10 +65,16 @@ if (books == null) {
 		<%	}	
 	}%>	</tbody>
 	</table>
-	</div><%
-Order basket = (Order)(session.getAttribute("basket"));
-	List<OrderItem> basketList = basket.getItems();
-%><div style="width:33%; float:right">
+	</div>
+<%
+	
+HashMap<Book, Integer> basket = (HashMap<Book, Integer>)(session.getAttribute("basket"));
+
+//Order basket = (Order)(session.getAttribute("basket"));
+//List<OrderItem> basketList = basket.getItems();
+%>
+
+<div style="width:33%; float:right">
 	<h3 style="text-align: center">CART</h3>
 	<table border="1">
 	    <!-- Intestazione della tabella -->
@@ -82,7 +89,9 @@ Order basket = (Order)(session.getAttribute("basket"));
 	        </tr>
 	        
 	    </thead>
-	    <tbody><%
+	    <tbody>
+	    
+<%
 if (basket == null) {
 	%>
 	<tr><td style="color:red">LISTA CARRELLO VUOTA</td></tr>
@@ -97,7 +106,34 @@ if (basket == null) {
 		    </tr>
 		<%}
 			
-	}%></tbody>
+}%>
+
+
+<!-- QUESTO è IL NUOVO MA NON RIESCO A COMMENTARE IL VECCHIO!!!! -->
+
+<%
+if (basket.isEmpty()) {
+	%>
+	<tr><td style="color:red">LISTA CARRELLO VUOTA</td></tr>
+	<%
+}else {%>
+		<%for (HashMap.Entry<Book, Integer> set : basket.entrySet()){
+			%>
+			<tr>
+	            <td><%=set.getKey().getTitle()%></td>            
+	            <td><%=set.getKey().getPrice()%></td>
+	            <td><%=set.getValue()%></td>
+		    </tr>
+		<%}
+			
+}%>
+
+
+
+
+
+
+	</tbody>
 	</table>
 	<!-- somma prezzi -->
 	<form action="./orderservlet" method="POST">

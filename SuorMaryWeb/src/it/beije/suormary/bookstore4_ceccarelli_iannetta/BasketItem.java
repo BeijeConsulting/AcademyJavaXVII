@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "baskets")
-public class Basket {
+public class BasketItem {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -21,6 +21,9 @@ public class Basket {
 	
 	@Column(name = "book_id")
 	private int bookId;
+	
+	@Column(name = "quantity")
+	private int quantity;
 	
 	public int getId() {
 		return id;
@@ -45,11 +48,20 @@ public class Basket {
 	public void setBookId(int bookId) {
 		this.bookId = bookId;
 	}
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
 
 	@Override
 	public String toString() {
-		return "Basket [id=" + id + ", userId=" + userId + ", bookId=" + bookId + "]";
+		return "Basket [id=" + id + ", userId=" + userId + ", bookId=" + bookId + ", quantity=" + quantity + "]";
 	}
+
+	
 
 
 	

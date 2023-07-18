@@ -181,7 +181,7 @@ public class EcommerceManager {
     	}
     }
 
-    public Map<Book, Integer> basket(int userId){
+    public HashMap<Book, Integer> basket(int userId){
     	Map<Book, Integer> basket = new HashMap<Book, Integer>();
     	em = JPAEntityFactory.openEntity();
     	
@@ -194,24 +194,53 @@ public class EcommerceManager {
 //    	    log.info(result[0] + " " + result[1] + " - " + result[2]);
 //    	}
     	
-     	Query query = em.createQuery("SELECT basket.bookId, basket.quantity "
-     								+ "FROM Basket basket JOIN Book book ON basket.bookId = book.id "
-     								+ "WHERE basket.userId = :userId");
+     	Query query = em.createQuery("SELECT bi FROM Basket as bi WHERE bi.userId = :userId");
      	query.setParameter("userId", userId);
 
-     	List<Object[]> basketList = query.getResultList();
+     	List<BasketItem> basketItems = query.getResultList();
      	
-     	for (Object[] object : basketList) {
-     		int bookId = (int) object[0];
-     		Book book = em.find(Book.class, bookId);
-     		int quantity = (int) object[1];
+     	for (BasketItem bi : basketItems) {
+     		Book book = em.find(Book.class, bi.getBookId());
+     		int quantity = bi.getQuantity();
      		basket.put(book, quantity);
      	}
 
+     	em.close();
      	return basket;
     }
     
-    
+    public void addToBasket(int bookId, int userId) {
+    	em = JPAEntityFactory.openEntity();
+    	EntityTransaction transaction = em.getTransaction();
+    	transaction.begin();
+    	
+    	Query query = em.createQuery("SELECT bi FROM Basket as bi "
+    			+ "WHERE b.userId = :userId "
+    			+ "AND b.bookId = :bookId");
+    	query.setParameter("userId", userId);
+    	query.setParameter("bookId", bookId);
+    	
+    	List<BasketItem> basketItems = query.getResultList();
+    	BasketItem bi = new BasketItem();
+    	
+    	if (basketItems.size() == 0) {
+    		bi = new BasketItem();
+    		bi.setBookId(bookId);
+    		bi.setUserId(userId);
+    		bi.setQuantity(1);
+    		transaction.commit();
+    		em.persist(bi);
+    	}
+    	else {
+    		int itemId = basketItems.get(0).getId(); 
+    		bi = em.find(BasketItem.class, itemId);
+    		int quantity = bi.getQuantity();
+    		bi.setQuantity(quantity + 1);
+    		transaction.commit();
+    		em.persist(bi);	
+    	}
+    	
+    }
     
     
 
