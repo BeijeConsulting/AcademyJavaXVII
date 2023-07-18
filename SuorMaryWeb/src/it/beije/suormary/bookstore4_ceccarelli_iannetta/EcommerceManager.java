@@ -178,6 +178,68 @@ public class EcommerceManager {
         	em.close();    		
     	}
     }
+
+    public Order basket(int userId){
+    	em = JPAEntityFactory.openEntity();
+     	Query query = em.createQuery("SELECT o from Order as o WHERE o.userId = :userId AND status = :status");
+
+     	query.setParameter("userId", userId);
+     	query.setParameter("status", "B");
+
+     	List<Order> orders = query.getResultList();
+     	if (orders.size() == 0) return null;
+     	em.close();
+
+     	return orders.get(0);
+    }
+    
+    public void addToBasket(int bookId, int userId) {
+    	em = JPAEntityFactory.openEntity();
+    	EntityTransaction transaction = em.getTransaction();
+    	Book book = em.find(Book.class, bookId);
+    	transaction.begin();
+    	
+    	Order basket = basket(userId);
+
+     	if (basket == null) {
+     		
+     	}
+     	else {
+     		int basketId = basket.getId();
+         	Query query = em.createQuery("SELECT oi from OrderItem as oi"
+         								+ "WHERE oi.orderId = :basketId "
+         								+ "AND oi.bookId = :bookId "
+         								+ "AND oi.price = :price");
+         	query.setParameter("orderId", basketId);
+         	query.setParameter("bookId", bookId);
+         	query.setParameter("price", book.getPrice());
+         	
+         	List<OrderItem> orderItems = query.getResultList();
+         	OrderItem orderItem = new OrderItem();
+         	
+         	if (orderItems.size() == 0) {
+         		orderItem.setBookId(bookId);
+         		orderItem.setOrderId(basketId);
+         		orderItem.setPrice(book.getPrice());
+         		orderItem.setQuantity(1);
+         		
+         		transaction.commit();
+         		em.persist(orderItem);
+         	}
+         	else {
+         		orderItem = orderItems.get(0);
+         		int newQuantity = orderItems.get(0).getQuantity() + 1;
+         		orderItem.setQuantity(newQuantity);
+         		transaction.commit();
+         		em.persist(orderItem);
+         	}
+     	}
+     	em.close();
+
+     	return ;
+    }
+    
+    
 }
 
 

@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore4_ceccarelli_iannetta;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /*
  
@@ -49,7 +51,9 @@ public class User {
 	@Column(name = "create_date")
 	private LocalDateTime creationDate;
 	
-	
+//	@Transient
+//	private List<OrderItem> basket;
+
 	public int getId() {
 		return id;
 	}
@@ -91,7 +95,12 @@ public class User {
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
-
+//	public List<OrderItem> getBasket() {
+//		return basket;
+//	}
+//	public void setBasket(List<OrderItem> basket) {
+//		this.basket = basket;
+//	}
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")

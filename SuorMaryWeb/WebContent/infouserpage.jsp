@@ -24,7 +24,7 @@ Email : <%user.getEmail();%> <br/>
 </form>
 <br/><br/>
 
-<%List<Order> orders = (ArrayList<Orders>) session.getAtrtibute("orders");%>
+<%List<Order> orders = (ArrayList<Order>) session.getAttribute("orders");%>
 
 <div style="width:100%">
 <h3 style="text-align: center">ORDERS</h3>
@@ -54,8 +54,8 @@ Email : <%user.getEmail();%> <br/>
 			<tr>
 	            <td><%=order.getId() %></td>            
 	            <td><%=order.getDate()%></td>
-	            <td><%=order.getSatus() %></td>
-	            <td><%=order.getAmount%></td>
+	            <td><%=order.getStatus() %></td>
+	            <td><%=order.getAmount()%></td>
 	            <td><%=order.getShippingAddress()%></td>
 		    </tr>
 		<%	}	
