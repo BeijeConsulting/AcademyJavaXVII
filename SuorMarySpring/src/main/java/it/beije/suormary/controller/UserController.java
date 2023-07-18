@@ -19,7 +19,7 @@ public class UserController {
 		if(session.getAttribute("email") != null) {
 			return "welcome";
 		}
-		else return "login";
+		else return "login"; 
 	}
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String loginPost(HttpSession session, @RequestParam(name = "email")String email, Model model) {
