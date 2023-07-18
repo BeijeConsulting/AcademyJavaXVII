@@ -11,6 +11,10 @@
 <title>List</title>
 </head>
 <body>
+<div style="justify-content: space-between; align-items: center">
+<a href="infouserpage.jsp"><button style="border:solid; border-width: 1px; " >Profile</button></a>
+<a href="buypage.jsp"><button style="border:solid; border-width: 1px; " >Buy books</button></a>
+</div>
 
 <%
 String authorError = (String) session.getAttribute("AuthorError");
