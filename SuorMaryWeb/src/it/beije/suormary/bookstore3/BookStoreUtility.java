@@ -293,6 +293,7 @@ public class BookStoreUtility {
     		   Order orderFound = entityManager.find(Order.class, orderId);
        	       EntityTransaction transaction = entityManager.getTransaction();
        	       transaction.begin();
+       	       orderFound.setStatus('C');
        	       Query query = entityManager.createQuery("SELECT o FROM OrderItem as o WHERE o.orderId = :id");
        	       query.setParameter("id", orderFound.getId());
        	       List<OrderItem> orderItems = query.getResultList();

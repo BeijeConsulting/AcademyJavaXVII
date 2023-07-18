@@ -29,10 +29,6 @@
     <h2>Riepilogo Ordine n° <%= orderfound.getId() %></h2>
 
 
-    <h3>Acquistati <%= booksOrder.size() %> libri:<br/>
-        
-
-
 <% for(OrderItem orderItem :orderfound.getItems()){ Book book = BookStoreUtility.getBookById(orderItem.getBookId());%> 
        <%= book.getTitle() %>
              <%=" - " + "Quantità : " +  orderItem.getQuantity() %><br/>
@@ -42,7 +38,6 @@
 
         Stato Ordine: <%= orderfound.getStatus() %><br/>
         Totale acquisto: <%= orderfound.getAmount() %> <br/>
-        Indirizzo Spedizione: <%= orderfound.getShippingAddress()%><br/>
     </h3>
 
     <hr><br/>
