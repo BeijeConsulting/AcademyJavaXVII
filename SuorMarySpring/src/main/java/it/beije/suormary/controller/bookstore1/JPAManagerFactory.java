@@ -12,7 +12,7 @@ public class JPAManagerFactory {
 	
 	public static EntityManager getEntityManager() {
 		if(instance == null) {
-			instance = Persistence.createEntityManagerFactory("SuorMaryWeb");
+			instance = Persistence.createEntityManagerFactory("SuorMarySpring");
 			
 		}
 		//System.out.println(instance);

@@ -1,0 +1,68 @@
+package it.beije.suormary.controller.bookstore1;
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+public class AccessController {
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String loginGet(HttpSession session) {
+		System.out.println("GET /login");
+		
+		String email = (String) session.getAttribute("email");
+		
+		if (email != null) { //utente loggato
+			return "";
+		//chiamare metodo di shop!!!
+		} else { //non loggato
+		
+			return "login";
+		}
+
+		
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String loginPost(HttpSession session, Model model,
+			@RequestParam String email,
+			@RequestParam String password) {
+		System.out.println("POST /login");
+		
+		System.out.println("email : " + email);
+		System.out.println("password : " + password);
+		
+		
+		User user = UserUtils.checkUser(email, password);
+		
+		System.out.println(user);
+		
+		if (user!=null) { //OK
+			session.setAttribute("email", email);
+				
+			//response.sendRedirect("./ShopServlet");
+			return null;
+		} else { //KO
+			//session.setAttribute("loginError", "CREDENZIALI NON VALIDE!!!");
+			model.addAttribute("loginError", "CREDENZIALI NON VALIDE!!!");
+			return "login";
+			
+		}
+		
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logoutGet(HttpSession session) {
+		session.removeAttribute("email");
+		//session.removeAttribute("books");
+		//session.removeAttribute("cart");
+		return "login";
+	}
+	
+
+	}
