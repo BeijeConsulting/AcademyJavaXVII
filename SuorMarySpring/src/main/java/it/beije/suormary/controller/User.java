@@ -1,6 +1,5 @@
 package it.beije.suormary.controller;
 
-
 public class User {
 	
 	private String email;
