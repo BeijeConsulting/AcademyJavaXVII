@@ -64,8 +64,8 @@ List<Book> books = (ArrayList<Book>)(session.getAttribute("allBooks"));
 	            <td><%=books.get(i).getEditor()%></td>
 	            <td ><%=books.get(i).getPrice()%></td>
 	            <td ><%=books.get(i).getQuantity()%></td>
-	            <%session.setAttribute("book", books.get(i));%>
-	            <td><a href="updatebook.jsp" ><button>E</button></a></td>
+	            <td><a href="updatebook.jsp?indexButton=<%=i%>" >E</a></td>
+	             <!--  <td><a href="updatebook.jsp?indexButton=<%=i%>" ><input type="button" name="indexButton" value="E"></a></td>-->
 		    </tr>
 		<%	}	
 	}%>	</tbody>
@@ -103,8 +103,7 @@ if (authors == null) {
 	            <td><%=authors.get(i).getSurname() %></td>
 	            <td><%=authors.get(i).getName()%></td>
 	            <td ><%=authors.get(i).getDescription()%></td>
-	            <%session.setAttribute("author", authors.get(i));%>
-	            <td><a href="updateauthor.jsp" ><button>E</button></a></td>
+	            <td><a href="updateauthor.jsp?indexButton=<%=i%>" >E</a></td>
 		    </tr>
 		<%	}
 			
