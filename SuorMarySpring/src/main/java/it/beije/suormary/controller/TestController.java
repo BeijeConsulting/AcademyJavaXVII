@@ -1,4 +1,4 @@
-package main.java.it.beije.suormary.controller;
+package it.beije.suormary.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

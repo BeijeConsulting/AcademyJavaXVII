@@ -1,4 +1,4 @@
-package main.java.it.beije.suormary.controller;
+package it.beije.suormary.controller;
 
 
 public class User {
