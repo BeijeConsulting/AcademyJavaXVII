@@ -1,18 +1,30 @@
 package it.beije.suormary.bookstore2.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.beije.suormary.bookstore2.model.Book;
 import it.beije.suormary.bookstore2.model.PersistenceManagerJPA;
 import it.beije.suormary.bookstore2.model.User;
 
 @Service
 public class UserService {
+	
+	private BookService bookService;
+	
+	
+    @Autowired
+    public UserService(BookService bookService) {
+        this.bookService = bookService;
+    }
 	
 	public void insertUser(User user) {
 		EntityManager entityManager = null;
@@ -78,5 +90,18 @@ public class UserService {
 		}
 		return user;
 	}
+	
+	public List<Book> getTheBooksFromId(List<Integer> ids) {
+		
+		List<Book> books = new ArrayList<>();
+		Book book = null;
+		for (int i : ids) {
+			book = bookService.findBook(i);
+			books.add(book);
+		}
+		
+		return books;
+	}
+	
 
 }

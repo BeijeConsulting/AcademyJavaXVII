@@ -73,4 +73,30 @@ public class BookService {
 
 	}
 	
+	public Book findBook(int bookId) {
+
+		EntityManager entityManager = null;
+
+		Book book = null;
+
+		try {
+
+			entityManager = PersistenceManagerJPA.getEntityManager();
+			EntityTransaction transaction = entityManager.getTransaction();
+			transaction.begin();
+
+			book = entityManager.find(Book.class, bookId);
+
+			transaction.commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			entityManager.close();
+		}
+
+		return book;
+
+	}
+	
 }
