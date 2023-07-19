@@ -192,6 +192,8 @@ public class OrderService {
 		return loi;
 	}
 	
-	
+	public String getInserted() {
+		return "I";
+	}
 	
 }

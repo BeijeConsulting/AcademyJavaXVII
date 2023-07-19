@@ -55,6 +55,9 @@ public class OrderController {
 		
 		List<Order> oi = orderService.getOrders(userService.getUserId((String)(session.getAttribute("email"))));
 		model.addAttribute("orders", oi);
+		model.addAttribute("inserito", orderService.getInserted());
+		//model.addAttribute("paid", Order.getPaid());
+		//model.addAttribute("cancelled", Order.getCancelled());
 		
 		return "orders";
 		

@@ -59,6 +59,7 @@ public class Order {
 	@Transient
 	private List<OrderItem> items;
 
+
 	
 	public int getId() {
 		return id;
@@ -116,6 +117,8 @@ public class Order {
 	public void setShippingAddress(String shippingAddress) {
 		this.shippingAddress = shippingAddress;
 	}
+	
+
 
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")

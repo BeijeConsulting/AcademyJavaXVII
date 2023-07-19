@@ -1,6 +1,7 @@
-<%@page import="it.beije.suormary.bookstore1.OrderItem"%>
-<%@page import="it.beije.suormary.bookstore1.Order"%>
+<%@page import="it.beije.suormary.bin.bookstore1.OrderItem"%>
+<%@page import="it.beije.suormary.bin.bookstore1.Order"%>
 <%@page import="java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -16,54 +17,48 @@
 </head>
 <body>
 	<ul>
-		<li style="display: inline; margin-right:30px;"><a href="./ShopServlet">Shop</a></li>
-		<li style="display: inline; margin-right:30px;"><a href="./CartServlet">Cart</a></li>
-		<li style="display: inline; margin-right:30px;"><a href="./OrderServlet">Orders</a></li>
-		<li style="display: inline;"><a href="./LogoutServlet">Logout</a></li>
+		<li style="display: inline; margin-right:30px;"><a href="./shop">Shop</a></li>
+		<li style="display: inline; margin-right:30px;"><a href="./cart">Cart</a></li>
+		<li style="display: inline; margin-right:30px;"><a href="./order">Orders</a></li>
+		<li style="display: inline;"><a href="./logout">Logout</a></li>
 	</ul>
-	<%List<Order> lo = (List<Order>)session.getAttribute("orders");
 	
-	for(Order order: lo){%>
+	<c:forEach  var="order" items="${orders}">
 		<div style="border:1px solid; margin-bottom:20px; padding:10px; background-color: #C5F6FA">
 			<div style="border:1px solid; margin-bottom:10px; padding:10px; background-color: #C3C5FF">
-				<h3><b>Numero ordine: <%=order.getId()%></b><br/></h3>
+				<h3><b>Numero ordine: ${order.id}</b><br/></h3>
 				
-				<p><b>Indirizzo di spedizione</b>: <%=order.getShippingAddress() %></p>
-				<p><b>Stato</b>: 
-				<%
-					switch(order.getStatus()){
-						case 'I':
-							out.print("Inserito");
-							break;
-						case 'P':
-							out.print("Pagato");
-							break;
-						case 'C':
-							out.print("Annullato");
-							break;
-					}
-				%></p>
-				
+				<p><b>Indirizzo di spedizione</b>: ${order.shippingAddress}</p>
+				<p><b>Stato </b>: 
+				<c:choose>
+				<c:when test="${order.status == 'I'.charAt(0)}">Inserito</c:when>
+				<c:when test="${order.status == 'P'.charAt(0)}">Pagato</c:when>
+				<c:when test="${order.status == 'C'.charAt(0)}">Annullato</c:when>
+				<c:otherwise>Errore</c:otherwise>
+				</c:choose>
+				</p>	
 			</div>
-		
-			<%for(OrderItem orderItem: order.getItems()){%>
-				<h2><%=orderItem.getBook().getTitle()%></h2>
-				<p><b>Prezzo unitario</b>: <%=orderItem.getPrice()%> euro<br/>
-				<b>Quantità</b>: <%=orderItem.getQuantity()%>
+			<c:forEach var="orderItem" items="${order.items}">
+				<h2>${orderItem.book.title}</h2>
+				<p><b>Prezzo unitario</b>: ${orderItem.price} euro<br/>
+				<b>Quantità</b>: ${orderItem.quantity}
 				</p>
 				<hr style="border-color: #E8C5FA"/><br/>
-			<%}%>
-			<p><b>TOTALE:</b> <%=order.getAmount()%> euro</p>
-			<% if(order.getStatus() == 'I'){ %>
-			<form method="POST" action="./OrderServlet">
-				<input type="hidden" name="orderId" value="<%=order.getId() %>" />
-				<input type="submit" name="updateOrder" value="Paga" style="margin-right: 20px; background-color: #C5FAC7; font-size: 20px"/>
-				<input type="submit" name="updateOrder" value="Annulla" style="background-color: #FAC5C5; font-size: 20px"/>
-			</form>
-			<%} %>
+			</c:forEach>
+			<p><b>TOTALE:</b> ${order.amount} euro</p>
+			<c:choose>
+			<c:when test="${order.status == 'I'.charAt(0)}">
+				<form method="POST" action="./order">
+					<input type="hidden" name="orderId" value="${order.id}" />
+					<input type="submit" name="updateOrder" value="Paga" style="margin-right: 20px; background-color: #C5FAC7; font-size: 20px"/>
+					<input type="submit" name="updateOrder" value="Annulla" style="background-color: #FAC5C5; font-size: 20px"/>
+				</form>
+			</c:when>
+			</c:choose>
 		</div>
-	<%}
-	%>
+	</c:forEach>
+
+	
 
 </body>
 </html>

@@ -1,5 +1,6 @@
 package it.beije.suormary.service.bookstore1;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,7 +82,7 @@ public class UserService {
 			EntityTransaction transaction = entityManager.getTransaction();
 			
 			transaction.begin();
-			
+			user.setCreationDate(LocalDateTime.now());
 			entityManager.persist(user);
 			
 			transaction.commit();

@@ -18,7 +18,7 @@
 	<ul>
 		<li style="display: inline; margin-right:30px;"><a href="./shop">Shop</a></li>
 		<li style="display: inline; margin-right:30px;"><a href="./cart">Cart</a></li>
-		<li style="display: inline; margin-right:30px;"><a href="./orders">Orders</a></li>
+		<li style="display: inline; margin-right:30px;"><a href="./order">Orders</a></li>
 		<li style="display: inline;"><a href="./logout">Logout</a></li>
 	</ul>
 	<hr/>
