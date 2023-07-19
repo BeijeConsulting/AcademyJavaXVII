@@ -108,4 +108,51 @@ public class OrderController {
          }
          else return "login";
 	}
+    @RequestMapping(value = "/updateOrder", method = RequestMethod.GET)
+    public String updateOrder(HttpSession session, Model model) {
+		int id = (int) session.getAttribute("orderId");
+		Order order = orderService.getOrderById(id);
+		model.addAttribute("order", order);
+		session.setAttribute("order", order);
+		return "updateOrder";
+    }
+    @RequestMapping(value = "/addOtherBooks", method = RequestMethod.GET)
+    public String addOtherBooks(HttpSession session, Model model) {
+		List<Book> booksOrder = new ArrayList<>();
+		session.setAttribute("booksOrder", booksOrder);
+		model.addAttribute("booksOrder", booksOrder);
+		 List<Book> books = bookService.loadBooks();
+         model.addAttribute("books", books);
+		return "addOtherBooks";
+    }
+    @RequestMapping(value = "/quantityBookModOrder", method = RequestMethod.GET)
+    public String quantityBookModOrder(HttpSession session, Model model, HttpServletRequest request) {
+		String quantity = request.getParameter("quantity");
+		String idStr = request.getParameter("bookId");
+		Book book = bookService.getBookById(idStr);
+		int quantityId = Integer.parseInt(quantity);
+		if(quantityId > book.getQuantity() ) {
+			model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
+		}
+		else {
+			session.setAttribute("quantity", quantityId);
+		}
+         List<Book> books = bookService.loadBooks();
+         model.addAttribute("books", books);
+		return "addOtherBooks";
+    }
+    @RequestMapping(value = "/addBookToModOrder", method = RequestMethod.GET)
+    public String addBookToModOrder(HttpSession session, Model model, HttpServletRequest request) {
+		List<Book> booksOrder = (List)session.getAttribute("booksOrder");
+		String id = request.getParameter("bookOrderId");
+		String quantity = request.getParameter("quantity");
+		Book book = bookService.getBookById(id);
+		int quantityInt = Integer.parseInt(quantity);
+		book.setQuantity(quantityInt);
+		booksOrder.add(book);
+		session.removeAttribute("quantity");
+		 List<Book> books = bookService.loadBooks();
+         model.addAttribute("books", books);
+		return "addOtherBooks";
+    }
 }

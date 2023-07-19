@@ -48,5 +48,34 @@ public class OrderItemService {
     		   entityManager.close();
     	   }
        }
+	    public  void deleteOrderItem(String idStr) {
+	    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+	    	   int id = Integer.parseInt(idStr);
+	    	     EntityTransaction transaction = entityManager.getTransaction();
+	    		   transaction.begin();
+	    	   Book book = null;
+	    	   try {
+	    		   OrderItem orderItem = entityManager.find(OrderItem.class, id);
+	    		   Order order = entityManager.find(Order.class, orderItem.getOrderId());
+	    		   for(OrderItem ord : order.getItems()) {
+	    			   if(ord.getId() == orderItem.getId()) { 
+	    				  book = entityManager.find(Book.class, ord.getBookId());
+	    				  book.setQuantity(book.getQuantity() + ord.getQuantity());
+	    				  order.getItems().remove(ord);
+	    			   }
+	    		   }
+	    		 
+	    		   
+		    	  
+	    		   entityManager.remove(orderItem);
+	    		   transaction.commit();
+	    				   
+	    	   } catch(Exception e) {
+	    		 e.printStackTrace();
+	    	   }  finally {
+				   entityManager.close();
+			   }
+	    	   
+	       }
 
 }

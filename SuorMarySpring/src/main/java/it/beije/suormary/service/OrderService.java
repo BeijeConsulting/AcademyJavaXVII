@@ -106,5 +106,24 @@ public class OrderService {
 		
 	}
      
+     public  Order getOrderById(int orderId) {
+  	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+  	   Order order = null;
+  	   try {
+  		  order = entityManager.find(Order.class, orderId);
+  		  Query query = entityManager.createQuery("SELECT o FROM OrderItem as o WHERE o.orderId = :id");
+  		  query.setParameter("id", order.getId());
+  		  List<OrderItem> orderItems= query.getResultList();
+  		  for(OrderItem orderItem : orderItems) {
+  			  order.addOrderItem(orderItem);
+  		  }
+  	   }catch(Exception e) {
+  		   e.printStackTrace();
+  	   } finally {
+  		   entityManager.close();
+  	   }
+  	   return order;
+     }
+     
      
 }
