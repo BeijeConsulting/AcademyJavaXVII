@@ -77,6 +77,7 @@ public class UserController {
 		userService.registerUser(name, surname, email, password, date);
 		session.setAttribute("email", email);
 		return "welcome";
+		
 	}
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public String logout(HttpSession session) {
