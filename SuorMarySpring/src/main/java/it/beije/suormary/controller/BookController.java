@@ -66,5 +66,13 @@ public class BookController {
 			bookService.updateBook(title, description, editor, price, quantity, authorId,bookId);
 			return "welcome";
        }
+	   @RequestMapping(value = "/deleteBook", method=RequestMethod.GET)
+	   public String deleteBook(HttpSession session,@RequestParam String id) {
+		   if(session.getAttribute("email")!= null) {
+			bookService.deleteBook(id);
+			return "welcome";
+		   }
+		   else return "login";
+	   }
 	   }
 
