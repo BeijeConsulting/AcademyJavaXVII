@@ -30,7 +30,7 @@
   }
 	  %>
 
->>>>>>> branch 'bookstore3_char_trapani_2' of git@github.com:BeijeConsulting/AcademyJavaXVII.git
+
 <form action="my_orders" method ="get">
 	<input type="submit" value="I miei ordini" class="button">
 </form>&nbsp;
