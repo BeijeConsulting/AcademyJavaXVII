@@ -3,8 +3,6 @@ package it.beije.suormary.controller;
 
 import java.util.List;
 
-
-
 import java.time.LocalDateTime;
 
 import javax.servlet.http.HttpServletRequest;
@@ -85,7 +83,7 @@ public class UserController {
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "welcome";
+		return "login";
 	}
 
 

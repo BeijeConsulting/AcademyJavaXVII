@@ -166,10 +166,10 @@ public class OrderController {
 		
 		orderService.payment(orderId,address);
 		
-		session.setAttribute("ordinePagato", "Ordine pagato con successo");
+		model.addAttribute("ordinePagato", "Ordine pagato con successo");
 		List<Book> books = bookService.loadBooks();
 		 model.addAttribute("books", books);	
-		return"welcome";
+		return "welcome";
     }
 
 }
