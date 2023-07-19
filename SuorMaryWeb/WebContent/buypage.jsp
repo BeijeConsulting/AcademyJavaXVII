@@ -117,7 +117,7 @@ if (basket.isEmpty()) {
 	</tbody>
 	</table>
 	<!-- somma prezzi -->
-	<form action="./orderservlet" method="POST">
+	<form action="payment.jsp" method="POST">
 	<input type="submit" value="Buy">
 	</form>
 	
