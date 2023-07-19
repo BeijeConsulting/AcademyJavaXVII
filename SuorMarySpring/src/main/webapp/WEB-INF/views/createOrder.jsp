@@ -17,28 +17,19 @@
 </head>
 <body>
 <%@ include file="header.jsp" %>
-<%
-List<Book> books = (List) session.getAttribute("books");
-List<Book> booksOrder = (List)session.getAttribute("booksOrder");
-%>
-<%
-String ErrorQuantity = (String) session.getAttribute("ErrorQuantity");
-if (ErrorQuantity != null) {
-	%>
-	<p style="color:red"><%= ErrorQuantity %></p>
-	<%
-	
-	session.removeAttribute("ErrorQuantity");
-}
-%>
-<c:forEach items="${books}" val="book">
+   <c:if test="${not empty ErrorQuantity}"> 
+    	<p style="color:red">${ErrorQuantity}</p>
+	</c:if>
+
+<c:forEach items="${books}" var="book">
 <div class="card">
 	  <h5>Quantità disponibile : ${book.quantity}</h5>
             <h3>Titolo :  ${book.title} </h3>
-            <c:if test="${not empty ${book.description}"> 
-            <span class="desc">Descrizione : </span>
-             <span>${book.description}</span>
-            </c:if>
+
+            <c:if test="${not empty book.description}"> 
+    			<span class="desc">Descrizione : </span>
+    			<span>${book.description}</span>
+			</c:if>
             <div class="buttons">
            <form action="quantityBook" method="get">
    <input type="hidden" name="bookId" value= "${book.id}" />

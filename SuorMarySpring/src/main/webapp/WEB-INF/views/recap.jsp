@@ -5,6 +5,7 @@
 <%@page import="it.beije.suormary.controller.BookStoreUtility"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
+  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 
 <html>
@@ -22,11 +23,9 @@
    		int orderId = (int) session.getAttribute("orderId");
         Order orderfound = BookStoreUtility.getOrderById(orderId);
 
-        List<Book> booksOrder = (List<Book>) session.getAttribute("booksOrder");
- 
     %>
 
-    <h2>Riepilogo Ordine n° <%= orderfound.getId() %></h2>
+    <h2>Riepilogo Ordine n° ${order.id} </h2>
 
 
 <% for(OrderItem orderItem :orderfound.getItems()){ Book book = BookStoreUtility.getBookById(orderItem.getBookId());%> 
@@ -36,35 +35,37 @@
 	}
 	%>
 
-        Stato Ordine: <%= orderfound.getStatus() %><br/>
-        Totale acquisto: <%= orderfound.getAmount() %> <br/>
-    </h3>
+        Stato Ordine: ${order.status}<br/>
+        Totale acquisto: ${order.amount} <br/>
 
     <hr><br/>
-    <% if(orderfound.getStatus()=='I'){%>
-<form>
-<label for="address">Indirizzo Spedizione:</label><br>
-  <input type="text" id="address" name="address"><br>
-<input type="submit" value="Conferma" class="button">
-</form>
-<form action="payment" action="GET">
-   <input type="hidden" name="sAddress" value="<%= request.getParameter("address") %>" />
-   <input type="submit" value="Paga Ordine" class="button"/>
-</form> 
-<form action="deleteOrder" action="GET">
-   <input type="submit" value="Cancella Ordine" class="button"/>
-   </form>
-<form action="updateOrder" action="GET">
-   <input type="submit" value="Modifica ordine" class="button"/>
-</form> 
-   <form action="payment" action="GET">
-   <input type="submit" value="Paga Ordine" class="button"/>
-</form> 
-<%} else {%>
-<form action="myOrders" action="GET">
-   <input type="submit" value="Torna Ai Miei Ordini" class="button"/>
-</form>
- <%}%>   
-
+<c:choose>
+	<c:when test="${order.status == 'I'}">
+		<form>
+			<label for="address">Indirizzo Spedizione:</label><br>
+  			<input type="text" id="address" name="address"><br>
+			<input type="submit" value="Conferma" class="button">
+		</form>
+		<form action="payment" action="GET">
+   			<input type="hidden" name="sAddress" value="<%= request.getParameter("address") %>" />
+   			<input type="submit" value="Paga Ordine" class="button"/>
+		</form> 
+		<form action="deleteOrder" action="GET">
+   			<input type="submit" value="Cancella Ordine" class="button"/>
+   		</form>
+		<form action="updateOrder" action="GET">
+   			<input type="submit" value="Modifica ordine" class="button"/>
+		</form> 
+   		<form action="payment" action="GET">
+   			<input type="submit" value="Paga Ordine" class="button"/>
+		</form> 
+	</c:when>
+	<c:otherwise>
+		<form action="myOrders" action="GET">
+   			<input type="submit" value="Torna Ai Miei Ordini" class="button"/>
+		</form>
+	</c:otherwise>
+ 
+</c:choose>
 </body>
 </html>

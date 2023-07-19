@@ -2,6 +2,7 @@ package it.beije.suormary.controller;
 
 import java.util.ArrayList;
 
+
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,13 +39,14 @@ public class OrderController {
 		model.addAttribute("books", books);
 		String email = (String) session.getAttribute("email");
 		Order order = orderService.createOrder(email);
+		session.setAttribute("order", order);
 		model.addAttribute("orderId", order.getId());
 		session.setAttribute("orderId", order.getId());
 		return "createOrder";
 	    }
 	}
 	@RequestMapping(value="/addBookToOrder", method = RequestMethod.GET)
-	public String addBookToOrder(HttpSession session,HttpServletRequest request) {
+	public String addBookToOrder(HttpSession session,HttpServletRequest request, Model model) {
 		List<Book> booksOrder = (List)session.getAttribute("booksOrder");
 		String id = request.getParameter("bookOrderId");
 		String quantity = request.getParameter("quantity");
@@ -56,14 +58,25 @@ public class OrderController {
 			System.out.println(b.getId() +  " " + b.getQuantity());
 		}
 		session.removeAttribute("quantity");
-		return "addOtherBooks.jsp";
+		List<Book> books = BookStoreUtility.loadBooks();
+		model.addAttribute("booksOrder", booksOrder);
+		model.addAttribute("books", books);
+		Order order = (Order) session.getAttribute("order");
+		model.addAttribute("orderId", order.getId());
+		session.setAttribute("orderId", order.getId());
+		return "createOrder";
+		
+
 	}
 	@RequestMapping(value="/recapOrder", method = RequestMethod.GET)
-	public String recapOrder(HttpSession session,HttpServletRequest request) {
+	public String recapOrder(HttpSession session,HttpServletRequest request, Model model) {
 		if(request.getParameter("order")==null){
 			List<Book> booksOrder = (List) session.getAttribute("booksOrder");
+			model.addAttribute("booksOrder", booksOrder);
 			int orderId = (int) session.getAttribute("orderId");
 			orderItemService.createOrderItems(booksOrder,orderId);
+			Order order = orderService.findOrder(orderId);
+			model.addAttribute("order", order);
 		} else {
 			String orId = request.getParameter("order");
 			int orderId= Integer.parseInt(orId);
