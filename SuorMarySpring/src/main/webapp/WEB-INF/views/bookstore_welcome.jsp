@@ -68,7 +68,7 @@
         	
         }
         .button_favorite {
-        	background-color: #c70000; 
+        	background-color: #3d3f42; 
         	color: white; 
         	border: none; 
         	padding: 3px 3px; 
@@ -126,6 +126,7 @@
             </form>
         </div>
     </div>
+    
     <div style = "margin-bottom: 50px; margin-top: 20px;">
     	<form style="text-align: center" action="./bookstoreInsertABook" method="get">
            <button type="submit" class = "button">Add a book</button>
@@ -151,7 +152,7 @@
         <hr>
         <p class="paragraph"><strong>Author :</strong> ${authors[loop.index].name} ${authors[loop.index].surname}</p>
         <p class="paragraph"><strong>Description:</strong> ${book.description}</p>
-        <form class="paragraph" action="./bookstoreBookDetails" method="get">
+        <form class="paragraph" action="./bookstore_book_details" method="get">
             <input type="hidden" name="id" value="${book.id}">
             <button type="submit" class="button">View Details</button>
         </form>
