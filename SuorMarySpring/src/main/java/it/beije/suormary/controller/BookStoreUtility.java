@@ -189,7 +189,7 @@ public class BookStoreUtility {
                 order = new Order();
                LocalDateTime date = LocalDateTime.now();
                order.setDate(date);
-               order.setStatus('I');
+               order.setStatus("I");
                order.setUserId(user.getId());
     		   EntityTransaction transaction = entityManager.getTransaction();
     		   transaction.begin();
@@ -261,7 +261,7 @@ public class BookStoreUtility {
     		   EntityTransaction transaction = entityManager.getTransaction();
         	   transaction.begin();
     		   Order order = entityManager.find(Order.class, orderId);
-    		   order.setStatus('P');
+    		   order.setStatus("P");
     		   order.setShippingAddress(address);
     		   transaction.commit();
     	   } catch(Exception e) {

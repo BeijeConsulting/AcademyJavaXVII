@@ -40,7 +40,7 @@
 
     <hr><br/>
 <c:choose>
-	<c:when test="${order.status == 'I'}">
+	<c:when test='${order.status eq "I"}'>
 		<form>
 			<label for="address">Indirizzo Spedizione:</label><br>
   			<input type="text" id="address" name="address"><br>
@@ -55,9 +55,6 @@
    		</form>
 		<form action="updateOrder" action="GET">
    			<input type="submit" value="Modifica ordine" class="button"/>
-		</form> 
-   		<form action="payment" action="GET">
-   			<input type="submit" value="Paga Ordine" class="button"/>
 		</form> 
 	</c:when>
 	<c:otherwise>

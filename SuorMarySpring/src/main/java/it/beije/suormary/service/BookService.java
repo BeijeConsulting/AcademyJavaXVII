@@ -134,11 +134,20 @@ public class BookService {
   		   entityManager.close();
   	   }
      }
-     public void listBooks (Model model){
-
- 		List<Book> books = BookStoreUtility.loadBooks();
- 		model.addAttribute("books", books);
- 		
- 		
+ 
+     public List<Book> loadBooks(){
+  	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+  	   List<Book> listBooks = null;
+  	    try {
+  	    	Query query = entityManager.createQuery("SELECT b FROM Book as b");
+  	    	listBooks = query.getResultList();
+	
+  	    } catch(Exception e) {
+  	    	e.printStackTrace();
+  	    	
+  	    } finally {
+  	    	entityManager.close();
+  	    }
+  	    return listBooks;
      }
 }

@@ -30,7 +30,7 @@ public class OrderService {
               order = new Order();
              LocalDateTime date = LocalDateTime.now();
              order.setDate(date);
-             order.setStatus('I');
+             order.setStatus("I");
              order.setUserId(user.getId());
   		   EntityTransaction transaction = entityManager.getTransaction();
   		   transaction.begin();

@@ -17,7 +17,7 @@
 <input type="submit" value="aggiungi un libro" class="button">
 </form>
 &nbsp;
-<form action="newOrder" method ="GET">
+<form action="createOrder" method ="GET">
 <input type="submit" value="crea un ordine" class="button">
 </form>
 &nbsp;
