@@ -32,7 +32,11 @@ public class HomeServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
 		System.out.println("HomeServlet doGet");
+		String s = request.getParameter("logout");
+		System.out.println(s);
+		if (s != null) session.removeAttribute("user");
 		doPost(request, response);
 	}
 
@@ -48,8 +52,7 @@ public class HomeServlet extends HttpServlet {
 		String surname = (String) request.getParameter("surname");
 		String email = (String) request.getParameter("email");
 		String password = (String) request.getParameter("password");
-		
-		
+			
 		String nextPage;
 		if(name == null) nextPage = nextPage(request, email, password);
 		else nextPage = subscribe(request, name, surname, email, password);
@@ -63,7 +66,7 @@ public class HomeServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String nextPage = null;
 		if (email == null && password == null) {
-			nextPage = "loginpage.jsp";
+			nextPage = "./listservlet";
 		}
 		else {
 			user = em.isUser(email, password);

@@ -29,7 +29,7 @@ Surname : <%=user.getSurname()%><br/><br/>
 Email : <%=user.getEmail()%><br/><br/>
 
  <form action="./homeservlet" method="GET">
-<input type="submit" value="Log out"> 
+<input type="submit" name="logout" value="Log out"> 
 </form>
 </div>
 

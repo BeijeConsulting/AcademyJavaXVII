@@ -12,8 +12,14 @@
 </head>
 <body>
 <div style="justify-content: space-between; align-items: center">
+
+<%if (session.getAttribute("user") != null) {%>
 <a href="infouserpage.jsp"><button style="border:solid; border-width: 1px; " >Profile</button></a>
 <a href="./orderservlet"><button style="border:solid; border-width: 1px; " >Buy books</button></a>
+<% } else{%>
+<a href="loginpage.jsp"><button style="border:solid; border-width: 1px; " >Log in</button></a>
+<%} %>
+
 <a href="./listservlet"><button style="border:solid; border-width: 1px; " disabled>Catalogue</button></a>
 </div>
 
