@@ -12,23 +12,8 @@
 <h1> WELCOME&nbsp;${email}!!</h1>&nbsp;
 
 <c:if test="${not empty deleteOrder}"><h3 style="color:green;font-weight:bold;">${deleteOrder}</h3> </c:if>
+<c:if test="${not empty ordinePagato}"><h3 style="color:green;font-weight:bold;">${ordinePagato}</h3> </c:if>
 
-<%
-  if(session.getAttribute("ordinePagato") != null){
-	  %>  
-	  <h3 style="color:green;font-weight:bold;"><%= session.getAttribute("ordinePagato") %></h3>
-	  <%
-	  session.removeAttribute("ordinePagato");
-  }
-	  %>
-	  <%
-  if(session.getAttribute("deleteOrder") != null){
-	  %>  
-	  <h3 style="color:green;font-weight:bold;"><%= session.getAttribute("deleteOrder") %></h3>
-	  <%
-	  session.removeAttribute("deleteOrder");
-  }
-	  %>
 
 
 <form action="my_orders" method ="get">
