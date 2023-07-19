@@ -11,15 +11,9 @@
 
 <p>
 <h1> WELCOME&nbsp;${loggedUser.name}!!</h1><br/>
-<form action="./createBook" method ="GET">
-	<input type="submit" value="aggiungi un libro" class="button">
-</form>
+
 &nbsp;
-<form action="newOrder" method ="GET">
-	<input type="submit" value="crea un ordine" class="button">
-</form>
-&nbsp;
-<form action="myOrders" method ="GET">
+<form action="myOrders" method ="post">
 	<input type="submit" value="I miei ordini" class="button">
 </form>
 <h2>Libri disponibili:</h2><br/>
