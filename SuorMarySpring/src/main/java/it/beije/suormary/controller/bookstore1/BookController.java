@@ -21,7 +21,7 @@ public class BookController {
 	}
 	
 	@RequestMapping(value = "/loginEsempio", method = RequestMethod.POST)
-	public String loginPost(HttpSession session, Model model,
+	public String loginPost(Model model,
 			@RequestParam String title, @RequestParam String description,
 			@RequestParam String editor, @RequestParam String price, @RequestParam String quantity,
 			@RequestParam String author) {
@@ -30,7 +30,7 @@ public class BookController {
 		int quantityInt = Integer.valueOf(quantity);
 		int idAuthor = Integer.valueOf(author);
 		BookUtils.addNewBook(title, description, editor, priceDouble, quantityInt, idAuthor);
-		session.setAttribute("newBookMessage", "Il libro " + title + " è stato inserito con successo.");
+		model.addAttribute("newBookMessage", "Il libro " + title + " è stato inserito con successo.");
 		return "book";	
 	}
 	

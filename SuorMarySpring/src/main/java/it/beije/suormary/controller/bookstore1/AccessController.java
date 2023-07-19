@@ -73,7 +73,7 @@ public class AccessController {
 	}
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public String loginPost(HttpSession session, Model model,
+	public String loginPost(Model model,
 			@RequestParam String email,
 			@RequestParam String password, @RequestParam String name, 
 			@RequestParam String surname) {
@@ -82,11 +82,11 @@ public class AccessController {
 		
 		
 		if(UserUtils.userExists(email)) {
-			session.setAttribute("registrationError", "L' email inserita è già associata ad un account.");
+			model.addAttribute("registrationError", "L' email inserita è già associata ad un account.");
 			return "registration";
 		}else {
 			UserUtils.createUser(email, password, name, surname);
-			session.setAttribute("registrationSuccess", "L'account è stato registrato con successo.");
+			model.addAttribute("registrationSuccess", "L'account è stato registrato con successo.");
 			return "login";
 		}
 		
