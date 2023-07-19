@@ -31,9 +31,9 @@
 				<p><b>Indirizzo di spedizione</b>: ${order.shippingAddress}</p>
 				<p><b>Stato </b>: 
 				<c:choose>
-				<c:when test="${order.status == 'I'.charAt(0)}">Inserito</c:when>
-				<c:when test="${order.status == 'P'.charAt(0)}">Pagato</c:when>
-				<c:when test="${order.status == 'C'.charAt(0)}">Annullato</c:when>
+				<c:when test="${order.status == inserted}">Inserito</c:when>
+				<c:when test="${order.status == paid}">Pagato</c:when>
+				<c:when test="${order.status == cancelled}">Annullato</c:when>
 				<c:otherwise>Errore</c:otherwise>
 				</c:choose>
 				</p>	
@@ -47,7 +47,7 @@
 			</c:forEach>
 			<p><b>TOTALE:</b> ${order.amount} euro</p>
 			<c:choose>
-			<c:when test="${order.status == 'I'.charAt(0)}">
+			<c:when test="${order.status == inserted}">
 				<form method="POST" action="./order">
 					<input type="hidden" name="orderId" value="${order.id}" />
 					<input type="submit" name="updateOrder" value="Paga" style="margin-right: 20px; background-color: #C5FAC7; font-size: 20px"/>

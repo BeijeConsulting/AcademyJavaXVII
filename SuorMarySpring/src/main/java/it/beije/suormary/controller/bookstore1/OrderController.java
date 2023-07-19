@@ -29,6 +29,9 @@ public class OrderController {
 	public String orderGet (Model model, HttpSession session) {
 		List<Order> oi = orderService.getOrders(userService.getUserId((String)(session.getAttribute("email"))));
 		model.addAttribute("orders", oi);
+		model.addAttribute("inserted", orderService.getInserted());
+		model.addAttribute("paid", orderService.getPaid());
+		model.addAttribute("cancelled", orderService.getCancelled());
 		return "orders";
 	}
 	
@@ -43,10 +46,10 @@ public class OrderController {
 				orderService.createOrder(address, session);
 				break;
 			case "Paga":
-				orderService.editStatus('P', Integer.valueOf(orderId));
+				orderService.editStatus("P", Integer.valueOf(orderId));
 				break;
 			case "Annulla":
-				orderService.editStatus('C', Integer.valueOf(orderId));
+				orderService.editStatus("C", Integer.valueOf(orderId));
 				break;
 			default:
 				System.out.println("Errore");
@@ -55,9 +58,9 @@ public class OrderController {
 		
 		List<Order> oi = orderService.getOrders(userService.getUserId((String)(session.getAttribute("email"))));
 		model.addAttribute("orders", oi);
-		model.addAttribute("inserito", orderService.getInserted());
-		//model.addAttribute("paid", Order.getPaid());
-		//model.addAttribute("cancelled", Order.getCancelled());
+		model.addAttribute("inserted", orderService.getInserted());
+		model.addAttribute("paid", orderService.getPaid());
+		model.addAttribute("cancelled", orderService.getCancelled());
 		
 		return "orders";
 		

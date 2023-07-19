@@ -39,7 +39,7 @@ public class OrderService {
 			order.setUserId(id);
 			order.setShippingAddress(address);
 			order.setDate(LocalDateTime.now());
-			order.setStatus('I');
+			order.setStatus("I");
 			
 			Map<Integer,Integer> cart = Cart.getCart(session);
 			
@@ -119,7 +119,7 @@ public class OrderService {
 		}
 	}
 	
-	public void editStatus(Character status, int orderId) {
+	public void editStatus(String status, int orderId) {
 		EntityManager em = null;
 		try {
 			em = JPAManagerFactory.getEntityManager();
@@ -194,6 +194,14 @@ public class OrderService {
 	
 	public String getInserted() {
 		return "I";
+	}
+	
+	public String getPaid() {
+		return "P";
+	}
+	
+	public String getCancelled() {
+		return "C";
 	}
 	
 }
