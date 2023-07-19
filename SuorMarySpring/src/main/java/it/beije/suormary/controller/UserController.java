@@ -74,5 +74,14 @@ public class UserController {
 		session.setAttribute("email", email);
 		return "welcome";
 	}
+	@RequestMapping(value = "/my_order", method = RequestMethod.GET)
+	public String myOrderGet(HttpSession session) {
+
+        if(session.getAttribute("email") != null) {
+        	
+        	 return "my_order";
+         }
+         else return "register";
+	}
 
 }
