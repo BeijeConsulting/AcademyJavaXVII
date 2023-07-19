@@ -65,7 +65,7 @@ public class AccessController {
 	}
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.GET)
-	public String loginGet() {
+	public String registrationGet() {
 		System.out.println("GET /registration");
 		
 		return "registration";
@@ -73,7 +73,7 @@ public class AccessController {
 	}
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public String loginPost(Model model,
+	public String registrationPost(HttpSession session, Model model,
 			@RequestParam String email,
 			@RequestParam String password, @RequestParam String name, 
 			@RequestParam String surname) {

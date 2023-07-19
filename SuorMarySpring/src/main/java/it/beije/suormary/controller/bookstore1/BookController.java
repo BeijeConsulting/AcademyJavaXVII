@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BookController {
 
 	@RequestMapping(value = "/book", method = RequestMethod.GET)
-	public String getBook(HttpSession session) {
+	public String bookGet (HttpSession session) {
 		List<Author> listAuthor = (List<Author>)AuthorUtils.getAuthorList();
 		session.setAttribute("listAuthor", listAuthor);
 		return "book"; 
 	}
 	
-	@RequestMapping(value = "/loginEsempio", method = RequestMethod.POST)
-	public String loginPost(Model model,
+	@RequestMapping(value = "/book", method = RequestMethod.POST)
+	public String bookPost(Model model,
 			@RequestParam String title, @RequestParam String description,
 			@RequestParam String editor, @RequestParam String price, @RequestParam String quantity,
 			@RequestParam String author) {
