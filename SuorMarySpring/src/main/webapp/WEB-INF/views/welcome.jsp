@@ -10,6 +10,8 @@
 
 
 <h1> WELCOME&nbsp;${email}!!</h1>&nbsp;
+
+<c:if test="${not empty deleteOrder}"><h3 style="color:green;font-weight:bold;">${deleteOrder}</h3> </c:if>
 <form action="my_orders" method ="get">
 	<input type="submit" value="I miei ordini" class="button">
 </form>&nbsp;

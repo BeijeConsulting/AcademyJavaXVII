@@ -93,7 +93,8 @@ public class OrderController {
 	        int orderId= (int) session.getAttribute("orderId");			
 			orderService.deleteOrder(orderId);
 	        model.addAttribute("deleteOrder", "L`ordine è stato cancellato");
-	        
+	        List<Book> books = bookService.loadBooks();
+	        model.addAttribute("books", books);
 			return "welcome";	
 	   }
 
