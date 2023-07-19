@@ -1,6 +1,8 @@
-package it.beije.suormary.dumpster.bookstore1;
+package dumpster.bookstore1;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,16 +16,16 @@ import it.beije.suormary.bin.bookstore1.Book;
 import it.beije.suormary.bin.bookstore1.Cart;
 
 /**
- * Servlet implementation class ShopServlet
+ * Servlet implementation class CartServlet
  */
-@WebServlet("/ShopServlet")
-public class ShopServlet extends HttpServlet {
+@WebServlet("/CartServlet")
+public class CartServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ShopServlet() {
+    public CartServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,11 +34,11 @@ public class ShopServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Map<Integer,Integer> cart = Cart.getCart(request);
 		
-		List<Book> books = BookUtils.getAllBooks();
+		Map<Book,Integer> books = BookUtils.getBooks(cart);
 		request.getSession().setAttribute("books", books);
-		request.getRequestDispatcher("./shop.jsp").forward(request, response);
-		
+		request.getRequestDispatcher("./cart.jsp").forward(request, response);
 	}
 
 	/**
@@ -48,18 +50,16 @@ public class ShopServlet extends HttpServlet {
 		
 		Map<Integer,Integer> cart = Cart.getCart(request);
 		
-		if(cart.containsKey(bookId)) {
-			int newQuantity = cart.get(bookId) + quantity;
+		int newQuantity = cart.get(bookId) - quantity;
+		
+		if(newQuantity > 0) {	
 			cart.replace(bookId, newQuantity);
-		}else {
-			cart.put(bookId, quantity);
+		}else {	
+			cart.remove(bookId);
 		}
 		
 		request.getSession().setAttribute("cart", cart);
-		
-		System.out.println(request.getSession().getAttribute("cart"));
-		
-		response.sendRedirect("./ShopServlet");
+		response.sendRedirect("./CartServlet");
 	}
 
 }

@@ -1,4 +1,4 @@
-package it.beije.suormary.dumpster.bookstore1;
+package dumpster.bookstore1;
 
 import java.io.IOException;
 import java.util.List;

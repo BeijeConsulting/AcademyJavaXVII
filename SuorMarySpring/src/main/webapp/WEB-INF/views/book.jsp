@@ -1,5 +1,6 @@
-<%@page import="it.beije.suormary.bookstore1.Author"%>
+<%@page import="it.beije.suormary.bin.bookstore1.Author"%>
 <%@page import="java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -18,16 +19,7 @@ ${listAuthor}
 
 <div style="text-align: center">
 <h1 style="font-family: fantasy; font-size: 36px">BOOKstoreONE</h1>
-<%
-String newBookMessage = (String) session.getAttribute("newBookMessage");
-if (newBookMessage != null) {
-	%>
-	<p style="color:green"><%= newBookMessage %></p>
-	<%
-	
-	session.removeAttribute("newBookMessage");
-}
-%>
+<p style="color:green">${newBookMessage}</p>
 <h2>Aggiungi un nuovo libro!</h2>
 <form action="./BookServlet" method="POST">
   <label for="title">Titolo:</label><br>
@@ -42,16 +34,15 @@ if (newBookMessage != null) {
   <input type="text" name="quantity" ><br><br>
    <label for="author">Autore:</label><br>
    <select name="author">
-   <% for(Author a:la){
-	   %>
-	   <option value="<%=a.getId() %>"><%=a.getName() %> <%=a.getSurname() %></option>
-  <% }%>
+   
+   <c:forEach items="${listAuthor}" value="author">
+   		<option value="${author.id}">${author.name} ${author.surname}</option>
+   </c:forEach>
    </select>
   <input type="submit" value="Submit">
 </form> 
-<%session.removeAttribute("listAuthor"); %>
 <br><br>
-<a href="./LoginServlet">Torna al login</a>
+<a href="./login">Torna al login</a>
 </div>
 </body>
 </html>

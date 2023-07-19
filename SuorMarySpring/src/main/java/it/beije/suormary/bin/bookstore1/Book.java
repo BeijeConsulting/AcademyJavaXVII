@@ -1,5 +1,8 @@
 package it.beije.suormary.bin.bookstore1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -56,6 +59,9 @@ public class Book {
 	@Transient
 	private Author author;
 	
+	@Transient
+	private List<Integer> itemQuantity;
+	
 	public Book() {
 		
 	}
@@ -66,7 +72,7 @@ public class Book {
 		this.editor=editor;
 		this.price=price;
 		this.quantity=quantity;
-		this.authorId=authorId;	
+		this.authorId=authorId;
 	}
 	
 	public int getId() {
@@ -133,6 +139,17 @@ public class Book {
 		this.author = author;
 	}
 
+	public List<Integer> getItemQuantity() {
+		return itemQuantity;
+	}
+
+	public void setItemQuantity(int quantity) {
+		this.itemQuantity = new ArrayList<Integer>();
+		for(int i=1; i<=quantity; i++) {
+			this.itemQuantity.add(i);
+		}
+	}
+	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)

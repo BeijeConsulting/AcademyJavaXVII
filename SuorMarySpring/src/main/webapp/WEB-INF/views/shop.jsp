@@ -1,4 +1,4 @@
-<%@page import="it.beije.suormary.controller.bookstore1.Book"%>
+<%@page import="it.beije.suormary.bin.bookstore1.Book"%>
 <%@page import="java.util.List"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -16,10 +16,10 @@
 </head>
 <body>
 	<ul>
-		<li style="display: inline; margin-right:30px;"><a href="./ShopServlet">Shop</a></li>
-		<li style="display: inline; margin-right:30px;"><a href="./CartServlet">Cart</a></li>
-		<li style="display: inline; margin-right:30px;"><a href="./OrderServlet"">Orders</a></li>
-		<li style="display: inline;"><a href="./LogoutServlet">Logout</a></li>
+		<li style="display: inline; margin-right:30px;"><a href="./shop">Shop</a></li>
+		<li style="display: inline; margin-right:30px;"><a href="./cart">Cart</a></li>
+		<li style="display: inline; margin-right:30px;"><a href="./orders">Orders</a></li>
+		<li style="display: inline;"><a href="./logout">Logout</a></li>
 	</ul>
 	<hr/>
 	<c:choose>
@@ -39,27 +39,15 @@
 				<form method="POST" action="./shop">
 					<input type="hidden" value="${b.id}" name="bookId" />
 					<select name="quantity" >
-					<c: forEach items="$"></c:>
-						<%
-						for(int i=1; i<=b.getQuantity(); i++){
-						%>
-							<option value="<%=i %>"><%=i %></option>
-						<%} %>
+						<c:forEach items="${b.itemQuantity }" var="value">
+							<option value="${value}">${value}</option>
+						</c:forEach>
 					</select>
 					<input type="submit" name="addBook" value="Aggiungi" />
 				</form>
 			</div>
 		</c:forEach>
 	</c:otherwise>
-</c:choose>
-	<%
-	List<Book> books = (List<Book>)session.getAttribute("books"); 
-	
-	for(Book b : books){
-	%>
-	
-	<%} 
-	session.removeAttribute("books");
-	%>
+	</c:choose>
 </body>
 </html>

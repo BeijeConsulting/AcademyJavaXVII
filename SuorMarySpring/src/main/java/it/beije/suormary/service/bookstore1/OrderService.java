@@ -11,13 +11,13 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
+import dumpster.bookstore1.BookUtils;
+import dumpster.bookstore1.OrderItemUtils;
+import dumpster.bookstore1.UserUtils;
 import it.beije.suormary.bin.bookstore1.Book;
 import it.beije.suormary.bin.bookstore1.Cart;
 import it.beije.suormary.bin.bookstore1.Order;
 import it.beije.suormary.bin.bookstore1.OrderItem;
-import it.beije.suormary.dumpster.bookstore1.BookUtils;
-import it.beije.suormary.dumpster.bookstore1.OrderItemUtils;
-import it.beije.suormary.dumpster.bookstore1.UserUtils;
 
 @Service
 public class OrderService {

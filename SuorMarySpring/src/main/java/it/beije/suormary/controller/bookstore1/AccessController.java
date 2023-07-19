@@ -1,5 +1,7 @@
 package it.beije.suormary.controller.bookstore1;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import dumpster.bookstore1.UserUtils;
+import it.beije.suormary.bin.bookstore1.Book;
 import it.beije.suormary.bin.bookstore1.User;
-import it.beije.suormary.dumpster.bookstore1.UserUtils;
+import it.beije.suormary.service.bookstore1.BookService;
 import it.beije.suormary.service.bookstore1.UserService;
 
 @Controller
@@ -19,6 +23,9 @@ public class AccessController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private BookService bookService;
+	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginGet(HttpSession session) {
 		System.out.println("GET /login");
@@ -26,7 +33,7 @@ public class AccessController {
 		String email = (String) session.getAttribute("email");
 		
 		if (email != null) { //utente loggato
-			return "";
+			return "shop";
 		//chiamare metodo di shop!!!
 		} else { //non loggato
 		
@@ -52,9 +59,12 @@ public class AccessController {
 		
 		if (user!=null) { //OK
 			session.setAttribute("email", email);
-				
-			//response.sendRedirect("./ShopServlet");
-			return null;
+			
+			List<Book> books = bookService.getAllBooks();
+			System.out.println(books);
+			model.addAttribute("books", books);
+			
+			return "shop";
 		} else { //KO
 			//session.setAttribute("loginError", "CREDENZIALI NON VALIDE!!!");
 			model.addAttribute("loginError", "CREDENZIALI NON VALIDE!!!");

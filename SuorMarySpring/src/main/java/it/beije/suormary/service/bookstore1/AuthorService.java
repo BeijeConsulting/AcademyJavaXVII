@@ -13,8 +13,7 @@ import it.beije.suormary.bin.bookstore1.Author;
 @Service
 public class AuthorService {
 
-	public void addAuthor(String name, String surname, String description) {
-		Author author = null;
+	public void addAuthor(Author author) {
 		EntityManager entityManager = null;
 		EntityTransaction transaction = null;
 		try {
@@ -22,8 +21,7 @@ public class AuthorService {
 			entityManager = JPAManagerFactory.getEntityManager();
 			transaction = entityManager.getTransaction();
 			transaction.begin();
-			
-			author = new Author(name, surname, description);
+		
 			entityManager.persist(author);
 			
 			transaction.commit();

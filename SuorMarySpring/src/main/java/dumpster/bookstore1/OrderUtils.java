@@ -1,4 +1,4 @@
-package it.beije.suormary.dumpster.bookstore1;
+package dumpster.bookstore1;
 
 import java.time.LocalDateTime;
 import java.util.List;

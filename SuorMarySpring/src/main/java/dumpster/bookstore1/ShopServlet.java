@@ -1,8 +1,6 @@
-package it.beije.suormary.dumpster.bookstore1;
+package dumpster.bookstore1;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,16 +14,16 @@ import it.beije.suormary.bin.bookstore1.Book;
 import it.beije.suormary.bin.bookstore1.Cart;
 
 /**
- * Servlet implementation class CartServlet
+ * Servlet implementation class ShopServlet
  */
-@WebServlet("/CartServlet")
-public class CartServlet extends HttpServlet {
+@WebServlet("/ShopServlet")
+public class ShopServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CartServlet() {
+    public ShopServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,11 +32,11 @@ public class CartServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Map<Integer,Integer> cart = Cart.getCart(request);
 		
-		Map<Book,Integer> books = BookUtils.getBooks(cart);
+		List<Book> books = BookUtils.getAllBooks();
 		request.getSession().setAttribute("books", books);
-		request.getRequestDispatcher("./cart.jsp").forward(request, response);
+		request.getRequestDispatcher("./shop.jsp").forward(request, response);
+		
 	}
 
 	/**
@@ -50,16 +48,18 @@ public class CartServlet extends HttpServlet {
 		
 		Map<Integer,Integer> cart = Cart.getCart(request);
 		
-		int newQuantity = cart.get(bookId) - quantity;
-		
-		if(newQuantity > 0) {	
+		if(cart.containsKey(bookId)) {
+			int newQuantity = cart.get(bookId) + quantity;
 			cart.replace(bookId, newQuantity);
-		}else {	
-			cart.remove(bookId);
+		}else {
+			cart.put(bookId, quantity);
 		}
 		
 		request.getSession().setAttribute("cart", cart);
-		response.sendRedirect("./CartServlet");
+		
+		System.out.println(request.getSession().getAttribute("cart"));
+		
+		response.sendRedirect("./ShopServlet");
 	}
 
 }

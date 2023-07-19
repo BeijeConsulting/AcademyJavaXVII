@@ -11,9 +11,9 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Service;
 
+import dumpster.bookstore1.BookUtils;
 import it.beije.suormary.bin.bookstore1.Author;
 import it.beije.suormary.bin.bookstore1.Book;
-import it.beije.suormary.dumpster.bookstore1.BookUtils;
 
 @Service
 public class BookService {
@@ -31,6 +31,7 @@ public class BookService {
 				query.setParameter("authId", books.get(i).getAuthorId());
 				Author a = (Author) query.getSingleResult();
 				books.get(i).setAuthor(a);
+				books.get(i).setItemQuantity(books.get(i).getQuantity());
 			}
 			
 		}catch(Exception e) {
@@ -54,7 +55,8 @@ public class BookService {
 			query = entityManager.createQuery("SELECT a FROM Author as a WHERE a.id = :authId ");
 			query.setParameter("authId", book.getAuthorId());
 			Author a = (Author) query.getSingleResult();
-			book.setAuthor(a);			
+			book.setAuthor(a);
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
@@ -68,8 +70,10 @@ public class BookService {
 		Map<Book,Integer> books = new HashMap<>();
 		Book b = null;
 		for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
-			b = BookUtils.getBook(entry.getKey());
+			b = getBook(entry.getKey());
+			b.setItemQuantity(entry.getValue());
 			books.put(b, entry.getValue());
+			
 		}
 		return books;
 		
