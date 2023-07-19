@@ -202,7 +202,13 @@ public class EcommerceManager {
      	for (BasketItem bi : basketItems) {
      		Book book = em.find(Book.class, bi.getBookId());
      		int quantity = bi.getQuantity();
-     		basket.put(book, quantity);
+     		if (quantity <= book.getQuantity()) {
+     			basket.put(book, quantity);
+     		}
+     		else {
+     			basket.put(book, book.getQuantity());
+     		}
+     		
      	}
 
      	em.close();
