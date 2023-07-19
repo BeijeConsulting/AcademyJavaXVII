@@ -17,17 +17,9 @@
 <div style="text-align: center">
 <h1 style="font-family: fantasy; font-size: 36px">BOOKstoreONE</h1>
 <h3>Registrati qui!</h3>
-<%
-String registrationError = (String) session.getAttribute("registrationError");
-if (registrationError != null) {
-	%>
-	<p style="color:red"><%= registrationError %></p>
-	<%
-	
-	session.removeAttribute("registrationError");
-}
-%>
-<form action="./RegisterServlet" method="POST">
+<p style="color:red">${registrationError}</p>
+
+<form action="./registration" method="POST">
   <label for="email">Email:</label><br>
   <input type="text" name="email" ><br>
   <label for="password">Password:</label><br>
@@ -38,7 +30,7 @@ if (registrationError != null) {
   <input type="text" name="surname" ><br><br>
   <input type="submit" value="Submit">
 </form> <br>
-<a href="./LoginServlet">Accedi con un account esistente</a>
+<a href="login">Accedi con un account esistente</a>
 </div>
 </body>
 </html>

@@ -14,7 +14,8 @@
 <title>Add Book</title>
 </head>
 <body>
-<%List<Author> la = (List<Author>) session.getAttribute("listAuthor"); %>
+${listAuthor}
+
 <div style="text-align: center">
 <h1 style="font-family: fantasy; font-size: 36px">BOOKstoreONE</h1>
 <%

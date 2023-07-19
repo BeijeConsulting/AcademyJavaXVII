@@ -64,5 +64,32 @@ public class AccessController {
 		return "login";
 	}
 	
+	@RequestMapping(value = "/registration", method = RequestMethod.GET)
+	public String loginGet() {
+		System.out.println("GET /registration");
+		
+		return "registration";
+		
+	}
+	
+	@RequestMapping(value = "/registration", method = RequestMethod.POST)
+	public String loginPost(HttpSession session, Model model,
+			@RequestParam String email,
+			@RequestParam String password, @RequestParam String name, 
+			@RequestParam String surname) {
+		System.out.println("POST /registration");
+		
+		
+		
+		if(UserUtils.userExists(email)) {
+			session.setAttribute("registrationError", "L' email inserita è già associata ad un account.");
+			return "registration";
+		}else {
+			UserUtils.createUser(email, password, name, surname);
+			session.setAttribute("registrationSuccess", "L'account è stato registrato con successo.");
+			return "login";
+		}
+		
+	}
 
 	}
