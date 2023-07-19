@@ -1,20 +1,26 @@
 package it.beije.suormary.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.beije.suormary.service.TestService;
+
 
 @Controller
 public class TestController {
+	
+	@Autowired
+	private TestService testService;
+	
 	
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test() {
@@ -53,14 +59,18 @@ public class TestController {
 		if (username != null && username.equalsIgnoreCase("pippo@beije.it") && password != null && password.equals("12345")) { //OK
 			
 			
-			List<String> libri = new ArrayList<String>();
-			libri.add("I Promessi Sposi");
-			libri.add("La Divina Commedia");
-			libri.add("Manuale OCA");
-			libri.add("Tre metri sopra il cielo");
-			libri.add("Guida galattica per programmatori");
+//			List<String> libri = new ArrayList<String>();
+//			libri.add("I Promessi Sposi");
+//			libri.add("La Divina Commedia");
+//			libri.add("Manuale OCA");
+//			libri.add("Tre metri sopra il cielo");
+//			libri.add("Guida galattica per programmatori");
 			
-			model.addAttribute("libri", libri);
+//			TestService testService = new TestService();
+			System.out.println("testService : " + testService.hashCode());
+			List<String> books = testService.getBooks();
+			
+			model.addAttribute("libri", books);
 			
 			User user = new User();
 			user.setEmail("pippo@beije.it");
@@ -77,6 +87,23 @@ public class TestController {
 
 			return "login";
 		}
+	}
+	
+	
+	@RequestMapping(value = "/form_user", method = RequestMethod.GET)
+	public String formUser() {
+		System.out.println("GET /form_user");
+
+		return "form_user";
+	}
+
+	@RequestMapping(value = "/insert_user", method = RequestMethod.POST)
+	public String insertUser(User user, Model model) {
+		System.out.println("POST /insert_user : " + user);
+		
+		model.addAttribute("user", user);
+		
+		return "insert_user";
 	}
 
 }

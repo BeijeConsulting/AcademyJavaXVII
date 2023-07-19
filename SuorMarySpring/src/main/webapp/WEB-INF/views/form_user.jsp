@@ -10,11 +10,11 @@
 <%
 %>
 
-<form action="./insert_user.jsp" method="POST">
-  <label for="fname">Name:</label><br>
-  <input type="text" name="fname" ><br>
-  <label for="lname">Surname:</label><br>
-  <input type="text" name="lname" ><br>
+<form action="./insert_user" method="POST">
+  <label for="name">Name:</label><br>
+  <input type="text" name="name" ><br>
+  <label for="surname">Surname:</label><br>
+  <input type="text" name="surname" ><br>
   <label for="email">Email:</label><br>
   <input type="text" name="email" ><br>
   <label for="password">Password:</label><br>
