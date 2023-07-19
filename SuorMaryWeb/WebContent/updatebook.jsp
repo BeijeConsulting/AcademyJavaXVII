@@ -28,7 +28,7 @@ session.setAttribute("form", "updatebook");%>
 <div>
 	<form action="./listservlet" name="book" method="POST">
 		  <label for="title">Title:</label><br>
-		  <input type="text" name="title" readonly><%=book.getTitle()%><br><br>
+		  <input type="text" name="title" value="<%=book.getTitle()%>" readonly><br><br>
 		  
 		  <label for="description">Description:</label><br>
 		  <textarea name="description" readonly><%=book.getDescription()%></textarea><br><br>

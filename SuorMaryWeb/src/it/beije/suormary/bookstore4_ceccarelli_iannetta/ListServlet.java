@@ -35,10 +35,15 @@ public class ListServlet extends HttpServlet {
 		System.out.println("ListServlet doGet");
 		
 		HttpSession session = request.getSession();
+		//User user = (User) request.getAttribute("user");
+		//session.setAttribute("user", user);
+		
 		books = em.listBook();
 		session.setAttribute("allBooks", books);
 		authors = em.listAuthor();
+		
 		session.setAttribute("allAuthors", authors);
+		
 		response.sendRedirect("listpage.jsp");
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
@@ -49,7 +54,9 @@ public class ListServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("ListServlet doPost");
 		
-		HttpSession session = request.getSession();	
+		HttpSession session = request.getSession();
+		//User user = (User) request.getAttribute("user");
+		//session.setAttribute("user", user);
 		
 		String form = (String) session.getAttribute("form");
 		

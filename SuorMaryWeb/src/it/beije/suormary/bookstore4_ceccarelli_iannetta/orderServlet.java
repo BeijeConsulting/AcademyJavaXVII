@@ -3,6 +3,7 @@ package it.beije.suormary.bookstore4_ceccarelli_iannetta;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -34,6 +35,7 @@ public class orderServlet extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		int idUser = ((User)session.getAttribute("user")).getId();
+		System.out.println("USER ID : " + idUser);
 		
 		if(request.getParameter("indexBook") !=null) {
 		
@@ -46,6 +48,8 @@ public class orderServlet extends HttpServlet {
 		
 		session.setAttribute("basket", basket);
 		session.setAttribute("basketAmount", em.getBasketAmount(idUser));
+		List<Book> books = em.listBook();
+		session.setAttribute("allBooks", books);
 		response.sendRedirect("buypage.jsp");
 		
 		
@@ -60,8 +64,18 @@ public class orderServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// aggiorna Order status
+		HttpSession session = request.getSession();
+		int idUser = ((User)session.getAttribute("user")).getId();
 		
-		//doGet(request, response);
+		String shippingAddress = request.getParameter("address");
+		String paymentType = request.getParameter("typePayment");
+		
+		em.buy(idUser, shippingAddress, paymentType);
+		
+		ArrayList<Order> listOrders = em.userOrders(idUser);
+		session.setAttribute("listOrders", listOrders);
+		
+		response.sendRedirect("infouserpage.jsp");
+		
 	}
-
 }

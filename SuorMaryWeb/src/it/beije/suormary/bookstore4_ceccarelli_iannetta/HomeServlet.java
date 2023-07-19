@@ -69,6 +69,8 @@ public class HomeServlet extends HttpServlet {
 			user = em.isUser(email, password);
 			if(user != null) {
 				session.setAttribute("user", user);
+				session.setAttribute("listOrders", em.userOrders(user.getId()));
+				//request.setAttribute("user", user);
 				nextPage = "./listservlet";
 			}
 			else {

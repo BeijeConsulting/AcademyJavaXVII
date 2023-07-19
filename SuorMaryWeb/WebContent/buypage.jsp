@@ -4,6 +4,7 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="it.beije.suormary.bookstore4_ceccarelli_iannetta.Book"%>
+<%@ page import="it.beije.suormary.bookstore4_ceccarelli_iannetta.User"%>
 <%@ page import="it.beije.suormary.bookstore4_ceccarelli_iannetta.Order"%>
 <%@ page import="it.beije.suormary.bookstore4_ceccarelli_iannetta.OrderItem"%>
 <!DOCTYPE html>
@@ -17,10 +18,11 @@
 <div style="justify-content: space-between; align-items: center">
 <a href="infouserpage.jsp"><button style="border:solid; border-width: 1px; " >Profile</button></a>
 <a href="./orderservlet"><button style="border:solid; border-width: 1px; " disabled>Buy books</button></a>
-<a href="./homeservlet"><button style="border:solid; border-width: 1px; " >Catalogue</button></a>
+<a href="./listservlet"><button style="border:solid; border-width: 1px; " >Catalogue</button></a>
 </div>
 
 <%
+System.out.println("BUY PAGE USER: " + ((User)(session.getAttribute("user"))));
 List<Book> books = (ArrayList<Book>) session.getAttribute("allBooks");
 if (books == null) {
 	%>
@@ -117,7 +119,7 @@ if (basket.isEmpty()) {
 	</tbody>
 	</table>
 	<!-- somma prezzi -->
-	<form action="payment.jsp" method="POST">
+	<form action="payment.jsp">
 	<input type="submit" value="Buy">
 	</form>
 	

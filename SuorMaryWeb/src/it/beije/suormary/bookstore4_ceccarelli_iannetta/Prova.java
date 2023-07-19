@@ -7,8 +7,11 @@ public class Prova {
 		
 		String email = "alice.ceccarelli@gmail.com";
 		String password  ="000001";
+		int userId = 1;
+		String payment = "cash";
+		String address = "via sconosciuta";
 		
-		em.isUser(email, password);
+		em.buy(userId,address,  payment);
 
 	}
 

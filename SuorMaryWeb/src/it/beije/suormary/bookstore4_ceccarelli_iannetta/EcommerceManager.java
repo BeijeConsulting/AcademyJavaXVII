@@ -17,7 +17,7 @@ import javax.transaction.Transaction;
 public class EcommerceManager {
 
     private EntityManager em;
-    private EntityTransaction transaction;
+    //private EntityTransaction transaction;
     
     public User isUser(String email, String password) {
     	em = JPAEntityFactory.openEntity();
@@ -44,7 +44,7 @@ public class EcommerceManager {
     
     public User insertUser(String name, String surname, String email, String password) {
     	em = JPAEntityFactory.openEntity();
-        transaction = em.getTransaction();
+        EntityTransaction transaction = em.getTransaction();
         transaction.begin();
 //        Query<User> query = session.createQuery("SELECT u FROM User as u "
 //				  + "WHERE email=:email");
@@ -277,9 +277,6 @@ public class EcommerceManager {
     }
     
     public void buy(int userId, String shippingAddress, String paymentType) {
-    	em = JPAEntityFactory.openEntity();
-    	EntityTransaction transaction = em.getTransaction();
-    	transaction.begin();
     	
     	Order order = new Order();
     	order.setDate(LocalDateTime.now());
@@ -287,9 +284,14 @@ public class EcommerceManager {
     	order.setStatus(paymentType.equals("cash") ? 'I' : 'P');
     	order.setAmount(getBasketAmount(userId));
     	order.setShippingAddress(shippingAddress);
+    	order.setItems(new ArrayList<OrderItem>());
+    	
+    	em = JPAEntityFactory.openEntity();
+    	EntityTransaction transaction = em.getTransaction();
+    	transaction.begin();
     	em.persist(order);
     	transaction.commit();
-    	
+    	em.close();
 //    	Query query = em.createQuery("SELECT order from Order as order WHERE order.date= :date AND order.userId = :userId");
 //    	query.setParameter("date", order.getDate());
 //    	query.setParameter("userId", userId);
@@ -299,10 +301,11 @@ public class EcommerceManager {
     	System.out.println(orderId);
     	
     	HashMap<Book, Integer> basket =  basket(userId);
-    	OrderItem oi = new OrderItem();
-    	oi.setOrderId(orderId);
-    
-    	for (HashMap.Entry<Book, Integer> set : basket.entrySet()){    		
+    	
+    	// hashMap book and quantity into basket
+    	for (HashMap.Entry<Book, Integer> set : basket.entrySet()){  
+    		OrderItem oi = new OrderItem();
+    		oi.setOrderId(orderId);  		
     		int bookId = set.getKey().getId();
     		oi.setBookId(bookId);
     		
@@ -312,16 +315,53 @@ public class EcommerceManager {
     		int bookQuantity = set.getValue();
     		oi.setQuantity(bookQuantity);
     		
+    		em = JPAEntityFactory.openEntity();
+        	transaction = em.getTransaction();
     		transaction.begin();
     		em.persist(oi);
     		transaction.commit();
+    		em.close();
+    		//insert into list of Items in Order
+    		order.getItems().add(oi);
     		
+    		//update db book quantity
+    		em = JPAEntityFactory.openEntity();
     		Book book = em.find(Book.class, bookId);
     		int newQ = book.getQuantity() - bookQuantity;
     		book.setQuantity(newQ);
+    		
+    		transaction = em.getTransaction();
+    		transaction.begin();
+    		em.persist(book);
+    		transaction.commit();
+    		em.close();
+    		
+    		// delete all items into basket
+    		em = JPAEntityFactory.openEntity();
+        	transaction = em.getTransaction();
+    		transaction.begin();
+    		Query query = em.createQuery("DELETE from BasketItem as bi WHERE bi.userId= :userId");
+        	query.setParameter("userId", userId);
+        	query.executeUpdate();
+        	transaction.commit();
+        	em.close();
     	}
+    
+    }
+    
+    //return all orders of user
+    public ArrayList<Order> userOrders(int userId) {
+    	em = JPAEntityFactory.openEntity();
+    	
+    	Query query = em.createQuery("SELECT o from Order as o WHERE o.userId= :userId");
+    	query.setParameter("userId", userId);
+    	ArrayList<Order> listOrders = (ArrayList<Order>) query.getResultList();
+    	
+    	em.close();
+    	return listOrders;
     	
     }
+    
     
 /*    public Order basket(int userId){
     	em = JPAEntityFactory.openEntity();

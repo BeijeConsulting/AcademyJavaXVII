@@ -14,7 +14,7 @@
 <div style="justify-content: space-between; align-items: center">
 <a href="infouserpage.jsp"><button style="border:solid; border-width: 1px; " >Profile</button></a>
 <a href="./orderservlet"><button style="border:solid; border-width: 1px; " >Buy books</button></a>
-<a href="./homeservlet"><button style="border:solid; border-width: 1px; " disabled>Catalogue</button></a>
+<a href="./listservlet"><button style="border:solid; border-width: 1px; " disabled>Catalogue</button></a>
 </div>
 
 <%
