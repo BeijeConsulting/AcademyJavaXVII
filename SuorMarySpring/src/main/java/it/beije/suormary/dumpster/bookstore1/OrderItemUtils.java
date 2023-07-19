@@ -7,8 +7,8 @@ import javax.persistence.Query;
 
 import it.beije.suormary.bin.bookstore1.Book;
 import it.beije.suormary.bin.bookstore1.Order;
-import it.beije.suormary.controller.bookstore1.JPAManagerFactory;
-import it.beije.suormary.controller.bookstore1.OrderItem;
+import it.beije.suormary.bin.bookstore1.OrderItem;
+import it.beije.suormary.service.bookstore1.JPAManagerFactory;
 
 public class OrderItemUtils {
 

@@ -7,7 +7,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import it.beije.suormary.bin.bookstore1.Author;
-import it.beije.suormary.controller.bookstore1.JPAManagerFactory;
+import it.beije.suormary.service.bookstore1.JPAManagerFactory;
 
 public class AuthorUtils {
 	

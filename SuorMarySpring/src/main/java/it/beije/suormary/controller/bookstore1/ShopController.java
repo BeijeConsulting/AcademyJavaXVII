@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -13,14 +14,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.beije.suormary.bin.bookstore1.Book;
 import it.beije.suormary.bin.bookstore1.Cart;
 import it.beije.suormary.dumpster.bookstore1.BookUtils;
+import it.beije.suormary.service.bookstore1.BookService;
 
 @Controller
 public class ShopController {
 	
+	@Autowired
+	private BookService bookService;
+	
 	@RequestMapping(value = "/shop", method = RequestMethod.GET)
 	public String shopGet(HttpSession session) {
 		
-		List<Book> books = BookUtils.getAllBooks();
+		List<Book> books = bookService.getAllBooks();
 		session.setAttribute("books", books);
 		return "shop";
 		
@@ -32,7 +37,7 @@ public class ShopController {
 		int quantityInt = Integer.valueOf(quantity);
 		Map<Integer,Integer> cart = Cart.getCart(session);
 		
-		if(cart.containsKey(bookId)) {
+		if(cart.containsKey(bookIdInt)) {
 			int newQuantity = cart.get(bookIdInt) + quantityInt;
 			cart.replace(bookIdInt, newQuantity);
 		}else {

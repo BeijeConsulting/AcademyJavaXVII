@@ -4,7 +4,7 @@
 		<class>it.beije.suormary.bin.bookstore1.Author</class>
 		<class>it.beije.suormary.bin.bookstore1.Book</class>
 		<class>it.beije.suormary.bin.bookstore1.Order</class>
-		<class>it.beije.suormary.controller.bookstore1.OrderItem</class>
+		<class>it.beije.suormary.bin.bookstore1.OrderItem</class>
 		<class>it.beije.suormary.bin.bookstore1.User</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		

@@ -1,4 +1,4 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.bin.bookstore1;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,8 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import it.beije.suormary.bin.bookstore1.Book;
 
 /*
 

@@ -11,8 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import it.beije.suormary.controller.bookstore1.OrderItem;
-
 /*
 
 CREATE TABLE `orders` (

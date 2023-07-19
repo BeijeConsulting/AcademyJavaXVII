@@ -2,6 +2,7 @@ package it.beije.suormary.controller.bookstore1;
 
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,9 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.beije.suormary.bin.bookstore1.User;
 import it.beije.suormary.dumpster.bookstore1.UserUtils;
+import it.beije.suormary.service.bookstore1.UserService;
 
 @Controller
 public class AccessController {
+	
+	@Autowired
+	private UserService userService;
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginGet(HttpSession session) {
@@ -41,7 +46,7 @@ public class AccessController {
 		System.out.println("password : " + password);
 		
 		
-		User user = UserUtils.checkUser(email, password);
+		User user = userService.checkUser(email, password);
 		
 		System.out.println(user);
 		
@@ -76,19 +81,14 @@ public class AccessController {
 	}
 	
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
-	public String registrationPost(HttpSession session, Model model,
-			@RequestParam String email,
-			@RequestParam String password, @RequestParam String name, 
-			@RequestParam String surname) {
+	public String registrationPost(HttpSession session, Model model, User user) {
 		System.out.println("POST /registration");
-		
-		
-		
-		if(UserUtils.userExists(email)) {
+			
+		if(userService.userExists(user.getEmail())) {
 			model.addAttribute("registrationError", "L' email inserita è già associata ad un account.");
 			return "registration";
 		}else {
-			UserUtils.createUser(email, password, name, surname);
+			userService.createUser(user);
 			model.addAttribute("registrationSuccess", "L'account è stato registrato con successo.");
 			return "login";
 		}

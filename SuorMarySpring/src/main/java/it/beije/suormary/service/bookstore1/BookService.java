@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import it.beije.suormary.bin.bookstore1.Author;
 import it.beije.suormary.bin.bookstore1.Book;
-import it.beije.suormary.controller.bookstore1.JPAManagerFactory;
 import it.beije.suormary.dumpster.bookstore1.BookUtils;
 
 @Service
@@ -78,17 +77,12 @@ public class BookService {
 	
 
 	
-	public void addNewBook(String title, String description, String editor, double price, int quantity, int authorId){
+	public void addNewBook(Book book){
 		EntityManager em = null;
-		Book book = null;
 		try {
 			em = JPAManagerFactory.getEntityManager();
 			EntityTransaction transaction = em.getTransaction();
 			transaction.begin();
-			
-			book=new Book(title, description, editor, price, quantity, authorId);
-			
-			
 			
 			em.persist(book);
 			

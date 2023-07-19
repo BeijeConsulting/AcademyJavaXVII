@@ -9,7 +9,6 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Service;
 
 import it.beije.suormary.bin.bookstore1.Author;
-import it.beije.suormary.controller.bookstore1.JPAManagerFactory;
 
 @Service
 public class AuthorService {

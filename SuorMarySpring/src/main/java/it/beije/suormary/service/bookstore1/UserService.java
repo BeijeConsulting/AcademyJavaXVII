@@ -7,7 +7,6 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Service;
 
 import it.beije.suormary.bin.bookstore1.User;
-import it.beije.suormary.controller.bookstore1.JPAManagerFactory;
 
 @Service
 public class UserService {
@@ -72,16 +71,13 @@ public class UserService {
 		
 	}
 	
-	public void createUser(String email, String password, String name, String surname) {
+	public void createUser(User user) {
 		EntityManager entityManager = null;
-		User user = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
 			EntityTransaction transaction = entityManager.getTransaction();
 			
 			transaction.begin();
-			
-			user = new User(email,password,name,surname);
 			
 			entityManager.persist(user);
 			

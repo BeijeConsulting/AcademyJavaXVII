@@ -11,7 +11,7 @@ import javax.persistence.Query;
 
 import it.beije.suormary.bin.bookstore1.Author;
 import it.beije.suormary.bin.bookstore1.Book;
-import it.beije.suormary.controller.bookstore1.JPAManagerFactory;
+import it.beije.suormary.service.bookstore1.JPAManagerFactory;
 
 public class BookUtils {
 	
