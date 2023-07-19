@@ -194,7 +194,7 @@ public class EcommerceManager {
 //    	    log.info(result[0] + " " + result[1] + " - " + result[2]);
 //    	}
     	
-     	Query query = em.createQuery("SELECT bi FROM Basket as bi WHERE bi.userId = :userId");
+     	Query query = em.createQuery("SELECT bi FROM BasketItem as bi WHERE bi.userId = :userId");
      	query.setParameter("userId", userId);
 
      	List<BasketItem> basketItems = query.getResultList();
@@ -214,9 +214,9 @@ public class EcommerceManager {
     	EntityTransaction transaction = em.getTransaction();
     	transaction.begin();
     	
-    	Query query = em.createQuery("SELECT bi FROM Basket as bi "
-    			+ "WHERE b.userId = :userId "
-    			+ "AND b.bookId = :bookId");
+    	Query query = em.createQuery("SELECT bi FROM BasketItem as bi "
+    			+ "WHERE bi.userId = :userId "
+    			+ "AND bi.bookId = :bookId");
     	query.setParameter("userId", userId);
     	query.setParameter("bookId", bookId);
     	
@@ -228,16 +228,25 @@ public class EcommerceManager {
     		bi.setBookId(bookId);
     		bi.setUserId(userId);
     		bi.setQuantity(1);
-    		transaction.commit();
     		em.persist(bi);
+    		transaction.commit();
+    		
     	}
     	else {
     		int itemId = basketItems.get(0).getId(); 
     		bi = em.find(BasketItem.class, itemId);
     		int quantity = bi.getQuantity();
-    		bi.setQuantity(quantity + 1);
+    		Book book = em.find(Book.class, bookId);
+    		if(quantity <book.getQuantity()) {
+    			bi.setQuantity(quantity + 1);
+    		}else {
+    			quantity = book.getQuantity();
+    			bi.setQuantity(quantity);
+    		}
+    		
+    		em.persist(bi);
     		transaction.commit();
-    		em.persist(bi);	
+    			
     	}
     	
     }
@@ -248,21 +257,36 @@ public class EcommerceManager {
     	transaction.begin();
     	
     	Query query = em.createQuery("SELECT SUM(book.price*bi.quantity) FROM Book as book "
-    			+ "JOIN Basket as bi "
+    			+ "JOIN BasketItem as bi "
     			+ "ON book.id = bi.bookId "
     			+ "WHERE bi.userId = :userId");
     	query.setParameter("userId", userId);
     	
     	List<Double> amount = query.getResultList();
     	
-    	if (amount.size() == 0) return 0.0;
-    	double basketAmount = (Double) query.getResultList().get(0);
+    	if (amount.get(0) == null) return 0.0;
+    	System.out.println("AMOUNT: " + amount.get(0));
+    	double basketAmount = (Double) (amount.get(0));
     	return basketAmount;
     }
     
+    public void buy(int userId) {
+    	em = JPAEntityFactory.openEntity();
+    	EntityTransaction transaction = em.getTransaction();
+    	transaction.begin();
+    	
+    	HashMap<Book, Integer> basket =  basket(userId);
+    	for (HashMap.Entry<Book, Integer> set : basket.entrySet()){
+    		//creare ordine
+    		
+    		//creare order item
+    		
+    		//togliere dal db book le copie
+    		//em.persist(bi);
+    	}
+    	
+    }
     
-
-
 /*    public Order basket(int userId){
     	em = JPAEntityFactory.openEntity();
      	Query query = em.createQuery("SELECT o from Order as o WHERE o.userId = :userId AND o.status = :status");

@@ -33,16 +33,26 @@ public class orderServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session = request.getSession();
-		int idBook = Integer.parseInt(request.getParameter("indexBook"));
 		int idUser = ((User)session.getAttribute("user")).getId();
-		em.addToBasket(idBook, idUser );
 		
+		if(request.getParameter("indexBook") !=null) {
+		
+			int idBook = Integer.parseInt(request.getParameter("indexBook"));	
+			//System.out.println("INDEX BOOK: " + idBook );
+			em.addToBasket(idBook, idUser );
+		}
 		HashMap<Book,Integer> basket = em.basket(idUser);
 		//Order basket = em.basket(idUser);
 		
 		session.setAttribute("basket", basket);
 		session.setAttribute("basketAmount", em.getBasketAmount(idUser));
 		response.sendRedirect("buypage.jsp");
+		
+		
+//		if(request.getParameter("indexBook")!= null) {
+//			int idBookCart = Integer.parseInt(request.getParameter("indexBook"));
+//			
+//		}
 	}
 
 	/**
@@ -50,6 +60,7 @@ public class orderServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// aggiorna Order status
+		
 		//doGet(request, response);
 	}
 

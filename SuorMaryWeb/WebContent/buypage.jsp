@@ -16,8 +16,8 @@
 
 <div style="justify-content: space-between; align-items: center">
 <a href="infouserpage.jsp"><button style="border:solid; border-width: 1px; " >Profile</button></a>
-<a href="buypage.jsp"><button style="border:solid; border-width: 1px; " disabled>Buy books</button></a>
-<a href="/homeservlet"><button style="border:solid; border-width: 1px; " >Catalogue</button></a>
+<a href="./orderservlet"><button style="border:solid; border-width: 1px; " disabled>Buy books</button></a>
+<a href="./homeservlet"><button style="border:solid; border-width: 1px; " >Catalogue</button></a>
 </div>
 
 <%
@@ -77,37 +77,6 @@ HashMap<Book, Integer> basket = (HashMap<Book, Integer>)(session.getAttribute("b
 <div style="width:33%; float:right">
 	<h3 style="text-align: center">CART</h3>
 	<table border="1">
-	    <!-- Intestazione della tabella -->
-	    <thead>
-	        <tr>
-	            <th>Title</th>        
-	            <th>Description</th>
-	            <th>Author ID</th>
-	            <th>Editor</th>
-	            <th>Price</th>
-	            <th>Quantity</th>
-	        </tr>
-	        
-	    </thead>
-	    <tbody>
-	    
-<%
-if (basket == null) {
-	%>
-	<tr><td style="color:red">LISTA CARRELLO VUOTA</td></tr>
-	<%
-}else {%>
-		<%for(int i=0;i<basketList.size();i++){
-			%>
-			<tr>
-	            <td><%=basketList.get(i).getBookId() %></td>            
-	            <td><%=basketList.get(i).getPrice()%></td>
-	            <td ><%=basketList.get(i).getQuantity()%></td>
-		    </tr>
-		<%}
-			
-}%>
-
 
 <!-- QUESTO è IL NUOVO MA NON RIESCO A COMMENTARE IL VECCHIO!!!! -->
  <thead>
@@ -145,11 +114,6 @@ if (basket.isEmpty()) {
 	        </tr>
 <%}%>
 
-
-
-
-
-
 	</tbody>
 	</table>
 	<!-- somma prezzi -->
@@ -158,7 +122,37 @@ if (basket.isEmpty()) {
 	</form>
 	
 	</div>
-	</div>
-
+</div>
+	    <!-- Intestazione della tabella -->
+<%-- 	    <thead>
+	        <tr>
+	            <th>Title</th>        
+	            <th>Description</th>
+	            <th>Author ID</th>
+	            <th>Editor</th>
+	            <th>Price</th>
+	            <th>Quantity</th>
+	        </tr>
+	        
+	    </thead>
+	    <tbody>
+	    
+<%
+if (basket == null) {
+	%>
+	<tr><td style="color:red">LISTA CARRELLO VUOTA</td></tr>
+	<%
+}else {%>
+		<%for(int i=0;i<basketList.size();i++){
+			%>
+			<tr>
+	            <td><%=basketList.get(i).getBookId() %></td>            
+	            <td><%=basketList.get(i).getPrice()%></td>
+	            <td ><%=basketList.get(i).getQuantity()%></td>
+		    </tr>
+		<%}
+			
+}%>
+ --%>
 </body>
 </html>
