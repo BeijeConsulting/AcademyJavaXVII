@@ -27,6 +27,7 @@ public class AddOtherBooks extends HttpServlet {
 		List<Book> booksOrder = new ArrayList<>();
 		session.setAttribute("booksOrder", booksOrder);
 		response.sendRedirect("addOtherBooks.jsp");
+		
 	}
 
 	/**
