@@ -41,7 +41,7 @@ public class OrderService {
   	   }
   	   return order;
      }
-     public static Order findOrder(int orderId) {
+     public  Order findOrder(int orderId) {
   	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
   	   Order orderFound = null;
   	   try {		
@@ -55,7 +55,7 @@ public class OrderService {
   	   return orderFound;
 		
 	}
-     public static void deleteOrder(int orderId) {
+     public  void deleteOrder(int orderId) {
   	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
   	   Book book = null;
   	   try {

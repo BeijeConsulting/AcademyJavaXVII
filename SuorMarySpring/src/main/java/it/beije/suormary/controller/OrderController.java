@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import it.beije.suormary.service.BookService;
 import it.beije.suormary.service.OrderItemService;
 import it.beije.suormary.service.OrderService;
-
+ 
 @Controller
 public class OrderController {
 	@Autowired
@@ -85,6 +85,14 @@ public class OrderController {
 		
 		return "recap";
 	}
+	  @RequestMapping(value = "/deleteOrder", method = RequestMethod.GET)
+	   public String deleteOrder(HttpSession session, Model model) {
+	        int orderId= (int) session.getAttribute("orderId");			
+			orderService.deleteOrder(orderId);
+	        model.addAttribute("deleteOrder", "L`ordine è stato cancellato");
+	        
+			return "welcome";	
+	   }
 
 
 }
