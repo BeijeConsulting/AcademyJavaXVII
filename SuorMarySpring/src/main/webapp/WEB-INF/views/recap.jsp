@@ -41,15 +41,12 @@
     <hr><br/>
 <c:choose>
 	<c:when test='${order.status eq "I"}'>
-		<form>
-			<label for="address">Indirizzo Spedizione:</label><br>
-  			<input type="text" id="address" name="address"><br>
-			<input type="submit" value="Conferma" class="button">
+	
+		<form action="payment" method="GET">
+		    <label for="address">Indirizzo Spedizione:</label><br>
+		    <input type="text" id="address" name="address" required><br>
+		    <input type="submit" value="Paga Ordine" class="button"/>
 		</form>
-		<form action="payment" action="GET">
-   			<input type="hidden" name="sAddress" value="<%= request.getParameter("address") %>" />
-   			<input type="submit" value="Paga Ordine" class="button"/>
-		</form> 
 		<form action="deleteOrder" action="GET">
    			<input type="submit" value="Cancella Ordine" class="button"/>
    		</form>

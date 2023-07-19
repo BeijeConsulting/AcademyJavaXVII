@@ -15,7 +15,7 @@
 <c:if test="${not empty ordinePagato}"><h3 style="color:green;font-weight:bold;">${ordinePagato}</h3> </c:if>
 
 
-		
+
 <form action="my_orders" method ="get">
 	<input type="submit" value="I miei ordini" class="button">
 </form>&nbsp;

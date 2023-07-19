@@ -159,15 +159,17 @@ public class OrderController {
 
     @RequestMapping(value = "/payment", method = RequestMethod.GET)
     public String payment(HttpSession session, HttpServletRequest request, Model model) {
-		String address = request.getParameter("sAddress");
+		String address = request.getParameter("address");
 		int orderId = (int) session.getAttribute("orderId");
 		
 		orderService.payment(orderId,address);
 		
 		model.addAttribute("ordinePagato", "Ordine pagato con successo");
 		List<Book> books = bookService.loadBooks();
-		 model.addAttribute("books", books);	
-		return "welcome";
+		model.addAttribute("books", books);	
+		return"welcome";
+
+		
     }
     @RequestMapping(value = "/saveOrder", method = RequestMethod.GET)
     public String saveOrder(HttpSession session, HttpServletRequest request, Model model) {
