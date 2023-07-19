@@ -17,6 +17,7 @@ import it.beije.suormary.service.BookService;
 public class WelcomeController {
 	@Autowired
 	private BookService bookService;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String welcome(HttpSession session, Model model) {
 		if(session.getAttribute("email") == null) {

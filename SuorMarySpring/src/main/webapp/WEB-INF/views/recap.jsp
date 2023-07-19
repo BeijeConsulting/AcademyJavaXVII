@@ -58,7 +58,7 @@
 		</form> 
 	</c:when>
 	<c:otherwise>
-		<form action="myOrders" action="GET">
+		<form action="my_orders" action="GET">
    			<input type="submit" value="Torna Ai Miei Ordini" class="button"/>
 		</form>
 	</c:otherwise>

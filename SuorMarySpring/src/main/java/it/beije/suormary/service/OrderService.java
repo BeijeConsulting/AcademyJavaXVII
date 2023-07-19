@@ -105,7 +105,7 @@ public class OrderService {
   	   return myOrders;
 		
 	}
-     
+  
      public  Order getOrderById(int orderId) {
   	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
   	   Order order = null;
@@ -125,5 +125,22 @@ public class OrderService {
   	   return order;
      }
      
-     
+     public void payment(int orderId, String address) {
+
+  	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+  	   try {	
+  		   EntityTransaction transaction = entityManager.getTransaction();
+      	   transaction.begin();
+  		   Order order = entityManager.find(Order.class, orderId);
+  		   order.setStatus("P");
+  		   order.setShippingAddress(address);
+  		   transaction.commit();
+  	   } catch(Exception e) {
+  		   e.printStackTrace();
+  	   } finally {
+  		   entityManager.close();
+  	   }
+  	 
+	}
+
 }

@@ -8,8 +8,8 @@
 </head>
 <body>
 <div style="margin-bottom:20px;">
-<a href="http://localhost:8080/SuorMaryWeb/welcome" style="font-size:25px;text-decoration:none;color:black;font-weight:bold">Home</a>
-<a href="http://localhost:8080/SuorMaryWeb/logout" style="font-size:25px;margin-left:15px;text-decoration:none;color:black;font-weight:bold;">Logout</a>
+<a href="http://localhost:8080/SuorMarySpring/" style="font-size:25px;text-decoration:none;color:black;font-weight:bold">Home</a>
+<a href="http://localhost:8080/SuorMarySpring/logout" style="font-size:25px;margin-left:15px;text-decoration:none;color:black;font-weight:bold;">Logout</a>
 </div>
 </body>
 </html>
