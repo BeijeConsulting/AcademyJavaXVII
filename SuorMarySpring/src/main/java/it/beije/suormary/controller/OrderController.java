@@ -109,7 +109,7 @@ public class OrderController {
         	 return "my_order";
          }
          else return "login";
-	}
+	} 
 
     @RequestMapping(value = "/updateOrder", method = RequestMethod.GET)
     public String updateOrder(HttpSession session, Model model) {
@@ -170,6 +170,25 @@ public class OrderController {
 		List<Book> books = bookService.loadBooks();
 		 model.addAttribute("books", books);	
 		return "welcome";
+    }
+    @RequestMapping(value = "/saveOrder", method = RequestMethod.GET)
+    public String saveOrder(HttpSession session, HttpServletRequest request, Model model) {
+    	if(request.getParameter("order")==null){
+			List<Book> booksOrder = (List) session.getAttribute("booksOrder");
+			model.addAttribute("booksOrder", booksOrder);
+			int orderId = (int) session.getAttribute("orderId");
+			orderItemService.createOrderItems(booksOrder,orderId);
+			Order order = orderService.findOrder(orderId);
+			model.addAttribute("order", order);
+		} else {
+			String orId = request.getParameter("order");
+			int orderId= Integer.parseInt(orId);
+			session.setAttribute("orderId", orderId);
+			Order order = orderService.findOrder(orderId);
+			model.addAttribute("order", order);
+		}
+		
+    	 	return "recap";
     }
 
 }
