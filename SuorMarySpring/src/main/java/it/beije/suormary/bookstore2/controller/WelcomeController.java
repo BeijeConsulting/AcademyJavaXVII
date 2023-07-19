@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,29 +15,31 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import it.beije.suormary.bookstore2.model.Author;
 import it.beije.suormary.bookstore2.model.Book;
 import it.beije.suormary.bookstore2.model.User;
+import it.beije.suormary.bookstore2.service.BookService;
 
 @Controller
 public class WelcomeController {
+	
+	@Autowired
+	private BookService bookService;
 
 	@RequestMapping(value = "/bookstore_welcome", method = RequestMethod.GET)
 	public String welcomeGet(HttpSession session, Model model)  {
 		System.out.println("bookstoreWelcome doGet");
 		
-//		HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
-//        Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
+        model.addAttribute("user", user);
         List<Author> authors = new ArrayList<>();
         System.out.println("user:" + user);
-//        System.out.println("cart:" + cart);
+
         if (user == null) {
-            // Utente non autenticato, reindirizza alla pagina di login
+        	
             return "bookstore_login";
         } else {
-            List<Book> books = BookstoreUtility.readBooksFromDb();
+            List<Book> books = bookService.readBooksFromDb();
             System.out.println("books : " + books);
-            System.out.println("ciao");
             for (Book book : books) {
-            	authors.add(BookstoreUtility.findAuthorFromId(book.getAuthorId()));
+            	authors.add(bookService.findAuthorFromId(book.getAuthorId()));
             }
             
             model.addAttribute("authors", authors);
@@ -45,5 +49,23 @@ public class WelcomeController {
         }
 	}
 
+	@RequestMapping(value = "/bookstore_home", method = RequestMethod.GET)
+	public String homeGet(Model model)  {
+		System.out.println("bookstoreWelcome doGet");
+		
+        List<Author> authors = new ArrayList<>();
+     
+            List<Book> books = bookService.readBooksFromDb();
+            System.out.println("books : " + books);
+            for (Book book : books) {
+            	authors.add(bookService.findAuthorFromId(book.getAuthorId()));
+            }
+            
+            model.addAttribute("authors", authors);
+            model.addAttribute("books", books);
+            
+            return "bookstore_home";
+        }
+	}
 
-}
+
