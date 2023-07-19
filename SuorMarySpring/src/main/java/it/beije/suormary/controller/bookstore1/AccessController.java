@@ -93,7 +93,7 @@ public class AccessController {
 	@RequestMapping(value = "/registration", method = RequestMethod.POST)
 	public String registrationPost(HttpSession session, Model model, User user) {
 		System.out.println("POST /registration");
-			
+		System.out.println(user);	
 		if(userService.userExists(user.getEmail())) {
 			model.addAttribute("registrationError", "L' email inserita è già associata ad un account.");
 			return "registration";

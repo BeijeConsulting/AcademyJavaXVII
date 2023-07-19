@@ -30,7 +30,7 @@
   <input type="text" name="surname" ><br><br>
   <input type="submit" value="Submit">
 </form> <br>
-<a href="login">Accedi con un account esistente</a>
+<a href="./login">Accedi con un account esistente</a>
 </div>
 </body>
 </html>

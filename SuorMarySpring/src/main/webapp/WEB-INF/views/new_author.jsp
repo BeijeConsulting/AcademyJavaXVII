@@ -14,17 +14,8 @@
 <body>
 <div style="text-align: center">
 <h1 style="font-family: fantasy; font-size: 36px">BOOKstoreONE</h1>
-<%
-String newAuthorMessage = (String) session.getAttribute("newAuthorMessage");
-if (newAuthorMessage != null) {
-	%>
-	<p style="color:green"><%= newAuthorMessage %></p>
-	<%
-	
-	session.removeAttribute("newAuthorMessage");
-}
-%>
-<form action="./NewAuthorServlet" method="POST">
+<p style="color:green">${newAuthorMessage}</p>
+<form action="./author" method="POST">
   <label for="name">Nome:</label><br>
   <input type="text" name="name" ><br>
   <label for="surname">Cognome:</label><br>
@@ -34,7 +25,7 @@ if (newAuthorMessage != null) {
   <input type="submit" value="Submit">
 </form> 
 <br><br>
-<a href="./LoginServlet">Torna al login</a>
+<a href="./login">Torna al login</a>
 </div>
 </body>
 </html>

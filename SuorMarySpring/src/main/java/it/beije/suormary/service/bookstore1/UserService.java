@@ -1,5 +1,8 @@
 package it.beije.suormary.service.bookstore1;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
@@ -32,19 +35,19 @@ public class UserService {
 	
 	public boolean userExists(String email) {
 		EntityManager entityManager = null;
-		User user = null;
+		List<User> user = new ArrayList<>();
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
 			Query query = entityManager.createQuery("SELECT u FROM User as u WHERE u.email = :email");
 			query.setParameter("email", email);
-			user = (User) query.getSingleResult();
+			user = (List<User>) query.getResultList();
 			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}finally {
 			entityManager.close();
 		}
-		if(user == null) {
+		if(user.isEmpty()) {
 			return false;
 		}else {
 			return true;

@@ -15,13 +15,12 @@
 <title>Add Book</title>
 </head>
 <body>
-${listAuthor}
 
 <div style="text-align: center">
 <h1 style="font-family: fantasy; font-size: 36px">BOOKstoreONE</h1>
 <p style="color:green">${newBookMessage}</p>
 <h2>Aggiungi un nuovo libro!</h2>
-<form action="./BookServlet" method="POST">
+<form action="./book" method="POST">
   <label for="title">Titolo:</label><br>
   <input type="text" name="title" ><br>
   <label for="description">Descrizione:</label><br>
@@ -35,7 +34,7 @@ ${listAuthor}
    <label for="author">Autore:</label><br>
    <select name="author">
    
-   <c:forEach items="${listAuthor}" value="author">
+   <c:forEach items="${listAuthor}" var="author">
    		<option value="${author.id}">${author.name} ${author.surname}</option>
    </c:forEach>
    </select>

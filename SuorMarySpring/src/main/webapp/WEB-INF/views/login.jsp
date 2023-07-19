@@ -26,8 +26,8 @@
 </form> 
 <br><br>
 <a href="registration">Non ho un account</a><br/><br/>
-<a href="./NewAuthorServlet">Aggiungi un autore</a><br/><br/>
-<a href="./BookServlet">Aggiungi un libro</a>
+<a href="./author">Aggiungi un autore</a><br/><br/>
+<a href="./book">Aggiungi un libro</a>
 </div>
 </body>
 </html>

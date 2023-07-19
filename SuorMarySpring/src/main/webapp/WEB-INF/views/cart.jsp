@@ -57,7 +57,7 @@
 	<hr/>
 	<br/>
 	<div style="margin-bottom: 20px; margin-top: 10px; padding: 5px;">
-		<form method="POST" action="./OrderServlet">
+		<form method="POST" action="./order">
 			<label>Indirizzo di consegna: </label>
 			<input type="text" name="address" style="width: 500px;" /> <br/><br/>
 			<input type="submit" name="updateOrder" value="Invia" style="width: 300px; font-size: 20px;" />

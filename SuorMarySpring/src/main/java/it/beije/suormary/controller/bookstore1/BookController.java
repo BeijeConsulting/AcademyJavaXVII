@@ -29,7 +29,7 @@ public class BookController {
 	
 	@RequestMapping(value = "/book", method = RequestMethod.GET)
 	public String bookGet (Model model) {
-		List<Author> listAuthor = (List<Author>)AuthorUtils.getAuthorList();
+		List<Author> listAuthor = (List<Author>)authorService.getAuthorList();
 		model.addAttribute("listAuthor", listAuthor);
 		return "book"; 
 	}
@@ -44,7 +44,7 @@ public class BookController {
 	
 	@RequestMapping(value = "/author", method = RequestMethod.GET)
 	public String authorGet (HttpSession session) {
-		return "author";
+		return "new_author";
 	}
 	
 	@RequestMapping(value = "/author", method = RequestMethod.POST)
@@ -54,7 +54,7 @@ public class BookController {
 		
 		model.addAttribute("newAuthorMessage", "L'autore " + author.getName() + " " + author.getName() + " è stato inserito con successo.");
 		
-		return "author";
+		return "new_author";
 	}
 	
 }
