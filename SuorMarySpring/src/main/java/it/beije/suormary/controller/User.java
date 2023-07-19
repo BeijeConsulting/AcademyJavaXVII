@@ -84,7 +84,7 @@ public class User {
 				.append(", email : ").append(email)
 				.append(", name : ").append(name)
 				.append(", surname : ").append(surname)
-				.append(", creationDate : ").append(creationDate)
+				.append(", creationDate : ").append(creationDate)		
 				.append(" }");
 		
 		return builder.toString();
