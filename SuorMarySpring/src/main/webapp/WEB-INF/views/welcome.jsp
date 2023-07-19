@@ -1,4 +1,3 @@
-<%@page import="it.beije.suormary.controller.BookStoreUtility"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -9,25 +8,39 @@
 </head>
 <body>
 
-<p>
-<h1> WELCOME&nbsp;${loggedUser.name}!!</h1><br/>
 
-&nbsp;
-<form action="myOrders" method ="post">
+<h1> WELCOME&nbsp;${email}!!</h1>&nbsp;
+<form action="my_orders" method ="get">
 	<input type="submit" value="I miei ordini" class="button">
+</form>&nbsp;
+<form action="createBook" method ="GET">
+<input type="submit" value="aggiungi un libro" class="button">
 </form>
+&nbsp;
+<form action="newOrder" method ="GET">
+<input type="submit" value="crea un ordine" class="button">
+</form>
+&nbsp;
 <h2>Libri disponibili:</h2><br/>
 
 <c:choose>
 	<c:when test="${empty books}"><h2>NESSUN LIBRO DISPONIBILE</h2></c:when>
 	<c:otherwise>
 		<c:forEach items="${books}" var="book">
-			<h3>Titolo:&nbsp;${book.title}</h3>
+			<h3>Titolo:&nbsp;${book.title}</h3>Disponibilità:&nbsp;${book.quantity}<br/>
 			<h4>Descrizione:&nbsp;${book.description}</h4>
+			 <form action="updateBook" method="GET">
+                    <input type="hidden" name="id" value="${book.id}" />
+                    <input type="submit" value="Modifica libro" />
+                </form>
+                <form action="deleteBook" method="GET">
+                    <input type="hidden" name="id" value="${book.id}" />
+                    <input type="submit" value="Elimina libro" />
+                </form>
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
 
-</p>
+
 </body>
 </html>

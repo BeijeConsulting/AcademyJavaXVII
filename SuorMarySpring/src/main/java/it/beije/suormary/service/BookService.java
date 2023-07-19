@@ -7,9 +7,11 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import it.beije.suormary.controller.Author;
 import it.beije.suormary.controller.Book;
+import it.beije.suormary.controller.BookStoreUtility;
 import it.beije.suormary.controller.JPAmanagerFactory;
 
 @Service
@@ -131,5 +133,12 @@ public class BookService {
   	   } finally {
   		   entityManager.close();
   	   }
+     }
+     public void listBooks (Model model){
+
+ 		List<Book> books = BookStoreUtility.loadBooks();
+ 		model.addAttribute("books", books);
+ 		
+ 		
      }
 }
