@@ -1,12 +1,16 @@
 package it.beije.suormary.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import it.beije.suormary.service.BookService;
+import it.beije.suormary.service.OrderService;
 import it.beije.suormary.service.TestService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +23,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BookController { 
 	@Autowired
 	private BookService bookService;
+	@Autowired
+	private OrderService orderService;
 	
 
 	   @RequestMapping(value = "/createBook", method = RequestMethod.GET)
@@ -74,5 +80,29 @@ public class BookController {
 		   }
 		   else return "login";
 	   }
+	   @RequestMapping(value = "/quantityBook", method=RequestMethod.GET)
+	   public String quantityBook(HttpServletRequest request, Model model, HttpSession session) {
+				String quantity = request.getParameter("quantity");
+				String idStr = request.getParameter("bookId");
+				Book book = bookService.getBookById(idStr);
+				int quantityId = Integer.parseInt(quantity);
+				List<Book> booksOrder =(List) session.getAttribute("booksOrder");
+				List<Book> books = BookStoreUtility.loadBooks();
+				model.addAttribute("booksOrder", booksOrder);
+				model.addAttribute("books", books);
+				Order order = (Order) session.getAttribute("order");
+				model.addAttribute("orderId", order.getId());
+				if(quantityId > book.getQuantity() ) {
+					model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
+				}
+				else {
+					session.setAttribute("quantity", quantityId);
+					model.addAttribute("quantity", quantityId);
+				}
+				return "createOrder";
+
+			
 	   }
+}
+	   
 
