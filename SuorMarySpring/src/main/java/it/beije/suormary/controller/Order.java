@@ -44,7 +44,7 @@ public class Order {
 	private int userId;
 
 	@Column(name = "status")
-	private char status;
+	private String status;
 	/*
 	 * I - Inserted
 	 * P - Paid
@@ -94,11 +94,11 @@ public class Order {
 		this.userId = userId;
 	}
 
-	public char getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(char status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

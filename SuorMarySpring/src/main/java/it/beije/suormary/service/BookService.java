@@ -7,9 +7,11 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import it.beije.suormary.controller.Author;
 import it.beije.suormary.controller.Book;
+import it.beije.suormary.controller.BookStoreUtility;
 import it.beije.suormary.controller.JPAmanagerFactory;
 
 @Service
@@ -131,5 +133,21 @@ public class BookService {
   	   } finally {
   		   entityManager.close();
   	   }
+     }
+ 
+     public List<Book> loadBooks(){
+  	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+  	   List<Book> listBooks = null;
+  	    try {
+  	    	Query query = entityManager.createQuery("SELECT b FROM Book as b");
+  	    	listBooks = query.getResultList();
+	
+  	    } catch(Exception e) {
+  	    	e.printStackTrace();
+  	    	
+  	    } finally {
+  	    	entityManager.close();
+  	    }
+  	    return listBooks;
      }
 }

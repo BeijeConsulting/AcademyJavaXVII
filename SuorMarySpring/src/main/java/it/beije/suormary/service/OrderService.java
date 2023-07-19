@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.beije.suormary.controller.Book;
@@ -16,7 +17,10 @@ import it.beije.suormary.controller.User;
 
 @Service
 public class OrderService {
-	 public  Order createOrder(String email) {
+	@Autowired
+	private UserService userService;
+	
+	 public Order createOrder(String email) {
   	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
   	   Order order = null;
   	   try {
@@ -26,7 +30,7 @@ public class OrderService {
               order = new Order();
              LocalDateTime date = LocalDateTime.now();
              order.setDate(date);
-             order.setStatus('I');
+             order.setStatus("I");
              order.setUserId(user.getId());
   		   EntityTransaction transaction = entityManager.getTransaction();
   		   transaction.begin();
@@ -41,7 +45,8 @@ public class OrderService {
   	   }
   	   return order;
      }
-     public  Order findOrder(int orderId) {
+
+     public Order findOrder(int orderId) {
   	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
   	   Order orderFound = null;
   	   try {		
@@ -55,7 +60,8 @@ public class OrderService {
   	   return orderFound;
 		
 	}
-     public  void deleteOrder(int orderId) {
+
+     public void deleteOrder(int orderId) {
   	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
   	   Book book = null;
   	   try {
@@ -81,5 +87,24 @@ public class OrderService {
 			   entityManager.close();
 		   }
      }
+     public List<Order> usersOrders(String email) {
+  	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+  	   List<Order> myOrders = null;
+  	   try {
+  		   User user = userService.loginUser(email);
+  		   Query query = entityManager.createQuery("SELECT o FROM Order as o WHERE o.userId = :userId");
+     	       query.setParameter("userId", user.getId());
+  		   myOrders = query.getResultList();
+  		   
+  	   } catch(Exception e) {
+  		   e.printStackTrace();
+  	   } finally {
+  		   entityManager.close();
+  	   }
 
+  	   return myOrders;
+		
+	}
+     
+     
 }

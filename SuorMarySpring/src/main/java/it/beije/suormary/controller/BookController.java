@@ -25,7 +25,7 @@ public class BookController {
 	private BookService bookService;
 	@Autowired
 	private OrderService orderService;
-	
+	 
 
 	   @RequestMapping(value = "/createBook", method = RequestMethod.GET)
        public String createBookGet(HttpSession session, Model model) {
@@ -37,7 +37,7 @@ public class BookController {
 		    else return "login";
        }
 	   @RequestMapping(value = "/createBook", method = RequestMethod.POST)
-       public String createBookPost(HttpSession session, HttpServletRequest request) {
+       public String createBookPost(HttpSession session, HttpServletRequest request, Model model) {
 			String title = request.getParameter("title");
 			String description = request.getParameter("description");
 			String editor = request.getParameter("editor");
@@ -45,6 +45,8 @@ public class BookController {
 			String quantity = request.getParameter("quantity");
 			String authorId = request.getParameter("authorId");
 			bookService.addBook(title, description, editor, price, quantity, authorId);
+			List<Book> books = bookService.loadBooks();
+			 model.addAttribute("books", books);	
 			return "welcome";
        }
 	   @RequestMapping(value = "/updateBook", method = RequestMethod.GET)
@@ -73,12 +75,17 @@ public class BookController {
 			return "welcome";
        }
 	   @RequestMapping(value = "/deleteBook", method=RequestMethod.GET)
-	   public String deleteBook(HttpSession session,@RequestParam String id) {
+	   public String deleteBook(HttpSession session,@RequestParam String id, Model model) {
 		   if(session.getAttribute("email")!= null) {
-			bookService.deleteBook(id);
+			   List<Book> books = bookService.loadBooks();
+			   model.addAttribute("books", books);	
+			   bookService.deleteBook(id);
 			return "welcome";
 		   }
-		   else return "login";
+		   else {
+			    return "login";  
+		   }
+	
 	   }
 	   @RequestMapping(value = "/quantityBook", method=RequestMethod.GET)
 	   public String quantityBook(HttpServletRequest request, Model model, HttpSession session) {

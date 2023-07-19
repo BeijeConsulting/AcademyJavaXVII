@@ -23,11 +23,13 @@ import it.beije.suormary.service.UserService;
 @Controller
 public class UserController {
 	@Autowired
-	  private UserService userService;
+	private UserService userService;
  
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String loginGet(HttpSession session) {
+	public String loginGet(HttpSession session, Model model) {
 		if(session.getAttribute("email") != null) {
+			List<Book> books = BookStoreUtility.loadBooks();
+			model.addAttribute("books", books);
 			return "welcome";
 		}
 		else return "login"; 
@@ -56,10 +58,11 @@ public class UserController {
 		}
 	}
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String registerGet(HttpSession session) {
+	public String registerGet(HttpSession session, Model model) {
 
         if(session.getAttribute("email") != null) {
-        	
+        	List<Book> books = BookStoreUtility.loadBooks();
+			model.addAttribute("books", books);
         	 return "welcome";
          }
          else return "register";
@@ -77,11 +80,13 @@ public class UserController {
 		userService.registerUser(name, surname, email, password, date);
 		session.setAttribute("email", email);
 		return "welcome";
+		
 	}
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "welcome";
 	}
+
 
 }
