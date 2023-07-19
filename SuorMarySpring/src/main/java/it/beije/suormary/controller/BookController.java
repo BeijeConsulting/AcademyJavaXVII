@@ -1,9 +1,11 @@
 package it.beije.suormary.controller;
 
+import java.io.IOException;
 import java.util.List;
 
-
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import it.beije.suormary.service.BookService;
@@ -73,6 +75,22 @@ public class BookController {
 			return "welcome";
 		   }
 		   else return "login";
+	   }
+	   public String quantity(HttpServletRequest request, Model model, HttpSession session) {
+				String quantity = request.getParameter("quantity");
+				String idStr = request.getParameter("bookId");
+				Book book = bookService.getBookById(idStr);
+				int quantityId = Integer.parseInt(quantity);
+				if(quantityId > book.getQuantity() ) {
+					model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
+				}
+				else {
+					session.setAttribute("quantity", quantityId);
+					model.addAttribute("quantity", quantityId);
+				}
+				return "createOrder";
+
+			
 	   }
 	   }
 
