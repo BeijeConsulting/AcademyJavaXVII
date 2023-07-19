@@ -270,19 +270,49 @@ public class EcommerceManager {
     	return basketAmount;
     }
     
-    public void buy(int userId) {
+    public void buy(int userId, String shippingAddress, String paymentType) {
     	em = JPAEntityFactory.openEntity();
     	EntityTransaction transaction = em.getTransaction();
     	transaction.begin();
     	
+    	Order order = new Order();
+    	order.setDate(LocalDateTime.now());
+    	order.setUserId(userId);
+    	order.setStatus(paymentType.equals("cash") ? 'I' : 'P');
+    	order.setAmount(getBasketAmount(userId));
+    	order.setShippingAddress(shippingAddress);
+    	em.persist(order);
+    	transaction.commit();
+    	
+//    	Query query = em.createQuery("SELECT order from Order as order WHERE order.date= :date AND order.userId = :userId");
+//    	query.setParameter("date", order.getDate());
+//    	query.setParameter("userId", userId);
+//    	int orderId = ((Order) query.getResultList().get(0)).getId();
+    	
+    	int orderId = order.getId();
+    	System.out.println(orderId);
+    	
     	HashMap<Book, Integer> basket =  basket(userId);
-    	for (HashMap.Entry<Book, Integer> set : basket.entrySet()){
-    		//creare ordine
+    	OrderItem oi = new OrderItem();
+    	oi.setOrderId(orderId);
+    
+    	for (HashMap.Entry<Book, Integer> set : basket.entrySet()){    		
+    		int bookId = set.getKey().getId();
+    		oi.setBookId(bookId);
     		
-    		//creare order item
+    		double price = set.getKey().getPrice();
+    		oi.setPrice(price);
     		
-    		//togliere dal db book le copie
-    		//em.persist(bi);
+    		int bookQuantity = set.getValue();
+    		oi.setQuantity(bookQuantity);
+    		
+    		transaction.begin();
+    		em.persist(oi);
+    		transaction.commit();
+    		
+    		Book book = em.find(Book.class, bookId);
+    		int newQ = book.getQuantity() - bookQuantity;
+    		book.setQuantity(newQ);
     	}
     	
     }
