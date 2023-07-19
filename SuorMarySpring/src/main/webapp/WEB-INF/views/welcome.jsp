@@ -7,9 +7,27 @@
 <title>WELCOME</title>
 </head>
 <body>
-
+<%@ include file="header.jsp" %>
 
 <h1> WELCOME&nbsp;${email}!!</h1>&nbsp;
+
+<%
+  if(session.getAttribute("ordinePagato") != null){
+	  %>  
+	  <h3 style="color:green;font-weight:bold;"><%= session.getAttribute("ordinePagato") %></h3>
+	  <%
+	  session.removeAttribute("ordinePagato");
+  }
+	  %>
+	  <%
+  if(session.getAttribute("deleteOrder") != null){
+	  %>  
+	  <h3 style="color:green;font-weight:bold;"><%= session.getAttribute("deleteOrder") %></h3>
+	  <%
+	  session.removeAttribute("deleteOrder");
+  }
+	  %>
+
 <form action="my_orders" method ="get">
 	<input type="submit" value="I miei ordini" class="button">
 </form>&nbsp;

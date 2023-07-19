@@ -84,12 +84,12 @@ public class OrderController {
 			String orId = request.getParameter("order");
 			int orderId= Integer.parseInt(orId);
 			session.setAttribute("orderId", orderId);
+			Order order = orderService.findOrder(orderId);
+			model.addAttribute("order", order);
 		}
 		
 		return "recap";
 	}
-
-
     @RequestMapping(value = "/my_orders", method = RequestMethod.GET)
     public String myOrderGet(HttpSession session, Model model) {
         if(session.getAttribute("email") != null) {
@@ -99,4 +99,17 @@ public class OrderController {
          }
          else return "login";
 	}
+    @RequestMapping(value = "/payment", method = RequestMethod.GET)
+    public String payment(HttpSession session, HttpServletRequest request, Model model) {
+		String address = request.getParameter("sAddress");
+		int orderId = (int) session.getAttribute("orderId");
+		
+		orderService.payment(orderId,address);
+		
+		session.setAttribute("ordinePagato", "Ordine pagato con successo");
+		List<Book> books = bookService.loadBooks();
+		 model.addAttribute("books", books);	
+		return"welcome";
+    }
+
 }
