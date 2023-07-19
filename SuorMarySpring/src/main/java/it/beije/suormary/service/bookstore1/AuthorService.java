@@ -1,4 +1,4 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.service.bookstore1;
 
 import java.util.List;
 
@@ -6,9 +6,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-public class AuthorUtils {
-	
-	public static void addAuthor(String name, String surname, String description) {
+import org.springframework.stereotype.Service;
+
+import it.beije.suormary.bin.bookstore1.Author;
+import it.beije.suormary.controller.bookstore1.JPAManagerFactory;
+
+@Service
+public class AuthorService {
+
+	public void addAuthor(String name, String surname, String description) {
 		Author author = null;
 		EntityManager entityManager = null;
 		EntityTransaction transaction = null;
@@ -33,7 +39,7 @@ public class AuthorUtils {
 		}
 	}
 	
-	public static List<Author> getAuthorList(){
+	public List<Author> getAuthorList(){
 		EntityManager entityManager = null;
 		List<Author> la = null;
 		try {

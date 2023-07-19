@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.beije.suormary.bin.bookstore1.Author;
+import it.beije.suormary.dumpster.bookstore1.AuthorUtils;
+import it.beije.suormary.dumpster.bookstore1.BookUtils;
+
 @Controller
 public class BookController {
 

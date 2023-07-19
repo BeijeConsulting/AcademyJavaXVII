@@ -1,9 +1,14 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.dumpster.bookstore1;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
+import it.beije.suormary.bin.bookstore1.Book;
+import it.beije.suormary.bin.bookstore1.Order;
+import it.beije.suormary.controller.bookstore1.JPAManagerFactory;
+import it.beije.suormary.controller.bookstore1.OrderItem;
 
 public class OrderItemUtils {
 

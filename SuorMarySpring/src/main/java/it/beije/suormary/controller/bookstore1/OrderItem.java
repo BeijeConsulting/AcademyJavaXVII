@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import it.beije.suormary.bin.bookstore1.Book;
+
 /*
 
 CREATE TABLE `order_items` (

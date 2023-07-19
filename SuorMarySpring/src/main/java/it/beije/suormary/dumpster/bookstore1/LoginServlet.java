@@ -1,4 +1,4 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.dumpster.bookstore1;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import it.beije.suormary.bin.bookstore1.User;
 
 /**
  * Servlet implementation class LoginServlet

@@ -1,4 +1,4 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.dumpster.bookstore1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+
+import it.beije.suormary.bin.bookstore1.User;
+import it.beije.suormary.controller.bookstore1.JPAManagerFactory;
 
 public class UserUtils {
 	

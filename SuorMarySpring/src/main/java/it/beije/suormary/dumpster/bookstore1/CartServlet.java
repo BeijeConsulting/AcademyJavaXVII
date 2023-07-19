@@ -1,4 +1,4 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.dumpster.bookstore1;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +11,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import it.beije.suormary.bin.bookstore1.Book;
+import it.beije.suormary.bin.bookstore1.Cart;
 
 /**
  * Servlet implementation class CartServlet

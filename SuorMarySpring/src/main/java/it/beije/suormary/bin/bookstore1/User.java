@@ -1,4 +1,4 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.bin.bookstore1;
 
 import java.time.LocalDateTime;
 

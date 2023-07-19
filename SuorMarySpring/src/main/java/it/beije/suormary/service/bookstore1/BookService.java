@@ -1,4 +1,4 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.service.bookstore1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,9 +9,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-public class BookUtils {
-	
-	public static List<Book> getAllBooks(){
+import org.springframework.stereotype.Service;
+
+import it.beije.suormary.bin.bookstore1.Author;
+import it.beije.suormary.bin.bookstore1.Book;
+import it.beije.suormary.controller.bookstore1.JPAManagerFactory;
+import it.beije.suormary.dumpster.bookstore1.BookUtils;
+
+@Service
+public class BookService {
+
+	public List<Book> getAllBooks(){
 		EntityManager entityManager = null;
 		List<Book> books = new ArrayList<Book>();
 		try {
@@ -34,7 +42,7 @@ public class BookUtils {
 		return books;
 	}
 	
-	public static Book getBook(int id) {
+	public Book getBook(int id) {
 		EntityManager entityManager = null;
 		Book book = null;
 		try {
@@ -56,7 +64,7 @@ public class BookUtils {
 		return book;
 	}
 	
-	public static Map<Book,Integer> getBooks(Map<Integer,Integer> cart){
+	public Map<Book,Integer> getBooks(Map<Integer,Integer> cart){
 		
 		Map<Book,Integer> books = new HashMap<>();
 		Book b = null;
@@ -70,7 +78,7 @@ public class BookUtils {
 	
 
 	
-	public static void addNewBook(String title, String description, String editor, double price, int quantity, int authorId){
+	public void addNewBook(String title, String description, String editor, double price, int quantity, int authorId){
 		EntityManager em = null;
 		Book book = null;
 		try {

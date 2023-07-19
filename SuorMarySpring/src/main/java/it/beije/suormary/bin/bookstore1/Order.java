@@ -1,4 +1,4 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.bin.bookstore1;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import it.beije.suormary.controller.bookstore1.OrderItem;
 
 /*
 
