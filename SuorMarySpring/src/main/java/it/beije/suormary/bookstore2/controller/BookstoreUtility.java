@@ -11,10 +11,6 @@ import javax.persistence.Query;
 
 import it.beije.suormary.bookstore2.model.Author;
 import it.beije.suormary.bookstore2.model.Book;
-//import it.beije.suormary.bookstore2.model.Author;
-//import it.beije.suormary.bookstore2.model.Book;
-//import it.beije.suormary.bookstore2.model.Order;
-//import it.beije.suormary.bookstore2.model.OrderItem;
 import it.beije.suormary.bookstore2.model.PersistenceManagerJPA;
 import it.beije.suormary.bookstore2.model.User;
 
@@ -45,6 +41,7 @@ public class BookstoreUtility {
 		} finally {
 			entityManager.close();
 		}
+		System.out.println(newList);
 
 		return newList;
 	}

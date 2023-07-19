@@ -3,12 +3,8 @@ package it.beije.suormary.bookstore2.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServlet;
 
 import javax.servlet.http.HttpSession;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,11 +32,15 @@ public class WelcomeController {
             return "bookstore_login";
         } else {
             List<Book> books = BookstoreUtility.readBooksFromDb();
+            System.out.println("books : " + books);
+            System.out.println("ciao");
             for (Book book : books) {
             	authors.add(BookstoreUtility.findAuthorFromId(book.getAuthorId()));
             }
+            
             model.addAttribute("authors", authors);
             model.addAttribute("books", books);
+            
             return "bookstore_welcome";
         }
 	}

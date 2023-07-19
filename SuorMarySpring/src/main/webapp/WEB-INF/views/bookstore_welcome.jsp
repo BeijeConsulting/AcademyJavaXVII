@@ -3,6 +3,7 @@
 <%@page import="it.beije.suormary.bookstore2.model.Author"%>
 <%@page import="java.util.List"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -113,27 +114,30 @@
         </form>
     </div>
     
-    <c:if test="${not empty books}">
+    <c:choose>
+    <c:when test="${not empty books}">
     <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-        <c:forEach items="${books}" var="book" varStatus="status">
-            <div class="book">
-                <h2 class="title">${book.title}</h2>
-                <hr>
-                <p class="paragraph"><strong>Author :</strong> ${authors[status.index].name} ${authors[status.index].surname}</p>
-                <p class="paragraph"><strong>Description:</strong> ${book.description}</p>
-                <form class="paragraph" action="./bookstoreBookDetails" method="get">
-                    <input type="hidden" name="id" value="${book.id}">
-                    <button type="submit" class="button">View Details</button>
-                </form>
-            </div>
-        </c:forEach>
+    	<c:set var="books" value="${books}"/>
+        <c:forEach items="${books}" var="book" varStatus="loop">
+    <div class="book">
+        <h2 class="title">${book.title}</h2>
+        <hr>
+        <p class="paragraph"><strong>Author :</strong> ${authors[loop.index].name} ${authors[loop.index].surname}</p>
+        <p class="paragraph"><strong>Description:</strong> ${book.description}</p>
+        <form class="paragraph" action="./bookstoreBookDetails" method="get">
+            <input type="hidden" name="id" value="${book.id}">
+            <button type="submit" class="button">View Details</button>
+        </form>
     </div>
-</c:if>
-<c:if test="${empty books}">
+</c:forEach>
+    </div>
+    </c:when>
+<c:otherwise>
     <div style="text-align: center;">
         <p style="font-size: 18px; color: #555;">No book found.</p>
     </div>
-</c:if>
+</c:otherwise>
+</c:choose>
 </div>
  
 </body>

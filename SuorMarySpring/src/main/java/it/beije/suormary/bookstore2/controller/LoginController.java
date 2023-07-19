@@ -55,7 +55,8 @@ public class LoginController  {
 			
 			model.addAttribute("user", user);
 			
-			return "bookstore_welcome";
+//			return "bookstore_welcome";
+			return "redirect:/bookstore_welcome";
 			
 		} else { // KO
 //			session.setAttribute("loginError", "CREDENZIALI NON VALIDE!!!");
