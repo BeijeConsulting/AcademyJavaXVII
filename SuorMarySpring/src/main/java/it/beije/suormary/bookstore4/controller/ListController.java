@@ -18,20 +18,20 @@ import it.beije.suormary.bookstore4.service.EcommerceService;
 public class ListController {
 
 	@Autowired
-	private EcommerceService ecs;
+	private EcommerceService ecommerceService;
 	
 	User user = null;
 	
 	@RequestMapping(value = "/booklist", method = RequestMethod.GET)
 	public String bookList(Model model) {
-		List<Book> books = ecs.bookList();
+		List<Book> books = ecommerceService.bookList();
 		model.addAttribute("booklist", books);
 		
 		//User user = new User();
 		 //se user loggato fai vedere anche carrello
 		if(user != null) {
 			Integer userId = user.getId();
-			List<BasketItem> basket = ecs.basket(userId);
+			List<BasketItem> basket = ecommerceService.basket(userId);
 			model.addAttribute("basket", basket); 
 		}
 		

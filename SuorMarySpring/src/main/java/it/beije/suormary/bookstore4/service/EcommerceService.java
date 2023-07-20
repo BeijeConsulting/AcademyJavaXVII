@@ -10,26 +10,26 @@ import org.springframework.stereotype.Service;
 import it.beije.suormary.bookstore4.model.BasketItem;
 import it.beije.suormary.bookstore4.model.Book;
 import it.beije.suormary.bookstore4.repository.BasketItemRepository;
-import it.beije.suormay.bookstore4.repository.BookRepository;
+import it.beije.suormary.bookstore4.repository.BookRepository;
 
 
 @Service
 public class EcommerceService {
 
 	@Autowired
-	private BookRepository bookRepo;
+	private BookRepository bookRepository;
 	
 	public List<Book> bookList() {
-    	List<Book> books = bookRepo.findAll();
+    	List<Book> books = bookRepository.findAll();
     	if (books.size() == 0) return null;
     	return books;
 	}
 	
 	@Autowired
-	private BasketItemRepository basketItemRepo;
+	private BasketItemRepository basketItemRepository;
 	
 	public List<BasketItem> basket(Integer userId) {
-    	List<BasketItem> books = basketItemRepo.findByUserId(userId);
+    	List<BasketItem> books = basketItemRepository.findByUserId(userId);
     	if (books.size() == 0) return null;
     	return books;
 	}

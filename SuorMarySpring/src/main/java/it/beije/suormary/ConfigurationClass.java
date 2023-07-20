@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableAsync
 @EnableTransactionManagement
-@EnableJpaRepositories(value = "it.beije.suormary.repository")
+@EnableJpaRepositories(value = {"it.beije.suormary.bookstore4.repository", "it.beije.suormary.repository"})
 public class ConfigurationClass {
 
     @Primary
@@ -26,4 +26,18 @@ public class ConfigurationClass {
         return transactionManager;
     }
     
+
+//	@EnableAsync
+//	@EnableTransactionManagement
+//	@EnableJpaRepositories(value = "it.beije.suormary.bookstore4.repository")
+//	public class ConfigurationClass {
+//	
+//    @Primary
+//    @Bean(name="transactionManager")
+//	public PlatformTransactionManager dbTransactionManager() {
+//	    JpaTransactionManager transactionManager = new JpaTransactionManager();
+//	    transactionManager.setEntityManagerFactory(JpaEntityManager.getInstance());
+//	    return transactionManager;
+//	}
+
 }
