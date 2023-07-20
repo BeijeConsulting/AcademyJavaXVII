@@ -1,4 +1,4 @@
-package it.beije.suormay.bookstore4.repository;
+package it.beije.suormary.bookstore4.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
