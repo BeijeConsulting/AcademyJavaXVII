@@ -5,6 +5,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>WELCOME</title>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 <%@ include file="header.jsp" %>
@@ -41,20 +42,21 @@
 	<c:when test="${empty books}"><h2>NESSUN LIBRO DISPONIBILE</h2></c:when>
 	<c:otherwise>
 		<c:forEach items="${books}" var="book">
+		<div class="card">
 			<h3>Titolo:&nbsp;${book.title}</h3>Disponibilità:&nbsp;${book.quantity}<br/>
 			<h4>Descrizione:&nbsp;${book.description}</h4>
 			 <form action="updateBook" method="GET">
                     <input type="hidden" name="id" value="${book.id}" />
-                    <input type="submit" value="Modifica libro" />
+                    <input type="submit" value="Modifica libro" class="button"/>
                 </form>
                 <form action="deleteBook" method="GET">
                     <input type="hidden" name="id" value="${book.id}" />
-                    <input type="submit" value="Elimina libro" />
+                    <input type="submit" value="Elimina libro" class="button"/>
                 </form>
+                </div>
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
-
 
 </body>
 </html>
