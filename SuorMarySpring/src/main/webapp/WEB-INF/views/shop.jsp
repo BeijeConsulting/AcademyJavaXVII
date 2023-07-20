@@ -1,4 +1,4 @@
-<%@page import="it.beije.suormary.bin.bookstore1.Book"%>
+<%@page import="it.beije.suormary.bookstore1.model.Book"%>
 <%@page import="java.util.List"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"

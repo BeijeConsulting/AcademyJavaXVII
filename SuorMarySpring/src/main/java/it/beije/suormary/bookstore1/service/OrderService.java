@@ -1,13 +1,16 @@
 package it.beije.suormary.bookstore1.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +22,9 @@ import it.beije.suormary.bookstore1.model.Book;
 import it.beije.suormary.bookstore1.model.Cart;
 import it.beije.suormary.bookstore1.model.Order;
 import it.beije.suormary.bookstore1.model.OrderItem;
+import it.beije.suormary.bookstore1.repository.BookRepository;
 import it.beije.suormary.bookstore1.repository.OrderRepository;
+import it.beije.suormary.bookstore1.repository.UserRepository;
 
 @Service
 public class OrderService {
@@ -27,60 +32,54 @@ public class OrderService {
 	@Autowired
 	private OrderRepository orderRepository;
 	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private BookRepository bookRepository;
+	
+	@Autowired
+	private BookService bookService;
+	
 	public void createOrder(String address, HttpSession session) {
-		EntityManager em = null;
-		EntityTransaction transaction = null;
-		try {
 			
-			em = JPAManagerFactory.getEntityManager();
-			transaction = em.getTransaction();
 			
-			transaction.begin();
-			
-			int id = UserUtils.getUserId((String)session.getAttribute("email"));
-			
-			Order order = new Order();
-					
-			order.setUserId(id);
-			order.setShippingAddress(address);
-			order.setDate(LocalDateTime.now());
-			order.setStatus("I");
-			
-			Map<Integer,Integer> cart = Cart.getCart(session);
-			
-			Map<Book,Integer> books = BookUtils.getBooks(cart);
-			
-			double amount = 0;
-			for (Map.Entry<Book, Integer> entry : books.entrySet()) {
-				double price = entry.getKey().getPrice() * entry.getValue();
-				amount += price;
+			try {
+				int id = userService.getUserId((String)session.getAttribute("email"));
+				
+				Order order = new Order();
+						
+				order.setUserId(id);
+				order.setShippingAddress(address);
+				order.setDate(LocalDateTime.now());
+				order.setStatus("I");
+				
+				Map<Integer,Integer> cart = Cart.getCart(session);
+				
+				Map<Book,Integer> books = bookService.getBooks(cart);
+				
+				double amount = 0;
+				for (Map.Entry<Book, Integer> entry : books.entrySet()) {
+					double price = entry.getKey().getPrice() * entry.getValue();
+					amount += price;
+				}
+				
+				order.setAmount(amount);
+				order.setItems(createOrderItems(order.getId(), books));
+				orderRepository.save(order);
+			} catch (Exception e){
+				e.printStackTrace();
+				//TRANSACTION ROLLBACK DA CAPIRE COME FARE!!!!
 			}
-			
-			order.setAmount(amount);
-			em.persist(order);
-			em.flush();
-			
-			
-			
-			int idOrder = order.getId();
-			
-			System.out.println("Ordine inserito, inizio gli item");
-			insertOrderItems(idOrder, books, em, transaction);
-			transaction.commit();
-		} catch(Exception e) {
-			if(transaction != null) {
-				transaction.rollback();
-			}
-			e.printStackTrace();
-		}finally {
-			em.close();
-		}
+		
+		
 	}
 	
-	public void insertOrderItems(int orderId, Map<Book,Integer> books, EntityManager em, EntityTransaction transaction) throws Exception {
+	public List<OrderItem> createOrderItems(int orderId, Map<Book,Integer> books) throws Exception {
 
 			System.out.println("Item iniziati");
 			OrderItem om = null;
+			List<OrderItem> oi = new ArrayList<>();
 			Book book = null;
 			for (Map.Entry<Book, Integer> entry : books.entrySet()) {
 				om = new OrderItem();
@@ -88,96 +87,75 @@ public class OrderService {
 				om.setOrderId(orderId);
 				om.setPrice(entry.getKey().getPrice());
 				om.setQuantity(entry.getValue());
-				em.persist(om);
 				
-				Query query = em.createQuery("SELECT b FROM Book as b WHERE b.id = :id");
-				query.setParameter("id", entry.getKey().getId());
-				book = (Book) query.getSingleResult();
+				book=bookService.getBookById(entry.getKey().getId());
+				if(book==null) {
+					throw new Exception("non è stato trovato un libro dal carrello");
+				} 
+				
+				oi.add(om);
 				
 				book.setQuantity(book.getQuantity() - entry.getValue());
-				em.persist(book);
+				
+				bookRepository.save(book);
 			}
 			System.out.println("Item finiti");
+			return oi;
 
 	}
 	
+	@Transactional
 	public void deleteOrder(int idOrder) {
-		EntityManager em = null;
+		Order order = null;
+		Optional<Order> optional = orderRepository.findById(idOrder);
 		try {
-			em = JPAManagerFactory.getEntityManager();
-			EntityTransaction transaction = em.getTransaction();
-
-			transaction.begin();
-					
-			Query query = em.createQuery("SELECT o FROM Order as o WHERE o.id = :id");
-			query.setParameter("id", idOrder);
-			Order order = (Order) query.getSingleResult();
-			
-			em.remove(order);
-			
-			transaction.commit();
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
-	}
-	
-	public void editStatus(String status, int orderId) {
-		EntityManager em = null;
-		try {
-			em = JPAManagerFactory.getEntityManager();
-			EntityTransaction transaction = em.getTransaction();
-
-			transaction.begin();
-					
-			Query query = em.createQuery("SELECT o FROM Order as o WHERE o.id = :id");
-			query.setParameter("id", orderId);
-			Order order = (Order) query.getSingleResult();
-			
-			order.setStatus(status);
-			em.persist(order);
-			
-			transaction.commit();
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
-	}
-	
-	public List<Order> getOrders(int userId){
-		return orderRepository.findAll();
-	}
-	
-	public List<OrderItem> getOrderItems(Order o){
-		int idO = o.getId();
-		EntityManager entityManager = null;
-		List<OrderItem> loi=null;
-		
-		try {
-			entityManager = JPAManagerFactory.getEntityManager();
-			Query query = entityManager.createQuery("SELECT oi FROM OrderItem as oi WHERE oi.orderId = :idO  ");
-			query.setParameter("idO", idO);
-			
-			loi = (List<OrderItem>) query.getResultList();
-			Book b = null;
-			for(int i=0; i<loi.size(); i++) {
-				query= entityManager.createQuery("SELECT b FROM Book as b WHERE b.id = :id  ");
-				query.setParameter("id", loi.get(i).getBookId());
-				b=(Book)query.getSingleResult();
-				loi.get(i).setBook(b);
+			if(optional.isPresent()) {
+				order=optional.get();
+				orderRepository.delete(order);
+			} else {
+				throw new Exception("stai provando a cancellare un ordine inesistente");
 			}
-			
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
-			entityManager.close();
 		}
-		return loi;
 	}
+	
+	@Transactional
+	public void editStatus(String status, int orderId) {
+		try {
+			Order order = null;
+			Optional<Order> optional = orderRepository.findById(orderId);
+			if(optional.isPresent()) {
+				order=optional.get();
+				order.setStatus(status);
+				orderRepository.save(order);
+			}else {
+				throw new Exception("non è stato trovato un ordine con l'id fornito");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Transactional
+	public List<Order> getOrders(int userId){
+		List<Order> lo= orderRepository.findAll();
+		for(int i = 0; i<lo.size(); i++) {
+			lo.get(i).getItems();
+			Book b = null;
+			for(int j=0; j<lo.get(i).getItems().size(); j++) {
+				Optional<Book> book =bookRepository.findById(lo.get(i).getItems().get(j).getBookId());
+				if(book.isPresent()) {
+					b=book.get();
+				}
+				lo.get(i).getItems().get(j).setBook(b);
+			}
+		}
+		return lo;
+	}
+	
+
 	
 	public String getInserted() {
 		return "I";

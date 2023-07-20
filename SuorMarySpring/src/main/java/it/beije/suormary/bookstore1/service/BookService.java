@@ -1,5 +1,6 @@
 package it.beije.suormary.bookstore1.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,13 @@ public class BookService {
 	private BookRepository bookRepository;
 	
 	public List<Book> getAllBooks(){
-		return bookRepository.findAll();
+		List<Book> books = bookRepository.findAll();
+		List<Integer> quantityBook = null;
+		for(int i = 0; i<books.size(); i++) {
+			quantityBook=new ArrayList<>();	
+			books.get(i).setItemQuantity(books.get(i).getQuantity());
+		}
+		return books;
 	}
 	
 	public Optional<Book> getBook(int id) {
@@ -40,6 +47,14 @@ public class BookService {
 	
 	public void addNewBook(Book book){
 		bookRepository.save(book);
+	}
+	
+	public Book getBookById(Integer id) {
+		Optional<Book> optional = bookRepository.findById(id);
+		if(optional.isPresent()) {
+			return optional.get();
+		}
+		return null;
 	}
 	
 }

@@ -143,7 +143,7 @@ public class Book {
 		return itemQuantity;
 	}
 
-	public void setItemQuantity(int quantity) {
+	public void setItemQuantity(Integer quantity) {
 		this.itemQuantity = new ArrayList<Integer>();
 		for(int i=1; i<=quantity; i++) {
 			this.itemQuantity.add(i);
