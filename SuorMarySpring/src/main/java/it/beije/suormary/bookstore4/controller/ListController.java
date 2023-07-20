@@ -32,7 +32,7 @@ public class ListController {
 		if(user != null) {
 			Integer userId = user.getId();
 			List<BasketItem> basket = ecs.basket(userId);
-			model.addAttribute("basket", basket);
+			model.addAttribute("basket", basket); 
 		}
 		
 		return "booklist"; //  /WEB-INF/views/booklist.jsp
