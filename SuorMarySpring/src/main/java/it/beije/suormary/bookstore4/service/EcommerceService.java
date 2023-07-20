@@ -4,22 +4,34 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.beije.suormary.bookstore4.model.BasketItem;
 import it.beije.suormary.bookstore4.model.Book;
+import it.beije.suormary.bookstore4.repository.BasketItemRepository;
+import it.beije.suormay.bookstore4.repository.BookRepository;
 
 
 @Service
 public class EcommerceService {
 
-	private EntityManager em;
+	@Autowired
+	private BookRepository bookRepo;
 	
 	public List<Book> bookList() {
-		em = JPAEntityFactory.openEntity();
-    	Query query = em.createQuery("SELECT b from Book as b order by b.title");
-    	List<Book> books = query.getResultList();
+    	List<Book> books = bookRepo.findAll();
     	if (books.size() == 0) return null;
-    	em.close();
     	return books;
 	}
+	
+	@Autowired
+	private BasketItemRepository basketItemRepo;
+	
+	public List<BasketItem> basket(Integer userId) {
+    	List<BasketItem> books = basketItemRepo.findByUserId(userId);
+    	if (books.size() == 0) return null;
+    	return books;
+	}
+	
 }
