@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import it.beije.suormary.model.Author;
 import it.beije.suormary.model.Book;
 import it.beije.suormary.service.AuthorService;
 import it.beije.suormary.service.BookService;
@@ -30,6 +32,29 @@ public class AuthorController {
 		String surname = request.getParameter("surname");
 		String description = request.getParameter("description");
 		authorService.createAuthor(name, surname, description);
+		List<Book> books = bookService.loadBooks();
+		model.addAttribute("books", books);
+		return "welcome";
+	}
+	@RequestMapping(value = "/listAuthors", method = RequestMethod.GET)
+	public String listAuthors(Model model) {
+		List<Author> authors = authorService.getAuthors();
+		model.addAttribute("authors", authors);
+		return "listAuthors";
+	}
+	@RequestMapping(value = "/updateAuthor", method = RequestMethod.GET)
+	public String updateAuthorGet(@RequestParam String id, Model model) {
+		Author author = authorService.getAuthorById(id);
+		model.addAttribute("author", author);
+		return "updateAuthor";
+	}
+	@RequestMapping(value = "/updateAuthor", method = RequestMethod.POST)
+	public String updateAuthorPost(HttpServletRequest request, Model model) {
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		String surname = request.getParameter("surname");
+		String description = request.getParameter("description");
+		authorService.updateAuthor(id,name, surname, description);
 		List<Book> books = bookService.loadBooks();
 		model.addAttribute("books", books);
 		return "welcome";

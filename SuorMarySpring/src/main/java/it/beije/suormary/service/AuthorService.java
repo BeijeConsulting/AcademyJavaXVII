@@ -36,7 +36,6 @@ public class AuthorService {
 	 public void updateAuthor(String idStr, String name, String surname, String description) {
 		 Integer id = Integer.valueOf(idStr);
 		 Author author = getAuthorById(idStr);
-		 author.setId(id);
 		 author.setName(name);
 		 author.setSurname(surname);
 		 author.setDescription(description);
