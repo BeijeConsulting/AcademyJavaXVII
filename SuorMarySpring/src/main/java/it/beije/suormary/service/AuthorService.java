@@ -18,10 +18,8 @@ public class AuthorService {
 	  	   List<Author> authors = authorRepository.findAll();
 	  	   return authors;
 	     }
-	 public void createAuthor(String idStr, String name, String surname, String description) {
-		 Integer id = Integer.valueOf(idStr);
+	 public void createAuthor(String name, String surname, String description) {
 		 Author author = new Author();
-		 author.setId(id);
 		 author.setName(name);
 		 author.setSurname(surname);
 		 author.setDescription(description);
