@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import it.beije.suormary.model.Order;
 import it.beije.suormary.service.OrderItemService;
 import it.beije.suormary.service.OrderService;
 

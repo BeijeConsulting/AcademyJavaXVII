@@ -7,10 +7,10 @@ import javax.persistence.EntityTransaction;
 
 import org.springframework.stereotype.Service;
 
-import it.beije.suormary.controller.Book;
 import it.beije.suormary.controller.JPAmanagerFactory;
-import it.beije.suormary.controller.Order;
-import it.beije.suormary.controller.OrderItem;
+import it.beije.suormary.model.Book;
+import it.beije.suormary.model.Order;
+import it.beije.suormary.model.OrderItem;
 
 @Service
 public class OrderItemService {
