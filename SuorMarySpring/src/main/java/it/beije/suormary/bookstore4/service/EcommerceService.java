@@ -1,4 +1,4 @@
-package it.beije.suormary.service;
+package it.beije.suormary.bookstore4.service;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -6,8 +6,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Service;
 
-import it.beije.suormary.model.Book;
-import it.beije.suormary.model.JPAEntityFactory;
+import it.beije.suormary.bookstore4.model.Book;
 
 
 @Service

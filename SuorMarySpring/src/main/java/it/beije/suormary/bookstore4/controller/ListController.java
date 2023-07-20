@@ -1,4 +1,4 @@
-package it.beije.suormary.model;
+package it.beije.suormary.bookstore4.controller;
 
 import java.util.List;
 
@@ -8,7 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import it.beije.suormary.service.EcommerceService;
+import it.beije.suormary.bookstore4.model.Book;
+import it.beije.suormary.bookstore4.service.EcommerceService;
  
 
 @Controller

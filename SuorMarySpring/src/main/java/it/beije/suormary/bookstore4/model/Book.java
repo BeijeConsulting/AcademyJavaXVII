@@ -1,4 +1,4 @@
-package it.beije.suormary.model;
+package it.beije.suormary.bookstore4.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,43 +7,32 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/*
-
-CREATE TABLE `order_items` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL,
-  `book_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `price` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `order_id_fk_idx` (`order_id`),
-  KEY `book_id_fk_idx` (`book_id`),
-  CONSTRAINT `book_id_fk` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
-  CONSTRAINT `order_id_fk` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`)
-) ENGINE=InnoDB
-
-*/
-
 @Entity
-@Table(name = "order_items")
-public class OrderItem {
+@Table(name = "books")
+public class Book {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private int id;
 
-	@Column(name = "order_id")
-	private int orderId;
+	@Column(name = "title")
+	private String title;
 
-	@Column(name = "book_id")
-	private int bookId;
+	@Column(name = "description")
+	private String description;
+
+	@Column(name = "editor")
+	private String editor;
 
 	@Column(name = "price")
 	private double price;
 
 	@Column(name = "quantity")
 	private int quantity;
+
+	@Column(name = "author_id")
+	private int authorId;
 
 	
 	public int getId() {
@@ -54,20 +43,28 @@ public class OrderItem {
 		this.id = id;
 	}
 
-	public int getOrderId() {
-		return orderId;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public int getBookId() {
-		return bookId;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getEditor() {
+		return editor;
+	}
+
+	public void setEditor(String editor) {
+		this.editor = editor;
 	}
 
 	public double getPrice() {
@@ -86,16 +83,27 @@ public class OrderItem {
 		this.quantity = quantity;
 	}
 
+	public int getAuthorId() {
+		return authorId;
+	}
+
+	public void setAuthorId(int authorId) {
+		this.authorId = authorId;
+	}
+	
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
-				.append(", orderId : ").append(orderId)
-				.append(", bookId : ").append(bookId)
+				.append(", title : ").append(title)
+				.append(", description : ").append(description)
+				.append(", editor : ").append(editor)
 				.append(", price : ").append(price)
 				.append(", quantity : ").append(quantity)
+				.append(", authorId : ").append(authorId)
 				.append(" }");
 		
 		return builder.toString();
 	}	
+
 }

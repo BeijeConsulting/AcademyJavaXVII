@@ -1,4 +1,4 @@
-package it.beije.suormary.model;
+package it.beije.suormary.bookstore4.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
