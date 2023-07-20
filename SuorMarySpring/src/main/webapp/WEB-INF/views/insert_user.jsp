@@ -3,11 +3,14 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Index</title>
+<title>Insert User</title>
 </head>
 <body>
 
-${messaggio}
+Name: ${user.name}<br/>
+Surname: ${user.surname}<br/>
+Email: ${user.email}<br/>
+Password: ${user.password}<br/>
 
 </body>
 </html>

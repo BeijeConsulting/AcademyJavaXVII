@@ -4,25 +4,19 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>WELCOME</title>
+<title>CONTACT LIST</title>
 </head>
 <body>
 
-<p>
-BUONGIORNO&nbsp;${loggedUser.fullName}&nbsp;!!<br/>
-<br/>
-Questi sono i libri che hai ordinato:<br/>
-
-<%-- c:if test="${empty libri}">NESSUNO</c:if --%>
 <c:choose>
-	<c:when test="${empty libri}">NESSUNO</c:when>
+	<c:when test="${empty contacts}">NO CONTACTS</c:when>
 	<c:otherwise>
-		<c:forEach items="${libri}" var="libro">
-			${libro}<br/>
+		<c:forEach items="${contacts}" var="contact">
+			${contact.surname}&nbsp;${contact.name}<br/>
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
 
-</p>
+
 </body>
 </html>
