@@ -15,7 +15,7 @@ import it.beije.suormary.service.ContactService;
 
 @Controller
 public class ContactController {
-	
+	/*
 	@Autowired
 	private ContactService contactService;
 
@@ -37,5 +37,5 @@ public class ContactController {
 		model.addAttribute("contacts", contacts);		
 		
 		return "contacts";
-	}
+	}*/
 }

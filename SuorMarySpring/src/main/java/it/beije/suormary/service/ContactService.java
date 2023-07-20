@@ -9,9 +9,9 @@ import it.beije.suormary.model.Contact;
 import it.beije.suormary.repository.ContactRepository;
 
 
-@Service
+//@Service
 public class ContactService {
-	
+	/*
 	@Autowired
 	private ContactRepository contactRepository;
 	
@@ -36,6 +36,6 @@ public class ContactService {
 	public int countBySurname(String surname) {
 		return contactRepository.countBySurname(surname); 
 	}
-
+*/
 
 }

@@ -7,11 +7,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
+/*
 @Entity
-@Table(name = "rubrica")
+@Table(name = "rubrica")*/
 public class Contact {
-	
+	/*
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
@@ -89,5 +89,5 @@ public class Contact {
 				.append(" }");
 		
 		return builder.toString();
-	}
+	}*/
 }
