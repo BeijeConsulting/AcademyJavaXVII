@@ -112,7 +112,7 @@
             <form action="./bookstoreOrderList" method="GET">
                 <button type="submit">View Order List</button>
             </form>
-            <form action="./cart" >
+            <form action="./bookstore_cart" method="GET">
                 <button type="submit">Cart</button>
             </form>
             <form action="./logout" method="GET">
