@@ -33,7 +33,7 @@
     <input type="radio" name="authorId" value="${author.id}" ${author.id == book.authorId ? 'checked' : ''}> <br>
 </c:forEach>
 
-<input type="submit" value="Aggiungi libro" />
+<input type="submit" value="Modifica libro" />
 </form>
 </body>
 </html>

@@ -66,7 +66,7 @@ public class BookController {
 	
        }
 	   @RequestMapping(value = "/updateBook", method = RequestMethod.POST)
-       public String updateBookPost(HttpSession session, HttpServletRequest request) {
+       public String updateBookPost(HttpSession session, HttpServletRequest request, Model model) {
 			String bookId = request.getParameter("id");
 			String title = request.getParameter("title");
 			String description = request.getParameter("description");
@@ -75,14 +75,16 @@ public class BookController {
 			String quantity = request.getParameter("quantity");
 			String authorId = request.getParameter("authorId");
 			bookService.updateBook(title, description, editor, price, quantity, authorId,bookId);
+			  List<Book> books = bookService.loadBooks();
+			   model.addAttribute("books", books);	
 			return "welcome";
        }
 	   @RequestMapping(value = "/deleteBook", method=RequestMethod.GET)
 	   public String deleteBook(HttpSession session,@RequestParam String id, Model model) {
 		   if(session.getAttribute("email")!= null) {
+			   bookService.deleteBook(id);
 			   List<Book> books = bookService.loadBooks();
 			   model.addAttribute("books", books);	
-			   bookService.deleteBook(id);
 			return "welcome";
 		   }
 		   else {
