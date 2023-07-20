@@ -9,11 +9,11 @@ import javax.persistence.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.beije.suormary.controller.Book;
 import it.beije.suormary.controller.JPAmanagerFactory;
-import it.beije.suormary.controller.Order;
-import it.beije.suormary.controller.OrderItem;
-import it.beije.suormary.controller.User;
+import it.beije.suormary.model.Book;
+import it.beije.suormary.model.Order;
+import it.beije.suormary.model.OrderItem;
+import it.beije.suormary.model.User;
 
 @Service
 public class OrderService {

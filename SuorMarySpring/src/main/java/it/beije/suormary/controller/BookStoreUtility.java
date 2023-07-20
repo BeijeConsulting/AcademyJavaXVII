@@ -7,6 +7,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+import it.beije.suormary.model.Author;
+import it.beije.suormary.model.Book;
+import it.beije.suormary.model.Order;
+import it.beije.suormary.model.OrderItem;
+import it.beije.suormary.model.User;
+
 public class BookStoreUtility {
        public static void registerUser(String name, String surname, String email, String password, LocalDateTime date) { 
     	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();

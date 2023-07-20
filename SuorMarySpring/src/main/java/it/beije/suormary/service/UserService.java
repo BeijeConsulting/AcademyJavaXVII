@@ -10,7 +10,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Service;
 
 import it.beije.suormary.controller.JPAmanagerFactory;
-import it.beije.suormary.controller.User;
+import it.beije.suormary.model.User;
 @Service
 public class UserService {
 	 public  void registerUser(String name, String surname, String email, String password, LocalDateTime date) { 

@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-      <%@page import="it.beije.suormary.controller.User"%>
-<%@page import="it.beije.suormary.controller.Book"%>
+      <%@page import="it.beije.suormary.model.User"%>
+<%@page import="it.beije.suormary.model.Book"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="it.beije.suormary.controller.Author"%>
+<%@page import="it.beije.suormary.model.Author"%>
 <%@page import="it.beije.suormary.controller.BookStoreUtility"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>

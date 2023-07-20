@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@page import="it.beije.suormary.controller.Order"%>
-     <%@page import="it.beije.suormary.controller.OrderItem"%>
-     <%@page import="it.beije.suormary.controller.Book"%>
+    <%@page import="it.beije.suormary.model.Order"%>
+     <%@page import="it.beije.suormary.model.OrderItem"%>
+     <%@page import="it.beije.suormary.model.Book"%>
      <%@page import="it.beije.suormary.controller.BookStoreUtility"%>
 <!DOCTYPE html>
 <html>

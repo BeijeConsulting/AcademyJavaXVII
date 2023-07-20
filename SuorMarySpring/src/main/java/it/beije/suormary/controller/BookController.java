@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import it.beije.suormary.model.Author;
+import it.beije.suormary.model.Book;
+import it.beije.suormary.model.Order;
 import it.beije.suormary.service.BookService;
 import it.beije.suormary.service.OrderService;
 import it.beije.suormary.service.TestService;
