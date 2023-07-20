@@ -9,6 +9,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dumpster.bookstore1.BookUtils;
@@ -18,10 +19,14 @@ import it.beije.suormary.bookstore1.model.Book;
 import it.beije.suormary.bookstore1.model.Cart;
 import it.beije.suormary.bookstore1.model.Order;
 import it.beije.suormary.bookstore1.model.OrderItem;
+import it.beije.suormary.bookstore1.repository.OrderRepository;
 
 @Service
 public class OrderService {
-
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
 	public void createOrder(String address, HttpSession session) {
 		EntityManager em = null;
 		EntityTransaction transaction = null;
@@ -144,25 +149,7 @@ public class OrderService {
 	}
 	
 	public List<Order> getOrders(int userId){
-		EntityManager em = null;
-		List<Order> orders = null;
-		try {
-			em = JPAManagerFactory.getEntityManager();
-					
-			Query query = em.createQuery("SELECT o FROM Order as o WHERE o.userId = :id");
-			query.setParameter("id", userId);
-			orders = (List<Order>) query.getResultList();
-			
-			for(int i=0; i<orders.size(); i++) {
-				orders.get(i).setItems(OrderItemUtils.getOrderItems(orders.get(i)));
-			}
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		} finally {
-			em.close();
-		}
-		return orders;
+		return orderRepository.findAll();
 	}
 	
 	public List<OrderItem> getOrderItems(Order o){

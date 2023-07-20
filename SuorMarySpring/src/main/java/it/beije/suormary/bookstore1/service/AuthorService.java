@@ -6,50 +6,24 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.beije.suormary.bookstore1.model.Author;
+import it.beije.suormary.bookstore1.repository.AuthorRepository;
 
 @Service
 public class AuthorService {
 
+	@Autowired
+	private AuthorRepository authorRepository;
+	
 	public void addAuthor(Author author) {
-		EntityManager entityManager = null;
-		EntityTransaction transaction = null;
-		try {
-			
-			entityManager = JPAManagerFactory.getEntityManager();
-			transaction = entityManager.getTransaction();
-			transaction.begin();
-		
-			entityManager.persist(author);
-			
-			transaction.commit();
-			
-		} catch (Exception e) {
-			if(transaction != null) {
-				transaction.rollback();
-			}
-			e.printStackTrace();
-		} finally {
-			entityManager.close();
-		}
+		authorRepository.save(author);
 	}
 	
 	public List<Author> getAuthorList(){
-		EntityManager entityManager = null;
-		List<Author> la = null;
-		try {
-			entityManager = JPAManagerFactory.getEntityManager();
-			Query query = entityManager.createQuery("SELECT a FROM Author as a");
-			la=query.getResultList();
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			entityManager.close();
-		}
-		return la;
+		return authorRepository.findAll();
 	}
 	
 }
