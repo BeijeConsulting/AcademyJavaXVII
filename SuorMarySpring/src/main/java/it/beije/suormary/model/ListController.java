@@ -1,4 +1,4 @@
-package it.beije.suormary.controller;
+package it.beije.suormary.model;
 
 import java.util.List;
 

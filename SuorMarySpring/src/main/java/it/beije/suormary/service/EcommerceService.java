@@ -6,8 +6,8 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Service;
 
-import it.beije.suormary.controller.Book;
-import it.beije.suormary.controller.JPAEntityFactory;
+import it.beije.suormary.model.Book;
+import it.beije.suormary.model.JPAEntityFactory;
 
 
 @Service
