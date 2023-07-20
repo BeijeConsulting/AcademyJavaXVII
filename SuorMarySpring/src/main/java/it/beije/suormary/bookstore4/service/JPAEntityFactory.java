@@ -14,7 +14,7 @@ public class JPAEntityFactory {
 		if(entityManagerFactory ==null || (!entityManagerFactory.isOpen())) {
 			System.out.println("creo entityManager");
 			
-			entityManagerFactory = Persistence.createEntityManagerFactory("SuorMaryWeb");
+			entityManagerFactory = Persistence.createEntityManagerFactory("SuorMarySpring");
 			//entityManager = entityManagerFactory.createEntityManager();
 			System.out.println("creato");
 		}
