@@ -6,6 +6,7 @@
 		<class>it.beije.suormary.bookstore1.model.Order</class>
 		<class>it.beije.suormary.bookstore1.model.OrderItem</class>
 		<class>it.beije.suormary.bookstore1.model.User</class>
+		<class>it.beije.suormary.model.Contact</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		
 		<properties>

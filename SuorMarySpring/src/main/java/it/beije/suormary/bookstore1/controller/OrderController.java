@@ -27,12 +27,17 @@ public class OrderController {
 	
 	@RequestMapping(value = "/order", method = RequestMethod.GET)
 	public String orderGet (Model model, HttpSession session) {
-		List<Order> oi = orderService.getOrders(userService.getUserId((String)(session.getAttribute("email"))));
-		model.addAttribute("orders", oi);
-		model.addAttribute("inserted", orderService.getInserted());
-		model.addAttribute("paid", orderService.getPaid());
-		model.addAttribute("cancelled", orderService.getCancelled());
-		return "orders";
+		Integer id = userService.getUserId((String)(session.getAttribute("email")));
+		if(id != null) {
+			List<Order> oi = orderService.getOrders(id);
+			model.addAttribute("orders", oi);
+			model.addAttribute("inserted", orderService.getInserted());
+			model.addAttribute("paid", orderService.getPaid());
+			model.addAttribute("cancelled", orderService.getCancelled());
+			return "orders";
+		}else {
+			return "login";
+		}
 	}
 	
 	@RequestMapping(value = "/order", method = RequestMethod.POST)
@@ -40,29 +45,37 @@ public class OrderController {
 			@RequestParam String updateOrder, 
 			@RequestParam(name = "address", required = false) String address, 
 			@RequestParam(name = "orderId", required = false) String orderId) {
-
-		switch(updateOrder) {
-			case "Invia":
-				orderService.createOrder(address, session);
-				break;
-			case "Paga":
-				orderService.editStatus("P", Integer.valueOf(orderId));
-				break;
-			case "Annulla":
-				orderService.editStatus("C", Integer.valueOf(orderId));
-				break;
-			default:
-				System.out.println("Errore");
-				break;
+		
+		Integer id = userService.getUserId((String)(session.getAttribute("email")));
+		
+		if(id != null) {
+			switch(updateOrder) {
+				case "Invia":
+					orderService.createOrder(address, session);
+					break;
+				case "Paga":
+					orderService.editStatus("P", Integer.valueOf(orderId));
+					break;
+				case "Annulla":
+					orderService.editStatus("C", Integer.valueOf(orderId));
+					break;
+				default:
+					System.out.println("Errore");
+					break;
+			}
+			
+			List<Order> oi = orderService.getOrders(id);
+			model.addAttribute("orders", oi);
+			model.addAttribute("inserted", orderService.getInserted());
+			model.addAttribute("paid", orderService.getPaid());
+			model.addAttribute("cancelled", orderService.getCancelled());
+			
+			return "orders";
+		}else {
+			return "login";
 		}
 		
-		List<Order> oi = orderService.getOrders(userService.getUserId((String)(session.getAttribute("email"))));
-		model.addAttribute("orders", oi);
-		model.addAttribute("inserted", orderService.getInserted());
-		model.addAttribute("paid", orderService.getPaid());
-		model.addAttribute("cancelled", orderService.getCancelled());
 		
-		return "orders";
 		
 	}
 	

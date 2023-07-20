@@ -38,7 +38,7 @@ public class UserService {
 		}
 	}
 	
-	public int getUserId(String email) {
+	public Integer getUserId(String email) {
 		try {
 			List<User> users = userRepository.findByEmail(email);
 			if(users.isEmpty()) {
@@ -48,7 +48,7 @@ public class UserService {
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
-			return -1;
+			return null;
 		}
 	}
 	
