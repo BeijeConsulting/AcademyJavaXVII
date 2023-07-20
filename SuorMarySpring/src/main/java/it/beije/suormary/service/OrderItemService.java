@@ -1,37 +1,43 @@
 package it.beije.suormary.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.beije.suormary.controller.JPAmanagerFactory;
 import it.beije.suormary.model.Book;
 import it.beije.suormary.model.Order;
 import it.beije.suormary.model.OrderItem;
+import it.beije.suormary.repository.OrderItemRepository;
+import it.beije.suormary.repository.OrderRepository;
 
 @Service
 public class OrderItemService {
+	@Autowired
+	private OrderRepository orderRepository;
+	@Autowired
+	private OrderItemRepository orderItemRepository;
+	@Autowired
+	private OrderService orderService;
+	@Autowired
+	private BookService bookService;
 	
-	   public void createOrderItems(List<Book> booksOrder, int orderId) {
-    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
-    	   OrderItem orderItem = null;
-    	   EntityTransaction transaction = entityManager.getTransaction();
-    	   transaction.begin();
-    	   try {		   
-    		   Order order = entityManager.find(Order.class, orderId);
-    		   
+	
+	  	public void createOrderItems(List<Book> booksOrder, int orderId) {
+    	  
+		   Order order = orderService.findOrder(orderId);
+		   OrderItem orderItem;
    	       for(Book b : booksOrder) {
     	    	   orderItem = new OrderItem();
     	    	   orderItem.setBookId(b.getId());
     	    	   orderItem.setOrderId(order.getId());
     	    	   orderItem.setQuantity(b.getQuantity());
     	    	   orderItem.setPrice(b.getPrice() * b.getQuantity());
-    	    	   entityManager.persist(orderItem);
+    	    	   orderItemRepository.save(orderItem);
     	    	   order.addOrderItem(orderItem);
-    	    	   Book book = entityManager.find(Book.class, b.getId());
+    	    	   Book book = bookService.getBookById(b.getId());
     	    	   book.setQuantity(book.getQuantity()-b.getQuantity());
     	       }
    	       double amount = 0;
@@ -40,42 +46,32 @@ public class OrderItemService {
    	    	   amount += orderIt.getPrice();
    	       } 
     	   order.setAmount(amount);
-    	   transaction.commit();
- 		   
-    	   } catch(Exception e) {
-    		   e.printStackTrace();
-    	   } finally {
-    		   entityManager.close();
-    	   }
+    	   orderRepository.save(order);
        }
+	   
 	    public  void deleteOrderItem(String idStr) {
-	    	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+	    	  
 	    	   int id = Integer.parseInt(idStr);
-	    	     EntityTransaction transaction = entityManager.getTransaction();
-	    		   transaction.begin();
 	    	   Book book = null;
-	    	   try {
-	    		   OrderItem orderItem = entityManager.find(OrderItem.class, id);
-	    		   Order order = entityManager.find(Order.class, orderItem.getOrderId());
+	    		   OrderItem orderItem = findOrderItem(id);
+	    		   Order order = orderItemRepository.orderByOrderId(orderItem.getOrderId());
 	    		   for(OrderItem ord : order.getItems()) {
 	    			   if(ord.getId() == orderItem.getId()) { 
-	    				  book = entityManager.find(Book.class, ord.getBookId());
+	    				  book = bookService.getBookById(ord.getBookId());
 	    				  book.setQuantity(book.getQuantity() + ord.getQuantity());
 	    				  order.getItems().remove(ord);
 	    			   }
 	    		   }
 	    		 
-	    		   
-		    	  
-	    		   entityManager.remove(orderItem);
-	    		   transaction.commit();
-	    				   
-	    	   } catch(Exception e) {
-	    		 e.printStackTrace();
-	    	   }  finally {
-				   entityManager.close();
-			   }
-	    	   
+	    		
 	       }
 
+	    private OrderItem findOrderItem(int orderItemId) {
+	    	
+	    	Optional <OrderItem> orIt = orderItemRepository.findById(orderItemId);
+	    	
+	    	OrderItem orderItem = orIt.isPresent() ? orIt.get() : null;
+	 		
+	 		return orderItem;
+		}
 }

@@ -24,11 +24,11 @@ import it.beije.suormary.service.OrderService;
 public class OrderController {
 	@Autowired
 	private OrderService orderService;
-
 	@Autowired
 	private BookService bookService;
 	@Autowired
 	private OrderItemService orderItemService;
+	
 	@RequestMapping(value = "/createOrder", method = RequestMethod.GET)
 	public String createOrderGet(HttpSession session, Model model) {
 		if(session.getAttribute("email") == null) {
@@ -104,7 +104,7 @@ public class OrderController {
     @RequestMapping(value = "/my_orders", method = RequestMethod.GET)
     public String myOrderGet(HttpSession session, Model model) {
         if(session.getAttribute("email") != null) {
-        	List<Order> usersOrders = orderService.usersOrders((String) session.getAttribute("email"));
+        	List<Order> usersOrders = orderService.findByUserId((String) session.getAttribute("email"));
         	model.addAttribute("usersOrder", usersOrders);
         	 return "my_order";
          }
