@@ -55,9 +55,16 @@ public class AuthorController {
 		String surname = request.getParameter("surname");
 		String description = request.getParameter("description");
 		authorService.updateAuthor(id,name, surname, description);
-		List<Book> books = bookService.loadBooks();
-		model.addAttribute("books", books);
-		return "welcome";
+		List<Author> authors = authorService.getAuthors();
+		model.addAttribute("authors", authors);
+		return "listAuthors";
+	}
+	@RequestMapping(value = "/deleteAuthor", method = RequestMethod.GET)
+	public String deleteAuthor(@RequestParam String id, Model model) {
+		authorService.deleteAuthor(id);
+		List<Author> authors = authorService.getAuthors();
+		model.addAttribute("authors", authors);
+		return "listAuthors";
 	}
 
 }

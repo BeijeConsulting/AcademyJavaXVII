@@ -8,6 +8,7 @@
 <title>Autori</title>
 </head>
 <body>
+<%@ include file="header.jsp" %>
 <h2>Autori disponibili:</h2><br/>
 
 <c:choose>
