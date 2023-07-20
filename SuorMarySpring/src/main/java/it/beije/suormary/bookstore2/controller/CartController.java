@@ -21,7 +21,7 @@ public class CartController {
 	@Autowired
 	private BookService bookService;
 	
-	@RequestMapping(value = "/cart", method = RequestMethod.POST)
+	@RequestMapping(value = "/cart", method = RequestMethod.GET)
 	public String getCart(HttpSession session, Model model) {
 		System.out.println("cart doGet");
 		
