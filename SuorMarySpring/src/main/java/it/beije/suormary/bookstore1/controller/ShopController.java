@@ -1,4 +1,4 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.bookstore1.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dumpster.bookstore1.BookUtils;
-import it.beije.suormary.bin.bookstore1.Book;
-import it.beije.suormary.bin.bookstore1.Cart;
-import it.beije.suormary.service.bookstore1.BookService;
+import it.beije.suormary.bookstore1.model.Book;
+import it.beije.suormary.bookstore1.model.Cart;
+import it.beije.suormary.bookstore1.service.BookService;
 
 @Controller
 public class ShopController {

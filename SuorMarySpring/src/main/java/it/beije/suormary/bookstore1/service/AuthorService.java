@@ -1,4 +1,4 @@
-package it.beije.suormary.service.bookstore1;
+package it.beije.suormary.bookstore1.service;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Service;
 
-import it.beije.suormary.bin.bookstore1.Author;
+import it.beije.suormary.bookstore1.model.Author;
 
 @Service
 public class AuthorService {

@@ -1,4 +1,4 @@
-package it.beije.suormary.bin.bookstore1;
+package it.beije.suormary.bookstore1.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class Book {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 
 	@Column(name = "title")
 	private String title;
@@ -48,13 +48,13 @@ public class Book {
 	private String editor;
 
 	@Column(name = "price")
-	private double price;
+	private Double price;
 
 	@Column(name = "quantity")
-	private int quantity;
+	private Integer quantity;
 
 	@Column(name = "author_id")
-	private int authorId;
+	private Integer authorId;
 	
 	@Transient
 	private Author author;
@@ -66,7 +66,7 @@ public class Book {
 		
 	}
 	
-	public Book(String title, String description, String editor, double price, int quantity, int authorId) {
+	public Book(String title, String description, String editor, Double price, Integer quantity, Integer authorId) {
 		this.title=title;
 		this.description=description;
 		this.editor=editor;
@@ -75,11 +75,11 @@ public class Book {
 		this.authorId=authorId;
 	}
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -107,27 +107,27 @@ public class Book {
 		this.editor = editor;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 
-	public int getAuthorId() {
+	public Integer getAuthorId() {
 		return authorId;
 	}
 
-	public void setAuthorId(int authorId) {
+	public void setAuthorId(Integer authorId) {
 		this.authorId = authorId;
 	}
 	

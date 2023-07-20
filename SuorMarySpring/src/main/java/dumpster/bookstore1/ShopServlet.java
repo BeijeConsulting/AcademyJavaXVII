@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import it.beije.suormary.bin.bookstore1.Book;
-import it.beije.suormary.bin.bookstore1.Cart;
+import it.beije.suormary.bookstore1.model.Book;
+import it.beije.suormary.bookstore1.model.Cart;
 
 /**
  * Servlet implementation class ShopServlet

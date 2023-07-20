@@ -1,4 +1,4 @@
-package it.beije.suormary.service.bookstore1;
+package it.beije.suormary.bookstore1.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 import dumpster.bookstore1.BookUtils;
 import dumpster.bookstore1.OrderItemUtils;
 import dumpster.bookstore1.UserUtils;
-import it.beije.suormary.bin.bookstore1.Book;
-import it.beije.suormary.bin.bookstore1.Cart;
-import it.beije.suormary.bin.bookstore1.Order;
-import it.beije.suormary.bin.bookstore1.OrderItem;
+import it.beije.suormary.bookstore1.model.Book;
+import it.beije.suormary.bookstore1.model.Cart;
+import it.beije.suormary.bookstore1.model.Order;
+import it.beije.suormary.bookstore1.model.OrderItem;
 
 @Service
 public class OrderService {

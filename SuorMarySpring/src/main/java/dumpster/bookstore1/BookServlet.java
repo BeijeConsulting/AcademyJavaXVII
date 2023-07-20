@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import it.beije.suormary.bin.bookstore1.Author;
+import it.beije.suormary.bookstore1.model.Author;
 
 /**
  * Servlet implementation class BookServlet

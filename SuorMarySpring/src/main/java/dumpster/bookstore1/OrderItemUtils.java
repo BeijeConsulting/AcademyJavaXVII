@@ -5,10 +5,10 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import it.beije.suormary.bin.bookstore1.Book;
-import it.beije.suormary.bin.bookstore1.Order;
-import it.beije.suormary.bin.bookstore1.OrderItem;
-import it.beije.suormary.service.bookstore1.JPAManagerFactory;
+import it.beije.suormary.bookstore1.model.Book;
+import it.beije.suormary.bookstore1.model.Order;
+import it.beije.suormary.bookstore1.model.OrderItem;
+import it.beije.suormary.bookstore1.service.JPAManagerFactory;
 
 public class OrderItemUtils {
 

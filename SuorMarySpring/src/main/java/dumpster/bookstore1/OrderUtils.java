@@ -9,11 +9,11 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 
-import it.beije.suormary.bin.bookstore1.Book;
-import it.beije.suormary.bin.bookstore1.Cart;
-import it.beije.suormary.bin.bookstore1.Order;
-import it.beije.suormary.bin.bookstore1.OrderItem;
-import it.beije.suormary.service.bookstore1.JPAManagerFactory;
+import it.beije.suormary.bookstore1.model.Book;
+import it.beije.suormary.bookstore1.model.Cart;
+import it.beije.suormary.bookstore1.model.Order;
+import it.beije.suormary.bookstore1.model.OrderItem;
+import it.beije.suormary.bookstore1.service.JPAManagerFactory;
 
 public class OrderUtils {
 	

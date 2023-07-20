@@ -1,4 +1,4 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.bookstore1.controller;
 
 import java.util.List;
 
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import dumpster.bookstore1.UserUtils;
-import it.beije.suormary.bin.bookstore1.Book;
-import it.beije.suormary.bin.bookstore1.User;
-import it.beije.suormary.service.bookstore1.BookService;
-import it.beije.suormary.service.bookstore1.UserService;
+import it.beije.suormary.bookstore1.model.Book;
+import it.beije.suormary.bookstore1.model.User;
+import it.beije.suormary.bookstore1.service.BookService;
+import it.beije.suormary.bookstore1.service.UserService;
 
 @Controller
 public class AccessController {

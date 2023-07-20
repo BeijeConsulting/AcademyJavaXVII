@@ -1,4 +1,4 @@
-package it.beije.suormary.bin.bookstore1;
+package it.beije.suormary.bookstore1.model;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,13 +34,13 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 
 	@Column(name = "date")
 	private LocalDateTime date;
 
 	@Column(name = "user_id")
-	private int userId;
+	private Integer userId;
 
 	@Column(name = "status")
 	private String status;
@@ -51,7 +51,7 @@ public class Order {
 	 */
 
 	@Column(name = "amount")
-	private double amount;
+	private Double amount;
 	
 	@Column(name = "shipping_address")
 	private String shippingAddress;
@@ -61,11 +61,11 @@ public class Order {
 
 
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -77,11 +77,11 @@ public class Order {
 		this.date = date;
 	}
 
-	public int getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
 
@@ -93,11 +93,11 @@ public class Order {
 		this.status = status;
 	}
 
-	public double getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(double amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 	

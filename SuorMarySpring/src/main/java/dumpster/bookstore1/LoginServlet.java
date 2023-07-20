@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import it.beije.suormary.bin.bookstore1.User;
+import it.beije.suormary.bookstore1.model.User;
 
 /**
  * Servlet implementation class LoginServlet

@@ -1,4 +1,4 @@
-package it.beije.suormary.bin.bookstore1;
+package it.beije.suormary.bookstore1.model;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package it.beije.suormary.controller.bookstore1;
+package it.beije.suormary.bookstore1.controller;
 
 import java.util.List;
 
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import it.beije.suormary.bin.bookstore1.Book;
-import it.beije.suormary.bin.bookstore1.Order;
-import it.beije.suormary.service.bookstore1.OrderService;
-import it.beije.suormary.service.bookstore1.UserService;
+import it.beije.suormary.bookstore1.model.Book;
+import it.beije.suormary.bookstore1.model.Order;
+import it.beije.suormary.bookstore1.service.OrderService;
+import it.beije.suormary.bookstore1.service.UserService;
 
 @Controller
 public class OrderController {

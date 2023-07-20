@@ -9,9 +9,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-import it.beije.suormary.bin.bookstore1.Author;
-import it.beije.suormary.bin.bookstore1.Book;
-import it.beije.suormary.service.bookstore1.JPAManagerFactory;
+import it.beije.suormary.bookstore1.model.Author;
+import it.beije.suormary.bookstore1.model.Book;
+import it.beije.suormary.bookstore1.service.JPAManagerFactory;
 
 public class BookUtils {
 	
