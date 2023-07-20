@@ -1,4 +1,4 @@
-package it.beije.suormary.bookstore4.service;
+package it.beije.suormary.bookstore4.model;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
