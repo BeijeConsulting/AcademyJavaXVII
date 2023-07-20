@@ -281,7 +281,7 @@ public class EcommerceManager {
     	Order order = new Order();
     	order.setDate(LocalDateTime.now());
     	order.setUserId(userId);
-    	order.setStatus(paymentType.equals("cash") ? 'I' : 'P');
+    	order.setStatus(paymentType.equals("cash") ? "I" : "P");
     	order.setAmount(getBasketAmount(userId));
     	order.setShippingAddress(shippingAddress);
     	order.setItems(new ArrayList<OrderItem>());
