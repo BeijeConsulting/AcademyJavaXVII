@@ -7,6 +7,9 @@
 		<class>it.beije.suormary.bookstore4.model.OrderItem</class>
 		<class>it.beije.suormary.bookstore4.model.User</class>
 		<class>it.beije.suormary.bookstore4.model.BasketItem</class>
+		
+		<class>it.beije.suormary.model.Contact</class>
+		<class>it.beije.suormary.model.ContactDetail</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		
 		<properties>

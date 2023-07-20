@@ -20,7 +20,7 @@ public class ListController {
 	@Autowired
 	private EcommerceService ecommerceService;
 	
-	User user = null;
+	//User user = null;
 	
 	@RequestMapping(value = "/booklist", method = RequestMethod.GET)
 	public String bookList(Model model) {
@@ -29,11 +29,11 @@ public class ListController {
 		
 		//User user = new User();
 		 //se user loggato fai vedere anche carrello
-		if(user != null) {
-			Integer userId = user.getId();
-			List<BasketItem> basket = ecommerceService.basket(userId);
-			model.addAttribute("basket", basket); 
-		}
+//		if(user != null) {
+//			Integer userId = user.getId();
+//			List<BasketItem> basket = ecommerceService.basket(userId);
+//			model.addAttribute("basket", basket); 
+//		}
 		
 		return "booklist"; //  /WEB-INF/views/booklist.jsp
 		

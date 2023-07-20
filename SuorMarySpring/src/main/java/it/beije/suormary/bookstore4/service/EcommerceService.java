@@ -3,6 +3,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,19 +20,20 @@ public class EcommerceService {
 	@Autowired
 	private BookRepository bookRepository;
 	
+	@Transactional
 	public List<Book> bookList() {
     	List<Book> books = bookRepository.findAll();
-    	if (books.size() == 0) return null;
+    	//if (books.size() == 0) return null;
     	return books;
 	}
 	
-	@Autowired
-	private BasketItemRepository basketItemRepository;
-	
-	public List<BasketItem> basket(Integer userId) {
-    	List<BasketItem> books = basketItemRepository.findByUserId(userId);
-    	if (books.size() == 0) return null;
-    	return books;
-	}
+//	@Autowired
+//	private BasketItemRepository basketItemRepository;
+//	
+//	public List<BasketItem> basket(Integer userId) {
+//    	List<BasketItem> books = basketItemRepository.findByUserId(userId);
+//    	if (books.size() == 0) return null;
+//    	return books;
+//	}
 	
 }
