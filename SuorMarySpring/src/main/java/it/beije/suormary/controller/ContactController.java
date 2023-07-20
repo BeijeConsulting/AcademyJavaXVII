@@ -1,5 +1,6 @@
 package it.beije.suormary.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import it.beije.suormary.service.ContactService;
 
 @Controller
 public class ContactController {
-	/*
+	
 	@Autowired
 	private ContactService contactService;
 
@@ -32,10 +33,20 @@ public class ContactController {
 				surname != null ? 
 						name != null ? contactService.findByNameAndSurname(name, surname) : contactService.findBySurname(surname)
 						: contactService.getContactList();
-		System.out.println("contacts size : " + contacts.size());
+		//System.out.println("contacts : " + contacts);
 		
 		model.addAttribute("contacts", contacts);		
 		
 		return "contacts";
-	}*/
+	}
+
+	@RequestMapping(value = "/contact", method = RequestMethod.GET)
+	public String contacts(Model model,	@RequestParam Integer id) {
+		System.out.println("GET /contact?id=" + id);
+		
+		model.addAttribute("contact", contactService.getContact(id));		
+		
+		return "contact";
+	}
+
 }
