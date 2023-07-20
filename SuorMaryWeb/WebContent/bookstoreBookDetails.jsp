@@ -52,47 +52,45 @@
 
 <% Book book = (Book) request.getAttribute("book");%> 
 <% Author author = (Author) request.getAttribute("author");%> 
-   <div class = "container">
+  <div class="container">
+    <c:if test="${not empty book}">
+        <div class="book">
+            <h2 class="title">${book.title}</h2>
+            <hr>
+            <p class="paragraph"><strong>Author :</strong> ${author.name} ${author.surname}</p>
+            <p class="paragraph"><strong>Description :</strong> ${book.description}</p>
+            <p class="paragraph"><strong>Editor :</strong> ${book.editor}</p>
+            <p class="paragraph"><strong>Price :</strong> $${book.price}</p>
+            <p class="paragraph"><strong>Quantity :</strong> ${book.quantity}</p>
 
-    <% if (book != null) { %>
-         <div class = "book">
-                <h2 class = "title"><%= book.getTitle() %></h2>
-                <hr>
-            <p class = "paragraph"><strong >Author :</strong> <%= author.getName() %>  <%= author.getSurname() %></p>
-            <p class = "paragraph"><strong>Description :</strong> <%= book.getDescription() %></p>
-            <p class = "paragraph"><strong>Editor :</strong> <%= book.getEditor() %></p>
-            <p class = "paragraph"><strong>Price :</strong> $<%= book.getPrice() %></p>
-            <p class = "paragraph"><strong>Quantity :</strong> <%= book.getQuantity() %></p>
-            
-            <% 
-            Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
-            int quantity = -1;
-            if (cart != null) {
-            	quantity = cart.getOrDefault(book.getId(), 0);
-            }
-            int maxQuantity = book.getQuantity();
-            boolean addButtonDisabled = quantity >= maxQuantity;
-            if (addButtonDisabled) {%>
-            <form class="paragraph">
-                	<button type="submit" class="button" 
-                	title="Maximum amount of books reached for this book."
-                	disabled>Add to Cart</button>
-        		</form>
-            <%} else{ %>
-            
-            <form class = "paragraph" action="./cart" method="post">
-                    <input type="hidden" name="id" value="<%= book.getId() %>">
-                    <input type="hidden" name="action" value="addFromBookDet">
-             		<button type="submit" class = "button">Add to Cart</button>
-            </form>
-            <%} %>
+            <c:set var="quantity" value="${cart[book.id]}" />
+            <c:set var="maxQuantity" value="${book.quantity}" />
+            <c:set var="addButtonDisabled" value="${quantity >= maxQuantity}" />
+
+            <c:choose>
+                <c:when test="${addButtonDisabled}">
+                    <form class="paragraph">
+                        <button type="submit" class="button"
+                                title="Maximum amount of books reached for this book."
+                                disabled>Add to Cart
+                        </button>
+                    </form>
+                </c:when>
+                <c:otherwise>
+                    <form class="paragraph" action="./cart" method="post">
+                        <input type="hidden" name="id" value="${book.id}">
+                        <input type="hidden" name="action" value="addFromBookDet">
+                        <button type="submit" class="button">Add to Cart</button>
+                    </form>
+                </c:otherwise>
+            </c:choose>
         </div>
-    <% } else { %>
-       <div class = "paragraph">
-        <p class = "title">No book found.</p>
-       </div>
-    <% } %>
-
-	</div>
+    </c:if>
+    <c:if test="${empty book}">
+        <div class="paragraph">
+            <p class="title">No book found.</p>
+        </div>
+    </c:if>
+</div>
 </body>
 </html>
