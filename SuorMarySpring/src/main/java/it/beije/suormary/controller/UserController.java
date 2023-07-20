@@ -18,17 +18,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.beije.suormary.model.Book;
 import it.beije.suormary.model.User;
+import it.beije.suormary.service.BookService;
 import it.beije.suormary.service.UserService;
 
 @Controller
 public class UserController {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private BookService bookService;
  
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginGet(HttpSession session, Model model) {
 		if(session.getAttribute("email") != null) {
-			List<Book> books = BookStoreUtility.loadBooks();
+			List<Book> books = bookService.loadBooks();
 			model.addAttribute("books", books);
 			return "welcome";
 		}
@@ -37,7 +40,7 @@ public class UserController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String loginPost(HttpSession session, @RequestParam(name = "email")String email, Model model) {
 
-		List<Book> books = BookStoreUtility.loadBooks();
+		List<Book> books = bookService.loadBooks();
 		model.addAttribute("books", books);
 		
 		
@@ -61,7 +64,7 @@ public class UserController {
 	public String registerGet(HttpSession session, Model model) {
 
         if(session.getAttribute("email") != null) {
-        	List<Book> books = BookStoreUtility.loadBooks();
+        	List<Book> books = bookService.loadBooks();
 			model.addAttribute("books", books);
         	 return "welcome";
          }
@@ -69,7 +72,7 @@ public class UserController {
 	}
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String registerPost(HttpServletRequest request,HttpSession session, Model model) {
-		List<Book> books = BookStoreUtility.loadBooks();
+		List<Book> books = bookService.loadBooks();
 		model.addAttribute("books", books);
 		
 		String name=request.getParameter("name");
