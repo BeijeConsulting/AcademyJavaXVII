@@ -54,7 +54,7 @@ public class OrderItemService {
 	    	   int id = Integer.parseInt(idStr);
 	    	   Book book = null;
 	    		   OrderItem orderItem = findOrderItem(id);
-	    		   Order order = orderItemRepository.orderByOrderId(orderItem.getOrderId());
+	    		   Order order = orderItemRepository.findByOrderId(orderItem.getOrderId());
 	    		   for(OrderItem ord : order.getItems()) {
 	    			   if(ord.getId() == orderItem.getId()) { 
 	    				  book = bookService.getBookById(ord.getBookId());

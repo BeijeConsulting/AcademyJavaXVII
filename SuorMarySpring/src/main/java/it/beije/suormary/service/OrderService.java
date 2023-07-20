@@ -52,7 +52,7 @@ public class OrderService {
   	   
   	   Book book = null;
   	   Order orderFound = findOrder(orderId);
-  	   List<OrderItem> orderItems = orderItemRepository.orderItemsByOrderId(orderId);
+  	   List<OrderItem> orderItems = orderItemRepository.getListByOrderId(orderId);
      	  for(OrderItem orderItem : orderItems) {
      	    if(orderItem.getId() == orderItem.getId()) { 
      	    	book = bookService.getBookById(orderItem.getBookId());
@@ -78,7 +78,7 @@ public class OrderService {
   	   
   	   Order order = findOrder(orderId);
  
-  		  List<OrderItem> orderItems= orderItemRepository.orderItemsByOrderId(orderId);
+  		  List<OrderItem> orderItems= orderItemRepository.getListByOrderId(orderId);
   		  for(OrderItem orderItem : orderItems) {
   			  order.addOrderItem(orderItem);
   		  }

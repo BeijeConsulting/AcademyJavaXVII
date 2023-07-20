@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import it.beije.suormary.model.Author;
 import it.beije.suormary.model.Book;
 import it.beije.suormary.model.Order;
+import it.beije.suormary.service.AuthorService;
 import it.beije.suormary.service.BookService;
 import it.beije.suormary.service.OrderService;
 import it.beije.suormary.service.TestService;
@@ -28,12 +29,14 @@ public class BookController {
 	private BookService bookService;
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private AuthorService authorService;
 	 
 
 	   @RequestMapping(value = "/createBook", method = RequestMethod.GET)
        public String createBookGet(HttpSession session, Model model) {
 		    if(session.getAttribute("email")!= null) {
-		    	List<Author> authors = bookService.getAuthors();
+		    	List<Author> authors = authorService.getAuthors();
 		    	model.addAttribute("authors", authors);
 		    	return "createBook";
 		    }
@@ -66,7 +69,7 @@ public class BookController {
 	
        }
 	   @RequestMapping(value = "/updateBook", method = RequestMethod.POST)
-       public String updateBookPost(HttpSession session, HttpServletRequest request) {
+       public String updateBookPost(HttpSession session, HttpServletRequest request, Model model) {
 			String bookId = request.getParameter("id");
 			String title = request.getParameter("title");
 			String description = request.getParameter("description");
@@ -75,14 +78,16 @@ public class BookController {
 			String quantity = request.getParameter("quantity");
 			String authorId = request.getParameter("authorId");
 			bookService.updateBook(title, description, editor, price, quantity, authorId,bookId);
+			  List<Book> books = bookService.loadBooks();
+			   model.addAttribute("books", books);	
 			return "welcome";
        }
 	   @RequestMapping(value = "/deleteBook", method=RequestMethod.GET)
 	   public String deleteBook(HttpSession session,@RequestParam String id, Model model) {
 		   if(session.getAttribute("email")!= null) {
+			   bookService.deleteBook(id);
 			   List<Book> books = bookService.loadBooks();
 			   model.addAttribute("books", books);	
-			   bookService.deleteBook(id);
 			return "welcome";
 		   }
 		   else {

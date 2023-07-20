@@ -23,6 +23,14 @@
 <input type="submit" value="aggiungi un libro" class="button">
 </form>
 &nbsp;
+<form action="listAuthors" method ="GET">
+<input type="submit" value="lista Autori" class="button">
+</form>
+&nbsp;
+<form action="createAuthor" method ="GET">
+<input type="submit" value="aggiungi un autore" class="button">
+</form>
+&nbsp;
 <form action="createOrder" method ="GET">
 <input type="submit" value="crea un ordine" class="button">
 </form>
