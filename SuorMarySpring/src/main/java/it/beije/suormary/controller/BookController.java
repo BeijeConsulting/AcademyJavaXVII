@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import it.beije.suormary.model.Author;
 import it.beije.suormary.model.Book;
 import it.beije.suormary.model.Order;
+import it.beije.suormary.service.AuthorService;
 import it.beije.suormary.service.BookService;
 import it.beije.suormary.service.OrderService;
 import it.beije.suormary.service.TestService;
@@ -28,12 +29,14 @@ public class BookController {
 	private BookService bookService;
 	@Autowired
 	private OrderService orderService;
+	@Autowired
+	private AuthorService authorService;
 	 
 
 	   @RequestMapping(value = "/createBook", method = RequestMethod.GET)
        public String createBookGet(HttpSession session, Model model) {
 		    if(session.getAttribute("email")!= null) {
-		    	List<Author> authors = bookService.getAuthors();
+		    	List<Author> authors = authorService.getAuthors();
 		    	model.addAttribute("authors", authors);
 		    	return "createBook";
 		    }

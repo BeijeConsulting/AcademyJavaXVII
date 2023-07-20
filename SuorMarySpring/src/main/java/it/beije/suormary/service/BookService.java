@@ -21,13 +21,8 @@ import it.beije.suormary.repository.BookRepository;
 @Service
 public class BookService {
 	@Autowired
-	private AuthorRepository authorRepository;
-	@Autowired
 	private BookRepository bookRepository;
-	 public List<Author> getAuthors(){
-  	   List<Author> authors = authorRepository.findAll();
-  	   return authors;
-     }
+	
      public void addBook(String title, String description, String editor, String priceString, String quantityString, String authorIdStr) {
   	   int authorId = Integer.parseInt(authorIdStr);
   	   double price = Double.parseDouble(priceString);
