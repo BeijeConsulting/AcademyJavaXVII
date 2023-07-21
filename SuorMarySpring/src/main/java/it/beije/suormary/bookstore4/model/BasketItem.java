@@ -5,11 +5,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "baskets")
 public class BasketItem {
+	
+	
+//	@ManyToOne
+//    @JoinColumn(name = "book_id" , referencedColumnName = "id") // Nome della colonna FK in tabella1
+//    private Book book;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -55,11 +62,23 @@ public class BasketItem {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	
+//	public Book getBook() {
+//		return book;
+//	}
+//
+//	public void setBook(Book book) {
+//		this.book = book;
+//	}
 
 	@Override
 	public String toString() {
 		return "Basket [id=" + id + ", userId=" + userId + ", bookId=" + bookId + ", quantity=" + quantity + "]";
 	}
+
+	
+
+
 
 	
 

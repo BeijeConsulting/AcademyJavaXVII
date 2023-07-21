@@ -31,7 +31,6 @@ public class EcommerceService {
 	@Transactional
 	public List<Book> bookList() {
     	List<Book> books = bookRepository.findAll();
-    	//System.out.println("OOHHHHHHHHHHHH");
 //    	for(Book b : books) {
 //    		System.out.println(b);
 //    	}
@@ -61,7 +60,20 @@ public class EcommerceService {
 		basketItem.setBookId(bookId);
 		basketItem.setUserId(userId);
 		basketItem.setQuantity(1);
+		
 		basketItemRepository.save(basketItem);
+	}
+	
+	//join tra basket e book
+	public Book getBasketItemInBook(Integer basketId){
+		Book b =  bookRepository.findBybookId(basketId);
+		System.out.println("VALORE DI B: " + b) ;
+		return b;
+	}
+	
+	//somma del carrello
+	public Double sumBasket(Integer userId) {
+		return basketItemRepository.sumBasket(userId);
 	}
 	
 }
