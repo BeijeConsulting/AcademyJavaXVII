@@ -117,9 +117,6 @@
            <form action="./logout" method="GET">
                 <button type="submit">Logout</button>
             </form>
-            <form action="./bookstore_registration" method="GET">
-                <button type="submit">Register</button>
-            </form>
           
             <form action="./bookstore_cart" method="GET">
                 <button type="submit"><i class="material-icons">shopping_cart</i></button>

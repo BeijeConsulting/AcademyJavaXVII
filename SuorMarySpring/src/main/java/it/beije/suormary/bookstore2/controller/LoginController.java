@@ -63,5 +63,13 @@ public class LoginController  {
 			return "bookstore_login";
 		}
 	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String getLogout(HttpSession session) {
+		System.out.println("Logout doGet");
+        session.invalidate(); // Rimuove la sessione corrente
+        return "bookstore_login";
+
+	}
 
 }

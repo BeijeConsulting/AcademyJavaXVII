@@ -81,7 +81,7 @@
         			</form>
         		</c:when>
         		<c:otherwise>
-        			<form class= "paragraph" action="./cart" method="post">
+        			<form class= "paragraph" action="./bookstore_cart" method="post">
                 	<input type="hidden" name="id" value="${book.id}">
                 	<input type="hidden" name="action" value="add">
                 	<button type="submit" class= "button">Add</button>
@@ -90,7 +90,7 @@
             </c:choose>
  
             <br>
-            <form class="paragraph" action="./cart" method="post">
+            <form class="paragraph" action="./bookstore_cart" method="post">
                 <input type="hidden" name="id" value="${book.id}">
                 <input type="hidden" name="action" value="remove">
                 <button type="submit" class= "button">Remove</button>
