@@ -12,7 +12,7 @@ import it.beije.suormary.model.Order;
 import it.beije.suormary.model.OrderItem;
 import it.beije.suormary.repository.OrderItemRepository;
 import it.beije.suormary.repository.OrderRepository;
-
+ 
 @Service
 public class OrderItemService {
 	@Autowired
