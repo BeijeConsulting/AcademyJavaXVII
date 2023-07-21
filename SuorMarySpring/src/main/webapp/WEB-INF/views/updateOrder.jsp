@@ -22,6 +22,7 @@
 	   <h3>${book.title}</h3>
 	   <form action="deleteOrderItem" method="get">
 	   <input type="hidden" name="orderItemId" value="${orderItem.id}" />
+	   <input type="hidden" name="orderId" value="${order.id}" />
 	   <input type="submit" value="rimuovi dall`ordine" /> <br>
 	   </form>
 </c:forEach>

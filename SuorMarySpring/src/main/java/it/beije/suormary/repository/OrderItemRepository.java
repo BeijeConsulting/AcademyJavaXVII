@@ -12,7 +12,6 @@ import it.beije.suormary.model.OrderItem;
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
 	
-	public Order findByOrderId(Integer orderId);
 	
 	public List<OrderItem> getListByOrderId(Integer orderId);
 
