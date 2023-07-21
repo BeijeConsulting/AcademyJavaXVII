@@ -36,10 +36,10 @@ public class WelcomeController {
         	
             return "bookstore_login";
         } else {
-            List<Book> books = bookService.readBooksFromDb();
+            List<Book> books = bookService.getBookList();
             System.out.println("books : " + books);
             for (Book book : books) {
-            	authors.add(bookService.findAuthorFromId(book.getAuthorId()));
+            	authors.add(bookService.findAuthorById(book.getAuthorId()));
             }
             
             model.addAttribute("authors", authors);
@@ -55,10 +55,10 @@ public class WelcomeController {
 		
         List<Author> authors = new ArrayList<>();
      
-            List<Book> books = bookService.readBooksFromDb();
+            List<Book> books = bookService.getBookList();
             System.out.println("books : " + books);
             for (Book book : books) {
-            	authors.add(bookService.findAuthorFromId(book.getAuthorId()));
+            	authors.add(bookService.findAuthorById(book.getAuthorId()));
             }
             
             model.addAttribute("authors", authors);
