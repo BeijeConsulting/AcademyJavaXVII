@@ -40,14 +40,15 @@
    <form action="addBookToModOrder" action="GET">
    <input type="hidden" name="bookOrderId" value="${book.id}" />
    <input type="hidden" name="quantity" value = "<%= session.getAttribute("quantity") %>" />
-   <input type="submit" value="Aggiungi all`ordine" />
+   <input type="submit" value="Aggiungi all'ordine" />
+</form>
    </form>
             </div>
         </div>
  </c:forEach>
-  <form action="recapOrder" action="GET">
+  <form action="recapOrder" method="get">
    <input type="submit" value="Salva modifica" class="button" /> 
-   </form>
+</form>
 
 </body>
 </html>
