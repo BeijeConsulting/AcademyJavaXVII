@@ -17,6 +17,7 @@
 <form action="addOtherBooks" action="get">
 <input type="submit" value="Aggiungi altri libri" />
 </form>
+
 <%
    for(OrderItem orderItem : order.getItems()){
 	   Book book = BookStoreUtility.getBookById(orderItem.getBookId());
