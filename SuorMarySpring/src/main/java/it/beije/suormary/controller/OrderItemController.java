@@ -23,7 +23,8 @@ public class OrderItemController {
 	public String deleteOrderItem(HttpSession session, Model model, HttpServletRequest request) {
 		  String id = request.getParameter("orderItemId");
 	      orderItemService.deleteOrderItem(id);
-	  	int idOrder = (int) session.getAttribute("orderId");
+	  	String idOrderStr = request.getParameter("orderId");
+	  	int idOrder = Integer.parseInt(idOrderStr);
 		Order order = orderService.getOrderById(idOrder);
 		model.addAttribute("order", order);
 		session.setAttribute("order", order);

@@ -47,29 +47,22 @@ public class OrderService {
  		
  		return order;
  	}
-     public Order findOrderById(String orderId) {
-    	 
-     	Integer id = Integer.valueOf(orderId);
-     	Optional<Order> o = orderRepository.findById(id);
-     	Order order = o.get();
-     	return order;
-  	}
 
+
+     
      public void deleteOrder(int orderId) {
-  	   
-  	   Book book = null;
-  	   Order orderFound = findOrder(orderId);
-  	   List<OrderItem> orderItems = orderItemRepository.getListByOrderId(orderId);
-     	  for(OrderItem orderItem : orderItems) {
-     	    if(orderItem.getId() == orderItem.getId()) { 
-     	    	book = bookService.getBookById(orderItem.getBookId());
-	   			book.setQuantity(book.getQuantity() + orderItem.getQuantity());
-	       	    orderItemRepository.delete(orderItem); 
-     	    	 }
-     	       }
-     orderRepository.delete(orderFound);
-     	      
-     }
+    	    Order orderFound = findOrder(orderId);
+    	    List<OrderItem> orderItems = orderItemRepository.getListByOrderId(orderId);
+
+    	    for (OrderItem orderItem : orderItems) {   	        
+    	        Book book = bookService.getBookById(orderItem.getBookId());
+    	        book.setQuantity(book.getQuantity() + orderItem.getQuantity()); 	    
+    	        
+    	        orderItemRepository.delete(orderItem);
+    	        orderFound.getItems().remove(orderItem);
+    	    }   	    
+    	    orderRepository.delete(orderFound);
+    	}
      
      public List<Order> findByUserId(String email) {
     	 User user = userService.loginUser(email);

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import antlr.Parser;
 import it.beije.suormary.model.Book;
 import it.beije.suormary.model.Order;
 import it.beije.suormary.service.BookService;
@@ -94,13 +95,16 @@ public class OrderController {
 		return "recap";
 	}
  
-	  @RequestMapping(value = "/deleteOrder", method = RequestMethod.GET)
-	   public String deleteOrder(HttpSession session, Model model) {
-	        Integer orderId= (Integer) session.getAttribute("orderId");			
-			orderService.deleteOrder(orderId);
-	        model.addAttribute("deleteOrder", "L`ordine è stato cancellato");
+	@RequestMapping(value = "/deleteOrder", method = RequestMethod.GET)
+	public String deleteOrder(HttpSession session, Model model, @RequestParam String orderId) {
+//	        Integer orderId= (Integer) session.getAttribute("orderId");			
+			
+			int orId = Integer.parseInt(orderId);
+	    	//Order order = orderService.findOrder(orId);
+	    	orderService.deleteOrder(orId);
 	        List<Book> books = bookService.loadBooks();
 	        model.addAttribute("books", books);
+	        model.addAttribute("deleteOrder", "L`ordine è stato cancellato");
 			return "welcome";	
 	   }
 
@@ -115,7 +119,8 @@ public class OrderController {
 	} 
     @RequestMapping(value = "/updateOrder", method = RequestMethod.GET)
     public String updateOrder(HttpSession session, Model model, @RequestParam String orderId) {
-    	Order order = orderService.findOrderById(orderId);
+    	int orId = Integer.parseInt(orderId);
+    	Order order = orderService.findOrder(orId);
     	model.addAttribute("order", order);
 //		int id = (int) session.getAttribute("orderId");
 //		Order order = orderService.getOrderById(id);
@@ -195,6 +200,7 @@ public class OrderController {
 			session.setAttribute("orderId", orderId);
 			Order order = orderService.findOrder(orderId);
 			model.addAttribute("order", order);
+			
 		}
 		
     	 	return "recap";

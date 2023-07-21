@@ -12,9 +12,10 @@
 <title>Update Order</title>
 </head>
 <body>
+
 <form action="addOtherBooks" action="get">
 <input type="submit" value="Aggiungi altri libri" />
-</form>
+</form> 
 <c:forEach items="${order.items}" var="orderItem">
     <c:set var="book" value="${BookStoreUtility.getBookById(orderItem.bookId)}" />
     ${book.title} - Quantità: ${orderItem.quantity} <br/>
@@ -30,7 +31,5 @@
 	   <input type="submit" value="salva ordine" />
 	   </form>
    
-
-
 </body>
 </html>
