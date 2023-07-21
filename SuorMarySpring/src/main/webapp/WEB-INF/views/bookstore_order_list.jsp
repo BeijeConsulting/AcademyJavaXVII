@@ -53,7 +53,7 @@
     </style>
 </head>
 <body>
-    <c:set var="orders" value="${requestScope.orders}" />
+    <c:set var="orders" value="${orders}" />
 
     <c:if test="${not empty orders}">
         <div class="container">
@@ -64,7 +64,7 @@
                     <p class="paragraph"><strong>Amount:</strong> ${order.amount} $</p>
                     <p class="paragraph"><strong>Status:</strong> ${order.status}</p>
                     <p class="paragraph"><strong>User_id:</strong> ${order.userId}</p>
-                    <form class="paragraph" action="./bookstoreOrderDetails" method="get">
+                    <form class="paragraph" action="./bookstore_order_details" method="get">
                         <input type="hidden" name="id" value="${order.id}">
                         <button type="submit" class="button">View Details</button>
                     </form>

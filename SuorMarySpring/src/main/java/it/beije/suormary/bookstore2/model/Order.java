@@ -55,7 +55,7 @@ public class Order {
 	@Column(name = "amount")
 	private double amount;
 	
-	@OneToMany(targetEntity = OrderItem.class, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = OrderItem.class, fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id")
 	private List<OrderItem> items;
 

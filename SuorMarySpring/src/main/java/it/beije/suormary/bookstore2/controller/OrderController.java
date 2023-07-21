@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.beije.suormary.bookstore2.model.Book;
 import it.beije.suormary.bookstore2.model.Order;
+import it.beije.suormary.bookstore2.model.OrderItem;
 import it.beije.suormary.bookstore2.model.User;
 import it.beije.suormary.bookstore2.service.OrderService;
 
@@ -40,14 +42,24 @@ public class OrderController {
 	
 	@RequestMapping(value = "/bookstore_order_details", method = RequestMethod.GET)
 	public String getOrderById(HttpSession session, Model model,
-			@RequestParam(required = false) Integer id) {
+			@RequestParam(required = false) String id) {
+		
+		Integer orderId = Integer.parseInt(id);
 		
 		if (id == null) {
             return "bookstore_order_list";
         } else {
     
-    		Order order = orderService.getOrderById(id);
+    		Order order = orderService.getOrderById(orderId);
+    		
+    		List<OrderItem> orderItems = order.getItems();
+    		
+    		List<Book> books = orderService.booksInOrder(orderItems);
+    		
+    		
         	model.addAttribute("order", order);
+        	model.addAttribute("books", books);
+ 	
         }
 		return "bookstore_order_details";
 	}
