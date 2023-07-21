@@ -63,6 +63,7 @@ public class Order {
 	@OneToMany(targetEntity = OrderItem.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "order_id")
 	private List<OrderItem> items;
+	
 	public Order() {
 		items = new ArrayList<>();
 	}
