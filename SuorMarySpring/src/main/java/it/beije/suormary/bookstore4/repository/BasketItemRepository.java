@@ -10,5 +10,5 @@ import it.beije.suormary.bookstore4.model.BasketItem;
 @Repository
 public interface BasketItemRepository extends JpaRepository<BasketItem, Integer>{
 
-//	public List<BasketItem> findByUserId(Integer userId);
+	public List<BasketItem> findByUserId(Integer userId);
 }

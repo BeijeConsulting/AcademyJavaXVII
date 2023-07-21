@@ -5,11 +5,16 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import it.beije.suormary.model.ContactDetail;
 
 /*
  
@@ -51,8 +56,10 @@ public class User {
 	@Column(name = "create_date")
 	private LocalDateTime creationDate;
 	
-//	@Transient
-//	private List<OrderItem> basket;
+	//@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.LAZY)
+	@OneToMany(targetEntity = BasketItem.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "user_id")
+	private List<OrderItem> basket;
 
 	public int getId() {
 		return id;
@@ -95,12 +102,12 @@ public class User {
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
-//	public List<OrderItem> getBasket() {
-//		return basket;
-//	}
-//	public void setBasket(List<OrderItem> basket) {
-//		this.basket = basket;
-//	}
+	public List<OrderItem> getBasket() {
+		return basket;
+	}
+	public void setBasket(List<OrderItem> basket) {
+		this.basket = basket;
+	}
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")

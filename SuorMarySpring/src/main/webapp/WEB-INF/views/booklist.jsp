@@ -18,5 +18,15 @@
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
+<c:if test="${empty user }"></c:if>
+	<c:choose>
+	<c:when test="${empty basket}">CART EMPTY</c:when>
+	<c:otherwise>
+		<c:forEach items="${basket}" var="book">
+			${basket.bookId}&nbsp;${basket.quantity}<br/>
+			<br/>
+		</c:forEach>
+	</c:otherwise>
+</c:choose>
 </body>
 </html>

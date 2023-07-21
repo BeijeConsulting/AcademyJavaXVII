@@ -23,7 +23,11 @@ public class EcommerceService {
 	@Transactional
 	public List<Book> bookList() {
     	List<Book> books = bookRepository.findAll();
-    	//if (books.size() == 0) return null;
+    	//System.out.println("OOHHHHHHHHHHHH");
+//    	for(Book b : books) {
+//    		System.out.println(b);
+//    	}
+    	if (books.size() == 0) return null;
     	return books;
 	}
 	
