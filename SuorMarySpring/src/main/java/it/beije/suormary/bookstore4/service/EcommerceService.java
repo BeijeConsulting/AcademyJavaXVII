@@ -17,23 +17,23 @@ import it.beije.suormary.bookstore4.repository.BookRepository;
 @Service
 public class EcommerceService {
 
-//	@Autowired
-//	private BookRepository bookRepository;
+	@Autowired
+	private BookRepository bookRepository;
 	
-//	@Transactional
-//	public List<Book> bookList() {
-//    	List<Book> books = bookRepository.findAll();
-//    	//if (books.size() == 0) return null;
-//    	return books;
-//	}
+	@Transactional
+	public List<Book> bookList() {
+    	List<Book> books = bookRepository.findAll();
+    	//if (books.size() == 0) return null;
+    	return books;
+	}
 	
 	@Autowired
 	private BasketItemRepository basketItemRepository;
-//	
-//	public List<BasketItem> basket(Integer userId) {
-//    	List<BasketItem> books = basketItemRepository.findByUserId(userId);
-//    	if (books.size() == 0) return null;
-//    	return books;
-//	}
+	
+	public List<BasketItem> basket(Integer userId) {
+    	List<BasketItem> books = basketItemRepository.findByUserId(userId);
+    	if (books.size() == 0) return null;
+    	return books;
+	}
 	
 }

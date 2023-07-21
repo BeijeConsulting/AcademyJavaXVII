@@ -24,7 +24,7 @@ public class ListController {
 	
 	@RequestMapping(value = "/booklist", method = RequestMethod.GET)
 	public String bookList(Model model) {
-		List<Book> books = ecommerceService.bookList();
+		List<Book> books = null;//ecommerceService.bookList();
 		model.addAttribute("booklist", books);
 		
 		//User user = new User();
