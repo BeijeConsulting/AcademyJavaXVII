@@ -60,8 +60,6 @@ public class Order {
 	@Column(name = "shipping_address")
 	private String shippingAddress;
 
-	
-
 	@OneToMany(targetEntity = OrderItem.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "order_id")
 	private List<OrderItem> items;

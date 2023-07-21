@@ -40,6 +40,7 @@
    			<input type="submit" value="Cancella Ordine" class="button"/>
    		</form>
 		<form action="updateOrder" action="GET">
+		<input type="hidden" name="orderId" value="${order.id}" />
    			<input type="submit" value="Modifica ordine" class="button"/>
 		</form> 
 	</c:when>
