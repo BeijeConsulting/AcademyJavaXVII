@@ -36,7 +36,7 @@
     <hr><br/>
 <c:choose>
 	<c:when test='${order.status eq "I"}'>
-	
+	   
 		<form action="payment" method="GET">
 		    <label for="address">Indirizzo Spedizione:</label><br>
 		    <input type="text" id="address" name="address" required><br>
