@@ -117,11 +117,6 @@ public class OrderController {
     public String updateOrder(HttpSession session, Model model, @RequestParam String orderId) {
     	Order order = orderService.findOrderById(orderId);
     	model.addAttribute("order", order);
-//		int id = (int) session.getAttribute("orderId");
-//		Order order = orderService.getOrderById(id);
-//		model.addAttribute("order", order);
-//		session.setAttribute("order", order);
-//		System.out.println("SIZE : " + order);
 		return "updateOrder";
     }
     @RequestMapping(value = "/addOtherBooks", method = RequestMethod.GET)
