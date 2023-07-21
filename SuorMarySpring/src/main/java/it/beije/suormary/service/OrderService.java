@@ -60,13 +60,13 @@ public class OrderService {
   	   Book book = null;
   	   Order orderFound = findOrder(orderId);
   	   List<OrderItem> orderItems = orderItemRepository.getListByOrderId(orderId);
-     	  for(OrderItem orderItem : orderItems) {
-     	    if(orderItem.getId() == orderItem.getId()) { 
-     	    	book = bookService.getBookById(orderItem.getBookId());
-	   			book.setQuantity(book.getQuantity() + orderItem.getQuantity());
-	       	    orderItemRepository.delete(orderItem); 
-     	    	 }
+  	   System.out.println("SIZE list"  + orderItems.size());
+  	  System.out.println("SIZEE : " + orderFound.getItems().size());
+  	  System.out.println(orderFound);
+     	  for(OrderItem orderItem : orderFound.getItems()) {      
+	   			orderItemRepository.delete(orderItem);    	    
      	       }
+
      orderRepository.delete(orderFound);
      	      
      }

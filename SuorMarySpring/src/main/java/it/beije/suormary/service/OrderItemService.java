@@ -47,7 +47,9 @@ public class OrderItemService {
     	    	   orderItem.setQuantity(b.getQuantity());
     	    	   orderItem.setPrice(b.getPrice() * b.getQuantity());
     	    	   orderItemRepository.save(orderItem);
-    	    	   amount += b.getPrice();
+    	    	   for(int i = 0; i< b.getQuantity(); i++) {
+    	    		   amount += b.getPrice(); 
+    	    	   }
     	    	   Book book = bookService.getBookById(b.getId());
     	    	   book.setQuantity(book.getQuantity()-b.getQuantity());
     	    	   bookRepository.save(book);
