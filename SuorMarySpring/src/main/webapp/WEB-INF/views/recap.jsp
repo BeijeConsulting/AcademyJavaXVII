@@ -17,23 +17,12 @@
 <body>
 <%@ include file="header.jsp" %>
 
-
-    <% 
-    
-   		int orderId = (int) session.getAttribute("orderId");
-        Order orderfound = BookStoreUtility.getOrderById(orderId);
-
-    %>
-
     <h2>Riepilogo Ordine n° ${order.id} </h2>
 
-
-<% for(OrderItem orderItem :orderfound.getItems()){ Book book = BookStoreUtility.getBookById(orderItem.getBookId());%> 
-       <%= book.getTitle() %>
-             <%=" - " + "Quantità : " +  orderItem.getQuantity() %><br/>
-	<%
-	}
-	%>
+<c:forEach items="${order.items}" var="orderItem">
+    <c:set var="book" value="${BookStoreUtility.getBookById(orderItem.bookId)}" />
+    ${book.title} - Quantità: ${orderItem.quantity} <br/>
+</c:forEach>
 
         Stato Ordine: ${order.status}<br/>
         Totale acquisto: ${order.amount} <br/>

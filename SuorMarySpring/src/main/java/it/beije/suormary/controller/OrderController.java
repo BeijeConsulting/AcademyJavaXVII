@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,7 +62,7 @@ public class OrderController {
 			System.out.println(b.getId() +  " " + b.getQuantity());
 		}
 		session.removeAttribute("quantity");
-		List<Book> books = BookStoreUtility.loadBooks();
+		List<Book> books = bookService.loadBooks();
 		model.addAttribute("booksOrder", booksOrder);
 		model.addAttribute("books", books);
 		Order order = (Order) session.getAttribute("order");
@@ -76,13 +77,14 @@ public class OrderController {
 		if(request.getParameter("order")==null){
 			List<Book> booksOrder = (List) session.getAttribute("booksOrder");
 			model.addAttribute("booksOrder", booksOrder);
-			int orderId = (int) session.getAttribute("orderId");
+			Integer orderId = (Integer) session.getAttribute("orderId");
 			orderItemService.createOrderItems(booksOrder,orderId);
 			Order order = orderService.findOrder(orderId);
+			System.out.println("Lunghezza items ordine : " + order.getItems().size());
 			model.addAttribute("order", order);
 		} else {
 			String orId = request.getParameter("order");
-			int orderId= Integer.parseInt(orId);
+			Integer orderId= Integer.valueOf(orId);
 			session.setAttribute("orderId", orderId);
 			Order order = orderService.findOrder(orderId);
 			model.addAttribute("order", order);
@@ -93,7 +95,7 @@ public class OrderController {
 
 	  @RequestMapping(value = "/deleteOrder", method = RequestMethod.GET)
 	   public String deleteOrder(HttpSession session, Model model) {
-	        int orderId= (int) session.getAttribute("orderId");			
+	        Integer orderId= (Integer) session.getAttribute("orderId");			
 			orderService.deleteOrder(orderId);
 	        model.addAttribute("deleteOrder", "L`ordine è stato cancellato");
 	        List<Book> books = bookService.loadBooks();
@@ -110,7 +112,6 @@ public class OrderController {
          }
          else return "login";
 	} 
-
     @RequestMapping(value = "/updateOrder", method = RequestMethod.GET)
     public String updateOrder(HttpSession session, Model model) {
 		int id = (int) session.getAttribute("orderId");
@@ -145,7 +146,7 @@ public class OrderController {
          model.addAttribute("books", books);
 		return "addOtherBooks";
     }
-
+    
     @RequestMapping(value = "/addBookToModOrder", method = RequestMethod.GET)
     public String addBookToModOrder(HttpSession session, Model model, HttpServletRequest request) {
 		List<Book> booksOrder = (List)session.getAttribute("booksOrder");

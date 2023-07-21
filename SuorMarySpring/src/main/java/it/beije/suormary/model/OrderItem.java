@@ -46,7 +46,6 @@ public class OrderItem {
 	@Column(name = "quantity")
 	private Integer quantity;
 
-	
 	public Integer getId() {
 		return id;
 	}
@@ -63,7 +62,8 @@ public class OrderItem {
 		this.orderId = orderId;
 	}
 
-	public Integer getBookId(){
+
+	public int getBookId() {
 		return bookId;
 	}
 
@@ -79,7 +79,7 @@ public class OrderItem {
 		this.price = price;
 	}
 
-	public Integer getQuantity() {
+	public int getQuantity() {
 		return quantity;
 	}
 

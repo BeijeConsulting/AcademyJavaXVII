@@ -4,6 +4,7 @@
      <%@page import="it.beije.suormary.model.OrderItem"%>
      <%@page import="it.beije.suormary.model.Book"%>
      <%@page import="it.beije.suormary.controller.BookStoreUtility"%>
+     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,20 +18,17 @@
 <form action="addOtherBooks" action="get">
 <input type="submit" value="Aggiungi altri libri" />
 </form>
-
-<%
-   for(OrderItem orderItem : order.getItems()){
-	   Book book = BookStoreUtility.getBookById(orderItem.getBookId());
-	   %>
-	   <h4>Quantity : <%= orderItem.getQuantity() %></h4>
-	   <h3><%= book.getTitle() %></h3>
+<c:forEach items="${order.items}" var="orderItem">
+    <c:set var="book" value="${BookStoreUtility.getBookById(orderItem.bookId)}" />
+    ${book.title} - Quantità: ${orderItem.quantity} <br/>
+    <h4>Quantity : ${orderItem.quantity}</h4>
+	   <h3>${book.title}</h3>
 	   <form action="deleteOrderItem" method="get">
-	   <input type="hidden" name="orderItemId" value="<%= orderItem.getId() %>" />
+	   <input type="hidden" name="orderItemId" value="${orderItem.id}" />
 	   <input type="submit" value="rimuovi dall`ordine" /> <br>
 	   </form>
-	   <%
-   }
-	   %>
+</c:forEach>
+
 	      <form action="saveOrder" method="get">
 	   <input type="submit" value="salva ordine" />
 	   </form>

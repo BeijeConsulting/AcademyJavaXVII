@@ -3,6 +3,7 @@ package it.beije.suormary.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import it.beije.suormary.model.Book;
 import it.beije.suormary.model.Order;
 import it.beije.suormary.model.OrderItem;
+import it.beije.suormary.repository.BookRepository;
 import it.beije.suormary.repository.OrderItemRepository;
 import it.beije.suormary.repository.OrderRepository;
  
@@ -18,17 +20,26 @@ public class OrderItemService {
 	@Autowired
 	private OrderRepository orderRepository;
 	@Autowired
+	private BookRepository bookRepository;
+	@Autowired
 	private OrderItemRepository orderItemRepository;
 	@Autowired
 	private OrderService orderService;
 	@Autowired
 	private BookService bookService;
 	
-	
-	  	public void createOrderItems(List<Book> booksOrder, int orderId) {
-    	  
+	  	public void createOrderItems(List<Book> booksOrder, Integer orderId) {
+    	   
 		   Order order = orderService.findOrder(orderId);
 		   OrderItem orderItem;
+		   double amount;
+		   if(order.getItems().size() > 0) {
+			  amount = order.getAmount();
+		   }
+		   else {
+			    amount = 0;
+		   }
+		  
    	       for(Book b : booksOrder) {
     	    	   orderItem = new OrderItem();
     	    	   orderItem.setBookId(b.getId());
@@ -36,15 +47,12 @@ public class OrderItemService {
     	    	   orderItem.setQuantity(b.getQuantity());
     	    	   orderItem.setPrice(b.getPrice() * b.getQuantity());
     	    	   orderItemRepository.save(orderItem);
-    	    	   order.addOrderItem(orderItem);
+    	    	   amount += b.getPrice();
     	    	   Book book = bookService.getBookById(b.getId());
     	    	   book.setQuantity(book.getQuantity()-b.getQuantity());
+    	    	   bookRepository.save(book);
     	       }
-   	       double amount = 0;
-   	       System.out.println(order.getItems().size());
-   	       for(OrderItem orderIt : order.getItems()) {
-   	    	   amount += orderIt.getPrice();
-   	       } 
+
     	   order.setAmount(amount);
     	   orderRepository.save(order);
        }
@@ -65,7 +73,7 @@ public class OrderItemService {
 	    		 
 	    		
 	       }
-
+ 
 	    private OrderItem findOrderItem(int orderItemId) {
 	    	
 	    	Optional <OrderItem> orIt = orderItemRepository.findById(orderItemId);
