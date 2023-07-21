@@ -90,6 +90,7 @@
         	padding: 10px; 
         	background-color: #f9f9f9;
         	border-radius: 14px;
+     
         }
         .paragraph {
         	text-align: center;
@@ -133,7 +134,7 @@
     	<form style = "margin-right: 20px;" action="./bookstoreInsertABook" method="get">
            <button class = "button"  type="submit" class = "button">Add a book</button>
         </form>
-        <form action="./bookstoreOrderList" method="GET">
+        <form action="./bookstore_order_list" method="GET">
            <button class = "button"  type="submit">View Order List</button>
         </form>
     </div>

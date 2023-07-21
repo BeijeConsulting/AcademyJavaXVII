@@ -1,22 +1,17 @@
 package it.beije.suormary.bookstore2.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.beije.suormary.bookstore2.model.Author;
 import it.beije.suormary.bookstore2.model.Book;
-import it.beije.suormary.bookstore2.model.PersistenceManagerJPA;
 import it.beije.suormary.bookstore2.repository.AuthorRepository;
 import it.beije.suormary.bookstore2.repository.BookRepository;
-import it.beije.suormary.model.Contact;
 
 @Service
 public class BookService {
