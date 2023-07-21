@@ -38,7 +38,7 @@ public class OrderItemService {
 		   }
 		   else {
 			    amount = 0;
-		   }
+		   } 
 		  
    	       for(Book b : booksOrder) {
     	    	   orderItem = new OrderItem();
@@ -62,16 +62,9 @@ public class OrderItemService {
 	    	   int id = Integer.parseInt(idStr);
 	    	   Book book = null;
 	    		   OrderItem orderItem = findOrderItem(id);
-	    		   Order order = orderItemRepository.findByOrderId(orderItem.getOrderId());
-	    		   for(OrderItem ord : order.getItems()) {
-	    			   if(ord.getId() == orderItem.getId()) { 
-	    				  book = bookService.getBookById(ord.getBookId());
-	    				  book.setQuantity(book.getQuantity() + ord.getQuantity());
-	    				  order.getItems().remove(ord);
-	    			   }
-	    		   }
-	    		 
-	    		
+	    		   Optional<Order> o = orderRepository.findById(orderItem.getOrderId());
+	    		   Order order = o.isPresent() ? o.get() : null;
+	    		   orderItemRepository.delete(orderItem);    		
 	       }
  
 	    private OrderItem findOrderItem(int orderItemId) {
