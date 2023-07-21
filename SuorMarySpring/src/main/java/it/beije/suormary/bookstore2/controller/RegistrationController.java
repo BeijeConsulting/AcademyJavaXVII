@@ -28,7 +28,7 @@ public class RegistrationController{
 		User user = (User) session.getAttribute("user");
 
 		if (user != null) { 
-			return "bookstore_welcome";
+			return "redirect:bookstore_welcome";
 		} else { 
 			return "bookstore_registration";
 		}

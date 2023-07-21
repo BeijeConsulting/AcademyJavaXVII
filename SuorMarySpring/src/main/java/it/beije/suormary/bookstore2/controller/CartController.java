@@ -32,7 +32,7 @@ public class CartController {
 		User user = (User) session.getAttribute("user");
 		
 		if (user == null) {
-			return "bookstore_home";
+			return "redirect:bookstore_home";
 		} else {
 			Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
 			List<Book> books =  new ArrayList<>();

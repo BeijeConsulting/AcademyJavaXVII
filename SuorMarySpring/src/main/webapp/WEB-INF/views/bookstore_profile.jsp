@@ -101,7 +101,7 @@
         <hr>
         
         <p class="paragraph"><strong>Description:</strong> ${book.description}</p>
-        <form class="paragraph" action="./bookstoreBookDetails" method="get">
+        <form class="paragraph" action="./bookstore_book_details" method="get">
             <input type="hidden" name="id" value="${book.id}">
             <button type="submit" class="button">View Details</button>
         </form>

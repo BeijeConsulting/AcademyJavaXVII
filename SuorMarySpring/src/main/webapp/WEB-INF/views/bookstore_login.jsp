@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -63,16 +64,10 @@ button {
 </head>
 <body>
 
-<%
-String loginError = (String) session.getAttribute("loginError");
-if (loginError != null) {
-	%>
-	<p style="color:red"><%= loginError %></p>
-	<%
-	
-	session.removeAttribute("loginError");
-}
-%>
+<c:if test="${not empty loginError}">
+    <p style="color:red">${loginError}</p>
+</c:if>
+
 <div class="container">
     <h1>Sign In</h1>
     <form action="./bookstore_login" method="POST">

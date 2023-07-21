@@ -28,7 +28,7 @@ public class LoginController  {
 		User user = (User) session.getAttribute("user");
 		System.out.println("user " + user);
 		if (user != null) { // utente loggato
-			return "bookstore_welcome";
+			return "redirect:bookstore_welcome";
 		} else { // non loggato
 			return "bookstore_login";
 		}
@@ -55,7 +55,7 @@ public class LoginController  {
 			session.setAttribute("user", user);
 			
 
-			return "redirect:/bookstore_welcome";
+			return "redirect:bookstore_welcome";
 			
 		} else { // KO
 
