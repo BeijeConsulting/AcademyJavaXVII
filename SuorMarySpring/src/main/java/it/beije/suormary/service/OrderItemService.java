@@ -62,8 +62,10 @@ public class OrderItemService {
 	    public  void deleteOrderItem(String idStr) {
 	    	  
 	    	   int id = Integer.parseInt(idStr);
-	    	   Book book = null;
 	    		   OrderItem orderItem = findOrderItem(id);
+	    		   Book book = bookService.getBookById(orderItem.getBookId());
+	    		   book.setQuantity(book.getQuantity() + orderItem.getQuantity());
+	    		   bookRepository.save(book);
 	    		   Optional<Order> o = orderRepository.findById(orderItem.getOrderId());
 	    		   Order order = o.isPresent() ? o.get() : null;
 	    		   orderItemRepository.delete(orderItem);    		

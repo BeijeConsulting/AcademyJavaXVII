@@ -183,10 +183,10 @@ public class OrderController {
     @RequestMapping(value = "/saveOrder", method = RequestMethod.GET)
     public String saveOrder(HttpSession session, HttpServletRequest request, Model model) {
     	if(request.getParameter("order")==null){
-			List<Book> booksOrder = (List) session.getAttribute("booksOrder");
-			model.addAttribute("booksOrder", booksOrder);
+//			List<Book> booksOrder = (List) session.getAttribute("booksOrder");
+//			model.addAttribute("booksOrder", booksOrder);
 			int orderId = (int) session.getAttribute("orderId");
-			orderItemService.createOrderItems(booksOrder,orderId);
+//			orderItemService.createOrderItems(booksOrder,orderId);
 			Order order = orderService.findOrder(orderId);
 			model.addAttribute("order", order);
 		} else {
