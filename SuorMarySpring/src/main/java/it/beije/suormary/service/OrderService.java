@@ -12,6 +12,7 @@ import it.beije.suormary.model.Book;
 import it.beije.suormary.model.Order;
 import it.beije.suormary.model.OrderItem;
 import it.beije.suormary.model.User;
+import it.beije.suormary.repository.BookRepository;
 import it.beije.suormary.repository.OrderItemRepository;
 import it.beije.suormary.repository.OrderRepository;
 
@@ -21,6 +22,8 @@ public class OrderService {
 	private UserService userService;
 	@Autowired
 	private OrderRepository orderRepository;
+	@Autowired
+	private BookRepository bookRepository;
 	@Autowired
 	private OrderItemRepository orderItemRepository;
 	@Autowired
@@ -51,12 +54,12 @@ public class OrderService {
      public void deleteOrderItems(int orderId) {
     	 	Order orderFound = findOrder(orderId);
     	    List<OrderItem> orderItems = orderItemRepository.getListByOrderId(orderId);
-    	    System.out.println(orderItems);
-    	    for (OrderItem orderItem : orderItems) { 
-    	    	
-    	        Book book = bookService.getBookById(orderItem.getBookId());
-    	        book.setQuantity(book.getQuantity() + orderItem.getQuantity()); 	    
-    	        System.out.println(" QUI!! :" + orderItem);
+    	    Book book = null;
+    	    
+    	    for (OrderItem orderItem : orderItems) {    	    	
+    	        book = bookService.getBookById(orderItem.getBookId());
+    	        book.setQuantity(book.getQuantity() + orderItem.getQuantity());
+    	        bookRepository.save(book);
     	        orderFound.getItems().remove(orderItem);
     	        orderItemRepository.delete(orderItem);
     	    	
@@ -66,6 +69,7 @@ public class OrderService {
     	    //orderRepository.delete(orderFound);  
     	}
      public void deleteOrder (int orderId) {
+    	 
     	 Order orderFound = findOrder(orderId);
     	 orderRepository.delete(orderFound);
      }
