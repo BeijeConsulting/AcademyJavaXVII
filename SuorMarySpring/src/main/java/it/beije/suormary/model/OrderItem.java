@@ -32,22 +32,22 @@ public class OrderItem {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 
 	@Column(name = "order_id")
-	private int orderId;
+	private Integer orderId;
 
 	@Column(name = "book_id")
-	private int bookId;
+	private Integer bookId;
 
 	@Column(name = "price")
-	private double price;
+	private Double price;
 
 	@Column(name = "quantity")
-	private int quantity;
+	private Integer quantity;
 
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -55,7 +55,7 @@ public class OrderItem {
 		this.id = id;
 	}
 
-	public int getOrderId() {
+	public Integer getOrderId() {
 		return orderId;
 	}
 
@@ -63,7 +63,7 @@ public class OrderItem {
 		this.orderId = orderId;
 	}
 
-	public int getBookId() {
+	public Integer getBookId() {
 		return bookId;
 	}
 
@@ -71,7 +71,7 @@ public class OrderItem {
 		this.bookId = bookId;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
@@ -79,7 +79,7 @@ public class OrderItem {
 		this.price = price;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 

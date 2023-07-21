@@ -1,146 +1,98 @@
 package it.beije.suormary.service;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.beije.suormary.controller.JPAmanagerFactory;
+
 import it.beije.suormary.model.Book;
 import it.beije.suormary.model.Order;
 import it.beije.suormary.model.OrderItem;
 import it.beije.suormary.model.User;
+import it.beije.suormary.repository.OrderItemRepository;
+import it.beije.suormary.repository.OrderRepository;
 
 @Service
 public class OrderService {
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private OrderRepository orderRepository;
+	@Autowired
+	private OrderItemRepository orderItemRepository;
+	@Autowired
+	private BookService bookService;
 	
 	 public Order createOrder(String email) {
-  	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
-  	   Order order = null;
-  	   try {
-  		   Query query = entityManager.createQuery("SELECT u FROM User as u WHERE u.email = :email");
-  		   query.setParameter("email", email);
-  		   User user =(User) query.getSingleResult();
-              order = new Order();
+		 User user = userService.loginUser(email);
+             Order order = new Order();
              LocalDateTime date = LocalDateTime.now();
              order.setDate(date);
              order.setStatus("I");
              order.setUserId(user.getId());
-  		   EntityTransaction transaction = entityManager.getTransaction();
-  		   transaction.begin();
-             entityManager.persist(order);
-             transaction.commit();
-
-  		   
-  	   } catch(Exception e) {
-  		   e.printStackTrace();
-  	   } finally {
-  		   entityManager.close();
-  	   }
-  	   return order;
-     }
+             orderRepository.save(order);
+         return order;
+	 }
 
      public Order findOrder(int orderId) {
-  	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
-  	   Order orderFound = null;
-  	   try {		
-  		   orderFound = entityManager.find(Order.class, orderId);
- 	       System.out.println(orderFound.toString());
-  	   } catch(Exception e) {
-  		   e.printStackTrace();
-  	   } finally {
-  		   entityManager.close();
-  	   }
-  	   return orderFound;
-		
-	}
+    	 
+    	Optional<Order> o = orderRepository.findById(orderId);
+ 		
+ 		Order order = o.isPresent() ? o.get() : null;
+ 		
+ 		System.out.println("order : " + order);
+ 		
+ 		return order;
+ 	}
 
      public void deleteOrder(int orderId) {
-  	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
+  	   
   	   Book book = null;
-  	   try {
-  		   Order orderFound = entityManager.find(Order.class, orderId);
-     	       EntityTransaction transaction = entityManager.getTransaction();
-     	       transaction.begin();
-     	       Query query = entityManager.createQuery("SELECT o FROM OrderItem as o WHERE o.orderId = :id");
-     	       query.setParameter("id", orderFound.getId());
-     	       List<OrderItem> orderItems = query.getResultList();
-     	       for(OrderItem orderItem : orderItems) {
-     	    	 if(orderItem.getId() == orderItem.getId()) { 
-	   				  book = entityManager.find(Book.class, orderItem.getBookId());
-	   				  book.setQuantity(book.getQuantity() + orderItem.getQuantity());
-	       	    	  entityManager.remove(orderItem); 
+  	   Order orderFound = findOrder(orderId);
+  	   List<OrderItem> orderItems = orderItemRepository.getListByOrderId(orderId);
+     	  for(OrderItem orderItem : orderItems) {
+     	    if(orderItem.getId() == orderItem.getId()) { 
+     	    	book = bookService.getBookById(orderItem.getBookId());
+	   			book.setQuantity(book.getQuantity() + orderItem.getQuantity());
+	       	    orderItemRepository.delete(orderItem); 
      	    	 }
      	       }
-     	       entityManager.remove(orderFound);
-     	       transaction.commit();
-  		   
-  	   } catch(Exception e) {
-  		 e.printStackTrace();
-  	   }  finally {
-			   entityManager.close();
-		   }
+     orderRepository.delete(orderFound);
+     	      
      }
-     public List<Order> usersOrders(String email) {
-  	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
-  	   List<Order> myOrders = null;
-  	   try {
-  		   User user = userService.loginUser(email);
-  		   Query query = entityManager.createQuery("SELECT o FROM Order as o WHERE o.userId = :userId");
-     	       query.setParameter("userId", user.getId());
-  		   myOrders = query.getResultList();
-  		   
-  	   } catch(Exception e) {
-  		   e.printStackTrace();
-  	   } finally {
-  		   entityManager.close();
-  	   }
+     
+     public List<Order> findByUserId(String email) {
+    	 User user = userService.loginUser(email);
+    	 Integer id = user.getId();
+  	   
+    	 List<Order> myOrders = orderRepository.findByUserId(id);
 
   	   return myOrders;
 		
 	}
   
      public  Order getOrderById(int orderId) {
-  	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
-  	   Order order = null;
-  	   try {
-  		  order = entityManager.find(Order.class, orderId);
-  		  Query query = entityManager.createQuery("SELECT o FROM OrderItem as o WHERE o.orderId = :id");
-  		  query.setParameter("id", order.getId());
-  		  List<OrderItem> orderItems= query.getResultList();
+  	   
+  	   Order order = findOrder(orderId);
+ 
+  		  List<OrderItem> orderItems= orderItemRepository.getListByOrderId(orderId);
   		  for(OrderItem orderItem : orderItems) {
   			  order.addOrderItem(orderItem);
   		  }
-  	   }catch(Exception e) {
-  		   e.printStackTrace();
-  	   } finally {
-  		   entityManager.close();
-  	   }
+  	   
   	   return order;
      }
      
      public void payment(int orderId, String address) {
-
-  	   EntityManager entityManager = JPAmanagerFactory.createEntityManager();
-  	   try {	
-  		   EntityTransaction transaction = entityManager.getTransaction();
-      	   transaction.begin();
-  		   Order order = entityManager.find(Order.class, orderId);
-  		   order.setStatus("P");
-  		   order.setShippingAddress(address);
-  		   transaction.commit();
-  	   } catch(Exception e) {
-  		   e.printStackTrace();
-  	   } finally {
-  		   entityManager.close();
-  	   }
-  	 
-	}
+    	 Order order = findOrder(orderId);
+    	 if(order!=null) {
+    		 order.setStatus("P");
+    		 order.setShippingAddress(address);
+    		 orderRepository.save(order);
+    	 }
+    }
 
 }
