@@ -16,21 +16,23 @@
             font-family: "Roboto", sans-serif;
         }
 
-        .container {
-            display: flex;
+         .container {
+           
             flex-direction: column;
             align-items: flex-start;
             justify-content: flex-start;
+            justify-content: space-between;
             height: 100vh;
             padding: 16px;
             border-radius: 14px;
         }
-
-        .welcome_container {
+        
+         .welcome_container {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             
         }
 
@@ -81,6 +83,7 @@
           color: #666;
       	  cursor: pointer;
         }
+     
         .book {
         	width: 300px; 
         	border: 1px solid #ccc; 
@@ -107,27 +110,34 @@
 
 <div class="container">
     <div class="welcome_container">
+
         <h1>Welcome, ${user.name} ${user.surname}!</h1>
+    
         <div class="button_container">
-            <form action="./bookstoreOrderList" method="GET">
-                <button type="submit">View Order List</button>
-            </form>
-            <form action="./bookstore_cart" method="GET">
-                <button type="submit">Cart</button>
-            </form>
-            <form action="./logout" method="GET">
+           <form action="./logout" method="GET">
                 <button type="submit">Logout</button>
             </form>
-            <form action="./bookstore_profile" method="GET">
-                <button type="submit">Profile</button>
+            <form action="./bookstore_registration" method="GET">
+                <button type="submit">Register</button>
             </form>
+          
+            <form action="./bookstore_cart" method="GET">
+                <button type="submit"><i class="material-icons">shopping_cart</i></button>
+            </form>
+            
+            <form action="./bookstore_profile" method="GET">
+                <button type="submit"><i class="material-icons">face</i></button>
+            </form>
+           
         </div>
     </div>
-    
-    <div style = "margin-bottom: 50px; margin-top: 20px;">
-    	<form style="text-align: center" action="./bookstoreInsertABook" method="get">
-           <button type="submit" class = "button">Add a book</button>
-           
+   
+    <div style = "margin-bottom: 50px; margin-top: 20px; display: flex;">
+    	<form style = "margin-right: 20px;" action="./bookstoreInsertABook" method="get">
+           <button class = "button"  type="submit" class = "button">Add a book</button>
+        </form>
+        <form action="./bookstoreOrderList" method="GET">
+           <button class = "button"  type="submit">View Order List</button>
         </form>
     </div>
     

@@ -10,10 +10,11 @@
         }
 
         .container {
-            display: flex;
+           
             flex-direction: column;
             align-items: flex-start;
             justify-content: flex-start;
+            justify-content: space-between;
             height: 100vh;
             padding: 16px;
             border-radius: 14px;
@@ -21,8 +22,9 @@
          .welcome_container {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             justify-content: space-between;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             
         }
          h1 {
@@ -82,15 +84,16 @@
 </head>
 
 <body>
-<div class="container">
+<div class="container"> 
+	
    <div class="welcome_container">
-        <h1>Welcome to bookstore!</h1>
+       <h1>Welcome to bookstore!</h1>
         <div class="button_container">
             <form action="./bookstore_login" method="GET">
                 <button type="submit">login</button>
             </form>
            
-            <form action="./bookstore_register" method="GET">
+            <form action="./bookstore_registration" method="GET">
                 <button type="submit">Register</button>
             </form>
         </div>
