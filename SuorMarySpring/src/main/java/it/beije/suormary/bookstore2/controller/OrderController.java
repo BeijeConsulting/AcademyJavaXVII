@@ -1,7 +1,7 @@
 package it.beije.suormary.bookstore2.controller;
 
 import java.util.List;
-
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 import it.beije.suormary.bookstore2.model.Order;
 import it.beije.suormary.bookstore2.model.User;
@@ -35,6 +35,21 @@ public class OrderController {
         	model.addAttribute("orders", orders);
         }
 		return "bookstore_order_list";
+	}
+	
+	
+	@RequestMapping(value = "/bookstore_order_details", method = RequestMethod.GET)
+	public String getOrderById(HttpSession session, Model model,
+			@RequestParam(required = false) Integer id) {
+		
+		if (id == null) {
+            return "bookstore_order_list";
+        } else {
+    
+    		Order order = orderService.getOrderById(id);
+        	model.addAttribute("order", order);
+        }
+		return "bookstore_order_details";
 	}
 	
 	

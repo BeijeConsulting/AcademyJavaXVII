@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore2.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -18,10 +19,17 @@ public class OrderService {
 	@Autowired
 	private OrderRepository orderRepository;
 	
-	@Transactional
+	
 	public List<Order> getOrderList(Integer userId){
 		List<Order> orders = orderRepository.findOrderListByUserId(userId);
 		return orders;
+	}
+	
+	@Transactional
+	public Order getOrderById(Integer orderId) {
+		Optional<Order> o = orderRepository.findById(orderId);
+		Order order = o.isPresent() ? o.get() : null; 
+		return order;
 	}
 	
 }
