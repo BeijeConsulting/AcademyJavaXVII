@@ -19,7 +19,6 @@
 <c:forEach items="${order.items}" var="orderItem">
     <c:set var="book" value="${BookStoreUtility.getBookById(orderItem.bookId)}" />
     <h4>${book.title} - Quantità: ${orderItem.quantity} </h4> <br/>
-    <h5>Quantità : ${orderItem.quantity}</h5>
 	   <form action="deleteOrderItem" method="get">
 	   <input type="hidden" name="orderItemId" value="${orderItem.id}" />
 	   <input type="hidden" name="orderId" value="${order.id}" />
