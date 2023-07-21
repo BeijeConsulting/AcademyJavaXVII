@@ -48,8 +48,6 @@ public class OrderService {
  		return order;
  	}
 
-
-     
      public void deleteOrderItems(int orderId) {
     	 	Order orderFound = findOrder(orderId);
     	    List<OrderItem> orderItems = orderItemRepository.getListByOrderId(orderId);
@@ -65,8 +63,7 @@ public class OrderService {
     	        
     	    }
     	    //orderItemRepository.deleteAll(orderItems);	  
-    	    //orderRepository.delete(orderFound);
-    	    
+    	    //orderRepository.delete(orderFound);  
     	}
      public void deleteOrder (int orderId) {
     	 Order orderFound = findOrder(orderId);

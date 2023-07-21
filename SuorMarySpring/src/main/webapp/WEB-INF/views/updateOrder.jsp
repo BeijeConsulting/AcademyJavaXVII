@@ -27,9 +27,5 @@
 	   </form>
 </c:forEach>
 
-	      <form action="saveOrder" method="get">
-	   <input type="submit" value="salva ordine" />
-	   </form>
-   
 </body>
 </html>

@@ -47,12 +47,13 @@ public class OrderItemService {
     	    	   orderItem.setQuantity(b.getQuantity());
     	    	   orderItem.setPrice(b.getPrice() * b.getQuantity());
     	    	   orderItemRepository.save(orderItem);
-    	    	   amount += b.getPrice();
+    	    	   for(int i = 0; i< b.getQuantity(); i++) {
+    	    		   amount += b.getPrice(); 
+    	    	   }
     	    	   Book book = bookService.getBookById(b.getId());
     	    	   book.setQuantity(book.getQuantity()-b.getQuantity());
     	    	   bookRepository.save(book);
     	       }
-
     	   order.setAmount(amount);
     	   orderRepository.save(order);
        }
@@ -60,8 +61,10 @@ public class OrderItemService {
 	    public  void deleteOrderItem(String idStr) {
 	    	  
 	    	   int id = Integer.parseInt(idStr);
-	    	   Book book = null;
 	    		   OrderItem orderItem = findOrderItem(id);
+	    		   Book book = bookService.getBookById(orderItem.getBookId());
+	    		   book.setQuantity(book.getQuantity() + orderItem.getQuantity());
+	    		   bookRepository.save(book);
 	    		   Optional<Order> o = orderRepository.findById(orderItem.getOrderId());
 	    		   Order order = o.isPresent() ? o.get() : null;
 	    		   orderItemRepository.delete(orderItem);    		

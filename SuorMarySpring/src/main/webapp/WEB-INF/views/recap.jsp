@@ -25,7 +25,13 @@
 </c:forEach>
 
         Stato Ordine: ${order.status}<br/>
-        Totale acquisto: ${order.amount} <br/>
+        <c:choose> 
+	<c:when test='${order.items.size() eq 0}'> Totale acquisto: 0.00 <br/> </c:when>
+	<c:otherwise>
+	   Totale acquisto: ${order.amount} <br/>
+	 </c:otherwise>
+	
+	 </c:choose>
 
     <hr><br/>
 <c:choose>

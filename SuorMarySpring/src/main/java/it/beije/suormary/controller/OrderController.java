@@ -123,11 +123,6 @@ public class OrderController {
     	int orId = Integer.parseInt(orderId);
     	Order order = orderService.findOrder(orId);
     	model.addAttribute("order", order);
-//		int id = (int) session.getAttribute("orderId");
-//		Order order = orderService.getOrderById(id);
-//		model.addAttribute("order", order);
-//		session.setAttribute("order", order);
-//		System.out.println("SIZE : " + order);
 		return "updateOrder";
     }
     @RequestMapping(value = "/addOtherBooks", method = RequestMethod.GET)
@@ -189,10 +184,10 @@ public class OrderController {
     @RequestMapping(value = "/saveOrder", method = RequestMethod.GET)
     public String saveOrder(HttpSession session, HttpServletRequest request, Model model) {
     	if(request.getParameter("order")==null){
-			List<Book> booksOrder = (List) session.getAttribute("booksOrder");
-			model.addAttribute("booksOrder", booksOrder);
+//			List<Book> booksOrder = (List) session.getAttribute("booksOrder");
+//			model.addAttribute("booksOrder", booksOrder);
 			int orderId = (int) session.getAttribute("orderId");
-			orderItemService.createOrderItems(booksOrder,orderId);
+//			orderItemService.createOrderItems(booksOrder,orderId);
 			Order order = orderService.findOrder(orderId);
 			model.addAttribute("order", order);
 		} else {
