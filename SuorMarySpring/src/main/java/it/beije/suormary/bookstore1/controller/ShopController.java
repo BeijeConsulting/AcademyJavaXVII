@@ -87,24 +87,24 @@ public class ShopController {
 	public String cartPost(Model model, HttpSession session, @RequestParam String bookId, @RequestParam String quantity) {
 		Integer id = userService.getUserId((String)(session.getAttribute("email")));
 		if(id != null) {
-		Map<Integer,Integer> cart = Cart.getCart(session);
-		
-		int bookIdInt = Integer.valueOf(bookId);
-		int quantityInt = Integer.valueOf(quantity);
-		
-		int newQuantity = cart.get(bookIdInt) - quantityInt;
-		
-		if(newQuantity > 0) {	
-			cart.replace(bookIdInt, newQuantity);
-		}else {	
-			cart.remove(bookIdInt);
-		}
-		
-		model.addAttribute("cart", cart);
-
-		Map<Book,Integer> books = bookService.getBooks(cart);
-		model.addAttribute("books", books);
-		return "cart";
+			Map<Integer,Integer> cart = Cart.getCart(session);
+			
+			int bookIdInt = Integer.valueOf(bookId);
+			int quantityInt = Integer.valueOf(quantity);
+			
+			int newQuantity = cart.get(bookIdInt) - quantityInt;
+			
+			if(newQuantity > 0) {	
+				cart.replace(bookIdInt, newQuantity);
+			}else {	
+				cart.remove(bookIdInt);
+			}
+			
+			model.addAttribute("cart", cart);
+	
+			Map<Book,Integer> books = bookService.getBooks(cart);
+			model.addAttribute("books", books);
+			return "cart";
 		}else {
 			return "login";
 		}

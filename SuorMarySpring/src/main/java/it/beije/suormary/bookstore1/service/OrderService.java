@@ -41,6 +41,7 @@ public class OrderService {
 	@Autowired
 	private BookService bookService;
 	
+	@Transactional
 	public void createOrder(String address, HttpSession session) {
 			
 			
@@ -65,6 +66,10 @@ public class OrderService {
 				}
 				
 				order.setAmount(amount);
+				orderRepository.save(order);
+				
+				orderRepository.flush();
+				
 				order.setItems(createOrderItems(order.getId(), books));
 				orderRepository.save(order);
 			} catch (Exception e){
@@ -75,7 +80,7 @@ public class OrderService {
 		
 	}
 	
-	public List<OrderItem> createOrderItems(int orderId, Map<Book,Integer> books) throws Exception {
+	public List<OrderItem> createOrderItems(Integer orderId, Map<Book,Integer> books) throws Exception {
 
 			System.out.println("Item iniziati");
 			OrderItem om = null;
@@ -143,6 +148,8 @@ public class OrderService {
 		List<Order> lo= orderRepository.findAll();
 		for(int i = 0; i<lo.size(); i++) {
 			lo.get(i).getItems();
+			System.out.println(lo);
+			//System.out.println(lo.get(i).getItems());
 			Book b = null;
 			for(int j=0; j<lo.get(i).getItems().size(); j++) {
 				Optional<Book> book =bookRepository.findById(lo.get(i).getItems().get(j).getBookId());

@@ -28,6 +28,7 @@ public class OrderController {
 	@RequestMapping(value = "/order", method = RequestMethod.GET)
 	public String orderGet (Model model, HttpSession session) {
 		Integer id = userService.getUserId((String)(session.getAttribute("email")));
+		System.out.println("Order GET");
 		if(id != null) {
 			List<Order> oi = orderService.getOrders(id);
 			model.addAttribute("orders", oi);
@@ -47,7 +48,7 @@ public class OrderController {
 			@RequestParam(name = "orderId", required = false) String orderId) {
 		
 		Integer id = userService.getUserId((String)(session.getAttribute("email")));
-		
+		System.out.println("Order POST");
 		if(id != null) {
 			switch(updateOrder) {
 				case "Invia":

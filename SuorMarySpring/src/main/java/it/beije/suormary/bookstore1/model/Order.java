@@ -3,6 +3,7 @@ package it.beije.suormary.bookstore1.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -60,9 +61,9 @@ public class Order {
 	private String shippingAddress;
 	
 	
-	@OneToMany(targetEntity = OrderItem.class, fetch = FetchType.LAZY)
+	@OneToMany(targetEntity = OrderItem.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	//@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_order")
+	@JoinColumn(name = "order_id")
 	private List<OrderItem> items;
 
 
