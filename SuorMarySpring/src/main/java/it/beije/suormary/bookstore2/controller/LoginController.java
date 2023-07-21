@@ -22,7 +22,7 @@ public class LoginController  {
 	private UserService userService;
 	
 	@RequestMapping(value = "/bookstore_login", method = RequestMethod.GET)
-	public String getLogin(HttpSession session) {
+	public String loginGet(HttpSession session) {
 		System.out.println("bookstoreLogin doGet");
 
 		User user = (User) session.getAttribute("user");

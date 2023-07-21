@@ -1,5 +1,6 @@
 package it.beije.suormary.bookstore2.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -46,4 +47,29 @@ public class BookDetailsController {
     
     }
 	
+	@RequestMapping(value="/bookstore_insert_book", method = RequestMethod.GET)
+	public String addBookGet(Model model) {
+		List<Author> authors = bookService.getAuthorList();
+		model.addAttribute("authors", authors);
+		return "bookstore_insert_book";
+	}
+	
+	@RequestMapping(value="/bookstore_insert_book", method = RequestMethod.POST)
+	public String addBookPost(HttpSession session,
+			@RequestParam(name = "title", required = true) String title,
+			@RequestParam(name = "description", required = false) String description,
+			@RequestParam(name = "author", required = true) String authorIdString,
+			@RequestParam(name = "editor", required = false) String editor,
+			@RequestParam(name = "price", required = true) String price,
+			@RequestParam(name = "quantity", required = true) String quantity) {
+		
+		Book book = new Book();
+		book.setTitle(title);
+		book.setDescription(description);
+		book.setAuthorId(Integer.valueOf(authorIdString));
+		book.setEditor(editor);
+		book.setPrice(Double.valueOf(price));
+		
+		return "";
+	}
 }

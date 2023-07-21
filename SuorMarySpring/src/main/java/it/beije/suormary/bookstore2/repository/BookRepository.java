@@ -7,5 +7,5 @@ import it.beije.suormary.bookstore2.model.Book;
 
 @Repository
 public interface BookRepository extends JpaRepository<Book, Integer> {
-
+	public Book save(Book book);
 }

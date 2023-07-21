@@ -21,7 +21,7 @@ public class RegistrationController{
     private UserService userService;
 
     @RequestMapping(value = "/bookstore_registration", method = RequestMethod.GET)
-	public String registrationGet(HttpSession session)  {
+	public String registerGet(HttpSession session)  {
 
 		System.out.println("bookstore_registration doGet");
 		
@@ -38,7 +38,7 @@ public class RegistrationController{
 	public String registerPost(HttpSession session,
 			@RequestParam(name = "email", required = true) String email,
 			@RequestParam(name = "password", required = true) String password,
-			@RequestParam(name = "name", required = true) String name,
+			@RequestParam(name = "name", required = false) String name,
 			@RequestParam(name = "surname", required = false) String surname)  {
 		
     	System.out.println("bookstore_registration doPost");
