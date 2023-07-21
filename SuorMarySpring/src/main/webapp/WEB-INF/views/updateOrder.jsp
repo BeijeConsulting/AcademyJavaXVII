@@ -18,9 +18,8 @@
 </form> 
 <c:forEach items="${order.items}" var="orderItem">
     <c:set var="book" value="${BookStoreUtility.getBookById(orderItem.bookId)}" />
-    ${book.title} - Quantità: ${orderItem.quantity} <br/>
-    <h4>Quantity : ${orderItem.quantity}</h4>
-	   <h3>${book.title}</h3>
+    <h4>${book.title} - Quantità: ${orderItem.quantity} </h4> <br/>
+    <h5>Quantità : ${orderItem.quantity}</h5>
 	   <form action="deleteOrderItem" method="get">
 	   <input type="hidden" name="orderItemId" value="${orderItem.id}" />
 	   <input type="hidden" name="orderId" value="${order.id}" />
