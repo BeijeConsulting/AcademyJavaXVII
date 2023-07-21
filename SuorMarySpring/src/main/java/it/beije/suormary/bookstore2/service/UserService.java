@@ -29,6 +29,7 @@ public class UserService {
         this.bookService = bookService;
     }
 	
+    /*
 	public void insertUser(User user) {
 		EntityManager entityManager = null;
 		
@@ -67,7 +68,13 @@ public class UserService {
 				e.printStackTrace();
 			}
 		}
-	}
+	}*/
+    
+    public String save(User user) {
+    	User newUser = userRepository.save(user);
+    	if (newUser == null) return "Utente non inserito correttamente";
+    	else return "Utente inserito correttamente";
+    }
 	
 	
 	/*public User checkUser(String email, String password) {
