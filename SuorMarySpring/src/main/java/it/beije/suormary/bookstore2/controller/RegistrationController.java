@@ -1,5 +1,7 @@
 package it.beije.suormary.bookstore2.controller;
 
+import java.time.LocalDateTime;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +49,9 @@ public class RegistrationController{
         user.setPassword(password);
         user.setName(name);
         user.setSurname(surname);
+        user.setCreationDate(LocalDateTime.now());
         
-        userService.insertUser(user);
+        userService.save(user);
         
         return "bookstore_login";
 	}
