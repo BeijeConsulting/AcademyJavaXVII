@@ -50,24 +50,28 @@ public class OrderService {
 
 
      
-     public void deleteOrder(int orderId) {
+     public void deleteOrderItems(int orderId) {
     	 	Order orderFound = findOrder(orderId);
     	    List<OrderItem> orderItems = orderItemRepository.getListByOrderId(orderId);
-
-    	    for (OrderItem orderItem : orderItems) {   	        
+    	    System.out.println(orderItems);
+    	    for (OrderItem orderItem : orderItems) { 
+    	    	
     	        Book book = bookService.getBookById(orderItem.getBookId());
     	        book.setQuantity(book.getQuantity() + orderItem.getQuantity()); 	    
     	        System.out.println(" QUI!! :" + orderItem);
-    	        //orderFound.getItems().remove(orderItem);
-    	        
-    	        
+    	        orderFound.getItems().remove(orderItem);
+    	        orderItemRepository.delete(orderItem);
+    	    	
     	        
     	    }
-    	    orderItemRepository.deleteAll(orderItems);	  
-    	    orderRepository.delete(orderFound);
-    	    
+    	    //orderItemRepository.deleteAll(orderItems);	  
+    	    //orderRepository.delete(orderFound);
     	    
     	}
+     public void deleteOrder (int orderId) {
+    	 Order orderFound = findOrder(orderId);
+    	 orderRepository.delete(orderFound);
+     }
      
      public List<Order> findByUserId(String email) {
     	 User user = userService.loginUser(email);

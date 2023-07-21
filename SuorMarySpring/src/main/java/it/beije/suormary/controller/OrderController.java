@@ -101,6 +101,7 @@ public class OrderController {
 			
 			int orId = Integer.parseInt(orderId);
 	    	//Order order = orderService.findOrder(orId);
+	    	orderService.deleteOrderItems(orId);
 	    	orderService.deleteOrder(orId);
 	        List<Book> books = bookService.loadBooks();
 	        model.addAttribute("books", books);
