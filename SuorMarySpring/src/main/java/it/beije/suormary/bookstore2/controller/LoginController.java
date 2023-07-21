@@ -17,6 +17,7 @@ import it.beije.suormary.bookstore2.service.UserService;
 @Controller
 public class LoginController  {
 	
+	
 	@Autowired
 	private UserService userService;
 	
@@ -46,7 +47,7 @@ public class LoginController  {
 		System.out.println("email : " + email);
 		System.out.println("JSESSIONID: " + session.getId());
 		
-		User user = userService.checkUser(email, password);
+		User user = userService.findByEmailAndPassword(email, password);
 		
 		if (user != null ) { // OK
 			user.setPassword("");
@@ -61,7 +62,6 @@ public class LoginController  {
 			model.addAttribute("loginError", "CREDENZIALI NON VALIDE!!!");
 			return "bookstore_login";
 		}
-
 	}
 
 }

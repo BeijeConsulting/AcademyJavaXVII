@@ -14,12 +14,15 @@ import org.springframework.stereotype.Service;
 import it.beije.suormary.bookstore2.model.Book;
 import it.beije.suormary.bookstore2.model.PersistenceManagerJPA;
 import it.beije.suormary.bookstore2.model.User;
+import it.beije.suormary.bookstore2.repository.UserRepository;
 
 @Service
 public class UserService {
 	
-	private BookService bookService;
+	@Autowired
+	private UserRepository userRepository;
 	
+	private BookService bookService;
 	
     @Autowired
     public UserService(BookService bookService) {
@@ -67,7 +70,7 @@ public class UserService {
 	}
 	
 	
-	public User checkUser(String email, String password) {
+	/*public User checkUser(String email, String password) {
 		EntityManager entityManager = null;
 		User user=null;
 		try {
@@ -89,7 +92,12 @@ public class UserService {
 			}
 		}
 		return user;
+	}*/
+	
+	public User findByEmailAndPassword(String email, String password) {
+		return userRepository.findByEmailAndPassword(email, password);
 	}
+	
 	
 	public List<Book> getTheBooksFromId(List<Integer> ids) {
 		
