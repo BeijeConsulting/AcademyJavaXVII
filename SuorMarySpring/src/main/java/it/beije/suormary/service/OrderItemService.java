@@ -54,7 +54,6 @@ public class OrderItemService {
     	    	   book.setQuantity(book.getQuantity()-b.getQuantity());
     	    	   bookRepository.save(book);
     	       }
-
     	   order.setAmount(amount);
     	   orderRepository.save(order);
        }
