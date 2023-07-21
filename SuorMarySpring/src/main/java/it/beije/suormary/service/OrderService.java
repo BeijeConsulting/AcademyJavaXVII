@@ -47,6 +47,13 @@ public class OrderService {
  		
  		return order;
  	}
+     public Order findOrderById(String orderId) {
+    	 
+     	Integer id = Integer.valueOf(orderId);
+     	Optional<Order> o = orderRepository.findById(id);
+     	Order order = o.get();
+     	return order;
+  	}
 
      public void deleteOrder(int orderId) {
   	   

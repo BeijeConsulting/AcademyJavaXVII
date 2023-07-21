@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import it.beije.suormary.model.Book;
 import it.beije.suormary.model.Order;
@@ -92,7 +93,7 @@ public class OrderController {
 		
 		return "recap";
 	}
-
+ 
 	  @RequestMapping(value = "/deleteOrder", method = RequestMethod.GET)
 	   public String deleteOrder(HttpSession session, Model model) {
 	        Integer orderId= (Integer) session.getAttribute("orderId");			
@@ -113,11 +114,14 @@ public class OrderController {
          else return "login";
 	} 
     @RequestMapping(value = "/updateOrder", method = RequestMethod.GET)
-    public String updateOrder(HttpSession session, Model model) {
-		int id = (int) session.getAttribute("orderId");
-		Order order = orderService.getOrderById(id);
-		model.addAttribute("order", order);
-		session.setAttribute("order", order);
+    public String updateOrder(HttpSession session, Model model, @RequestParam String orderId) {
+    	Order order = orderService.findOrderById(orderId);
+    	model.addAttribute("order", order);
+//		int id = (int) session.getAttribute("orderId");
+//		Order order = orderService.getOrderById(id);
+//		model.addAttribute("order", order);
+//		session.setAttribute("order", order);
+//		System.out.println("SIZE : " + order);
 		return "updateOrder";
     }
     @RequestMapping(value = "/addOtherBooks", method = RequestMethod.GET)
