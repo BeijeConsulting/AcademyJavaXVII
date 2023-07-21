@@ -43,7 +43,7 @@ public class CartController {
         		for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
         			book = bookService.findBook(entry.getKey());
                     quantity = entry.getValue();
-                    author = bookService.findAuthorFromId(book.getAuthorId());
+                    author = bookService.findAuthorById(book.getAuthorId());
                     books.add(book);
                     authors.add(author);
                     quantities.add(quantity);

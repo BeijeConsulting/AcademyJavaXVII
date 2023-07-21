@@ -33,7 +33,7 @@ public class BookDetailsController {
 
  
         Book book = bookService.findBook(bookId);
-        Author author = bookService.findAuthorFromId(book.getAuthorId());
+        Author author = bookService.findAuthorById(book.getAuthorId());
         System.out.println("book: " + book);
         
         Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
