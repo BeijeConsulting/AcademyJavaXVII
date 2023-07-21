@@ -47,7 +47,7 @@ public class AddBookServlet extends HttpServlet {
 		int authorId = Integer.parseInt(a);
 		String editor = request.getParameter("editor");
 		String p = request.getParameter("price");
-		int price = Integer.parseInt(p);
+		double price = Double.parseDouble(p);
 		String q = request.getParameter("quantity");
 		int quantity = Integer.parseInt(q);
 		
