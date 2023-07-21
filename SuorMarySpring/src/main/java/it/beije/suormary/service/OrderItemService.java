@@ -25,7 +25,7 @@ public class OrderItemService {
 	private BookService bookService;
 	
 	
-	  	public void createOrderItems(List<Book> booksOrder, int orderId) {
+	  	public void createOrderItems(List<Book> booksOrder, Integer orderId) {
     	  
 		   Order order = orderService.findOrder(orderId);
 		   OrderItem orderItem;
@@ -65,7 +65,7 @@ public class OrderItemService {
 	    		 
 	    		
 	       }
-
+ 
 	    private OrderItem findOrderItem(int orderItemId) {
 	    	
 	    	Optional <OrderItem> orIt = orderItemRepository.findById(orderItemId);
