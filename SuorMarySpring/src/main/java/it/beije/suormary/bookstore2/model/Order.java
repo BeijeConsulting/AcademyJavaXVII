@@ -3,6 +3,7 @@ package it.beije.suormary.bookstore2.model;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -55,7 +56,8 @@ public class Order {
 	@Column(name = "amount")
 	private double amount;
 	
-	@OneToMany(targetEntity = OrderItem.class, fetch = FetchType.LAZY)
+	//cascadeType significa che quando viene inserito un ordine nel db vengono inseriti anche tutti gli order items
+	@OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id")
 	private List<OrderItem> items;
 

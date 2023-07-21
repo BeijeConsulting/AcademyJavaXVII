@@ -2,9 +2,12 @@ package it.beije.suormary.bookstore2.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /*
@@ -35,7 +38,7 @@ public class OrderItem {
 
 	@Column(name = "order_id")
 	private Integer orderId;
-
+	 
 	@Column(name = "book_id")
 	private Integer bookId;
 
@@ -53,6 +56,10 @@ public class OrderItem {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+
+
+	
 
 	public Integer getOrderId() {
 		return orderId;
@@ -86,6 +93,7 @@ public class OrderItem {
 		this.quantity = quantity;
 	}
 
+	
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")

@@ -98,7 +98,7 @@
             </div>
         </c:forEach>
         <div class="center-button">
-    	<form action="./bookstoreOrderList" method="POST" name="action" value="order">
+    	<form action="./bookstore_order_list" method="POST" name="action" value="order">
     		<button type="submit" class="button">Order</button>
         </form>
     	</div>

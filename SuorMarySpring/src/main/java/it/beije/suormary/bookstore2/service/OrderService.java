@@ -14,6 +14,7 @@ import it.beije.suormary.bookstore2.model.Book;
 import it.beije.suormary.bookstore2.model.Order;
 import it.beije.suormary.bookstore2.model.OrderItem;
 import it.beije.suormary.bookstore2.repository.BookRepository;
+import it.beije.suormary.bookstore2.repository.OrderItemRepository;
 import it.beije.suormary.bookstore2.repository.OrderRepository;
 
 @Service
@@ -25,6 +26,16 @@ public class OrderService {
 	
 	@Autowired
 	private BookRepository bookRepository;
+	
+	@Autowired
+	private OrderItemRepository orderItemRepository;
+	
+	private BookService bookService;
+	
+    @Autowired
+    public OrderService(BookService bookService) {
+        this.bookService = bookService;
+    }
 	
 
 	public List<Order> getOrderList(Integer userId){
@@ -52,6 +63,34 @@ public class OrderService {
 		
 	
 		return books;
+	}
+	
+	public void deleteOrderById(Integer orderId) {
+		orderRepository.deleteById(orderId);
+	}
+	
+	public List<OrderItem> getOrderItemsInOrder(Integer orderId) {
+		return orderRepository.findOrderItemsOfAOrder(orderId);
+		
+	}
+	
+	public Book getBookInOrderByBookId(Integer bookId) {
+		Optional<Book> book = bookRepository.findById(bookId);
+		Book b = book.isPresent() ? book.get() : null;
+		return b;
+	}
+	
+	@Transactional
+	public void insertOrder(Order order) {
+		orderRepository.save(order);
+	}
+	
+
+	@Transactional
+	public void inserOrderItems(List<OrderItem> orderItems) {
+		for (OrderItem oi : orderItems) {
+			orderItemRepository.save(oi);
+		}
 	}
 
 }
