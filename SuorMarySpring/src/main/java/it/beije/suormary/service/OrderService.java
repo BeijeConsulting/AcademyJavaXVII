@@ -65,8 +65,7 @@ public class OrderService {
     	    	
     	        
     	    }
-    	    //orderItemRepository.deleteAll(orderItems);	  
-    	    //orderRepository.delete(orderFound);  
+
     	}
      public void deleteOrder (int orderId) {
     	 
@@ -84,17 +83,6 @@ public class OrderService {
 		
 	}
   
-     public  Order getOrderById(int orderId) {
-  	   
-  	   Order order = findOrder(orderId);
- 
-  		  List<OrderItem> orderItems= orderItemRepository.getListByOrderId(orderId);
-  		  for(OrderItem orderItem : orderItems) {
-  			  order.addOrderItem(orderItem);
-  		  }
-  	   
-  	   return order;
-     }
      
      public void payment(int orderId, String address) {
     	 Order order = findOrder(orderId);

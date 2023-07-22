@@ -96,11 +96,8 @@ public class OrderController {
 	}
  
 	@RequestMapping(value = "/deleteOrder", method = RequestMethod.GET)
-	public String deleteOrder(HttpSession session, Model model, @RequestParam String orderId) {
-//	        Integer orderId= (Integer) session.getAttribute("orderId");			
-			
+	public String deleteOrder(HttpSession session, Model model, @RequestParam String orderId) {					
 			int orId = Integer.parseInt(orderId);
-	    	//Order order = orderService.findOrder(orId);
 	    	orderService.deleteOrderItems(orId);
 	    	orderService.deleteOrder(orId);
 	        List<Book> books = bookService.loadBooks();
