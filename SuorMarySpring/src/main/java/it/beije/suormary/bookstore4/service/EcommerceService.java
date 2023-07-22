@@ -72,14 +72,15 @@ public class EcommerceService {
 		List<BasketItem> items = basketItemRepository.findByBookIdAndUserId(bookId, userId);
 		
 		BasketItem bi;
-		Book book = bookRepository.findById(bi.getBookId()).get();
-		int actualQuantity = bi.getQuantity();
+		Book book = bookRepository.findById(bookId).get();
+		int quantity;
 		int newQuantity;
 		//Se c'è allora aggiorno la quantità nel carrello e nel db
-		if (items.size() == 0) {
+		if (items.size() == 0) {			
 			bi = items.get(0);
+			quantity = bi.getQuantity();
 			//controllo che la quantità nel carrello non sia maggiore di quella nel magazzino
-			newQuantity = (actualQuantity < book.getQuantity()) ? (actualQuantity + 1) : actualQuantity; 
+			newQuantity = (quantity < book.getQuantity()) ? (quantity + 1) : quantity; 
 		}
 		//altrimenti creo un nuovo oggetto da mettere nel carrello e nel db
 		else {
@@ -87,7 +88,7 @@ public class EcommerceService {
 			basket.put(book, 1);
 			bi.setBookId(bookId);
 			bi.setUserId(userId);
-			newQuantity = (actualQuantity > 0) ? 1 : 0;
+			newQuantity = (book.getQuantity() > 0) ? 1 : 0;
 		}
 		
 		basket.put(book, newQuantity);
@@ -135,8 +136,7 @@ public class EcommerceService {
 	
 	//somma del carrello
 	public Double sumBasket(Integer userId) {
-		
-		
+
 		return basketItemRepository.sumBasket(userId);
 	}
 	
