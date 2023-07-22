@@ -27,7 +27,7 @@
 					            <th>Editor</th>
 					            <th>Price</th>
 					            <th>Quantity</th>
-					            <th>Edit</th>
+					            <th>Add to basket</th>
 					        </tr>
 					        
 					    </thead>
@@ -68,6 +68,7 @@
 					            <th>Author ID</th>
 					            <th>Price</th>
 					            <th>Quantity</th>
+					            <th>Remove from basket</th>
 					        </tr>
 					        
 					    </thead>
@@ -79,6 +80,10 @@
 						            <td>${bjb.authorId}</td>            
 						            <td>${bjb.price}</td>
 						            <td>${bjb.quantity}</td>
+						            <td><form:form action="removefrombasket" method="POST">
+										<input type="hidden" name="bookId" value="${bjb.id}"/>
+									    <input type="submit" value="-"/>
+									</form:form></td>
 							    </tr>
 							   
 					        </c:forEach> 
