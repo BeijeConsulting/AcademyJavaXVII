@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore4.model;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -16,20 +17,6 @@ import javax.persistence.Transient;
 
 import it.beije.suormary.model.ContactDetail;
 
-/*
- 
-CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `email` varchar(100) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `name` varchar(45) DEFAULT NULL,
-  `surname` varchar(45) DEFAULT NULL,
-  `create_date` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `email_UNIQUE` (`email`)
-) ENGINE=InnoDB
-
-*/
 
 @Entity
 @Table(name = "users")
@@ -56,14 +43,16 @@ public class User {
 	@Column(name = "create_date")
 	private LocalDateTime creationDate;
 	
-	//@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.LAZY)
-	@OneToMany(targetEntity = BasketItem.class, fetch = FetchType.EAGER)
-	@JoinColumn(name = "user_id")
-	private List<OrderItem> basket;
+	private HashMap<Book, Integer> basket;
 
-	public Integer getId() {
-		return id;
+	public HashMap<Book, Integer> getBasket() {
+		return basket;
 	}
+
+	public void setBasket(HashMap<Book, Integer> basket) {
+		this.basket = basket;
+	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -102,13 +91,7 @@ public class User {
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
-	public List<OrderItem> getBasket() {
-		return basket;
-	}
-	public void setBasket(List<OrderItem> basket) {
-		this.basket = basket;
-	}
-	
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)

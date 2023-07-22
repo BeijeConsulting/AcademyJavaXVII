@@ -13,4 +13,5 @@ public interface BookRepository extends JpaRepository<Book, Integer>{
 	//trovo caratteristiche del libro in baskets nella tabella "books"
 		@Query(value = "SELECT * FROM books as book JOIN baskets as b ON b.book_id = book.id WHERE b.book_id = :basketId", nativeQuery = true)
 		public Book findBybookId(@Param("basketId") Integer basketId);
+		
 }

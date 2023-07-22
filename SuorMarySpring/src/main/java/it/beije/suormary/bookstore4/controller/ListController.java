@@ -59,12 +59,26 @@ public class ListController {
 		return "booklist"; //  /WEB-INF/views/booklist.jsp
 	}
 	
+	
 	@RequestMapping(value = "/addtobasket", method = RequestMethod.POST)
 	public String addToBasket(HttpSession session, Model model, @RequestParam("bookId") Integer bookId) {
 		System.out.println("SONO NEL METODO");
 		User sessionUser = ecommerceService.findUser("alice.ceccarelli@gmail.com", "00000");
 		//System.out.println("BOOK ID: " + bookId);
 		ecommerceService.addToBasket(bookId, sessionUser.getId());
+		
+		// trova il libro per modificare la quantità
+		//Book book = ecommerceService.findById(bookId);
+		
+		return bookList(session, model);
+	}
+	
+	
+	@RequestMapping(value = "/removefrombasket", method = RequestMethod.POST)
+	public String removefrombasket(HttpSession session, Model model, @RequestParam("bookId") Integer bookId) {
+		System.out.println("STO RIMUOVENDO");
+		User sessionUser = ecommerceService.findUser("alice.ceccarelli@gmail.com", "00000");
+		ecommerceService.removeFromBasket(bookId, sessionUser.getId());
 		
 		// trova il libro per modificare la quantità
 		//Book book = ecommerceService.findById(bookId);

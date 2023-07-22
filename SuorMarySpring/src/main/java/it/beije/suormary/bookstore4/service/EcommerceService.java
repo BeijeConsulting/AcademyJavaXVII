@@ -1,4 +1,5 @@
 package it.beije.suormary.bookstore4.service;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,10 +41,19 @@ public class EcommerceService {
 	
 	
 	//prende tutti libri nel carrello di un utente
-	public List<BasketItem> basket(Integer userId) {
-    	List<BasketItem> books = basketItemRepository.findByUserId(userId);
-    	if (books.size() == 0) return null;
-    	return books;
+	public HashMap<Book, Integer> basket(Integer userId) {
+		Optional<User> user = userRepository.findById(userId);
+		
+		HashMap<Book, Integer> basket = user.get().getBasket();
+    	List<BasketItem> items = basketItemRepository.findByUserId(userId);
+    	if (items.size() == 0) return null;
+    	else {
+    		for(BasketItem bi : items) {
+    			Optional<Book> book = bookRepository.findById(bi.getBookId());
+    			book.ifPresent(b -> basket.put(b, bi.getQuantity()));
+    		} 
+    	}
+    	return basket;
 	}
 	
 	
@@ -55,14 +65,38 @@ public class EcommerceService {
 	
 	//Aggiunge un libro al carrello
 	public void addToBasket(Integer bookId, Integer userId) {
-		Optional<Book> book = bookRepository.findById(bookId);
-		BasketItem basketItem = new BasketItem();
-		basketItem.setBookId(bookId);
-		basketItem.setUserId(userId);
-		basketItem.setQuantity(1);
+		Optional<User> user = userRepository.findById(userId);
+		HashMap<Book, Integer> basket = user.get().getBasket();
 		
-		basketItemRepository.save(basketItem);
+		//Controllo se il libro è già nel carrello
+		List<BasketItem> items = basketItemRepository.findByBookIdAndUserId(bookId, userId);
+		
+		BasketItem bi;
+		Book book = bookRepository.findById(bi.getBookId()).get();
+		int actualQuantity = bi.getQuantity();
+		int newQuantity;
+		//Se c'è allora aggiorno la quantità nel carrello e nel db
+		if (items.size() == 0) {
+			bi = items.get(0);
+			//controllo che la quantità nel carrello non sia maggiore di quella nel magazzino
+			newQuantity = (actualQuantity < book.getQuantity()) ? (actualQuantity + 1) : actualQuantity; 
+		}
+		//altrimenti creo un nuovo oggetto da mettere nel carrello e nel db
+		else {
+			bi = new BasketItem();
+			basket.put(book, 1);
+			bi.setBookId(bookId);
+			bi.setUserId(userId);
+			newQuantity = (actualQuantity > 0) ? 1 : 0;
+		}
+		
+		basket.put(book, newQuantity);
+		bi.setQuantity(newQuantity);
+		basketItemRepository.save(bi);
+
 	}
+	
+	
 	
 	//join tra basket e book
 	public Book getBasketItemInBook(Integer basketId){
@@ -71,8 +105,38 @@ public class EcommerceService {
 		return b;
 	}
 	
+	//Rimuovi un libro dal carrello
+	public void removeFromBasket(Integer bookId, Integer userId) {
+		Optional<User> user = userRepository.findById(userId);
+		HashMap<Book, Integer> basket = user.get().getBasket();
+		
+		//Carico il carrello
+		List<BasketItem> items = basketItemRepository.findByBookIdAndUserId(bookId, userId);
+		
+		BasketItem bi = items.get(0);;
+		Book book = bookRepository.findById(bi.getBookId()).get();
+		int actualQuantity = bi.getQuantity();
+		
+		//aggiorna se la quantità è maggiore di 1
+		if(actualQuantity > 1) {
+			int newQuantity = actualQuantity - 1;
+			basket.put(book, newQuantity);
+			bi.setQuantity(newQuantity);
+			basketItemRepository.save(bi);
+		}
+		//altrimenti elimina l'oggetto
+		else {
+			basket.remove(book);
+			basketItemRepository.delete(bi);
+		}
+	}
+	
+	
+	
 	//somma del carrello
 	public Double sumBasket(Integer userId) {
+		
+		
 		return basketItemRepository.sumBasket(userId);
 	}
 	
