@@ -30,7 +30,7 @@ public class OrderItemController {
 	      orderItemService.deleteOrderItem(id);
 	  	String idOrderStr = request.getParameter("orderId");
 	  	int idOrder = Integer.parseInt(idOrderStr);
-		Order order = orderService.getOrderById(idOrder);
+		Order order = orderService.findOrder(idOrder);
 		model.addAttribute("order", order);
 		session.setAttribute("order", order);
 		model.addAttribute("deleteOrderItem", "Rimosso");

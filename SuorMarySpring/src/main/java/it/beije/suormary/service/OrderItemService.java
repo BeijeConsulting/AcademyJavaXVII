@@ -65,9 +65,10 @@ public class OrderItemService {
 	    		   Book book = bookService.getBookById(orderItem.getBookId());
 	    		   book.setQuantity(book.getQuantity() + orderItem.getQuantity());
 	    		   bookRepository.save(book);
+	    		   orderItemRepository.delete(orderItem); 
 	    		   Optional<Order> o = orderRepository.findById(orderItem.getOrderId());
 	    		   Order order = o.isPresent() ? o.get() : null;
-	    		   orderItemRepository.delete(orderItem);    		
+	    		   orderRepository.save(order);    		
 	       }
  
 	    private OrderItem findOrderItem(int orderItemId) {
