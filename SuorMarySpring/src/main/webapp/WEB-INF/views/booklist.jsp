@@ -9,7 +9,21 @@
 <title>book list</title>
 </head>
 <body>
-	<h1>LISTA LIBRI</h1>
+<div>
+<!-- METTERE VICINI NON A CAPO -->
+<form:form action="infouser" method="GET">
+<input type="submit" value="Profile">
+</form:form> 
+
+<form:form action="booklist" method="GET">
+<input type="submit" value="Buy book" disabled>
+</form:form> 
+
+<form:form action="stock" method="GET">
+<input type="submit" value="Stock">
+</form:form> 
+</div>
+
 	<div style="width:100%">
 		<div style="width:58%; float:left">
 		<h3 style="text-align: center">BOOKS</h3>

@@ -114,4 +114,22 @@ public class ListController {
 		
 		return bookList(session, model);
 	}
+
+	@RequestMapping(value = "/stock", method = RequestMethod.GET)
+	public String stock (Model model) {
+		//carica lista libri e lista autori
+		return null;
+	}
+	
+	@RequestMapping(value = "/infouser", method = RequestMethod.GET)
+	public String infoUser(HttpSession session, Model model) {
+		//carica info user e lista ordini
+		return null;
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String infoUser(HttpSession session) {
+		//elimina user da session e da questa classe
+		return null;
+	}
 }
