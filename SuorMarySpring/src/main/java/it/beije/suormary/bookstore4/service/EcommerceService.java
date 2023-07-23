@@ -44,12 +44,11 @@ public class EcommerceService {
 	public HashMap<Book, Integer> basket(Integer userId) {
 		Optional<User> user = userRepository.findById(userId);
 		
-		HashMap<Book, Integer> basket = (user.get().getBasket() == null) ? (new HashMap<Book, Integer>()) : (user.get().getBasket()) ;
-		//if (basket == null) basket = new HashMap<Book, Integer>();
+		//HashMap<Book, Integer> basket = (user.get().getBasket() == null) ? (new HashMap<Book, Integer>()) : (user.get().getBasket()) ;
+		/*if (basket == null)*/ HashMap<Book, Integer> basket = new HashMap<Book, Integer>();
 		
     	List<BasketItem> items = basketItemRepository.findByUserId(userId);
-    	if (items.size() == 0) return null;
-    	else {
+    	if (items.size() != 0) {
     		for(BasketItem bi : items) {
     			Optional<Book> book = bookRepository.findById(bi.getBookId());
     			book.ifPresent(b -> basket.put(b, bi.getQuantity()));
@@ -57,6 +56,7 @@ public class EcommerceService {
     	}
     	
     	//System.out.println(basket);
+    	user.get().setBasket(basket);
     	return basket;
 	}
 	
@@ -71,18 +71,21 @@ public class EcommerceService {
 	
 	//Aggiunge un libro al carrello
 	public void addToBasket(Integer bookId, Integer userId) {
-		Optional<User> user = userRepository.findById(userId);
-		HashMap<Book, Integer> basket = user.get().getBasket();
+		//Optional<User> user = userRepository.findById(userId);
+		HashMap<Book, Integer> basket = basket(userId);
+		System.out.println(basket);
 		
 		//Controllo se il libro è già nel carrello
+		
 		List<BasketItem> items = basketItemRepository.findByBookIdAndUserId(bookId, userId);
+		System.out.println(items);
 		
 		BasketItem bi;
 		Book book = bookRepository.findById(bookId).get();
 		int quantity;
 		int newQuantity;
 		//Se c'è allora aggiorno la quantità nel carrello e nel db
-		if (items.size() == 0) {			
+		if (items.size() != 0) {			
 			bi = items.get(0);
 			quantity = bi.getQuantity();
 			//controllo che la quantità nel carrello non sia maggiore di quella nel magazzino
