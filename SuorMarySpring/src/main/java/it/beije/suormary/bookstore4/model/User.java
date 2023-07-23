@@ -43,7 +43,8 @@ public class User {
 	@Column(name = "create_date")
 	private LocalDateTime creationDate;
 	
-	private HashMap<Book, Integer> basket;
+	 @Transient
+	 private HashMap<Book, Integer> basket;
 
 	public HashMap<Book, Integer> getBasket() {
 		return basket;

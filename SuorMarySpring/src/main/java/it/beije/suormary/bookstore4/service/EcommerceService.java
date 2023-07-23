@@ -44,7 +44,9 @@ public class EcommerceService {
 	public HashMap<Book, Integer> basket(Integer userId) {
 		Optional<User> user = userRepository.findById(userId);
 		
-		HashMap<Book, Integer> basket = user.get().getBasket();
+		HashMap<Book, Integer> basket = (user.get().getBasket() == null) ? (new HashMap<Book, Integer>()) : (user.get().getBasket()) ;
+		//if (basket == null) basket = new HashMap<Book, Integer>();
+		
     	List<BasketItem> items = basketItemRepository.findByUserId(userId);
     	if (items.size() == 0) return null;
     	else {
@@ -53,6 +55,8 @@ public class EcommerceService {
     			book.ifPresent(b -> basket.put(b, bi.getQuantity()));
     		} 
     	}
+    	
+    	//System.out.println(basket);
     	return basket;
 	}
 	

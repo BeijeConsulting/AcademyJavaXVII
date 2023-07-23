@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore4.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -35,24 +36,12 @@ public class ListController {
 		
 		user = ecommerceService.findUser("alice.ceccarelli@gmail.com", "00000");
 		
-		
-		//se user loggato fai vedere anche carrello
+		 //se user loggato fai vedere anche carrello
 		if(user != null) {
 			model.addAttribute("user", user);
 			session.setAttribute("user", user);
-			model.addAttribute("basket", user.getBasket());
-			
-			//prendo libri nel basket e trovo le caratteristiche corrispondenti di ognuno
-			List<BasketItem>bi =( (List<BasketItem>) (model.getAttribute("basket")));
-			List<Book> add = new ArrayList<>();
-			for(BasketItem b : bi) {
-				Book bb = ecommerceService.getBasketItemInBook(b.getBookId());
-				System.out.println(bb);
-				add.add(bb);
-			}
-			
-			// aggiungo il risultato al model che lo mostra nella booklist.jsp
-			model.addAttribute("basketJoinBook", add);
+			HashMap<Book, Integer> basket = ecommerceService.basket(user.getId());
+			model.addAttribute("basket", basket);
 			model.addAttribute("sum", ecommerceService.sumBasket(user.getId()));
 			
 			
