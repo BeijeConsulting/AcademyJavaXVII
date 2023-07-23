@@ -9,13 +9,15 @@
 <title>Login page</title>
 </head>
 <body>
-<p style="color:red">${loginError}</p>
+<p style="color:red">${loginerror}</p>
 
 <form:form action="loginpage" method="POST">
-  <label for="username">Email:</label><br>
-  <input type="text" name="email" ><br>
+  <label for="email">Email:</label><br>
+  <input type="text" name="email" required><br>
+  
   <label for="password">Password:</label><br>
-  <input type="text" name="password" ><br><br>
+  <input type="text" name="password" required><br><br>
+  
   <input type="submit" value="Login">
 </form:form> 
 <br>

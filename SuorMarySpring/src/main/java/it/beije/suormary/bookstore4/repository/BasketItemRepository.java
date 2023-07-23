@@ -19,7 +19,7 @@ public interface BasketItemRepository extends JpaRepository<BasketItem, Integer>
 	
 	// metodo per la somma nel carrello
 	@Query(value = "SELECT SUM(book.price*bi.quantity) FROM books as book JOIN baskets as bi ON book.id = bi.book_id WHERE bi.user_id = :userId", nativeQuery = true)
-	public double sumBasket(@Param("userId") Integer userId);
+	public Double sumBasket(@Param("userId") Integer userId);
 
 	public List<BasketItem> findByBookIdAndUserId(Integer bookId, Integer userId);
 }

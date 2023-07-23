@@ -65,8 +65,25 @@ public class EcommerceService {
 	public User findUser(String email, String password) {
 		System.out.println("Sono in find user");
 		List<User> users = userRepository.findByEmailAndPassword(email, password);
+		if (users.size() == 0) return null;
 		System.out.println("User id : " + users.get(0).getId());
 		return users.get(0);
+	}
+	
+	//aggiungi utente
+	public boolean addUser(String name, String surname, String email, String password) {
+		List<User> users = userRepository.findByEmail(email);
+		
+		if (users.size() == 0) {
+			User user = new User();
+			user.setName(name);
+			user.setSurname(surname);
+			user.setEmail(email);
+			user.setPassword(password);
+			userRepository.save(user);
+			return true;
+		}
+		else return false;
 	}
 	
 	//Aggiunge un libro al carrello
@@ -132,11 +149,10 @@ public class EcommerceService {
 	}
 	
 	
-	
 	//somma del carrello
-	public Double sumBasket(Integer userId) {
-
-		return basketItemRepository.sumBasket(userId);
+	public double sumBasket(Integer userId) {
+		Double sum = basketItemRepository.sumBasket(userId);
+		return (sum == null) ? 0.0 : sum;
 	}
 	
 }

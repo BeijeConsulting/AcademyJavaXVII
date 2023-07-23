@@ -33,6 +33,8 @@ public class ListController {
 	public String home() {
 		return "loginpage";
 	}
+	
+	//riceve parametri dal form di login
 	@RequestMapping(value = "/loginpage", method = RequestMethod.POST)
 	public String login(HttpSession session, 
 			Model model,
@@ -43,14 +45,33 @@ public class ListController {
 			model.addAttribute("loginerror", "Email or password wrong...\nTry again or sign up");	
 			return "loginpage";
 		}
+		session.setAttribute("user", user);
 		return bookList(session, model);
 	}
 	
+	//riceve parametri dalla pagina di sign up
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String signup() {
+		return "signup";
+	}
+	
+	@RequestMapping(value = "/newuser", method = RequestMethod.POST)
+	public String insertNewUser(HttpSession session, 
+			Model model,
+			@RequestParam("name") String name,
+			@RequestParam("surname") String surname,
+			@RequestParam("email") String email,
+			@RequestParam("password") String password) {
 		
-		
-		return "booklist";
+		boolean userAdded = ecommerceService.addUser(name, surname, email, password);
+	
+		//se l'utente è stato aggiunto passa per il metodo login e poi mostra i libri(non fa reinserire i dati)
+		if(userAdded) return login(session, model, email, password);
+		//altrimenti torna alla pagina di login con un messaggio di erroe e fa reinserire i dati
+		else {
+			model.addAttribute("loginerror", "Email already exists");
+			return "login";
+		}
 	}
 	
 	
@@ -59,19 +80,13 @@ public class ListController {
 		List<Book> books = ecommerceService.bookList();
 		model.addAttribute("booklist", books);
 		
-		user = ecommerceService.findUser("alice.ceccarelli@gmail.com", "00000");
-		
 		 //se user loggato fai vedere anche carrello
 		if(user != null) {
 			model.addAttribute("user", user);
-			session.setAttribute("user", user);
 			HashMap<Book, Integer> basket = ecommerceService.basket(user.getId());
 			model.addAttribute("basket", basket);
-			model.addAttribute("sum", ecommerceService.sumBasket(user.getId()));
-			
-			
+			model.addAttribute("sum", ecommerceService.sumBasket(user.getId()));	
 		} 
-		
 		return "booklist"; //  /WEB-INF/views/booklist.jsp
 	}
 	
@@ -79,9 +94,8 @@ public class ListController {
 	@RequestMapping(value = "/addtobasket", method = RequestMethod.POST)
 	public String addToBasket(HttpSession session, Model model, @RequestParam("bookId") Integer bookId) {
 		System.out.println("SONO NEL METODO");
-		User sessionUser = ecommerceService.findUser("alice.ceccarelli@gmail.com", "00000");
 		//System.out.println("BOOK ID: " + bookId);
-		ecommerceService.addToBasket(bookId, sessionUser.getId());
+		ecommerceService.addToBasket(bookId, user.getId());
 		
 		// trova il libro per modificare la quantità
 		//Book book = ecommerceService.findById(bookId);
@@ -93,8 +107,7 @@ public class ListController {
 	@RequestMapping(value = "/removefrombasket", method = RequestMethod.POST)
 	public String removefrombasket(HttpSession session, Model model, @RequestParam("bookId") Integer bookId) {
 		System.out.println("STO RIMUOVENDO");
-		User sessionUser = ecommerceService.findUser("alice.ceccarelli@gmail.com", "00000");
-		ecommerceService.removeFromBasket(bookId, sessionUser.getId());
+		ecommerceService.removeFromBasket(bookId, user.getId());
 		
 		// trova il libro per modificare la quantità
 		//Book book = ecommerceService.findById(bookId);
