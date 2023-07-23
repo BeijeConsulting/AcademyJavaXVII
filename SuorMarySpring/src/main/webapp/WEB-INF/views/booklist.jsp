@@ -73,18 +73,18 @@
 					        
 					    </thead>
 					    <tbody>
-							<c:forEach items="${basketJoinBook}" var="bjb">
-								<tr>
-									<td>${bjb.id}</td> 
-						            <td>${bjb.title}</td> 
-						            <td>${bjb.authorId}</td>            
-						            <td>${bjb.price}</td>
-						            <td>${bjb.quantity}</td>
+							<c:forEach items="${basket}" var="entry">
+								<!--  <tr>
+									<td>${entry.key.id}</td> 
+						            <td>${entry.key.title}</td> 
+						            <td>${entry.key.authorId}</td>            
+						            <td>${entry.key.price}</td>
+						            <td>${entry.value}</td>
 						            <td><form:form action="removefrombasket" method="POST">
-										<input type="hidden" name="bookId" value="${bjb.id}"/>
+										<input type="hidden" name="bookId" value="${${entry.key}.id}"/>
 									    <input type="submit" value="-"/>
 									</form:form></td>
-							    </tr>
+							    </tr>-->
 							   
 					        </c:forEach> 
 					        <tr>

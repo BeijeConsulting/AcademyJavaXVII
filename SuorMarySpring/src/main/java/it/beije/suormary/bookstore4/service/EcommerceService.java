@@ -59,8 +59,10 @@ public class EcommerceService {
 	
 	//Cerca utente con email e password
 	public User findUser(String email, String password) {
-		User user = userRepository.findByEmailAndPassword(email, password);
-		return user;
+		System.out.println("Sono in find user");
+		List<User> users = userRepository.findByEmailAndPassword(email, password);
+		System.out.println("User id : " + users.get(0).getId());
+		return users.get(0);
 	}
 	
 	//Aggiunge un libro al carrello
@@ -114,7 +116,7 @@ public class EcommerceService {
 		//Carico il carrello
 		List<BasketItem> items = basketItemRepository.findByBookIdAndUserId(bookId, userId);
 		
-		BasketItem bi = items.get(0);;
+		BasketItem bi = items.get(0);
 		Book book = bookRepository.findById(bi.getBookId()).get();
 		int actualQuantity = bi.getQuantity();
 		

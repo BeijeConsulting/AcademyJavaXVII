@@ -34,7 +34,9 @@ public class ListController {
 		model.addAttribute("booklist", books);
 		
 		user = ecommerceService.findUser("alice.ceccarelli@gmail.com", "00000");
-		 //se user loggato fai vedere anche carrello
+		
+		
+		//se user loggato fai vedere anche carrello
 		if(user != null) {
 			model.addAttribute("user", user);
 			session.setAttribute("user", user);
