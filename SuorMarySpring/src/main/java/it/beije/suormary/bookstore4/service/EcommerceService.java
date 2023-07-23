@@ -71,9 +71,8 @@ public class EcommerceService {
 	
 	//Aggiunge un libro al carrello
 	public void addToBasket(Integer bookId, Integer userId) {
-		//Optional<User> user = userRepository.findById(userId);
 		HashMap<Book, Integer> basket = basket(userId);
-		System.out.println(basket);
+		//System.out.println(basket);
 		
 		//Controllo se il libro è già nel carrello
 		
@@ -107,18 +106,9 @@ public class EcommerceService {
 	}
 	
 	
-	
-	//join tra basket e book
-	public Book getBasketItemInBook(Integer basketId){
-		Book b =  bookRepository.findBybookId(basketId);
-		System.out.println("VALORE DI B: " + b) ;
-		return b;
-	}
-	
 	//Rimuovi un libro dal carrello
 	public void removeFromBasket(Integer bookId, Integer userId) {
-		Optional<User> user = userRepository.findById(userId);
-		HashMap<Book, Integer> basket = user.get().getBasket();
+		HashMap<Book, Integer> basket = basket(userId);
 		
 		//Carico il carrello
 		List<BasketItem> items = basketItemRepository.findByBookIdAndUserId(bookId, userId);

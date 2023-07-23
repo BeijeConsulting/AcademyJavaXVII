@@ -81,7 +81,7 @@
 						            <td>${entry.key.price}</td>
 						            <td>${entry.value}</td>
 						            <td><form:form action="removefrombasket" method="POST">
-										<input type="hidden" name="bookId" value="${entry.key}.id}"/>
+										<input type="hidden" name="bookId" value="${entry.key.id}"/>
 									    <input type="submit" value="-"/>
 									</form:form></td>
 							    </tr>

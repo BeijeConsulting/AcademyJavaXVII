@@ -21,13 +21,38 @@ import it.beije.suormary.bookstore4.service.EcommerceService;
  
 
 @Controller
-public class ListController {
-
+public class ListController { 
+	
 	@Autowired
 	private EcommerceService ecommerceService;
 	
-	User user = new User();	
+	User user;	
 	BasketItem bi = new BasketItem();
+	
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String home() {
+		return "loginpage";
+	}
+	@RequestMapping(value = "/loginpage", method = RequestMethod.POST)
+	public String login(HttpSession session, 
+			Model model,
+			@RequestParam("email") String email,
+			@RequestParam("password") String password) {
+		user = ecommerceService.findUser(email, password);
+		if (user == null) {
+			model.addAttribute("loginerror", "Email or password wrong...\nTry again or sign up");	
+			return "loginpage";
+		}
+		return bookList(session, model);
+	}
+	
+	@RequestMapping(value = "/signup", method = RequestMethod.POST)
+	public String signup() {
+		
+		
+		return "booklist";
+	}
+	
 	
 	@RequestMapping(value = "/booklist", method = RequestMethod.GET)
 	public String bookList(HttpSession session, Model model) {
