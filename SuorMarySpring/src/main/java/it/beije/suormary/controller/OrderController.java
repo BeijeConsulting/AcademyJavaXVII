@@ -65,6 +65,7 @@ public class OrderController {
 		model.addAttribute("orderId", order.getId());
 		if(quantityId > book.getQuantity() ) {
 			model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
+			return "createOrder";
 		}
 		else {
 			session.setAttribute("quantity", quantityId);
@@ -150,6 +151,9 @@ public class OrderController {
 		int quantityId = Integer.parseInt(quantity);
 		if(quantityId > book.getQuantity() ) {
 			model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
+			   List<Book> books = bookService.loadBooks();
+		         model.addAttribute("books", books);
+			return "addOtherBooks";
 		}
 		else {
 			session.setAttribute("quantity", quantityId);
@@ -167,7 +171,10 @@ public class OrderController {
 		Book book = bookService.getBookById(idStr);
 		int quantityId = Integer.parseInt(quantity);
 		if(quantityId > book.getQuantity() ) {
+			 List<Book> books = bookService.loadBooks();
+	         model.addAttribute("books", books);
 			model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
+			return "addOtherBooks";
 		}
 		else {
 			session.setAttribute("quantity", quantityId);
