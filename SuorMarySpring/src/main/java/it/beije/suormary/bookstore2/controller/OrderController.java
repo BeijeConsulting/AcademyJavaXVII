@@ -103,12 +103,21 @@ public class OrderController {
 	            totalAmount += price * quantity;
 	        }
 
-	        newOrder.setItems(orderItems);
+	        
 	        newOrder.setAmount(totalAmount);
+	        Order orderTemp = orderService.insertOrder(newOrder);
 	        
-	        orderService.insertOrder(newOrder);
+	       for (OrderItem oi : orderItems) {
+	    	   oi.setOrderId(orderTemp.getId());
+	       }
+
+	       
+	       
+	       
+	        orderService.inserOrderItems(orderItems);
 	        
-	        
+	        orderTemp.setItems(orderItems);
+	        System.out.println(orderTemp);
 	        session.removeAttribute("cart");
 	        
 	    }

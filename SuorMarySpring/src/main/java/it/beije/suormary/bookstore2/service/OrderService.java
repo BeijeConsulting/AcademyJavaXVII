@@ -81,16 +81,25 @@ public class OrderService {
 	}
 	
 	@Transactional
-	public void insertOrder(Order order) {
-		orderRepository.save(order);
+	public Order insertOrder(Order order) {
+		return orderRepository.save(order);
+
 	}
+	
 	
 
 	@Transactional
 	public void inserOrderItems(List<OrderItem> orderItems) {
 		for (OrderItem oi : orderItems) {
 			orderItemRepository.save(oi);
+			Optional<Book> book = bookRepository.findById(oi.getBookId());
+			if (book.isPresent()) {
+				book.get().setQuantity(book.get().getQuantity()-oi.getQuantity());
+				bookRepository.save(book.get());
+			}
+			
 		}
+	
 	}
 
 }
