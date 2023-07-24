@@ -18,7 +18,7 @@
 			  
 			  <label for="description">Description:</label><br>
 			  <textarea name="description">${author.description}</textarea><br><br>
-			  
+			   <input type="hidden" name="authorId" value="${author.id}"><br><br>
 			  <input type="submit" value="Save">	
 		</form>
 		<br>

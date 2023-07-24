@@ -31,7 +31,7 @@
 		  
 		  <label for="quantity">Quantity:</label><br>
 		  <input type="number" name="quantity" min="1" value="${book.quantity }"><br><br>
-		  
+		  <input type="hidden" name="bookId" value="${book.id}"><br><br>
 		  <input type="submit" value="Save">		
 	</form><br>
 </div>
