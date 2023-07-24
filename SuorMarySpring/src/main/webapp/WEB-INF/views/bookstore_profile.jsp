@@ -146,9 +146,12 @@
     <p class="user_info"><strong>Name:</strong> ${user.name}</p>
     <p class="user_info"><strong>Surname:</strong> ${user.surname}</p>
     <p class="user_info"><strong>Email:</strong> ${user.email }</p>
-    <button class ="button_update" title="Update">
-     <i class="material-icons"> create</i>
-	</button>
+    <form class="paragraph" action="./bookstore_update_user" method="get">
+	    <button class ="button_update" title="Update">
+	     <i class="material-icons"> create</i>
+		</button>
+	</form>
+    
 </div>
  
 <h1>Books in favorites</h1>

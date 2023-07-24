@@ -3,7 +3,7 @@ package it.beije.suormary.bookstore2.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,77 +25,18 @@ public class UserService {
         this.bookService = bookService;
     }
 	
-    /*
-	public void insertUser(User user) {
-		EntityManager entityManager = null;
-		
-		try {
-			entityManager = PersistenceManagerJPA.getEntityManager();
-			EntityTransaction transaction = entityManager.getTransaction();
-			transaction.begin();
-			
-			User newUser = new User();
-			
-			if(user!=null) {
-				try {
-					newUser.setEmail(user.getEmail());
-					newUser.setPassword(user.getPassword());
-					newUser.setSurname(user.getSurname());
-					newUser.setName(user.getName());
-					newUser.setCreationDate(LocalDateTime.now());
-					entityManager.persist(newUser); // salva l'user nel database
-					transaction.commit();
-				} catch (Exception e) {
-					System.out.println("Insert non valido: " + user.toString());
-					transaction.rollback();
-					throw e; //rilancia eccezione al catch più esterno
-				} 
-					
-			} else {
-				System.out.println("User mancante");
-			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				entityManager.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}*/
     
     public String save(User user) {
     	User newUser = userRepository.save(user);
     	if (newUser == null) return "Utente non inserito correttamente";
     	else return "Utente inserito correttamente";
     }
-	
-	
-	/*public User checkUser(String email, String password) {
-		EntityManager entityManager = null;
-		User user=null;
-		try {
-			entityManager = PersistenceManagerJPA.getEntityManager();
-			// Recupera l'utente dal database utilizzando JPA
-
-	        Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email AND u.password = :password", User.class);
-	        query.setParameter("email", email);
-	        query.setParameter("password", password);
-	        user = (User) query.getSingleResult();
-	        
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				entityManager.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+    
+    public User findById(Integer id) {
+    	Optional<User> u = userRepository.findById(id);
+		User user = u.isPresent() ? u.get() : null;
 		return user;
-	}*/
+    }
 	
 	public User findByEmailAndPassword(String email, String password) {
 		return userRepository.findByEmailAndPassword(email, password);

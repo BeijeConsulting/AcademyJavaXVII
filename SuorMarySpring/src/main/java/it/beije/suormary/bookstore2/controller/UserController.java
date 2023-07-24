@@ -1,5 +1,6 @@
 package it.beije.suormary.bookstore2.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +78,32 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping(value = "/bookstore_update_user", method = RequestMethod.GET)
+	public String getUpdateUser(HttpSession session) {
+		return "bookstore_update_user";
+	}
 	
+	@RequestMapping(value = "/bookstore_update_user", method = RequestMethod.POST)
+	public String registerPost(HttpSession session,
+			@RequestParam(name = "name", required = false) String name,
+			@RequestParam(name = "surname", required = false) String surname)  {
+		
+    	System.out.println("bookstore_update_user doPost");
+    	
+    	User user = (User) session.getAttribute("user");
+    	
+        // Crea un oggetto Utente con i dati inseriti
+        User userUpdate = userService.findById(user.getId());
+        userUpdate.setName(name);
+        user.setName(name);
+        
+        userUpdate.setSurname(surname);
+        user.setSurname(surname);
+        
+        userService.save(userUpdate);      
+        
+        return "redirect:bookstore_profile";
+	}
 
 
 }
