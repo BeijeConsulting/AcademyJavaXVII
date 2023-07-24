@@ -65,7 +65,8 @@
     <c:set var="orderItems" value="${order.items}" />
     <c:if test="${not empty orderItems}">
         <h2 class="title">Books in order ${order.id}</h2>
-        <p class="title"><strong>amount</strong> ${order.amount}</p>
+        <p class="title"><strong>Shipping Address</strong> ${order.shippingAddress}</p>
+        <p class="title"><strong>Amount</strong> $ ${order.amount}</p>
         <p class="title"><strong>Order creation date :</strong> ${order.date.format(DateTimeFormatter.ofPattern('dd/MM/yyyy'))}</p>
         <div class="container">
             <c:forEach items="${orderItems}" var="orderItem" varStatus="loop">
@@ -74,7 +75,6 @@
                     <p class="paragraph"><strong>Book editor :</strong> ${books[loop.index].editor}</p>
                     <p class="paragraph"><strong>Price :</strong> ${orderItem.price} $</p>
                     <p class="paragraph"><strong>Quantity :</strong> ${orderItem.quantity}</p>
-                    <p class="paragraph"><strong>Shipping_address :</strong> ${orderItem.quantity}</p>
                 </div>
             </c:forEach>
         </div>

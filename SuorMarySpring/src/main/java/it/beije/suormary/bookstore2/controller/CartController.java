@@ -27,8 +27,6 @@ public class CartController {
 	
 	@RequestMapping(value = "/bookstore_cart", method = RequestMethod.GET)
 	public String getCart(HttpSession session, Model model) {
-		System.out.println("GET /bookstore_cart");
-		
 		User user = (User) session.getAttribute("user");
 		
 		if (user == null) {
@@ -63,8 +61,6 @@ public class CartController {
 	public String postCart(HttpSession session, Model model,
 			@RequestParam(name = "id", required = true) String bookIdString,
 			@RequestParam(name = "action", required = true) String action) {
-		System.out.println("POST /bookstore_cart");
-		
 		Integer bookId = Integer.valueOf(bookIdString);
 		
 		Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
@@ -83,14 +79,10 @@ public class CartController {
                 System.out.println("Added to cart: bookId=" + bookId + ", quantity=" + (quantity + 1));
         	} else {
         		System.out.println("Maximum quantity reached for bookId=" + bookId);
-        		//session.setAttribute("cartError", "maximum amount of books reached for the book "+book.getTitle());
         	}
-        	
-        	System.out.println("action value" + action);
-        	
+
             if (action.equals("addFromBookDet")) {
                 // Redirect back to the previous page or any other desired page
-            	System.out.println("/bookstore_book_details?id="+ bookId);
                 return "redirect:bookstore_book_details?id=" + bookId;
             } else {
                 return "redirect:bookstore_cart";

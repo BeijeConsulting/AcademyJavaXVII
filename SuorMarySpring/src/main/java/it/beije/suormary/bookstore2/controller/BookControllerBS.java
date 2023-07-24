@@ -29,13 +29,9 @@ public class BookControllerBS {
 			@RequestParam(name = "id", required = true) String bookIdString) {
     	
     	int bookId = Integer.parseInt(bookIdString);
-    	
-    	System.out.println("BookstoreBookDetails get");
 
- 
         Book book = bookService.findBook(bookId);
         Author author = bookService.findAuthorById(book.getAuthorId());
-        System.out.println("book: " + book);
         
         Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
         
@@ -65,23 +61,23 @@ public class BookControllerBS {
 			@RequestParam(name = "price", required = true) String price,
 			@RequestParam(name = "quantity", required = true) String quantity) {
 	
-	Integer authorId = Integer.parseInt(author);
-
-	double p = Double.parseDouble(price);
-
-	int q = Integer.parseInt(quantity);
+		Integer authorId = Integer.parseInt(author);
 	
-	Book book = new Book();	
-	book.setTitle(title);
-	book.setDescription(description);
-	book.setAuthorId(authorId);
-	book.setEditor(editor);
-	book.setPrice(p);
-	book.setQuantity(q);
+		double p = Double.parseDouble(price);
 	
-	bookService.save(book);
-	
-	
-	 return "redirect:bookstore_welcome";
+		int q = Integer.parseInt(quantity);
+		
+		Book book = new Book();	
+		book.setTitle(title);
+		book.setDescription(description);
+		book.setAuthorId(authorId);
+		book.setEditor(editor);
+		book.setPrice(p);
+		book.setQuantity(q);
+		
+		bookService.save(book);
+		
+		
+		return "redirect:bookstore_welcome";
 	}
 }

@@ -7,7 +7,4 @@ import it.beije.suormary.bookstore2.model.OrderItem;
 
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, Integer>{
-	
-	
-
 }

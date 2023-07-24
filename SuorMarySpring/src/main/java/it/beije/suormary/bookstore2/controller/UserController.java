@@ -1,6 +1,5 @@
 package it.beije.suormary.bookstore2.controller;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +24,6 @@ public class UserController {
 	
 	@RequestMapping(value = "/bookstore_profile", method = RequestMethod.GET)
 	public String getLogin(HttpSession session, Model model) {
-		System.out.println("bookstoreProfile doGet");
 		
 		List<Integer> ids = (List<Integer>) session.getAttribute("favoritesBooksIds");
 		List<Book> books = null;
@@ -42,12 +40,7 @@ public class UserController {
 	public String addToFav(HttpSession session, Model model,
 			@RequestParam(name = "id", required = true) String bookIdString,
 			@RequestParam(name = "action", required = true) String action) {
-		
-		//vedere se tramite la action chiamare il service di user che mi aggiunge ai preferiti i libri
-	
-		
-		System.out.println("Favorites doPost");
-		
+
 		Integer bookId = Integer.valueOf(bookIdString);
 		
 		List<Integer> favoritesBooksIds = (List<Integer>) session.getAttribute("favoritesBooksIds");
@@ -73,7 +66,6 @@ public class UserController {
                 return "redirect:bookstore_profile";
             }
 		} else {
-			//casistica non gestita
 			return "redirect:bookstore_welcome";
 		}
 	}
@@ -87,12 +79,9 @@ public class UserController {
 	public String registerPost(HttpSession session,
 			@RequestParam(name = "name", required = false) String name,
 			@RequestParam(name = "surname", required = false) String surname)  {
-		
-    	System.out.println("bookstore_update_user doPost");
-    	
+
     	User user = (User) session.getAttribute("user");
-    	
-        // Crea un oggetto Utente con i dati inseriti
+
         User userUpdate = userService.findById(user.getId());
         userUpdate.setName(name);
         user.setName(name);

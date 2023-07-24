@@ -23,10 +23,7 @@ public class LoginController  {
 	
 	@RequestMapping(value = "/bookstore_login", method = RequestMethod.GET)
 	public String loginGet(HttpSession session) {
-		System.out.println("bookstoreLogin doGet");
-
 		User user = (User) session.getAttribute("user");
-		System.out.println("user " + user);
 		if (user != null) { // utente loggato
 			return "redirect:bookstore_welcome";
 		} else { // non loggato
@@ -41,9 +38,7 @@ public class LoginController  {
 	public String loginPost(HttpSession session, Model model,
 			@RequestParam(name = "email", required = true) String email,
 			@RequestParam(name = "password", required = true) String password) {
-		
-		System.out.println("bookstoreLogin doPost");
-		
+
 		System.out.println("email : " + email);
 		System.out.println("JSESSIONID: " + session.getId());
 		
@@ -66,7 +61,6 @@ public class LoginController  {
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String getLogout(HttpSession session) {
-		System.out.println("Logout doGet");
         session.invalidate(); // Rimuove la sessione corrente
         return "bookstore_login";
 

@@ -1,7 +1,5 @@
 package it.beije.suormary.bookstore2.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,13 +29,13 @@ public class AuthorController {
 			@RequestParam(name = "surname", required = true) String surname,
 			@RequestParam(name = "description", required = false) String description) {
 	
-	Author author = new Author();	
-	author.setName(name);
-	author.setSurname(surname);
-	author.setDescription(description);
-	
-	authorService.save(author);
-	
-	 return "redirect:bookstore_welcome";
+		Author author = new Author();	
+		author.setName(name);
+		author.setSurname(surname);
+		author.setDescription(description);
+		
+		authorService.save(author);
+		
+		return "redirect:bookstore_welcome";
 	}
 }

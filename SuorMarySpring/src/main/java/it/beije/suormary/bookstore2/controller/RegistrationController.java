@@ -23,8 +23,6 @@ public class RegistrationController{
     @RequestMapping(value = "/bookstore_registration", method = RequestMethod.GET)
 	public String registerGet(HttpSession session)  {
 
-		System.out.println("bookstore_registration doGet");
-		
 		User user = (User) session.getAttribute("user");
 
 		if (user != null) { 
@@ -40,8 +38,6 @@ public class RegistrationController{
 			@RequestParam(name = "password", required = true) String password,
 			@RequestParam(name = "name", required = false) String name,
 			@RequestParam(name = "surname", required = false) String surname)  {
-		
-    	System.out.println("bookstore_registration doPost");
 
         // Crea un oggetto Utente con i dati inseriti
         User user = new User();

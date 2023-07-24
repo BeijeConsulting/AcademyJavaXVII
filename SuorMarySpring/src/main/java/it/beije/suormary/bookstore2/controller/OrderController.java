@@ -73,8 +73,6 @@ public class OrderController {
 			@RequestParam(name = "id", required = false) String id,
 			@RequestParam(name = "shipping_address", required = false) String shippingAddress
 			) {
-		
-		System.out.println(shippingAddress);
 		User user = (User) session.getAttribute("user");
 		
 		Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
@@ -115,14 +113,9 @@ public class OrderController {
 	       for (OrderItem oi : orderItems) {
 	    	   oi.setOrderId(orderTemp.getId());
 	       }
-
-	       
-	       
-	       
 	        orderService.inserOrderItems(orderItems);
 	        
 	        orderTemp.setItems(orderItems);
-	        System.out.println(orderTemp);
 	        session.removeAttribute("cart");
 	        
 	    }
@@ -143,27 +136,21 @@ public class OrderController {
 
 		Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
 		List<Book> books =  new ArrayList<>();
-//    	List<Author> authors =  new ArrayList<>();
     	List<Integer> quantities =  new ArrayList<>();
     	Book book = null;
     	int quantity;
-    	Author author = null;
     	if (cart != null && !cart.isEmpty()) {
     		for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
     			book = orderService.getBookInOrderByBookId(entry.getKey());
                 quantity = entry.getValue();
-//                author = bookService.findAuthorById(book.getAuthorId());
                 books.add(book);
-//                authors.add(author);
                 quantities.add(quantity);
     		}
     	}
     	model.addAttribute("books", books);
-//    	model.addAttribute("authors", authors);
     	model.addAttribute("quantities", quantities);    
 	    model.addAttribute("shipping_address", shippingAddress);
 	    
-	    System.out.println("Sto su order SUmmary");
 	    return "bookstore_order_summary";
 	}
 	

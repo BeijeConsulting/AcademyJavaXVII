@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import it.beije.suormary.bookstore2.model.Author;
 import it.beije.suormary.bookstore2.model.Book;
-import it.beije.suormary.bookstore2.model.User;
 import it.beije.suormary.bookstore2.repository.AuthorRepository;
 import it.beije.suormary.bookstore2.repository.BookRepository;
 

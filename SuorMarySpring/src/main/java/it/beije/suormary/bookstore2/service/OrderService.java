@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import it.beije.suormary.bookstore2.model.Book;
 import it.beije.suormary.bookstore2.model.Order;
 import it.beije.suormary.bookstore2.model.OrderItem;
-import it.beije.suormary.bookstore2.repository.BookRepository;
 import it.beije.suormary.bookstore2.repository.OrderItemRepository;
 import it.beije.suormary.bookstore2.repository.OrderRepository;
 

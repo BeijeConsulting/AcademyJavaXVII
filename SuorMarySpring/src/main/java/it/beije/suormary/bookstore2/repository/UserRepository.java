@@ -10,7 +10,4 @@ public interface UserRepository extends JpaRepository<User, Integer>{
 	
 	public User findByEmailAndPassword(String email, String password);
 	
-	//save permette l'inserimento nel DB, metodo ereditato da JpaRepository
-	public User save(User user);
-	
 }
