@@ -98,7 +98,7 @@
     			<span class="desc">Descrizione : </span>
     			<span>${book.description}</span>
 			</c:if>
-            <div class="buttons">
+            <div class="buttons" style="display: flex; flex-direction: row;">
 
    <form action="addBookToOrder" action="GET">
    <input type="hidden" name="bookOrderId" value="${book.id}" />

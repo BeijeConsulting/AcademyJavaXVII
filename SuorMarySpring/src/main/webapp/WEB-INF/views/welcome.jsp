@@ -83,22 +83,22 @@
 <c:if test="${not empty ordinePagato}"><h2 style="color:green;">${ordinePagato}</h2> </c:if>
 
 
-
+<div style="display: flex; flex-direction: row;">
 <form action="my_orders" method ="get">
 	<input type="submit" value="I miei ordini" class="button">
-</form>&nbsp;
+</form>
 <form action="createBook" method ="GET">
 <input type="submit" value="aggiungi un libro" class="button" >
 </form>
-&nbsp;
+
 <form action="listAuthors" method ="GET">
 <input type="submit" value="lista Autori" class="button">
 </form>
-&nbsp;
+
 <form action="createOrder" method ="GET">
 <input type="submit" value="crea un ordine" class="button">
 </form>
-&nbsp;
+</div>
 <h2>Libri disponibili:</h2><br/>
 
 <c:choose>
@@ -108,6 +108,7 @@
 		<div class="card">
 			<h3 style="margin: 0;color: #555;">Titolo:&nbsp;${book.title}</h3>Disponibilità:&nbsp;${book.quantity}<br/>
 			<h4>Descrizione:&nbsp;${book.description}</h4>
+			<div style="display: flex; flex-direction: row;">
 			 <form action="updateBook" method="GET" style="margin-bottom: 10px;">
                     <input type="hidden" name="id" value="${book.id}" />
                     <input type="submit" value="Modifica libro" class="button"/>
@@ -117,6 +118,7 @@
                     <input type="submit" value="Elimina libro" class="button" />
                 </form>
                 </div>
+            </div>    
 		</c:forEach>
 	</c:otherwise>
 </c:choose>
