@@ -89,28 +89,31 @@
 	</c:if>
 
 <c:forEach items="${books}" var="book">
-<div class="card">
-	  <h5>Quantità disponibile : ${book.quantity}</h5>
-            <h3>Titolo :  ${book.title} </h3>
 
+<div class="card">
+            <h3>Titolo :  ${book.title} </h3>
+ 			<h4>Prezzo: ${book.price}</h4>
+ 			<h4>Quantità disponibile : ${book.quantity}</h4>
             <c:if test="${not empty book.description}"> 
     			<span class="desc">Descrizione : </span>
     			<span>${book.description}</span>
 			</c:if>
             <div class="buttons">
+
    <form action="addBookToOrder" action="GET">
    <input type="hidden" name="bookOrderId" value="${book.id}" />
     <label>Inserisci quantità : </label>
    <input type="number" name="quantity"/>
    <input type="submit" value="Aggiungi all`ordine" />
    </form>
+
             </div>
         </div>
- </c:forEach>
+</c:forEach>
 
-  <form action="recapOrder" action="GET">
-   <input type="submit" value="Recap Ordine" class="button"/>
-   </form>
+	<form action="recapOrder" action="GET">
+	   <input type="submit" value="Recap Ordine" class="button"/>
+	</form>
 
 </body>
 </html>

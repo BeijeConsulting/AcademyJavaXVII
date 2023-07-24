@@ -11,6 +11,73 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<style>
+   h1 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 10px;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .card h3 {
+            margin: 0;
+            color: #555;
+        }
+
+        .card .buttons {
+            margin-top: 10px;
+        }
+
+        .card .buttons input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        hr {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: 0;
+            border-top: 1px solid #ccc;
+        }
+        .desc{
+        font-size : 16px;
+        font-weight: bold;
+        }
+        .button{
+			    background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-right: 5px;
+             display: inline-block;
+    margin-right: 10px;
+			
+		}
+		.flex{
+			display: flex;
+		}
+		.ord{
+			color:green;
+			font-weight: bold;
+		}
+        
+</style>
 <link rel="stylesheet" type="text/css" href="resources/style.css">
 <title>Insert title here</title>
 </head>
@@ -23,9 +90,10 @@
 
 <c:forEach items="${books}" var="book">
 <div class="card">
-	  <h5>Quantità disponibile : ${book.quantity}</h5>
+	  
             <h3>Titolo :  ${book.title} </h3>
-
+            <h4>Prezzo: ${book.price}</h4>
+			<h4>Quantità disponibile : ${book.quantity}</h4>
             <c:if test="${not empty book.description}"> 
     			<span class="desc">Descrizione : </span>
     			<span>${book.description}</span>
@@ -41,7 +109,7 @@
             </div>
         </div>
  </c:forEach>
-  <form action="recapOrder" method="get">
+<form action="recapOrder" method="get">
    <input type="submit" value="Salva modifica" class="button" /> 
 </form>
 

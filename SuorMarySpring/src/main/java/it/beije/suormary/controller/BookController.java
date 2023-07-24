@@ -95,29 +95,29 @@ public class BookController {
 		   }
 	
 	   }
-	   @RequestMapping(value = "/quantityBook", method=RequestMethod.GET)
-	   public String quantityBook(HttpServletRequest request, Model model, HttpSession session) {
-				String quantity = request.getParameter("quantity");
-				String idStr = request.getParameter("bookId");
-				Book book = bookService.getBookById(idStr);
-				int quantityId = Integer.parseInt(quantity);
-				List<Book> booksOrder =(List) session.getAttribute("booksOrder");
-				List<Book> books = BookStoreUtility.loadBooks();
-				model.addAttribute("booksOrder", booksOrder);
-				model.addAttribute("books", books);
-				Order order = (Order) session.getAttribute("order");
-				model.addAttribute("orderId", order.getId());
-				if(quantityId > book.getQuantity() ) {
-					model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
-				}
-				else {
-					session.setAttribute("quantity", quantityId);
-					model.addAttribute("quantity", quantityId);
-				}
-				return "createOrder";
-
-			
-	   }
+//	   @RequestMapping(value = "/quantityBook", method=RequestMethod.GET)
+//	   public String quantityBook(HttpServletRequest request, Model model, HttpSession session) {
+//				String quantity = request.getParameter("quantity");
+//				String idStr = request.getParameter("bookId");
+//				Book book = bookService.getBookById(idStr);
+//				int quantityId = Integer.parseInt(quantity);
+//				List<Book> booksOrder =(List) session.getAttribute("booksOrder");
+//				List<Book> books = BookStoreUtility.loadBooks();
+//				model.addAttribute("booksOrder", booksOrder);
+//				model.addAttribute("books", books);
+//				Order order = (Order) session.getAttribute("order");
+//				model.addAttribute("orderId", order.getId());
+//				if(quantityId > book.getQuantity() ) {
+//					model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
+//				}
+//				else {
+//					session.setAttribute("quantity", quantityId);
+//					model.addAttribute("quantity", quantityId);
+//				}
+//				return "createOrder";
+//
+//			
+//	   }
 	 
 }
 	   
