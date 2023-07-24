@@ -24,6 +24,12 @@
 	                <input type="submit" value="Modifica Ordine" class="button" style="background-color: #4CAF50;color: white;border: none;padding: 5px 10px;text-decoration: none;cursor: pointer;margin-right: 5px;display: inline-block;margin-right: 10px;"/>
 	            </form>	
 	        </c:if>	
+	          <c:if test='${order.status eq "P"}'>
+	            <form action="recapOrderPayed" method="get">
+	                <input type="hidden" name="orderId" value="${order.id}" />
+	                <input type="submit" value="Dettagli Ordine" class="button" style="background-color: #4CAF50;color: white;border: none;padding: 5px 10px;text-decoration: none;cursor: pointer;margin-right: 5px;display: inline-block;margin-right: 10px;"/>
+	            </form>	
+	        </c:if>	
 	        </div>	     
 		</c:forEach>
 	</c:otherwise>

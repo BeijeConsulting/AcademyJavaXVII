@@ -86,7 +86,7 @@
 
 <c:forEach items="${order.items}" var="orderItem">
     <c:set var="book" value="${BookStoreUtility.getBookById(orderItem.bookId)}" />
-   <h2> ${book.title} - Quantità: ${orderItem.quantity} - Prezzo : ${orderItem.price}</h2>
+   <h2> ${book.title} - Quantità: ${orderItem.quantity}</h2>
 </c:forEach>
 
         <c:choose> 
@@ -97,29 +97,5 @@
 	
 	 </c:choose>
 
-    <hr><br/>
-<c:choose>
-	<c:when test='${order.status eq "I"}'>
-	   
-    	<form action="payment" method="GET">
-		    <label for="address">Indirizzo Spedizione:</label><br>
-		    <input type="text" id="address" name="address" required><br>
-		    <input type="submit" value="Paga Ordine" class="button"/>
-		</form>
-		<form action="deleteOrder" action="GET">
-		<input type="hidden" name="orderId" value="${order.id}" />
-   			<input type="submit" value="Cancella Ordine" class="button"/>
-   		</form>
-		<form action="updateOrder" action="GET">
-		<input type="hidden" name="orderId" value="${order.id}" />
-   			<input type="submit" value="Modifica ordine" class="button"/>
-		</form> 
-	</c:when>
-	<c:otherwise>
-		<form action="my_orders" action="GET">
-   			<input type="submit" value="Torna Ai Miei Ordini" class="button"/>
-		</form>
-	</c:otherwise>
-</c:choose>
 </body>
 </html>
