@@ -53,7 +53,9 @@ public class UserService {
 	}
 	
 	public void createUser(User user) {
+		user.setCreationDate(LocalDateTime.now());
 		userRepository.save(user);
+		
 	}
 	
 }
