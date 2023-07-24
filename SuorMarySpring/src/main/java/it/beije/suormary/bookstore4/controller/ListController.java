@@ -174,7 +174,7 @@ public class ListController {
 		return "insertBook";
 	}
 	
-	@RequestMapping(value = "/insertbook", method = RequestMethod.GET)
+	@RequestMapping(value = "/insertbook", method = RequestMethod.POST)
 	public String insertBook(
 			Model model,
 			@RequestParam("title") String title, 
@@ -193,7 +193,7 @@ public class ListController {
 		return "insertAuthor";
 	}
 	
-	@RequestMapping(value = "/insertauthor", method = RequestMethod.GET)
+	@RequestMapping(value = "/insertauthor", method = RequestMethod.POST)
 	public String insertAuhor(
 			Model model,
 			@RequestParam("name") String name, 

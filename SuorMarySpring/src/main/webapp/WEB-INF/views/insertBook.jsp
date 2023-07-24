@@ -17,8 +17,8 @@
 		  <label for="description">Description:</label><br>
 		  <textarea name="description"></textarea><br><br>
 		  
-		  <label for="author">Author:</label><br>
-		  <select name="author" style="width:135pt;" required>
+		  <label for="authorId">Author:</label><br>
+		  <select name="authorId" style="width:135pt;" required>
 		  	<c:forEach items="${authorlist}" var="author">
 		  		<option value="${author.id}">${author.surname}</option>
 		  	</c:forEach>

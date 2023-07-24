@@ -78,7 +78,7 @@
 							</c:forEach>
 						</tbody>
 					</table>
-					<form:form action="addBook" method="GET">
+					<form:form action="addbook" method="GET">
 				    <input type="submit" value="Add Book"/>
 				</form:form>
 				</c:otherwise>
@@ -113,7 +113,7 @@
 						        </c:forEach> 
 					        </tbody>			        
 						</table>
-						<form:form action="addAuthor" method="GET">
+						<form:form action="addauthor" method="GET">
 				    		<input type="submit" value="Add Author"/>
 						</form:form>
 					</c:otherwise>
