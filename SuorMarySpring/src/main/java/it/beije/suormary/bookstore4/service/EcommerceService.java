@@ -1,4 +1,5 @@
 package it.beije.suormary.bookstore4.service;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +14,13 @@ import org.springframework.stereotype.Service;
 import it.beije.suormary.bookstore4.model.Author;
 import it.beije.suormary.bookstore4.model.BasketItem;
 import it.beije.suormary.bookstore4.model.Book;
+import it.beije.suormary.bookstore4.model.Order;
+import it.beije.suormary.bookstore4.model.OrderItem;
 import it.beije.suormary.bookstore4.model.User;
 import it.beije.suormary.bookstore4.repository.AuthorRepository;
 import it.beije.suormary.bookstore4.repository.BasketItemRepository;
 import it.beije.suormary.bookstore4.repository.BookRepository;
+import it.beije.suormary.bookstore4.repository.OrderItemRepository;
 import it.beije.suormary.bookstore4.repository.OrderRepository;
 import it.beije.suormary.bookstore4.repository.UserRepository;
 
@@ -34,6 +38,8 @@ public class EcommerceService {
 	private OrderRepository orderRepository;
 	@Autowired
 	private AuthorRepository authorRepository;
+	@Autowired
+	private OrderItemRepository orderItemRepository;
 	
 	//prende lista di tutti i libri
 	@Transactional
@@ -170,6 +176,50 @@ public class EcommerceService {
 	
 	public void buyBasket(Integer userId, String address, String typePayment) {
 		
+		Order order = new Order();
+		order.setUserId(userId);
+		order.setShippingAddress(address);
+		order.setStatus(typePayment.equalsIgnoreCase("cash") ? "P" : "I");
+		order.setDate(LocalDateTime.now());
+		order.setAmount(sumBasket(userId));
+		orderRepository.save(order);
+		
+		Integer orderId = order.getId();
+		HashMap<Book, Integer> basket = basket(userId);
+		
+		for(HashMap.Entry<Book, Integer> set : basket.entrySet()) {
+			OrderItem oi = new OrderItem();
+            oi.setOrderId(orderId);
+            
+            int bookId = set.getKey().getId();
+            oi.setBookId(bookId);
+            
+            int bookQuantity = set.getValue();
+            oi.setQuantity(bookQuantity);
+            
+            double price = set.getKey().getPrice();
+            oi.setPrice(price);
+            
+            orderItemRepository.save(oi);
+            
+          //aggiornare la quantità nel magazzino
+            Book book = bookRepository.findBybookId(set.getKey().getId());
+            int newQ = book.getQuantity() - bookQuantity;
+            book.setQuantity(newQ);
+            bookRepository.save(book);
+            
+          //Svuotare il carrello sia nel db che come variabile
+            emptyBasket(userId);
+		}
+		
+		List<OrderItem> items = orderItemRepository.findByOrderIdAndUserId(orderId, userId);
+		order.setItems(items);
+	}
+	
+	public void emptyBasket(Integer userId) {
+		Optional<User> user = userRepository.findById(userId);
+		user.get().getBasket().clear();
+		basketItemRepository.deleteByUserId(userId);
 	}
 	
 }

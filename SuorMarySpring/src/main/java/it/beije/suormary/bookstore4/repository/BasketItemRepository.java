@@ -22,4 +22,6 @@ public interface BasketItemRepository extends JpaRepository<BasketItem, Integer>
 	public Double sumBasket(@Param("userId") Integer userId);
 
 	public List<BasketItem> findByBookIdAndUserId(Integer bookId, Integer userId);
+	
+	public void deleteByUserId(Integer userId);
 }
