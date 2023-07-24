@@ -63,7 +63,6 @@
 <div>
     <c:set var="order" value="${order}" />
     <c:set var="orderItems" value="${order.items}" />
-
     <c:if test="${not empty orderItems}">
         <h2 class="title">Books in order ${order.id}</h2>
         <p class="title"><strong>amount</strong> ${order.amount}</p>
@@ -75,6 +74,7 @@
                     <p class="paragraph"><strong>Book editor :</strong> ${books[loop.index].editor}</p>
                     <p class="paragraph"><strong>Price :</strong> ${orderItem.price} $</p>
                     <p class="paragraph"><strong>Quantity :</strong> ${orderItem.quantity}</p>
+                    <p class="paragraph"><strong>Shipping_address :</strong> ${orderItem.quantity}</p>
                 </div>
             </c:forEach>
         </div>

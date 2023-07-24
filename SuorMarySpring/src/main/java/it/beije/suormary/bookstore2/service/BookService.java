@@ -42,8 +42,6 @@ public class BookService {
 	}
 	
 	
-
-	
 	public Book findBook(Integer bookId) {
 		Optional<Book> b = bookRepository.findById(bookId);
 		Book book = b.isPresent() ? b.get() : null;

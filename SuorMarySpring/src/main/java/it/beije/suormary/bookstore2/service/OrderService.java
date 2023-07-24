@@ -59,10 +59,6 @@ public class OrderService {
 		return books;
 	}
 	
-//	
-//	public void deleteOrderById(Integer orderId) {
-//		orderRepository.deleteById(orderId);
-//	}
 	
 	public List<OrderItem> getOrderItemsInOrder(Integer orderId) {
 		return orderRepository.findOrderItemsOfAOrder(orderId);

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Registration Page</title>
+<title>Insert the shipping address</title>
 <style>
 body {
     font-family: "Roboto", sans-serif;
@@ -64,24 +64,23 @@ button {
 </head>
 <body>
 	<div class="container">
-    <h1>Subscribe here</h1>
-    <form action="./bookstore_registration" method="POST">
+    <h1>Shipping Address</h1>
+    <form action="./bookstore_shipping_address" method="POST">
         <div>
-            <label for="email"><b>Email:</b></label><br>
-            <input type="email" placeholder="Enter email" name="email" id="email" required><br>
+            <label for="street"><b>Street:</b></label><br>
+            <input type="text" placeholder="Enter a street" name="street" id="street" required><br>
         
-            <label for="password"><b>Password:</b></label><br>
-            <input type="password" placeholder="Enter password" name="password" id="password" required><br>
+            <label for="city"><b>City:</b></label><br>
+            <input type="text" placeholder="Enter city" name="city" id="city" required><br>
             
-            <label for="name"><b>Name:</b></label><br>
-            <input type="text" placeholder="Enter name" name="name" id="name" required><br>
+            <label for="postal_code"><b>Postal code:</b></label><br>
+            <input type="text" placeholder="Enter a postal code" name="postal_code" id="postal_code" required><br>
             
-            <label for="surname"><b>Surname:</b></label><br>
-            <input type="text" placeholder="Enter surname" name="surname" id="surname" required><br>
+            <label for="country"><b>Country:</b></label><br>
+            <input type="text" placeholder="Enter a country" name="country" id="country" required><br>
             
             <div class="button-container">
-                <p>Already have an account? <a href="bookstore_login">Sign in</a></p>
-                <button type="submit">Registration</button>
+                <button type="submit">Go to order summary</button>
             </div>
         </div>
     </form>

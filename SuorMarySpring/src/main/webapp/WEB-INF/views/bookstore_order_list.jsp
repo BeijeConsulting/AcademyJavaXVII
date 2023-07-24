@@ -81,6 +81,7 @@
                     <p class="paragraph"><strong>Amount:</strong> ${order.amount} $</p>
                     <p class="paragraph"><strong>Status:</strong> ${order.status}</p>
                     <p class="paragraph"><strong>User_id:</strong> ${order.userId}</p>
+                    <p class="paragraph"><strong>Shipping_address:</strong> ${order.shippingAddress}</p>
                     <form class="paragraph" action="./bookstore_order_details" method="get">
                         <input type="hidden" name="id" value="${order.id}">
                         <button type="submit" class="button">View Details</button>

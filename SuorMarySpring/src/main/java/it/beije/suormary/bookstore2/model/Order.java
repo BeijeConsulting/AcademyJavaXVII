@@ -56,6 +56,9 @@ public class Order {
 	@Column(name = "amount")
 	private double amount;
 	
+	@Column(name = "shipping_address")
+	private String shippingAddress;
+	
 	//cascadeType significa che quando viene inserito un ordine nel db vengono inseriti anche tutti gli order items
 	@OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id")
@@ -101,7 +104,16 @@ public class Order {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
+
 	
+
+	public String getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
 
 	public List<OrderItem> getItems() {
 		return items;

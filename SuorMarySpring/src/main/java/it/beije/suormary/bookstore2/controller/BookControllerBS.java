@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore2.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -16,11 +17,35 @@ import it.beije.suormary.bookstore2.model.Book;
 import it.beije.suormary.bookstore2.service.BookService;
 
 @Controller
-public class InsertBookController {
+public class BookControllerBS {
+
 	
 	@Autowired
 	private BookService bookService;
+	
 
+	@RequestMapping(value = "/bookstore_book_details", method = RequestMethod.GET)
+	public String bookDetailsGet(HttpSession session, Model model,
+			@RequestParam(name = "id", required = true) String bookIdString) {
+    	
+    	int bookId = Integer.parseInt(bookIdString);
+    	
+    	System.out.println("BookstoreBookDetails get");
+
+ 
+        Book book = bookService.findBook(bookId);
+        Author author = bookService.findAuthorById(book.getAuthorId());
+        System.out.println("book: " + book);
+        
+        Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
+        
+        model.addAttribute("book", book);
+        model.addAttribute("author", author);
+        model.addAttribute("cart", cart);
+
+        return "bookstore_book_details";
+    
+    }
 	
 	@RequestMapping(value = "/bookstore_insert_book", method = RequestMethod.GET)
 	public String getInsertBook(Model model) {
@@ -59,5 +84,4 @@ public class InsertBookController {
 	
 	 return "redirect:bookstore_welcome";
 	}
-
 }
