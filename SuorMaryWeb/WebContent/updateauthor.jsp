@@ -36,9 +36,6 @@ session.setAttribute("author", author);
 		  <input type="submit" value="Save">	
 	</form>
 	<br>
-
 </div>
-
-
 </body>
 </html>

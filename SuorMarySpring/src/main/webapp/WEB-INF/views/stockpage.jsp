@@ -70,7 +70,7 @@
 						            <td>${book.editor}</td>
 						            <td>${book.price}</td>
 						            <td>${book.quantity}</td>
-									<td><form:form action="editBook" method="POST">
+									<td><form:form action="editbook" method="POST">
 										<input type="hidden" name="bookId" value="${book.id}"/>
 									    <input type="submit" value="E"/>
 									</form:form></td>
@@ -105,7 +105,7 @@
 							            <td>${author.name}</td> 
 							            <td>${author.surname}</td>            
 							            <td>${author.description}</td>
-							            <td><form:form action="editAuthor" method="POST">
+							            <td><form:form action="editauthor" method="POST">
 											<input type="hidden" name="bookId" value="${author.id}"/>
 										    <input type="submit" value="E"/>
 										</form:form></td>
