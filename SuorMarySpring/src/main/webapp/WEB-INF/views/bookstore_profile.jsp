@@ -6,7 +6,8 @@
 <html>
 <head>
     <meta charset="ISO-8859-1">
-    <title>Welcome</title>
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <style>
        body {
@@ -64,6 +65,16 @@
         	cursor: pointer;
         	
         }
+        
+        .button_unfavorite {
+          background-color: #ff2400; 
+        	color: white; 
+        	border: none; 
+        	padding: 3px 3px; 
+        	border-radius: 4px; 
+        	cursor: pointer;
+        }
+        
         .book {
         	width: 300px; 
         	border: 1px solid #ccc; 
@@ -107,16 +118,25 @@
  
     	<c:set var="books" value="${books}"/>
         <c:forEach items="${books}" var="book" varStatus="loop">
-    <div class="book">
-         <h2 class="title">${book.title}</h2>
-        <hr>
-        
-        <p class="paragraph"><strong>Description:</strong> ${book.description}</p>
-        <form class="paragraph" action="./bookstore_book_details" method="get">
-            <input type="hidden" name="id" value="${book.id}">
-            <button type="submit" class="button">View Details</button>
-        </form>
-    </div>
+	    <div class="book">
+	    	<div style="display: flex; justify-content: end">
+	    		<form action="./bookstore_favorites" method="post">
+	        			<input type="hidden" name="id" value="${book.id}">
+	        			<input type="hidden" name="action" value="removeBookToFavFromProfile">
+	        			<button class ="button_unfavorite" title="Remove from Favorites">
+	        			<i class="material-icons"> favorite</i>
+	        			</button>
+	        	</form>
+        	</div>
+	        <h2 class="title">${book.title}</h2>
+	        <hr>
+	        
+	        <p class="paragraph"><strong>Description:</strong> ${book.description}</p>
+	        <form class="paragraph" action="./bookstore_book_details" method="get">
+	            <input type="hidden" name="id" value="${book.id}">
+	            <button type="submit" class="button">View Details</button>
+	        </form>
+	    </div>
 </c:forEach>
     </div>
     </c:when>

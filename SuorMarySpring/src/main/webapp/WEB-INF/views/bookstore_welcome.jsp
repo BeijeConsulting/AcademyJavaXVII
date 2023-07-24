@@ -78,9 +78,12 @@
         	
         }
         .button_unfavorite {
-          background-color: #ccc;
-          color: #666;
-      	  cursor: pointer;
+          background-color: #ff2400; 
+        	color: white; 
+        	border: none; 
+        	padding: 3px 3px; 
+        	border-radius: 4px; 
+        	cursor: pointer;
         }
      
         .book {
@@ -145,11 +148,27 @@
         	<c:forEach items="${books}" var="book" varStatus="loop">
     			<div class="book">
     			<div style="display: flex; justify-content: end">
-        		<form action="./bookstore_favorites" method="post">
-        			<input type="hidden" name="id" value="${book.id}">
-        			<input type="hidden" name="action" value="addBookToFav">
-        			<button class ="button_favorite"><i class="material-icons"> favorite</i></button>
-        		</form>
+    			
+    			<c:choose>
+    			<c:when test="${favoritesBooksIds.contains(book.id)}">
+	        		<form action="./bookstore_favorites" method="post">
+	        			<input type="hidden" name="id" value="${book.id}">
+	        			<input type="hidden" name="action" value="removeBookToFav">
+	        			<button class ="button_unfavorite" title="Remove from Favorites">
+	        			<i class="material-icons"> favorite</i>
+	        			</button>
+	        		</form>
+        		</c:when>
+        		<c:otherwise>
+	        		<form action="./bookstore_favorites" method="post">
+	        			<input type="hidden" name="id" value="${book.id}">
+	        			<input type="hidden" name="action" value="addBookToFav">
+	        			<button class ="button_favorite" title="Add to Favorites">
+	        			<i class="material-icons"> favorite</i>
+	        			</button>
+	        		</form>
+        		</c:otherwise>
+        		</c:choose>
         		</div>  
         		<h2 class="title">${book.title}</h2>
         		<hr>

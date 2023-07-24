@@ -22,7 +22,20 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@RequestMapping(value = "/bookstore_profile", method = RequestMethod.GET)
+	public String getLogin(HttpSession session, Model model) {
+		System.out.println("bookstoreProfile doGet");
+		
+		List<Integer> ids = (List<Integer>) session.getAttribute("favoritesBooksIds");
+		List<Book> books = null;
+		
+		if (ids != null && !ids.isEmpty()) books = userService.getTheBooksFromId(ids);
+	
+		model.addAttribute("books", books);
+		
+		return "bookstore_profile";
 
+	}
 	
 	@RequestMapping(value = "/bookstore_favorites", method = RequestMethod.POST)
 	public String addToFav(HttpSession session, Model model,
@@ -34,40 +47,37 @@ public class UserController {
 		
 		System.out.println("Favorites doPost");
 		
-		int bookId = Integer.parseInt(bookIdString);
-	
-	
+		Integer bookId = Integer.valueOf(bookIdString);
 		
 		List<Integer> favoritesBooksIds = (List<Integer>) session.getAttribute("favoritesBooksIds");
 		if (favoritesBooksIds == null) {
 		    favoritesBooksIds = new ArrayList<>();
-		}
-		if (!favoritesBooksIds.contains(bookId)) {
-		    favoritesBooksIds.add(bookId);
 		    session.setAttribute("favoritesBooksIds", favoritesBooksIds);
 		}
 		
-		model.addAttribute("favoritesBooksIds", favoritesBooksIds);
-
-		
-		System.out.println("favoritesBooksIds" + favoritesBooksIds);
-		
-		return "redirect:bookstore_welcome";
+		if (action.equals("addBookToFav")) {
+			if (!favoritesBooksIds.contains(bookId)) {
+			    favoritesBooksIds.add(bookId);
+			}
+			return "redirect:bookstore_welcome"; 
+		}
+		else if (action.equals("removeBookToFav") || action.equals("removeBookToFavFromProfile")) {
+			if (favoritesBooksIds.contains(bookId)) {
+			    favoritesBooksIds.remove(bookId);
+			}
+			
+			if (action.equals("removeBookToFav")) {
+                return "redirect:bookstore_welcome"; 
+            } else {
+                return "redirect:bookstore_profile";
+            }
+		} else {
+			//casistica non gestita
+			return "redirect:bookstore_welcome";
+		}
 	}
 	
-	@RequestMapping(value = "/bookstore_profile", method = RequestMethod.GET)
-	public String getLogin(HttpSession session, Model model) {
-		System.out.println("bookstoreProfile doGet");
-		
-		List<Integer> ids = (List<Integer>) session.getAttribute("favoritesBooksIds");
-
-		List<Book> books = userService.getTheBooksFromId(ids);
 	
-		model.addAttribute("books", books);
-		
-		return "bookstore_profile";
-
-	}
 
 
 }
