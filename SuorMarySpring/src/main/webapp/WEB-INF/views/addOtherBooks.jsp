@@ -23,30 +23,27 @@
 
 <c:forEach items="${books}" var="book">
 <div class="card">
-	  <h5>Quantità disponibile : ${book.quantity}</h5>
+	  
             <h3>Titolo :  ${book.title} </h3>
-
+            <h4>Prezzo: ${book.price}</h4>
+			<h5>Quantità disponibile : ${book.quantity}</h5>
             <c:if test="${not empty book.description}"> 
     			<span class="desc">Descrizione : </span>
     			<span>${book.description}</span>
 			</c:if>
             <div class="buttons">
-           <form action="quantityBookModOrder" method="get">
-   <input type="hidden" name="bookId" value= "${book.id}" />
-   <label>Inserisci quantità : </label>
-   <input type="number" name="quantity" />
-   <input type="submit" value="inserisci" />
-   </form>
-   <form action="addBookToModOrder" action="GET">
-   <input type="hidden" name="bookOrderId" value="${book.id}" />
-   <input type="hidden" name="quantity" value = "<%= session.getAttribute("quantity") %>" />
-   <input type="submit" value="Aggiungi all'ordine" />
-</form>
-   </form>
+    <form action="addBookToOrder" action="GET">
+		<input type="hidden" name="bookId" value= "${book.id}" />
+		<label>Inserisci quantità : </label>
+		<input type="number" name="quantity" />
+		<input type="hidden" name="bookOrderId" value="${book.id}" />
+		<input type="hidden" name="quantity" value = "<%= session.getAttribute("quantity") %>" />
+		<input type="submit" value="Aggiungi all`ordine" />
+	</form>
             </div>
         </div>
  </c:forEach>
-  <form action="recapOrder" method="get">
+<form action="recapOrder" method="get">
    <input type="submit" value="Salva modifica" class="button" /> 
 </form>
 
