@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class BookController { 
+public class BookController {  
 	@Autowired
 	private BookService bookService;
 	@Autowired
