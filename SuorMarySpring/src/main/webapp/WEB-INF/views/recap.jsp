@@ -86,7 +86,7 @@
 
 <c:forEach items="${order.items}" var="orderItem">
     <c:set var="book" value="${BookStoreUtility.getBookById(orderItem.bookId)}" />
-   <h2> ${book.title} - Quantità: ${orderItem.quantity}</h2>
+   <h2> ${book.title} - Quantità: ${orderItem.quantity} - Prezzo : ${orderItem.price}</h2>
 </c:forEach>
 
         <c:choose> 
