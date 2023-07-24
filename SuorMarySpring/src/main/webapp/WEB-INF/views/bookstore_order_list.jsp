@@ -45,6 +45,14 @@
         cursor: pointer;
         }
         
+        .button_home {
+         display: flex;
+       	 justify-content: flex-start; 
+         gap: 10px;
+
+            
+        }
+        
         .button[disabled] {
           background-color: #ccc;
           color: #666;
@@ -53,10 +61,19 @@
     </style>
 </head>
 <body>
+
+       
+ <div class="button_home">
+	<form action="./bookstore_welcome" method="GET">
+	   <button class = "button" type="submit">Home</button>
+	</form>  
+ </div>
+
     <c:set var="orders" value="${orders}" />
 
     <c:if test="${not empty orders}">
         <div class="container">
+	
             <c:forEach items="${orders}" var="order">
                 <div class="orders">
                     <h2 class="title"><strong>Order id:</strong> ${order.id}</h2>

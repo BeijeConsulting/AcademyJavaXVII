@@ -47,16 +47,32 @@
         border-radius: 4px;
         cursor: pointer;
         }
+        .button_home {
+         display: flex;
+       	 justify-content: flex-start; 
+         gap: 10px;
+
+            
+        }
         
         .button[disabled] {
           background-color: #ccc;
           color: #666;
           cursor: not-allowed;
         }
+        
+        h1 {
+        text-align: center;
+        }
     </style>
 </head>
 <body>
 <h1>Cart</h1>
+ <div class="button_home">
+	<form action="./bookstore_welcome" method="GET">
+	   <button class = "button" type="submit">Home</button>
+	</form>  
+ </div>
 <c:choose>
 	<c:when test="${not empty books}">
     	<div class="container">

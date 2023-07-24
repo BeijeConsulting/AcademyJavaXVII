@@ -36,9 +36,30 @@
         .paragraph {
         	text-align: center;
         }
+        .button_home {
+         display: flex;
+       	 justify-content: flex-start; 
+         gap: 10px;
+
+        }
+          .button {
+        background-color: #2c5e29;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        }
+        
     </style>
 </head>
 <body>
+
+<div class="button_home">
+	<form action="./bookstore_welcome" method="GET">
+	   <button class = "button" type="submit">Home</button>
+	</form>  
+ </div>
 <div>
     <c:set var="order" value="${order}" />
     <c:set var="orderItems" value="${order.items}" />

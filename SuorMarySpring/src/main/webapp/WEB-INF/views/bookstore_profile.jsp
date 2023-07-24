@@ -83,10 +83,21 @@
 			flex-wrap: wrap; 
 			gap: 20px;
 		}
+		.button_home {
+         display: flex;
+       	 justify-content: flex-start; 
+         gap: 10px;
+
+            
+        }
 
         </style>
 <body>
-
+<div class="button_home">
+	<form action="./bookstore_welcome" method="GET">
+	   <button class = "button" type="submit">Home</button>
+	</form>  
+ </div>
 <h1>Books in favorites</h1>
 <div class="container">
 <div class="welcome_container">
