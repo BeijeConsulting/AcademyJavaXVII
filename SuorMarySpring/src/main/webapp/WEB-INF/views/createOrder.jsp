@@ -87,6 +87,10 @@
    <c:if test="${not empty ErrorQuantity}"> 
     	<p style="color:red">${ErrorQuantity}</p>
 	</c:if>
+	<form action="recapOrder" action="GET">
+	   <input type="submit" value="Recap Ordine" class="button"/>
+	</form>
+
 
 <c:forEach items="${books}" var="book">
 
@@ -111,9 +115,6 @@
         </div>
 </c:forEach>
 
-	<form action="recapOrder" action="GET">
-	   <input type="submit" value="Recap Ordine" class="button"/>
-	</form>
-
+	
 </body>
 </html>
