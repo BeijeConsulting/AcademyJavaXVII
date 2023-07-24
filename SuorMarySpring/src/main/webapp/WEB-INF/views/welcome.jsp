@@ -77,7 +77,7 @@
 <body>
 <%@ include file="header.jsp" %>
 
-<h1> WELCOME&nbsp;${email}!!</h1>&nbsp;
+<h1> Benvenuto&nbsp;${email}!!</h1>&nbsp;
 
 <c:if test="${not empty deleteOrder}"><h2 style="color:green;">${deleteOrder}</h2> </c:if>
 <c:if test="${not empty ordinePagato}"><h2 style="color:green;">${ordinePagato}</h2> </c:if>

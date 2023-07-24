@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import antlr.Parser;
 import it.beije.suormary.model.Book;
 import it.beije.suormary.model.Order;
 import it.beije.suormary.service.BookService;
@@ -220,6 +219,14 @@ public class OrderController {
 		}
 		
     	 	return "recap";
+    }
+    @RequestMapping(value = "/recapOrderPayed", method = RequestMethod.GET)
+    public String recapOrderPayed(Model model, HttpSession session, HttpServletRequest request) {
+    	String orderStrId = request.getParameter("orderId");
+    	int orderId = Integer.parseInt(orderStrId);
+    	Order order = orderService.findOrder(orderId);
+    	model.addAttribute("order", order);
+    	return "recapOrderPayed";
     }
 
 }
