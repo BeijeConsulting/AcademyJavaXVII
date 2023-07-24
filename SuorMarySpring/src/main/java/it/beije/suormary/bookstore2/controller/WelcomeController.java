@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import it.beije.suormary.bookstore2.model.Author;
 import it.beije.suormary.bookstore2.model.Book;
@@ -49,6 +50,8 @@ public class WelcomeController {
         }
 	}
 
+	
+	
 	@RequestMapping(value = "/bookstore_home", method = RequestMethod.GET)
 	public String homeGet(Model model)  {
 		System.out.println("bookstoreWelcome doGet");
@@ -66,6 +69,8 @@ public class WelcomeController {
             
             return "bookstore_home";
         }
+
+
+
+	
 	}
-
-
