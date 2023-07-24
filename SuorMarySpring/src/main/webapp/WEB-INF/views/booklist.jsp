@@ -9,19 +9,25 @@
 <title>book list</title>
 </head>
 <body>
-<div>
+<div style="display: flex;">
 <!-- METTERE VICINI NON A CAPO -->
+<div style="flex: 1;">
 <form:form action="infouser" method="GET">
 <input type="submit" value="Profile">
 </form:form> 
+</div>
 
+<div style="flex: 1;">
 <form:form action="booklist" method="GET">
 <input type="submit" value="Buy book" disabled>
 </form:form> 
+</div>
 
+<div style="flex: 1;">
 <form:form action="stock" method="GET">
 <input type="submit" value="Stock">
 </form:form> 
+</div>
 </div>
 
 	<div style="width:100%">
@@ -107,8 +113,13 @@
 						        <td></td>            
 						        <td><input type="text" style="color: red" name="sum" value="${sum}" readonly/></td>
 				        	</tr>
-				        </tbody>
+				        </tbody>			        
 					</table>
+					
+					<form:form action="payment" method="GET">
+					    <input type="submit" value="Buy"/>
+					</form:form>
+					
 				</c:otherwise>
 			</c:choose>
 		</div> 

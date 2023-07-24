@@ -132,4 +132,17 @@ public class ListController {
 		//elimina user da session e da questa classe
 		return null;
 	}
+	
+	@RequestMapping(value = "/payment", method = RequestMethod.GET)
+	public String buy(Model model) {
+		model.addAttribute("sum", ecommerceService.sumBasket(user.getId()));
+		return "payment";
+	}
+	
+	@RequestMapping(value = "/buy", method = RequestMethod.POST)
+	public String buy(HttpSession session, @RequestParam("name") String name, @RequestParam("surname") String surname) {
+	Integer userId = user.getId();
+	ecommerceService.buyBasket(userId);
+	return infoUser(session);
+	}
 }

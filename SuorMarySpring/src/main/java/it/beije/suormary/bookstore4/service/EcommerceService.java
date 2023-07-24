@@ -148,11 +148,14 @@ public class EcommerceService {
 		}
 	}
 	
-	
 	//somma del carrello
 	public double sumBasket(Integer userId) {
 		Double sum = basketItemRepository.sumBasket(userId);
 		return (sum == null) ? 0.0 : sum;
+	}
+	
+	public void buyBasket(Integer userId) {
+		
 	}
 	
 }
