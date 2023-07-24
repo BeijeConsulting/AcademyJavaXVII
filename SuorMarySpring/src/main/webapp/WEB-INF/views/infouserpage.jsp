@@ -21,6 +21,7 @@
 
 <div>
 <h2>Info user</h2>
+<br/>
 	Name: ${user.name}<br/>
 	Surname: ${user.surname}<br/>
 	Email: ${user.email}<br/>
@@ -34,7 +35,16 @@
 <br/>
 <div>
 <h2>Orders</h2>
-
+<br/>
+	<c:forEach items="${orders}" var="order">
+	<!-- cancella ordine  -->
+		Id: ${order.id}<br/>
+		Date: ${order.date}<br/>
+		Status: ${order.status}<br/>
+		Amount: ${order.amount}<br/>
+		Address: ${order.shippingAddress}<br/>
+		Items: ${order.items}<br/><br/>
+	</c:forEach>
 </div>
 </body>
 </html>
