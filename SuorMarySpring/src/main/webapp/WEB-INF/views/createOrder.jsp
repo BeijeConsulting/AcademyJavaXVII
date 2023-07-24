@@ -31,15 +31,10 @@
     			<span>${book.description}</span>
 			</c:if>
             <div class="buttons">
-           <form action="quantityBook" method="get">
-   <input type="hidden" name="bookId" value= "${book.id}" />
-   <label>Inserisci quantità : </label>
-   <input type="number" name="quantity" />
-   <input type="submit" value="inserisci" />
-   </form>
    <form action="addBookToOrder" action="GET">
    <input type="hidden" name="bookOrderId" value="${book.id}" />
-   <input type="hidden" name="quantity" value = "<%= session.getAttribute("quantity") %>" />
+    <label>Inserisci quantità : </label>
+   <input type="number" name="quantity"/>
    <input type="submit" value="Aggiungi all`ordine" />
    </form>
             </div>
