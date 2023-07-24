@@ -292,17 +292,19 @@ public class EcommerceService {
 	@Transactional
 	public void deleteOrder(Integer orderId) {
 		Order order = orderRepository.findById(orderId).get();
-		
-		if (order.getItems() == null) System.out.println("VUOTOOOOOO");
+		List<OrderItem> items = orderItemRepository.findByOrderId(orderId);
+		if (items == null) System.out.println("VUOTOOOOOO");
 		else {
-			List<OrderItem> items = order.getItems();
+			
 			for (OrderItem oi : items) {
 				Integer bookId = oi.getBookId();
-				int quantity = oi.getQuantity();
-				
 				Book book = bookRepository.findById(bookId).get();
+				
+				int quantity = oi.getQuantity();
 				int bookQuantity = book.getQuantity();
+				System.out.println();
 				book.setQuantity(bookQuantity + quantity);
+				bookRepository.save(book);
 			}
 		}
 		order.setStatus("C");

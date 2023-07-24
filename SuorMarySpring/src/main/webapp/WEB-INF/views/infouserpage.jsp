@@ -54,7 +54,7 @@
 		Amount: ${order.amount}<br/>
 		Address: ${order.shippingAddress}<br/>
 		Items: ${order.items}<br/>
-		<c:if test="${order.status.equals(\"C\")}">
+		<c:if test="${not order.status.equals(\"C\")}">
 		<form:form action="deleteorder" method="POST">
 			<input type="hidden" name="orderId" value="${order.id}"/>
 		    <input type="submit" value="Delete"/>
