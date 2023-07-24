@@ -100,6 +100,7 @@ public class EcommerceService {
 			user.setSurname(surname);
 			user.setEmail(email);
 			user.setPassword(password);
+			user.setCreationDate(LocalDateTime.now());
 			userRepository.save(user);
 			return true;
 		}

@@ -46,6 +46,7 @@
 <div>
 <h2>Orders</h2>
 <br/>
+<c:if test="${empty orders}">NO ORDERS</c:if>
 	<c:forEach items="${orders}" var="order">
 	<!-- cancella ordine  -->
 		Id: ${order.id}<br/>
