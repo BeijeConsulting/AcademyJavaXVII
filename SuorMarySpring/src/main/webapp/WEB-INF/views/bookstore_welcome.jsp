@@ -133,7 +133,7 @@
     </div>
    
     <div style = "margin-bottom: 50px; margin-top: 20px; display: flex;">
-    	<form style = "margin-right: 20px;" action="./bookstoreInsertABook" method="get">
+    	<form style = "margin-right: 20px;" action="./bookstore_insert_book" method="get">
            <button class = "button"  type="submit" class = "button">Add a book</button>
         </form>
         <form action="./bookstore_order_list" method="GET">
