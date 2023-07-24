@@ -1,7 +1,6 @@
 package it.beije.suormary.bookstore2.service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,9 +22,6 @@ public class OrderService {
 	
 	@Autowired
 	private OrderRepository orderRepository;
-	
-	@Autowired
-	private BookRepository bookRepository;
 	
 	@Autowired
 	private OrderItemRepository orderItemRepository;
@@ -54,20 +50,19 @@ public class OrderService {
 	
 	public List<Book> booksInOrder(List<OrderItem> orderItems) {
 		List<Book> books = new ArrayList<>();
-		Optional<Book> book = null;
+		Book book = null;
 		for (OrderItem oi: orderItems) {
-			book = bookRepository.findById(oi.getBookId());
-			Book b = book.isPresent() ? book.get() : null;
-			books.add(b);
-		}
+			book = bookService.findBook(oi.getBookId());
+			books.add(book);
+			}
 		
-	
 		return books;
 	}
 	
-	public void deleteOrderById(Integer orderId) {
-		orderRepository.deleteById(orderId);
-	}
+//	
+//	public void deleteOrderById(Integer orderId) {
+//		orderRepository.deleteById(orderId);
+//	}
 	
 	public List<OrderItem> getOrderItemsInOrder(Integer orderId) {
 		return orderRepository.findOrderItemsOfAOrder(orderId);
@@ -75,9 +70,8 @@ public class OrderService {
 	}
 	
 	public Book getBookInOrderByBookId(Integer bookId) {
-		Optional<Book> book = bookRepository.findById(bookId);
-		Book b = book.isPresent() ? book.get() : null;
-		return b;
+		return bookService.findBook(bookId);
+		
 	}
 	
 	@Transactional
@@ -92,14 +86,30 @@ public class OrderService {
 	public void inserOrderItems(List<OrderItem> orderItems) {
 		for (OrderItem oi : orderItems) {
 			orderItemRepository.save(oi);
-			Optional<Book> book = bookRepository.findById(oi.getBookId());
-			if (book.isPresent()) {
-				book.get().setQuantity(book.get().getQuantity()-oi.getQuantity());
-				bookRepository.save(book.get());
-			}
-			
+			Book book = bookService.findBook(oi.getBookId());
+			book.setQuantity(book.getQuantity()-oi.getQuantity());
+			bookService.save(book);
 		}
 	
+	}
+	
+	@Transactional
+	public void cancelOrder(Integer orderId) {
+		Optional<Order> order = orderRepository.findById(orderId);
+		List<OrderItem> items = order.get().getItems();
+		System.out.println("items in cancelOrder " + items);
+		Book book = null;
+		if(order.isPresent()) {
+			order.get().setStatus("C");
+			order.get().setItems(items);
+			for (OrderItem orderItem : items) {
+				book = bookService.findBook(orderItem.getBookId());
+				book.setQuantity(book.getQuantity() + orderItem.getQuantity());
+				bookService.save(book);
+        }
+			
+		}
+		
 	}
 
 }

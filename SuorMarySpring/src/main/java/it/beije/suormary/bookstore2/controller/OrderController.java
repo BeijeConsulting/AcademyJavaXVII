@@ -77,7 +77,7 @@ public class OrderController {
 		
 		if (action != null && action.equals("cancel")) {
 			Integer orderId = Integer.parseInt(id);
-			orderService.deleteOrderById(orderId);
+			orderService.cancelOrder(orderId);
 		} else {
 			Order newOrder = new Order();
 			newOrder.setUserId(user.getId());

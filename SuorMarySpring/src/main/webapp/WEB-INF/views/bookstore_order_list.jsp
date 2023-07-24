@@ -70,7 +70,7 @@
                     </form>
                     <br>
                     <c:if test="${order.status eq 'I'}">
-                        <form class="paragraph" action="./bookstoreOrderList" method="post">
+                        <form class="paragraph" action="./bookstore_order_list" method="post">
                             <input type="hidden" name="id" value="${order.id}">
                             <button type="submit" class="button" name="action" value="cancel"
                                     onclick="return confirm('Are you sure you want to cancel this order?')">Cancel</button>
