@@ -113,9 +113,18 @@
 				        	</tr>
 				        </tbody>			        
 					</table>
-					<form:form action="payment" method="GET">
-					    <input type="submit" value="Buy"/>
-					</form:form>
+					<div style="width:100%">
+						<div style="width:50%; float:left">
+						<form:form action="payment" method="GET">
+						    <input type="submit" value="Buy"/>
+						</form:form>
+						</div>
+						<div style="width:50%; float:rigth">
+						<form:form action="emptybasket" method="GET">
+						    <input type="submit" value="Emtpty"/>
+						</form:form>
+						</div>
+					</div>
 				</c:otherwise>
 			</c:choose>
 		</div> 

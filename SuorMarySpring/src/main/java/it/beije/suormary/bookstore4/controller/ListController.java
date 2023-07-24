@@ -236,4 +236,9 @@ public class ListController {
 		return infoUser(session, model); 
 	}
 	
+	@RequestMapping(value="/emptybasket", method = RequestMethod.GET)
+	public String emptyBasket(HttpSession session, Model model) {
+		ecommerceService.emptyBasket(user.getId());
+		return bookList(session, model);
+	}
 }
