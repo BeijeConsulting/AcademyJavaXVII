@@ -83,6 +83,9 @@
 </head>
 <body>
 <%@ include file="header.jsp" %>
+<form action="recapOrder" method="get">
+   <input type="submit" value="Salva modifica" class="button" /> 
+</form>
 
 <c:if test="${not empty ErrorQuantity}"> 
     	<p style="color:red">${ErrorQuantity}</p>
@@ -109,9 +112,6 @@
             </div>
         </div>
  </c:forEach>
-<form action="recapOrder" method="get">
-   <input type="submit" value="Salva modifica" class="button" /> 
-</form>
 
 </body>
 </html>
