@@ -162,7 +162,7 @@ public class ListController {
 	@RequestMapping(value = "/addbook", method = RequestMethod.GET)
 	public String addBook(Model model) {
 		model.addAttribute("authorlist", ecommerceService.authorsList());
-		return "insertbook";
+		return "insertBook";
 	}
 	
 	@RequestMapping(value = "/insertbook", method = RequestMethod.POST)
@@ -184,7 +184,7 @@ public class ListController {
 			@RequestParam("bookId") Integer bookId) {
 		Book book = ecommerceService.findBook(bookId);
 		model.addAttribute("book", book);
-		return "editbook";
+		return "editBook";
 	}
 	
 	@RequestMapping(value = "/updatebook", method = RequestMethod.POST)
@@ -198,7 +198,7 @@ public class ListController {
 	
 	@RequestMapping(value = "/addauthor", method = RequestMethod.GET)
 	public String addAuthor() {
-		return "insertauthor";
+		return "insertAuthor";
 	}
 	
 	
@@ -218,7 +218,7 @@ public class ListController {
 			@RequestParam("authorId") Integer authorId) {
 		Author author = ecommerceService.findAuthor(authorId);
 		model.addAttribute("author", author);
-		return "editauthor";
+		return "editAuthor";
 	}
 	
 	@RequestMapping(value = "/updateauthor", method = RequestMethod.POST)
