@@ -197,12 +197,13 @@ public class ListController {
 	}
 	
 	@RequestMapping(value = "/addauthor", method = RequestMethod.GET)
-	public String addAuhor() {
+	public String addAuthor() {
 		return "insertAuthor";
 	}
 	
+	
 	@RequestMapping(value = "/insertauthor", method = RequestMethod.POST)
-	public String insertAuhor(
+	public String insertAuthor(
 			Model model,
 			@RequestParam("name") String name, 
 			@RequestParam("surname") String surname,

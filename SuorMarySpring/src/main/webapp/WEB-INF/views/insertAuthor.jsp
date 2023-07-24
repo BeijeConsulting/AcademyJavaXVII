@@ -14,13 +14,12 @@
 	<form action="insertauthor" name="author" method="POST">
 		  <label for="name">Name:</label><br>
 		  <input type="text" name="name" required><br><br>
-		  <label for="surnmae">Surname:</label><br>
+		  <label for="surname">Surname:</label><br>
 		  <input type="text" name="surname" required><br><br>
 		  <label for="description">Description:</label><br>
 		  <textarea name="description"></textarea><br><br>
 		  <input type="submit" value="Add">		
 	</form>
 </div>
-
 </body>
 </html>
