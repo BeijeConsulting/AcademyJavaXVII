@@ -21,6 +21,13 @@
 	        justify-content: center; /* Centra verticalmente */
 	        margin-bottom: 20px;
 	        text-align: center; /* Centra il testo all'interno */
+	        
+	        /*width: 300px; */
+        	border: 1px solid #ccc; 
+        	padding: 10px; 
+        	background-color: #f9f9f9;
+        	border-radius: 14px;
+	        
 		  }
 		
 		    .user_info {
@@ -91,6 +98,15 @@
         	cursor: pointer;
         }
         
+        .button_update {
+          background-color: #2c5e29; 
+        	color: white; 
+        	border: none; 
+        	padding: 3px 3px; 
+        	border-radius: 4px; 
+        	cursor: pointer;
+        }
+        
         .book {
         	width: 300px; 
         	border: 1px solid #ccc; 
@@ -125,11 +141,14 @@
 	   <button class = "button" type="submit">Home</button>
 	</form>  
  </div>
-
+<br>
 <div class="user_summary">
-    <p class="user_info">Name: ${user.name}</p>
-    <p class="user_info">Surname: ${user.surname}</p>
-    <p class="user_info">Email: ${user.email }</p>
+    <p class="user_info"><strong>Name:</strong> ${user.name}</p>
+    <p class="user_info"><strong>Surname:</strong> ${user.surname}</p>
+    <p class="user_info"><strong>Email:</strong> ${user.email }</p>
+    <button class ="button_update" title="Update">
+     <i class="material-icons"> create</i>
+	</button>
 </div>
  
 <h1>Books in favorites</h1>

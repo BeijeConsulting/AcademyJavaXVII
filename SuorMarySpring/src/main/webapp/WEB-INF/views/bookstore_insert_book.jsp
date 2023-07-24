@@ -53,7 +53,7 @@
     width: 100%;
 	}
 	
-	button {
+	.button_insert {
 	    background-color: #04AA6D;
 	    color: white;
 	    border: none;
@@ -71,12 +71,32 @@
         border-radius: 4px;
         background: white;
     }
-
+    
+    
+    .button_home {
+         display: flex;
+       	 justify-content: flex-start; 
+         gap: 10px;
+        }
+        
+    .button {
+        	background-color: #2c5e29; 
+        	color: white; 
+        	border: none; 
+        	padding: 8px 16px; 
+        	border-radius: 4px; 
+        	cursor: pointer;
+        }
 
 	
 </style>
 </head>
 <body>
+<div class="button_home">
+	<form action="./bookstore_welcome" method="GET">
+	   <button class = "button" type="submit">Home</button>
+	</form>  
+ </div>
 
     <div class="container">
         <h1>Add a book</h1>
@@ -100,7 +120,7 @@
                     </c:forEach>
                 </select><br>
                 <div class="button_container">
-                    <button type="submit">Add</button>
+                    <button type="submit" class="button_insert">Add</button>
                 </div>
             </div>
         </form>
