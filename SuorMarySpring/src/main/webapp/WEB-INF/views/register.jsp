@@ -4,6 +4,20 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Register Page</title>
+<style>
+ .button{
+			    background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-right: 5px;
+             display: inline-block;
+    margin-right: 10px;
+			
+		}
+</style>
 </head>
 <body>
 <h1>Registrati</h1>
@@ -17,7 +31,7 @@
   <input type="text" name="email" ><br>
   <label for="password">Password:</label><br>
   <input type="password" name="password" ><br><br>
-  <input type="submit" value="Registrati">
+  <input type="submit" value="Registrati" class="button">
 </form> 
 
 </body>
