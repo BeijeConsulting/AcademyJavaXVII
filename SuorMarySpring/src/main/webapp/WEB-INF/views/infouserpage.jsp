@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,17 +9,25 @@
 <title>Profile</title>
 </head>
 <body>
-<form:form action="infouser" method="GET">
-<input type="submit" value="Profile" disabled>
-</form:form> 
-
-<form:form action="booklist" method="GET">
-<input type="submit" value="Buy book">
-</form:form> 
-
-<form:form action="stock" method="GET">
-<input type="submit" value="Stock">
-</form:form> 
+<div style="display: flex;">
+	<div style="flex: 1;">
+	<form:form action="infouser" method="GET">
+	<input type="submit" value="Profile" disabled>
+	</form:form> 
+	</div>
+	
+	<div style="flex: 1;">
+	<form:form action="booklist" method="GET">
+	<input type="submit" value="Buy book">
+	</form:form> 
+	</div>
+	
+	<div style="flex: 1;">
+	<form:form action="stock" method="GET">
+	<input type="submit" value="Stock">
+	</form:form> 
+	</div>
+</div>
 
 <div>
 <h2>Info user</h2>

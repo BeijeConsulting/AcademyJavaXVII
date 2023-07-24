@@ -32,8 +32,9 @@ public class ListController {
 	BasketItem bi = new BasketItem();
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String home() {
-		return "stockpage";
+	public String home(Model model) {
+		
+		return stock(model);
 	}
 	
 	@RequestMapping(value = "/loginbutton", method = RequestMethod.GET)
@@ -136,18 +137,19 @@ public class ListController {
 	
 	@RequestMapping(value = "/infouser", method = RequestMethod.GET)
 	public String infoUser(HttpSession session, Model model) {
-		//e lista ordini
+		// lista ordini
 		Integer userId = user.getId();
 		List<Order> orders = ecommerceService.getOrders(userId);
+		System.out.println("lista ordini: " + orders);
 		model.addAttribute("orders", orders);
 		return "infouserpage";
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String logout(HttpSession session) {
+	public String logout(HttpSession session, Model model) {
 		user = null;
 		session.removeAttribute("user");
-		return "stockpage";
+		return stock(model);
 	}
 	
 	@RequestMapping(value = "/payment", method = RequestMethod.GET)

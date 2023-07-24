@@ -1,40 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Add to stock</title>
+<title>Stock page</title>
 </head>
 <body>
-
-	<c:when test="${empty user}">
-	<form:form action="loginbutton" method="GET">
-		<input type="submit" value="Log in">
-		</form:form>
-	</c:when>
-	<c:otherwise>
-		<form:form action="infouser" method="GET">
-		<input type="submit" value="Profile">
-		</form:form> 
+<div style="display: flex;">
+	<c:if test="${empty user}">
+		<div style="flex: 1;">
+			<form:form action="loginbutton" method="GET">
+				<input type="submit" value="Log in">
+			</form:form>
+		</div>
+	</c:if>
+	<%-- <c:otherwise> --%>
+	<c:if test="${not empty user}">
+		<div style="flex: 1;">
+			<form:form action="infouser" method="GET">
+				<input type="submit" value="Profile">
+			</form:form> 
+		</div>
 		
-		<form:form action="booklist" method="GET">
-		<input type="submit" value="Buy book">
-		</form:form> 
+		<div style="flex: 1;">
+			<form:form action="booklist" method="GET">
+				<input type="submit" value="Buy book">
+			</form:form>
+		</div> 
 		
-		<form:form action="stock" method="GET">
-		<input type="submit" value="Stock" disabled>
-		</form:form> 
-	</c:otherwise>
+		<div style="flex: 1;">
+			<form:form action="stock" method="GET">
+				<input type="submit" value="Stock" disabled>
+			</form:form> 
+		</div>
+	<%-- </c:otherwise> --%>
+	</c:if>
 	
-	
+</div>
 	<div style="width:100%">
 		<div style="width:58%; float:left">
 			<h3 style="text-align: center">BOOKS</h3>
 			<c:choose>
-				<c:when test="${empty booklist}">NO BOOKS</c:when>
+				<c:when test="${empty booklist}"><p style="text-align: center">NO BOOKS</p></c:when>
 				<c:otherwise>
 					<table border="1">
 				    	<thead>
@@ -51,7 +61,6 @@
 				        
 				    	</thead>
 				    	<tbody>
-		
 							<c:forEach items="${booklist}" var="book">
 								<tr>
 								 	<td>${book.id}</td>  
@@ -69,16 +78,16 @@
 							</c:forEach>
 						</tbody>
 					</table>
-				</c:otherwise>
-				<form:form action="addBook" method="GET">
+					<form:form action="addBook" method="GET">
 				    <input type="submit" value="Add Book"/>
 				</form:form>
+				</c:otherwise>
 			</c:choose>
 		</div>
-		<div style="width:33%; float:right">
+		 <div style="width:33%; float:right">
 			<h3 style="text-align: center">AUTHORS</h3>
 					<c:choose>
-					<c:when test="${empty authorslist}">NO AUTHORS</c:when> 
+					<c:when test="${empty authorlist}"><p style="text-align: center">NO AUTHORS</p></c:when> 
 					<c:otherwise>
 						<table border="1">
 							<thead>
@@ -90,7 +99,7 @@
 						        </tr>	       
 						    </thead>
 						    <tbody>
-								<c:forEach items="${authorslist}" var="author">
+								<c:forEach items="${authorlist}" var="author">
 									<tr>
 										<td>${author.id}</td> 
 							            <td>${author.name}</td> 
@@ -104,12 +113,14 @@
 						        </c:forEach> 
 					        </tbody>			        
 						</table>
+						<form:form action="addAuthor" method="GET">
+				    		<input type="submit" value="Add Author"/>
+						</form:form>
 					</c:otherwise>
-					<form:form action="addAuthor" method="GET">
-				    	<input type="submit" value="Add Author"/>
-					</form:form>
 				</c:choose>
-			</div> 
-	</div>
+			</div>  
+	</div> 
+	<br/>
+	<br/>
 </body>
 </html>
