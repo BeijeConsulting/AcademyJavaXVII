@@ -48,13 +48,19 @@
 <br/>
 <c:if test="${empty orders}">NO ORDERS</c:if>
 	<c:forEach items="${orders}" var="order">
-	<!-- cancella ordine  -->
 		Id: ${order.id}<br/>
 		Date: ${order.date}<br/>
 		Status: ${order.status}<br/>
 		Amount: ${order.amount}<br/>
 		Address: ${order.shippingAddress}<br/>
-		Items: ${order.items}<br/><br/>
+		Items: ${order.items}<br/>
+		<c:if test="${order.status.equals(\"C\")}">
+		<form:form action="deleteorder" method="POST">
+			<input type="hidden" name="orderId" value="${order.id}"/>
+		    <input type="submit" value="Delete"/>
+		</form:form>
+		</c:if>
+		<br/>
 	</c:forEach>
 </div>
 </body>

@@ -288,4 +288,24 @@ public class EcommerceService {
 		author.setDescription(description);
 		authorRepository.save(author);
 	}
+	
+	@Transactional
+	public void deleteOrder(Integer orderId) {
+		Order order = orderRepository.findById(orderId).get();
+		
+		if (order.getItems() == null) System.out.println("VUOTOOOOOO");
+		else {
+			List<OrderItem> items = order.getItems();
+			for (OrderItem oi : items) {
+				Integer bookId = oi.getBookId();
+				int quantity = oi.getQuantity();
+				
+				Book book = bookRepository.findById(bookId).get();
+				int bookQuantity = book.getQuantity();
+				book.setQuantity(bookQuantity + quantity);
+			}
+		}
+		order.setStatus("C");
+		orderRepository.save(order);
+	}
 }

@@ -104,12 +104,7 @@ public class ListController {
 	@RequestMapping(value = "/addtobasket", method = RequestMethod.POST)
 	public String addToBasket(HttpSession session, Model model, @RequestParam("bookId") Integer bookId) {
 		System.out.println("SONO NEL METODO");
-		//System.out.println("BOOK ID: " + bookId);
-		ecommerceService.addToBasket(bookId, user.getId());
-		
-		// trova il libro per modificare la quantità
-		//Book book = ecommerceService.findById(bookId);
-		
+		ecommerceService.addToBasket(bookId, user.getId());		
 		return bookList(session, model);
 	}
 	
@@ -118,10 +113,6 @@ public class ListController {
 	public String removefrombasket(HttpSession session, Model model, @RequestParam("bookId") Integer bookId) {
 		System.out.println("STO RIMUOVENDO");
 		ecommerceService.removeFromBasket(bookId, user.getId());
-		
-		// trova il libro per modificare la quantità
-		//Book book = ecommerceService.findById(bookId);
-		
 		return bookList(session, model);
 	}
 
@@ -236,5 +227,12 @@ public class ListController {
 		ecommerceService.updateAuthor(authorId, description);
 		return stock(model);
 	}
-
+	
+	@RequestMapping(value = "/deleteorder", method = RequestMethod.POST)
+	public String deleteOrder(HttpSession session, Model model, 
+			@RequestParam("orderId") Integer orderId) {
+		ecommerceService.deleteOrder(orderId);
+		return infoUser(session, model); 
+	}
+	
 }
