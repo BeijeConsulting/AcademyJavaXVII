@@ -55,7 +55,6 @@
    			<input type="submit" value="Torna Ai Miei Ordini" class="button"/>
 		</form>
 	</c:otherwise>
- 
 </c:choose>
 </body>
 </html>
