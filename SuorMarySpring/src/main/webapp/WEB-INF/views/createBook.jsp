@@ -7,7 +7,20 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-
+<style>
+    .button{
+			    background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-right: 5px;
+             display: inline-block;
+    margin-right: 10px;
+			
+		}
+</style>
 <title>Aggiungi un libro</title>
 </head>
 <body>
@@ -27,10 +40,10 @@
 <input type="number" name="quantity" /> <br> <br>
 <label for="quantity">Scegli un autore : </label> <br>
 <c:forEach items="${authors}" var="author">
-<label for ="authorId">${author.name}</label> 
+<label for ="authorId">${author.name} ${author.surname}</label> 
 <input type="radio"  name="authorId" value="${author.id}"> <br>
- </c:forEach>
-<input type="submit" value="Aggiungi libro" />
+ </c:forEach> <br>
+<input type="submit" value="Aggiungi libro" class="button"/>
 </form>
 </body>
 </html>
