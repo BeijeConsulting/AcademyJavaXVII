@@ -12,16 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.beije.suormary.model.Author;
-import it.beije.suormary.model.Book;
 import it.beije.suormary.service.AuthorService;
-import it.beije.suormary.service.BookService;
 
 @Controller
 public class AuthorController {
 	@Autowired
-	private AuthorService authorService;
-	@Autowired
-	private BookService bookService;
+	private AuthorService authorService;;
 	@RequestMapping(value = "/createAuthor", method = RequestMethod.GET)
 	public String createAuthorGet() {
 		return "createAuthor";

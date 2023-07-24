@@ -55,22 +55,21 @@ public class OrderController {
 		String quantity = request.getParameter("quantity");
 		String idStr = request.getParameter("bookOrderId");
 		Book book = bookService.getBookById(idStr);
-		int quantityId = Integer.parseInt(quantity);
+		int quantityInt = Integer.parseInt(quantity);
 		List<Book> booksOrder =(List) session.getAttribute("booksOrder");
 		List<Book> books = BookStoreUtility.loadBooks();
 		model.addAttribute("booksOrder", booksOrder);
 		model.addAttribute("books", books);
 		Order order = (Order) session.getAttribute("order");
 		model.addAttribute("orderId", order.getId());
-		if(quantityId > book.getQuantity() ) {
+		if(quantityInt > book.getQuantity() ) {
 			model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
 			return "createOrder";
 		}
 		else {
-			session.setAttribute("quantity", quantityId);
-			model.addAttribute("quantity", quantityId);
+			session.setAttribute("quantity", quantityInt);
+			model.addAttribute("quantity", quantityInt);
 		}
-		int quantityInt = Integer.parseInt(quantity);
 		book.setQuantity(quantityInt);
 		booksOrder.add(book);
 		for(Book b : booksOrder) {
@@ -142,45 +141,24 @@ public class OrderController {
          model.addAttribute("books", books);
 		return "addOtherBooks";
     }
-    @RequestMapping(value = "/quantityBookModOrder", method = RequestMethod.GET)
-    public String quantityBookModOrder(HttpSession session, Model model, HttpServletRequest request) {
-		String quantity = request.getParameter("quantity");
-		String idStr = request.getParameter("bookId");
-		Book book = bookService.getBookById(idStr);
-		int quantityId = Integer.parseInt(quantity);
-		if(quantityId > book.getQuantity() ) {
-			model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
-			   List<Book> books = bookService.loadBooks();
-		         model.addAttribute("books", books);
-			return "addOtherBooks";
-		}
-		else {
-			session.setAttribute("quantity", quantityId);
-		}
-         List<Book> books = bookService.loadBooks();
-         System.out.println(quantity);
-         model.addAttribute("books", books);
-		return "addOtherBooks";
-    }
-    
+   
     @RequestMapping(value = "/addBookToModOrder", method = RequestMethod.GET)
     public String addBookToModOrder(HttpSession session, Model model, HttpServletRequest request) {
     	String quantity = request.getParameter("quantity");
 		String idStr = request.getParameter("bookOrderId");
 		Book book = bookService.getBookById(idStr);
-		int quantityId = Integer.parseInt(quantity);
-		if(quantityId > book.getQuantity() ) {
+		int quantityInt = Integer.parseInt(quantity);
+		if(quantityInt > book.getQuantity() ) {
 			 List<Book> books = bookService.loadBooks();
 	         model.addAttribute("books", books);
 			model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
 			return "addOtherBooks";
 		}
 		else {
-			session.setAttribute("quantity", quantityId);
+			session.setAttribute("quantity", quantityInt);
 		}
 		List<Book> booksOrder = (List)session.getAttribute("booksOrder");
 		String id = request.getParameter("bookOrderId");
-		int quantityInt = Integer.parseInt(quantity);
 		book.setQuantity(quantityInt);
 		booksOrder.add(book);
 		session.removeAttribute("quantity");
