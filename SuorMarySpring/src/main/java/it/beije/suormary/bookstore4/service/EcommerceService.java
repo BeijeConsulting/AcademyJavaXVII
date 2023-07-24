@@ -10,11 +10,14 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.beije.suormary.bookstore4.model.Author;
 import it.beije.suormary.bookstore4.model.BasketItem;
 import it.beije.suormary.bookstore4.model.Book;
 import it.beije.suormary.bookstore4.model.User;
+import it.beije.suormary.bookstore4.repository.AuthorRepository;
 import it.beije.suormary.bookstore4.repository.BasketItemRepository;
 import it.beije.suormary.bookstore4.repository.BookRepository;
+import it.beije.suormary.bookstore4.repository.OrderRepository;
 import it.beije.suormary.bookstore4.repository.UserRepository;
 
 
@@ -27,6 +30,10 @@ public class EcommerceService {
 	private UserRepository userRepository;
 	@Autowired
 	private BasketItemRepository basketItemRepository;
+	@Autowired
+	private OrderRepository orderRepository;
+	@Autowired
+	private AuthorRepository authorRepository;
 	
 	//prende lista di tutti i libri
 	@Transactional
@@ -39,6 +46,13 @@ public class EcommerceService {
     	return books;
 	}
 	
+	//prende tutti gli autori
+	@Transactional
+	public List<Author> authorsList(){
+		List<Author> authors = authorRepository.findAll();
+		if (authors.size() == 0) return null;
+    	return authors;
+	}
 	
 	//prende tutti libri nel carrello di un utente
 	public HashMap<Book, Integer> basket(Integer userId) {

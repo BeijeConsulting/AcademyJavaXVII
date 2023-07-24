@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.beije.suormary.bookstore4.model.Author;
 import it.beije.suormary.bookstore4.model.BasketItem; 
 import it.beije.suormary.bookstore4.model.Book;
 import it.beije.suormary.bookstore4.model.User;
@@ -117,8 +118,12 @@ public class ListController {
 
 	@RequestMapping(value = "/stock", method = RequestMethod.GET)
 	public String stock (Model model) {
-		//carica lista libri e lista autori
-		return null;
+		List<Book> books = ecommerceService.bookList();
+		model.addAttribute("booklist", books);
+		
+		List<Author> authors = ecommerceService.authorsList();
+		model.addAttribute("authorslist", authors);
+		return "addtostockpage";
 	}
 	
 	@RequestMapping(value = "/infouser", method = RequestMethod.GET)
@@ -145,4 +150,6 @@ public class ListController {
 	ecommerceService.buyBasket(userId, address, typePayment);
 	return infoUser(session);
 	}
+	
+	
 }
