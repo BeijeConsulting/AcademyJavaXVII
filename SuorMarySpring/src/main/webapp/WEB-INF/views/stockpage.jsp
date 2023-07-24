@@ -11,7 +11,7 @@
 <body>
 
 	<c:when test="${empty user}">
-	<form:form action="home" method="GET">
+	<form:form action="loginbutton" method="GET">
 		<input type="submit" value="Log in">
 		</form:form>
 	</c:when>
@@ -28,6 +28,7 @@
 		<input type="submit" value="Stock" disabled>
 		</form:form> 
 	</c:otherwise>
+	
 	
 	<div style="width:100%">
 		<div style="width:58%; float:left">

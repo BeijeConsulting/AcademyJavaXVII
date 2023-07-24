@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.beije.suormary.bookstore4.model.Author;
 import it.beije.suormary.bookstore4.model.BasketItem; 
 import it.beije.suormary.bookstore4.model.Book;
+import it.beije.suormary.bookstore4.model.Order;
 import it.beije.suormary.bookstore4.model.User;
 import it.beije.suormary.bookstore4.service.EcommerceService;
  
@@ -32,7 +33,12 @@ public class ListController {
 	
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
 	public String home() {
-		return "loginpage";
+		return "stockpage";
+	}
+	
+	@RequestMapping(value = "/loginbutton", method = RequestMethod.GET)
+		public String loginButton() {
+			return "loginpage";
 	}
 	
 	//riceve parametri dal form di login
@@ -47,7 +53,9 @@ public class ListController {
 			return "loginpage";
 		}
 		session.setAttribute("user", user);
-		return bookList(session, model);
+		model.addAttribute("booklist", ecommerceService.bookList());
+		model.addAttribute("authorlist", ecommerceService.authorsList());
+		return "stockpage";
 	}
 	
 	//riceve parametri dalla pagina di sign up
@@ -71,7 +79,7 @@ public class ListController {
 		//altrimenti torna alla pagina di login con un messaggio di erroe e fa reinserire i dati
 		else {
 			model.addAttribute("loginerror", "Email already exists");
-			return "login";
+			return "loginpage";
 		}
 	}
 	
@@ -123,19 +131,23 @@ public class ListController {
 		
 		List<Author> authors = ecommerceService.authorsList();
 		model.addAttribute("authorlist", authors);
-		return "addtostockpage";
+		return "stockpage";
 	}
 	
 	@RequestMapping(value = "/infouser", method = RequestMethod.GET)
 	public String infoUser(HttpSession session, Model model) {
-		//carica info user e lista ordini
+		//e lista ordini
+		Integer userId = user.getId();
+		List<Order> orders = ecommerceService.getOrders(userId);
+		model.addAttribute("orders", orders);
 		return "infouserpage";
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
-	public String infoUser(HttpSession session) {
-		//elimina user da session e da questa classe
-		return null;
+	public String logout(HttpSession session) {
+		user = null;
+		session.removeAttribute("user");
+		return "stockpage";
 	}
 	
 	@RequestMapping(value = "/payment", method = RequestMethod.GET)
@@ -145,10 +157,13 @@ public class ListController {
 	}
 	
 	@RequestMapping(value = "/buy", method = RequestMethod.POST)
-	public String buy(HttpSession session, @RequestParam("address") String address, @RequestParam("typePayment") String typePayment) {
+	public String buy(HttpSession session, 
+			Model model,
+			@RequestParam("address") String address, 
+			@RequestParam("typePayment") String typePayment) {
 	Integer userId = user.getId();
 	ecommerceService.buyBasket(userId, address, typePayment);
-	return infoUser(session);
+	return infoUser(session, model);
 	}
 	
 	

@@ -208,8 +208,6 @@ public class EcommerceService {
             int newQ = book.getQuantity() - bookQuantity;
             book.setQuantity(newQ);
             bookRepository.save(book);
-            
-          
 		}
 		
 		//Svuotare il carrello sia nel db che come variabile
@@ -229,4 +227,14 @@ public class EcommerceService {
 		basketItemRepository.deleteByUserId(userId);
 	}
 	
+	@Transactional
+	public List<Order> getOrders(Integer userId){
+		List<Order> orders = orderRepository.findByUserId(userId);
+		for (Order order : orders) {
+			Integer orderId = order.getId();
+			List<OrderItem> items = orderItemRepository.findByOrderId(orderId);
+			order.setItems(items);
+		}
+		return orders;
+	}
 }

@@ -19,12 +19,22 @@
 <input type="submit" value="Stock">
 </form:form> 
 
-<h2>Dettagli user</h2>
+<div>
+<h2>Info user</h2>
+	Name: ${user.name}<br/>
+	Surname: ${user.surname}<br/>
+	Email: ${user.email}<br/>
+</div>
 
+<br/>
 <form:form action="logout" method="GET">
 <input type="submit" value="Log out">
 </form:form> 
 
-<h2>carica lista ordini</h2>
+<br/>
+<div>
+<h2>Orders</h2>
+
+</div>
 </body>
 </html>
