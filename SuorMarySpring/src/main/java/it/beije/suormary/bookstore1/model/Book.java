@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -63,7 +64,8 @@ public class Book {
 	private Integer authorId;
 	
 	
-	@Transient
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name="author")
 	private Author author;
 	
 	@Transient
