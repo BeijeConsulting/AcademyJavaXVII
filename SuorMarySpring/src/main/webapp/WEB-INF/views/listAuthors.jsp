@@ -23,6 +23,7 @@
 			<h3>Nome:&nbsp;${author.name}</h3>
 			<h3>Cognome:&nbsp;${author.surname}</h3>
 			<h4>Descrizione:&nbsp;${author.description}</h4>
+			<div style="display: flex; flex-direction: row;">
 			 <form action="updateAuthor" method="GET">
                     <input type="hidden" name="id" value="${author.id}" />
                     <input type="submit" value="Modifica autore" style="background-color: #4CAF50;color: white;border: none;padding: 5px 10px;text-decoration: none;cursor: pointer;margin-right: 5px;display: inline-block;margin-right: 10px;"/>
@@ -32,6 +33,7 @@
                     <input type="hidden" name="id" value="${author.id}" />
                     <input type="submit" value="Elimina autore" style="background-color: #4CAF50;color: white;border: none;padding: 5px 10px;text-decoration: none;cursor: pointer;margin-right: 5px;display: inline-block;margin-right: 10px;"/>
                 </form>
+                </div>
                 </div>
 		</c:forEach>
 	</c:otherwise>
