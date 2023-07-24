@@ -187,6 +187,23 @@ public class ListController {
 		return stock(model);
 	}
 	
+	@RequestMapping(value = "/editbook", method = RequestMethod.POST)
+	public String editBook(
+			Model model,
+			@RequestParam("bookId") Integer bookId) {
+		Book book = ecommerceService.findBook(bookId);
+		model.addAttribute("book", book);
+		return "editBook";
+	}
+	
+	@RequestMapping(value = "/updatebook", method = RequestMethod.POST)
+	public String updateBook(Model model,
+			@RequestParam("bookId") Integer bookId,
+			@RequestParam("price") Double price,
+			@RequestParam("price") Integer quantity) {
+		ecommerceService.updateBook(bookId, price, quantity);
+		return stock(model);
+	}
 	
 	@RequestMapping(value = "/addauthor", method = RequestMethod.GET)
 	public String addAuhor() {
@@ -202,4 +219,22 @@ public class ListController {
 		ecommerceService.insertAuthor(name, surname, description);
 		return stock(model);
 	}
+	
+	@RequestMapping(value = "/editauthor", method = RequestMethod.POST)
+	public String editAuthor(
+			Model model,
+			@RequestParam("authorId") Integer authorId) {
+		Author author = ecommerceService.findAuthor(authorId);
+		model.addAttribute("author", author);
+		return "editAuthor";
+	}
+	
+	@RequestMapping(value = "/updatebook", method = RequestMethod.POST)
+	public String updateBook(Model model,
+			@RequestParam("authorId") Integer authorId,
+			@RequestParam("description") String description) {
+		ecommerceService.updateAuthor(authorId, description);
+		return stock(model);
+	}
+
 }

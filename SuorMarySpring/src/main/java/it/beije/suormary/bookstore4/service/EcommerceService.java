@@ -89,6 +89,34 @@ public class EcommerceService {
 		System.out.println("User id : " + users.get(0).getId());
 		return users.get(0);
 	}
+
+	//cerca libro
+	public Book findBook(Integer bookId) {
+		Optional<Book> book = bookRepository.findById(bookId);
+		return book.get();
+	}
+	
+	//aggiorna prezzo e qauntità
+	@Transactional
+	public void updateBook(Integer bookId, Double price, Integer quantity){
+		Book book = bookRepository.findById(bookId).get();
+		book.setPrice(price);
+		book.setQuantity(quantity);
+		bookRepository.save(book);
+	}
+	
+	public Author findAuthor(Integer authorId) {
+		Optional<Author> author = authorRepository.findById(authorId);
+		return author.get();
+	}
+	
+	@Transactional
+	public void updateAuthor(Integer authorId, String description) {
+		Author author = authorRepository.findById(authorId).get();
+		author.setDescription(description);
+		authorRepository.save(author);
+	}
+	
 	
 	//aggiungi utente
 	public boolean addUser(String name, String surname, String email, String password) {
