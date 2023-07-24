@@ -13,6 +13,22 @@
        body {
             font-family: "Roboto", sans-serif;
         }
+        	
+		.user_summary {
+	        display: flex;
+	        flex-direction: column; /* Imposta l'allineamento verticale */
+	        align-items: center; /* Centra orizzontalmente */
+	        justify-content: center; /* Centra verticalmente */
+	        margin-bottom: 20px;
+	        text-align: center; /* Centra il testo all'interno */
+		  }
+		
+		    .user_info {
+		        font-size: 18px;
+		        color: #333;
+		        margin: 0;
+		        line-height: 1.5; /* Aggiunge uno spazio tra i paragrafi */
+		    }
 
         .container {
             display: flex;
@@ -109,6 +125,13 @@
 	   <button class = "button" type="submit">Home</button>
 	</form>  
  </div>
+
+<div class="user_summary">
+    <p class="user_info">Name: ${user.name}</p>
+    <p class="user_info">Surname: ${user.surname}</p>
+    <p class="user_info">Email: ${user.email }</p>
+</div>
+ 
 <h1>Books in favorites</h1>
 <div class="container">
 <div class="welcome_container">
