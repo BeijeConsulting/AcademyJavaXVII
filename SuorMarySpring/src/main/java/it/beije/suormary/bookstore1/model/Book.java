@@ -75,13 +75,13 @@ public class Book {
 		
 	}
 	
-	public Book(String title, String description, String editor, Double price, Integer quantity, Integer authorId) {
+	public Book(String title, String description, String editor, Double price, Integer quantity, Author author) {
 		this.title=title;
 		this.description=description;
 		this.editor=editor;
 		this.price=price;
 		this.quantity=quantity;
-		//this.authorId=authorId;
+		this.author=author;
 	}
 	
 	public Integer getId() {
@@ -167,7 +167,7 @@ public class Book {
 				.append(", editor : ").append(editor)
 				.append(", price : ").append(price)
 				.append(", quantity : ").append(quantity)
-				//.append(", authorId : ").append(authorId)
+				.append(", author : ").append(author)
 				.append(" }");
 		
 		return builder.toString();

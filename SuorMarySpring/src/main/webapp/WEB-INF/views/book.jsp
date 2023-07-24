@@ -32,7 +32,7 @@
   <label for="quantity">Quantità:</label><br>
   <input type="text" name="quantity" ><br><br>
   <label for="authorId">Autore:</label><br>
-  <select name="authorId">
+  <select id="authorId" name="author">
    
   <c:forEach items="${listAuthor}" var="author">
    		<option value="${author.id}">${author.name} ${author.surname}</option>

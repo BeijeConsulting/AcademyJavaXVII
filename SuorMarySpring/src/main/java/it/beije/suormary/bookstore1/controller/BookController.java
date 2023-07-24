@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import it.beije.suormary.bookstore1.model.Author;
 import it.beije.suormary.bookstore1.model.Book;
@@ -32,7 +33,13 @@ public class BookController {
 	}
 	
 	@RequestMapping(value = "/book", method = RequestMethod.POST)
-	public String bookPost(Model model, Book book) {
+	public String bookPost(Model model, @RequestParam String title, @RequestParam String description,@RequestParam String editor,@RequestParam String price,@RequestParam String quantity, 
+			@RequestParam String author) {
+		Integer qtyInt = Integer.valueOf(quantity);
+		Double priceDouble = Double.valueOf(price);
+		Integer authorId = Integer.valueOf(author);
+		Author authorFinal = authorService.findById(authorId);
+		Book book = new Book(title, description, editor, priceDouble, qtyInt, authorFinal);
 		System.out.println(book);
 		bookService.addNewBook(book);
 		model.addAttribute("newBookMessage", "Il libro " + book.getTitle() + " è stato inserito con successo.");
