@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -37,8 +39,9 @@ public class OrderItem {
 	@Column(name = "order_id")
 	private Integer orderId;
 
-	@Column(name = "book_id")
-	private Integer bookId;
+	@ManyToOne
+	@JoinColumn(name = "book_id")
+	private Book book;
 
 	@Column(name = "price")
 	private Double price;
@@ -46,8 +49,6 @@ public class OrderItem {
 	@Column(name = "quantity")
 	private Integer quantity;
 
-	@Transient
-	private Book book;
 	
 	public Integer getId() {
 		return id;
@@ -63,14 +64,6 @@ public class OrderItem {
 
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
-	}
-
-	public Integer getBookId() {
-		return bookId;
-	}
-
-	public void setBookId(Integer bookId) {
-		this.bookId = bookId;
 	}
 
 	public Double getPrice() {
@@ -103,7 +96,7 @@ public class OrderItem {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
 				.append(", orderId : ").append(orderId)
-				.append(", bookId : ").append(bookId)
+				.append(", book : ").append(book)
 				.append(", price : ").append(price)
 				.append(", quantity : ").append(quantity)
 				.append(" }");

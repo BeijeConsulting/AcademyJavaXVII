@@ -88,19 +88,20 @@ public class OrderService {
 			Book book = null;
 			for (Map.Entry<Book, Integer> entry : books.entrySet()) {
 				om = new OrderItem();
-				om.setBookId(entry.getKey().getId());
+				book=bookService.getBookById(entry.getKey().getId());
+				
 				om.setOrderId(orderId);
 				om.setPrice(entry.getKey().getPrice());
 				om.setQuantity(entry.getValue());
 				
-				book=bookService.getBookById(entry.getKey().getId());
+				
 				if(book==null) {
 					throw new Exception("non è stato trovato un libro dal carrello");
 				} 
-				
+				om.setBook(book);
 				oi.add(om);
 				
-				book.setQuantity(book.getQuantity() - entry.getValue());
+				om.getBook().setQuantity(book.getQuantity() - entry.getValue());
 				
 				bookRepository.save(book);
 			}
@@ -150,13 +151,15 @@ public class OrderService {
 			lo.get(i).getItems();
 			System.out.println(lo);
 			//System.out.println(lo.get(i).getItems());
-			Book b = null;
+			//Book b = null;
 			for(int j=0; j<lo.get(i).getItems().size(); j++) {
-				Optional<Book> book =bookRepository.findById(lo.get(i).getItems().get(j).getBookId());
+				/*Optional<Book> book =bookRepository.findById(lo.get(i).getItems().get(j).getBookId());
 				if(book.isPresent()) {
 					b=book.get();
 				}
-				lo.get(i).getItems().get(j).setBook(b);
+				lo.get(i).getItems().get(j).setBook(b);*/
+				//lo facciamo in caso di LAZY
+				lo.get(i).getItems().get(j).getBook();
 			}
 		}
 		return lo;
