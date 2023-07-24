@@ -60,6 +60,7 @@ public class Order {
 	private String shippingAddress;
 	
 	//cascadeType significa che quando viene inserito un ordine nel db vengono inseriti anche tutti gli order items
+	//abbiamo controllato che CascadeType ALL funziona anche con l'INSERT Order - OrderItem
 	@OneToMany(targetEntity = OrderItem.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "order_id")
 	private List<OrderItem> items;

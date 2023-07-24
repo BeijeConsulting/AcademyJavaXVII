@@ -1,7 +1,9 @@
 package it.beije.suormary.bookstore2.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -70,22 +72,45 @@ public class OrderService {
 	}
 	
 	@Transactional
-	public Order insertOrder(Order order) {
-		return orderRepository.save(order);
+	public Order insertOrder(Integer userId, Map<Integer, Integer> cart, String shippingAddress) {
+		Order orderTemp = new Order();
+		orderTemp.setUserId(userId);
+        orderTemp.setDate(LocalDateTime.now());
+        orderTemp.setStatus("I"); 
+        orderTemp.setShippingAddress(shippingAddress);
+        
+        double totalAmount = 0.0;
+        
+        List<OrderItem> orderItems = new ArrayList<>();
 
-	}
-	
-	
+        for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
+            Integer bookId = entry.getKey();
+            int quantity = entry.getValue();
+            Book book = this.getBookInOrderByBookId(bookId);
+            double price = book.getPrice();
+            
+            OrderItem orderItem = new OrderItem();
+            orderItem.setBookId(bookId);
+            orderItem.setQuantity(quantity);
+            orderItem.setPrice(price);
+            orderItems.add(orderItem);
 
-	@Transactional
-	public void inserOrderItems(List<OrderItem> orderItems) {
-		for (OrderItem oi : orderItems) {
-			orderItemRepository.save(oi);
+            totalAmount += price * quantity;
+        }
+
+        orderTemp.setAmount(totalAmount);
+        Order newOrder = orderRepository.save(orderTemp);
+        
+        for (OrderItem oi : orderItems) {
+        	oi.setOrderId(newOrder.getId());
+        	//orderItemRepository.save(oi);
 			Book book = bookService.findBook(oi.getBookId());
 			book.setQuantity(book.getQuantity()-oi.getQuantity());
 			bookService.save(book);
 		}
-	
+        orderTemp.setItems(orderItems);
+        
+		return newOrder;
 	}
 	
 	@Transactional

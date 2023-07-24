@@ -81,43 +81,10 @@ public class OrderController {
 			Integer orderId = Integer.parseInt(id);
 			orderService.cancelOrder(orderId);
 		} else {
-			Order newOrder = new Order();
-			newOrder.setUserId(user.getId());
-	        newOrder.setDate(LocalDateTime.now());
-	        newOrder.setStatus("I"); 
-	        newOrder.setShippingAddress(shippingAddress);
-	        
-	        double totalAmount = 0.0;
-	        
-	        List<OrderItem> orderItems = new ArrayList<>();
-
-	        for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
-	            int bookId = entry.getKey();
-	            int quantity = entry.getValue();
-	            Book book = orderService.getBookInOrderByBookId(bookId);
-	            double price = book.getPrice();
-	            
-	            OrderItem orderItem = new OrderItem();
-	            orderItem.setBookId(bookId);
-	            orderItem.setQuantity(quantity);
-	            orderItem.setPrice(price);
-	            orderItems.add(orderItem);
-
-	            totalAmount += price * quantity;
-	        }
-
-	        
-	        newOrder.setAmount(totalAmount);
-	        Order orderTemp = orderService.insertOrder(newOrder);
-	        
-	       for (OrderItem oi : orderItems) {
-	    	   oi.setOrderId(orderTemp.getId());
-	       }
-	        orderService.inserOrderItems(orderItems);
-	        
-	        orderTemp.setItems(orderItems);
-	        session.removeAttribute("cart");
-	        
+			Order order = orderService.insertOrder(user.getId(), cart, shippingAddress);
+			System.out.println("Order nuovo: "+ order.toString() );
+			System.out.println("OrderItems: "+ order.getItems().toString());
+			session.removeAttribute("cart");
 	    }
 		return "redirect:bookstore_order_list";
 
