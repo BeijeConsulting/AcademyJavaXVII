@@ -122,7 +122,7 @@ public class ListController {
 		model.addAttribute("booklist", books);
 		
 		List<Author> authors = ecommerceService.authorsList();
-		model.addAttribute("authorslist", authors);
+		model.addAttribute("authorlist", authors);
 		return "addtostockpage";
 	}
 	
