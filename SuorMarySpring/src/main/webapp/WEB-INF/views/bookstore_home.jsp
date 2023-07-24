@@ -90,11 +90,11 @@
        <h1>Welcome to bookstore!</h1>
         <div class="button_container">
             <form action="./bookstore_login" method="GET">
-                <button type="submit">login</button>
+                <button type="submit">Sign In</button>
             </form>
            
             <form action="./bookstore_registration" method="GET">
-                <button type="submit">Register</button>
+                <button type="submit">Sign Up</button>
             </form>
         </div>
     </div>
@@ -109,7 +109,7 @@
         <hr>
         <p class="paragraph"><strong>Author :</strong> ${authors[loop.index].name} ${authors[loop.index].surname}</p>
         <p class="paragraph"><strong>Description:</strong> ${book.description}</p>
-        <form class="paragraph" action="./bookstoreBookDetails" method="get">
+        <form class="paragraph" action="./bookstore_book_details" method="get">
             <input type="hidden" name="id" value="${book.id}">
             <button type="submit" class="button">View Details</button>
         </form>
