@@ -200,7 +200,7 @@ public class ListController {
 	public String updateBook(Model model,
 			@RequestParam("bookId") Integer bookId,
 			@RequestParam("price") Double price,
-			@RequestParam("price") Integer quantity) {
+			@RequestParam("quantity") Integer quantity) {
 		ecommerceService.updateBook(bookId, price, quantity);
 		return stock(model);
 	}
@@ -229,8 +229,8 @@ public class ListController {
 		return "editAuthor";
 	}
 	
-	@RequestMapping(value = "/updatebook", method = RequestMethod.POST)
-	public String updateBook(Model model,
+	@RequestMapping(value = "/updateauthor", method = RequestMethod.POST)
+	public String updateAuthor(Model model,
 			@RequestParam("authorId") Integer authorId,
 			@RequestParam("description") String description) {
 		ecommerceService.updateAuthor(authorId, description);

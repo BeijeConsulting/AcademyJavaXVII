@@ -106,7 +106,7 @@
 							            <td>${author.surname}</td>            
 							            <td>${author.description}</td>
 							            <td><form:form action="editauthor" method="POST">
-											<input type="hidden" name="bookId" value="${author.id}"/>
+											<input type="hidden" name="authorId" value="${author.id}"/>
 										    <input type="submit" value="E"/>
 										</form:form></td>
 								    </tr>

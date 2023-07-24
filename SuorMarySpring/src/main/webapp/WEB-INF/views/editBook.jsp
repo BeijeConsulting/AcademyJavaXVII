@@ -13,7 +13,7 @@
 
 	<h3>EDIT BOOK</h3>
 	<div>
-	<form action="upatebook" name="upatebook" method="POST">
+	<form action="updatebook" name="updatebook" method="POST">
 		  <label for="title">Title:</label><br>
 		  <input type="text" name="title" value="${book.title }" readonly><br><br>
 		  
@@ -21,7 +21,7 @@
 		  <textarea name="description" readonly>${book.description }</textarea><br><br>
 		  
 		  <label for="author">Author:</label><br>
-		  <input type="text" name="author" value="${book.author }"readonly><br><br>
+		  <input type="text" name="author" value="${book.authorId }"readonly><br><br>
 	
 		  <label for="editor">Editor:</label><br>
 		  <input type="text" name="editor" value="${book.editor }" readonly><br><br>
