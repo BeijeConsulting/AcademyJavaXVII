@@ -174,6 +174,7 @@ public class EcommerceService {
 		return (sum == null) ? 0.0 : sum;
 	}
 	
+	@Transactional
 	public void buyBasket(Integer userId, String address, String typePayment) {
 		
 		Order order = new Order();
@@ -208,17 +209,23 @@ public class EcommerceService {
             book.setQuantity(newQ);
             bookRepository.save(book);
             
-          //Svuotare il carrello sia nel db che come variabile
-            emptyBasket(userId);
+          
 		}
 		
-		List<OrderItem> items = orderItemRepository.findByOrderIdAndUserId(orderId, userId);
+		//Svuotare il carrello sia nel db che come variabile
+        emptyBasket(userId);
+		List<OrderItem> items = orderItemRepository.findByOrderId(orderId);
 		order.setItems(items);
 	}
 	
 	public void emptyBasket(Integer userId) {
 		Optional<User> user = userRepository.findById(userId);
+		if(user.get().getBasket() == null) {
+			System.out.println("é vuoto");
+		}else {
+		System.out.println("non é vuoto");
 		user.get().getBasket().clear();
+		}
 		basketItemRepository.deleteByUserId(userId);
 	}
 	

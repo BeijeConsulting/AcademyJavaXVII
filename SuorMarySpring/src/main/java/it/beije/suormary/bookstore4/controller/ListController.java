@@ -129,7 +129,7 @@ public class ListController {
 	@RequestMapping(value = "/infouser", method = RequestMethod.GET)
 	public String infoUser(HttpSession session, Model model) {
 		//carica info user e lista ordini
-		return null;
+		return "infouserpage";
 	}
 	
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -139,7 +139,7 @@ public class ListController {
 	}
 	
 	@RequestMapping(value = "/payment", method = RequestMethod.GET)
-	public String buy(Model model) {
+	public String payment(Model model) {
 		model.addAttribute("sum", ecommerceService.sumBasket(user.getId()));
 		return "payment";
 	}

@@ -9,7 +9,7 @@
 <body>
 
 <div>
-	<form action="payment" name="payment" method="POST">
+	<form action="buy" name="buy" method="POST">
 		  <label for="address">Shipping address:</label><br>
 		  <input type="text" name="address" required><br>
 		  <label for="typePayment">Type payment:</label><br>
@@ -18,8 +18,8 @@
 		  	<option value="card">card</option>
 		  </select><br/>
 		  <label for="price">Price:</label><br>
-		  <input type="number" value="${sum}>" readonly><br><br>
-		  <input type="submit" value="Add">		
+		  <input type="number" value="${sum}" readonly><br><br>
+		  <input type="submit" value="Payment">		
 	</form>
 	<br>
 

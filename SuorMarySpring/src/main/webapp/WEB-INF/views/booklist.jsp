@@ -69,8 +69,6 @@
 							</c:forEach>
 						</tbody>
 						</table>
-						<br>
-						<br>
 				</c:otherwise>
 			</c:choose>
 		</div>
@@ -78,7 +76,7 @@
 		<h3 style="text-align: center">CART</h3>
 			<c:if test="${empty user }"></c:if> 
 				<c:choose>
-				<c:when test="${empty basket}">CART EMPTY</c:when> 
+				<c:when test="${empty basket}"><p style="text-align: center">CART EMPTY</p></c:when> 
 				<c:otherwise>
 					<table border="1">
 						<thead>
@@ -115,11 +113,9 @@
 				        	</tr>
 				        </tbody>			        
 					</table>
-					
 					<form:form action="payment" method="GET">
 					    <input type="submit" value="Buy"/>
 					</form:form>
-					
 				</c:otherwise>
 			</c:choose>
 		</div> 
