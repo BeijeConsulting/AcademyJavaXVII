@@ -24,7 +24,6 @@
     ${book.title} - Quantità: ${orderItem.quantity} <br/>
 </c:forEach>
 
-        Stato Ordine: ${order.status}<br/>
         <c:choose> 
 	<c:when test='${order.items.size() eq 0}'> Totale acquisto: 0.00 <br/> </c:when>
 	<c:otherwise>
@@ -37,7 +36,7 @@
 <c:choose>
 	<c:when test='${order.status eq "I"}'>
 	   
-		<form action="payment" method="GET">
+     	<form action="payment" method="GET">
 		    <label for="address">Indirizzo Spedizione:</label><br>
 		    <input type="text" id="address" name="address" required><br>
 		    <input type="submit" value="Paga Ordine" class="button"/>

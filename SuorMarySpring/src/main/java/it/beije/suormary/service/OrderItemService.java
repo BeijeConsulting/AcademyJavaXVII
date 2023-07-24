@@ -68,6 +68,7 @@ public class OrderItemService {
 	    		   orderItemRepository.delete(orderItem); 
 	    		   Optional<Order> o = orderRepository.findById(orderItem.getOrderId());
 	    		   Order order = o.isPresent() ? o.get() : null;
+	    		   order.setAmount(order.getAmount() - orderItem.getPrice());	    		   
 	    		   orderRepository.save(order);    		
 	       }
  
