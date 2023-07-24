@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.beije.suormary.bookstore1.model.Author;
 import it.beije.suormary.bookstore1.model.Book;
 import it.beije.suormary.bookstore1.repository.BookRepository;
 
@@ -18,12 +19,16 @@ public class BookService {
 	@Autowired
 	private BookRepository bookRepository;
 	
+	@Autowired
+	private AuthorService authorService;
+	
 	public List<Book> getAllBooks(){
 		List<Book> books = bookRepository.findAll();
 		List<Integer> quantityBook = null;
 		for(int i = 0; i<books.size(); i++) {
 			quantityBook=new ArrayList<>();	
 			books.get(i).setItemQuantity(books.get(i).getQuantity());
+			books.get(i).setAuthor(getAuthorById(books.get(i).getAuthorId()));
 		}
 		return books;
 	}
@@ -39,6 +44,7 @@ public class BookService {
 		for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
 			b = getBook(entry.getKey());
 			b.get().setItemQuantity(entry.getValue());
+			b.get().setAuthor(getAuthorById(b.get().getAuthorId()));
 			books.put(b.get(), entry.getValue());
 			
 		}
@@ -55,6 +61,10 @@ public class BookService {
 			return optional.get();
 		}
 		return null;
+	}
+	
+	public Author getAuthorById(Integer id) {
+		return authorService.findById(id);
 	}
 	
 }

@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore1.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -24,6 +25,15 @@ public class AuthorService {
 	
 	public List<Author> getAuthorList(){
 		return authorRepository.findAll();
+	}
+	
+	public Author findById(Integer id) {
+		Optional<Author>optional=authorRepository.findById(id);
+		if(optional.isPresent()) {
+			return optional.get();
+		} else {
+			return null;
+		}
 	}
 	
 }
