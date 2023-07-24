@@ -1,7 +1,7 @@
 <%@page import="it.beije.suormary.bookstore1.model.Author"%>
 <%@page import="java.util.List"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
@@ -27,17 +27,17 @@
   <input type="text" name="description" ><br>
   <label for="editor">Editore:</label><br>
   <input type="text" name="editor" ><br>
-  <label for="description">Prezzo:</label><br>
+  <label for="price">Prezzo:</label><br>
   <input type="text" name="price" ><br>
-    <label for="quantity">Quantità:</label><br>
+  <label for="quantity">Quantità:</label><br>
   <input type="text" name="quantity" ><br><br>
-   <label for="author">Autore:</label><br>
-   <select name="author">
+  <label for="authorId">Autore:</label><br>
+  <select name="authorId">
    
-   <c:forEach items="${listAuthor}" var="author">
+  <c:forEach items="${listAuthor}" var="author">
    		<option value="${author.id}">${author.name} ${author.surname}</option>
-   </c:forEach>
-   </select>
+  </c:forEach>
+  </select>
   <input type="submit" value="Submit">
 </form> 
 <br><br>

@@ -23,7 +23,7 @@
 		<li style="display: inline;"><a href="./logout">Logout</a></li>
 	</ul>
 	<hr/>
-
+	
 	<c:choose>
 	<c:when test="${empty books}">NESSUNO</c:when>
 	<c:otherwise>

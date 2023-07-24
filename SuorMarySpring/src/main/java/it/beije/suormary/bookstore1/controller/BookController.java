@@ -9,10 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import dumpster.bookstore1.AuthorUtils;
-import dumpster.bookstore1.BookUtils;
 import it.beije.suormary.bookstore1.model.Author;
 import it.beije.suormary.bookstore1.model.Book;
 import it.beije.suormary.bookstore1.service.AuthorService;
@@ -36,9 +33,11 @@ public class BookController {
 	
 	@RequestMapping(value = "/book", method = RequestMethod.POST)
 	public String bookPost(Model model, Book book) {
-		
+		System.out.println(book);
 		bookService.addNewBook(book);
 		model.addAttribute("newBookMessage", "Il libro " + book.getTitle() + " è stato inserito con successo.");
+		List<Author> listAuthor = (List<Author>)authorService.getAuthorList();
+		model.addAttribute("listAuthor", listAuthor);
 		return "book";	
 	}
 	
