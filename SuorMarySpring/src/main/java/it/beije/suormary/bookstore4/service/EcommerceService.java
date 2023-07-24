@@ -154,7 +154,7 @@ public class EcommerceService {
 		return (sum == null) ? 0.0 : sum;
 	}
 	
-	public void buyBasket(Integer userId) {
+	public void buyBasket(Integer userId, String address, String typePayment) {
 		
 	}
 	

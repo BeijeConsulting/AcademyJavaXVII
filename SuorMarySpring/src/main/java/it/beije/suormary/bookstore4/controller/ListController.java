@@ -140,9 +140,9 @@ public class ListController {
 	}
 	
 	@RequestMapping(value = "/buy", method = RequestMethod.POST)
-	public String buy(HttpSession session, @RequestParam("name") String name, @RequestParam("surname") String surname) {
+	public String buy(HttpSession session, @RequestParam("address") String address, @RequestParam("typePayment") String typePayment) {
 	Integer userId = user.getId();
-	ecommerceService.buyBasket(userId);
+	ecommerceService.buyBasket(userId, address, typePayment);
 	return infoUser(session);
 	}
 }
