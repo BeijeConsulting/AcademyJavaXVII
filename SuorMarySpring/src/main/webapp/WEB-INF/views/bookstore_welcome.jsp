@@ -136,6 +136,9 @@
     	<form style = "margin-right: 20px;" action="./bookstore_insert_book" method="get">
            <button class = "button"  type="submit" class = "button">Add a book</button>
         </form>
+        <form style = "margin-right: 20px;" action="./bookstore_insert_author" method="get">
+           <button class = "button"  type="submit" class = "button">Add an author</button>
+        </form>
         <form action="./bookstore_order_list" method="GET">
            <button class = "button"  type="submit">View Order List</button>
         </form>
