@@ -68,8 +68,11 @@ public class BookDetailsController {
 		book.setDescription(description);
 		book.setAuthorId(Integer.valueOf(authorIdString));
 		book.setEditor(editor);
-		book.setPrice(Double.valueOf(price));
+		book.setPrice(Double.parseDouble(price));
+		book.setQuantity(Integer.parseInt(quantity));
 		
-		return "";
+		bookService.save(book);
+		
+		return "redirect:bookstore_welcome";
 	}
 }
