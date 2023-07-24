@@ -32,9 +32,9 @@ public class AuthorController {
 		String surname = request.getParameter("surname");
 		String description = request.getParameter("description");
 		authorService.createAuthor(name, surname, description);
-		List<Book> books = bookService.loadBooks();
-		model.addAttribute("books", books);
-		return "welcome";
+		List<Author> authors = authorService.getAuthors();
+		model.addAttribute("authors", authors);
+		return "listAuthors";
 	}
 	@RequestMapping(value = "/listAuthors", method = RequestMethod.GET)
 	public String listAuthors(Model model) {

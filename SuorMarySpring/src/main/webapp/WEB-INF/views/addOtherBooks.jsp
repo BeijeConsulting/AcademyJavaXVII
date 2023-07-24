@@ -11,7 +11,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="resources/style.css">
 <title>Insert title here</title>
 </head>
 <body>
@@ -32,14 +32,13 @@
     			<span>${book.description}</span>
 			</c:if>
             <div class="buttons">
-    <form action="addBookToOrder" action="GET">
-		<input type="hidden" name="bookId" value= "${book.id}" />
-		<label>Inserisci quantità : </label>
-		<input type="number" name="quantity" />
-		<input type="hidden" name="bookOrderId" value="${book.id}" />
-		<input type="hidden" name="quantity" value = "<%= session.getAttribute("quantity") %>" />
-		<input type="submit" value="Aggiungi all`ordine" />
-	</form>
+   <form action="addBookToModOrder" action="GET">
+   <input type="hidden" name="bookOrderId" value="${book.id}" />
+   <label>Inserisci quantità : </label>
+   <input type="number" name="quantity" />
+   <input type="submit" value="Aggiungi all'ordine" />
+</form>
+   </form>
             </div>
         </div>
  </c:forEach>

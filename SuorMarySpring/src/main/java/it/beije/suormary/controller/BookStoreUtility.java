@@ -41,7 +41,6 @@ public class BookStoreUtility {
     	   try {
     		   Query query = entityManager.createQuery("SELECT u FROM User as u WHERE u.email = :email");
     		   query.setParameter("email", email);
-    		  // query.setParameter("password", password);
     		    user = (User) query.getSingleResult();
     		   
     	   }catch(Exception e) {
