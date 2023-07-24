@@ -60,12 +60,12 @@ public class Book {
 	@Column(name = "quantity")
 	private Integer quantity;
 
-	@Column(name = "author_id")
-	private Integer authorId;
+	//@Column(name = "author_id")
+	//private Integer authorId;
 	
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name="author")
+	@ManyToOne
+	@JoinColumn(name="author_id")
 	private Author author;
 	
 	@Transient
@@ -81,7 +81,7 @@ public class Book {
 		this.editor=editor;
 		this.price=price;
 		this.quantity=quantity;
-		this.authorId=authorId;
+		//this.authorId=authorId;
 	}
 	
 	public Integer getId() {
@@ -132,13 +132,13 @@ public class Book {
 		this.quantity = quantity;
 	}
 
-	public Integer getAuthorId() {
+	/*public Integer getAuthorId() {
 		return authorId;
 	}
 
 	public void setAuthorId(Integer authorId) {
 		this.authorId = authorId;
-	}
+	}*/
 	
 	public Author getAuthor() {
 		return author;
@@ -167,7 +167,7 @@ public class Book {
 				.append(", editor : ").append(editor)
 				.append(", price : ").append(price)
 				.append(", quantity : ").append(quantity)
-				.append(", authorId : ").append(authorId)
+				//.append(", authorId : ").append(authorId)
 				.append(" }");
 		
 		return builder.toString();
