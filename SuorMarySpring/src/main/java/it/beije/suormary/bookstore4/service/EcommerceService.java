@@ -238,4 +238,26 @@ public class EcommerceService {
 		}
 		return orders;
 	}
+	
+	@Transactional
+	public void insertBook(String title, String description, Integer authorId,
+			String editor, Double price, Integer quantity) {
+		Book book = new Book();
+		book.setTitle(title);
+		book.setAuthorId(authorId);
+		book.setDescription(description);
+		book.setEditor(editor);
+		book.setPrice(price);
+		book.setQuantity(quantity);
+		bookRepository.save(book);
+	}
+	
+	@Transactional
+	public void insertAuthor(String name,String surname, String description) {
+		Author author = new Author();
+		author.setName(name);
+		author.setSurname(surname);
+		author.setDescription(description);
+		authorRepository.save(author);
+	}
 }

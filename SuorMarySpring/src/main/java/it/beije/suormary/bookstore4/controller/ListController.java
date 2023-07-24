@@ -168,5 +168,38 @@ public class ListController {
 	return infoUser(session, model);
 	}
 	
+	@RequestMapping(value = "/addbook", method = RequestMethod.GET)
+	public String addBook(Model model) {
+		model.addAttribute("authorlist", ecommerceService.authorsList());
+		return "insertBook";
+	}
 	
+	@RequestMapping(value = "/insertbook", method = RequestMethod.GET)
+	public String insertBook(
+			Model model,
+			@RequestParam("title") String title, 
+			@RequestParam("authorId") Integer authorId,
+			@RequestParam("description") String description,
+			@RequestParam("editor") String editor,
+			@RequestParam("price") Double price, 
+			@RequestParam("quantity") Integer quantity) {
+		ecommerceService.insertBook(title, description, authorId, editor, price, quantity);
+		return stock(model);
+	}
+	
+	
+	@RequestMapping(value = "/addauthor", method = RequestMethod.GET)
+	public String addAuhor() {
+		return "insertAuthor";
+	}
+	
+	@RequestMapping(value = "/insertauthor", method = RequestMethod.GET)
+	public String insertAuhor(
+			Model model,
+			@RequestParam("name") String name, 
+			@RequestParam("surname") String surname,
+			@RequestParam("description") String description) {
+		ecommerceService.insertAuthor(name, surname, description);
+		return stock(model);
+	}
 }
