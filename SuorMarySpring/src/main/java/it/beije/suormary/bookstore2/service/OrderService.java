@@ -100,7 +100,7 @@ public class OrderService {
 
         orderTemp.setAmount(totalAmount);
         Order newOrder = orderRepository.save(orderTemp);
-        
+
         for (OrderItem oi : orderItems) {
         	oi.setOrderId(newOrder.getId());
         	//orderItemRepository.save(oi);
@@ -109,7 +109,7 @@ public class OrderService {
 			bookService.save(book);
 		}
         orderTemp.setItems(orderItems);
-        
+
 		return newOrder;
 	}
 	
