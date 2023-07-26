@@ -44,7 +44,8 @@ public class OrderController {
 		model.addAttribute("booksOrder", booksOrder);
 		model.addAttribute("books", books);
 		String email = (String) session.getAttribute("email");
-		Order order = orderService.createOrder(email);
+//		Order order = orderService.createOrder(email);
+		Order order = new Order();
 		session.setAttribute("order", order);
 		model.addAttribute("orderId", order.getId());
 		session.setAttribute("orderId", order.getId());
@@ -89,11 +90,15 @@ public class OrderController {
 	@RequestMapping(value="/recapOrder", method = RequestMethod.GET)
 	public String recapOrder(HttpSession session,HttpServletRequest request, Model model) {
 		if(request.getParameter("order")==null){
+			Order orderSession =(Order) session.getAttribute("order");
+			String email = (String) session.getAttribute("email");
+			Order order = orderService.createOrder(email, orderSession);
+			session.setAttribute("order", order);
 			List<Book> booksOrder = (List) session.getAttribute("booksOrder");
 			model.addAttribute("booksOrder", booksOrder);
 			Integer orderId = (Integer) session.getAttribute("orderId");
-			orderItemService.createOrderItems(booksOrder,orderId);
-			Order order = orderService.findOrder(orderId);
+			orderItemService.createOrderItems(booksOrder,order.getId());
+//			Order order = orderService.findOrder(orderId);
 			System.out.println("Lunghezza items ordine : " + order.getItems().size());
 			model.addAttribute("order", order);
 		} else {

@@ -39,6 +39,15 @@ public class OrderService {
              orderRepository.save(order);
          return order;
 	 }
+	 public Order createOrder(String email, Order order) {
+		 User user = userService.loginUser(email);
+             LocalDateTime date = LocalDateTime.now();
+             order.setDate(date);
+             order.setStatus("I");
+             order.setUserId(user.getId());
+             orderRepository.save(order);
+         return order;
+	 }
 
      public Order findOrder(int orderId) {
     	 
