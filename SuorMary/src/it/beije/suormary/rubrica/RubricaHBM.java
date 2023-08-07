@@ -22,7 +22,7 @@ public class RubricaHBM {
 		
 		try {
 //			session = factory.openSession();
-			session = HBMsessionFactory.openSession();
+			session = JPAEntityFactory.openSession();
 			
 //			Transaction transaction = session.getTransaction();
 //			transaction.begin();

@@ -5,9 +5,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 
-public class HBMsessionFactory {
+public class JPAEntityFactory {
 
-	private HBMsessionFactory() {}
+	private JPAEntityFactory() {}
 	
 	private static SessionFactory sessionFactory;
 	
