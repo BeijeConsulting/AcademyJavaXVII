@@ -22,10 +22,8 @@ public class Contact {
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "nome")
 	private String name;
-	
-	@Column(name = "cognome")
+
 	private String surname;
 	
 //	@Column(name = "telefono")
