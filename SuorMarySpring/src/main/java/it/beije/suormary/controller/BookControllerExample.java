@@ -12,7 +12,7 @@ import it.beije.suormary.service.TestService;
 
 
 @Controller
-public class BookController {
+public class BookControllerExample {
 	
 	@Autowired
 	private TestService testService;

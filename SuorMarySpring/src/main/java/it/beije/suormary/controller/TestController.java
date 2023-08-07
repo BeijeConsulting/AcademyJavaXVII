@@ -37,14 +37,14 @@ public class TestController {
 		return "index";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/loginEsempio", method = RequestMethod.GET)
 	public String loginGet() {
 		System.out.println("GET /login");
 
 		return "login";
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/loginEsempio", method = RequestMethod.POST)
 	public String loginPost(HttpSession session, Model model,
 			@RequestParam(name = "username", required = false) String username,
 			@RequestParam String password) {

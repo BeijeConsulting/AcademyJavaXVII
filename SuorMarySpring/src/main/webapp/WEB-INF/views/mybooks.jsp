@@ -19,6 +19,5 @@ Questi sono i libri che hai ordinato:<br/>
 	</c:otherwise>
 </c:choose>
 
-</p>
 </body>
 </html>

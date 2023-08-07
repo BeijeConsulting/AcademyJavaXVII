@@ -1,4 +1,4 @@
-package it.beije.suormary.bookstore;
+package it.beije.suormary.bookstore1;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -109,6 +109,13 @@ public class Order {
 		this.items = items;
 	}
 
+	public String getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
 
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
