@@ -3,11 +3,10 @@ package it.beije.suormary.service;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.spel.support.ReflectivePropertyAccessor.OptimalPropertyAccessor;
 import org.springframework.stereotype.Service;
 
 import it.beije.suormary.model.Contact;
@@ -70,6 +69,32 @@ public class ContactService {
 	
 	public int countBySurname(String surname) {
 		return contactRepository.countBySurname(surname); 
+	}
+
+	public Contact insertContact(Contact contact) {
+		// ... elaborazione per dettagli
+		return contactRepository.save(contact);
+	}
+	
+	public Contact updateContact(Contact contact) {
+		
+		Optional<Contact> c = contactRepository.findById(contact.getId());
+		
+		if (!c.isPresent()) throw new RuntimeException("ID ERRATO!!!");
+		
+		Contact co =  c.get();
+		
+		BeanUtils.copyProperties(contact, co);
+		
+		contactRepository.save(co);
+		
+		System.out.println("updated contact : " + co);
+		
+		return contact;
+	}
+	
+	public void deleteContact(Integer id) {
+		contactRepository.deleteById(id);
 	}
 
 
