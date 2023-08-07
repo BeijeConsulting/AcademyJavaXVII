@@ -1,6 +1,8 @@
 package it.beije.suormary.service;
 
+import java.util.ArrayList;
 import java.util.List;
+
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -10,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.beije.suormary.model.Contact;
+import it.beije.suormary.model.ContactDTO;
+import it.beije.suormary.model.ContactDetail;
+import it.beije.suormary.repository.ContactDetailRepository;
 import it.beije.suormary.repository.ContactRepository;
 
 
@@ -18,6 +23,8 @@ public class ContactService {
 	
 	@Autowired
 	private ContactRepository contactRepository;
+	@Autowired
+	private ContactDetailRepository contactDetailRepository;
 	
 //	@Transactional
 //	public Contact getContact(Integer id) {
@@ -72,14 +79,26 @@ public class ContactService {
 	}
 
 	public Contact insertContact(Contact contact) {
-		// ... elaborazione per dettagli
-		return contactRepository.save(contact);
+	    Contact con = new Contact();
+	    con.setName(contact.getName());
+	    con.setNote(contact.getNote());
+	    con.setSurname(contact.getSurname());
+	    con =  contactRepository.save(con);
+	    for (ContactDetail detail : contact.getDetails()) {
+	        ContactDetail det = new ContactDetail();
+	        BeanUtils.copyProperties(detail, det);
+	        det.setContact(con);
+	        contactDetailRepository.save(det);
+	    }
+        Optional<Contact> opt = contactRepository.findById(con.getId());
+        Contact contact2 = opt.get();
+	    return contact2;
 	}
 	
 	public Contact updateContact(Contact contact) {
 		
 		Optional<Contact> c = contactRepository.findById(contact.getId());
-		
+ 		
 		if (!c.isPresent()) throw new RuntimeException("ID ERRATO!!!");
 		
 		Contact co =  c.get();

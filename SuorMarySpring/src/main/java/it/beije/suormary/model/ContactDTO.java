@@ -1,47 +1,19 @@
 package it.beije.suormary.model;
 
+
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+public class ContactDTO {
 
-
-@Entity
-@Table(name = "rubrica")
-public class Contact {
-	
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id")
 	private Integer id;
 
 	private String name;
 
 	private String surname;
-	
-//	@Column(name = "telefono")
-//	private String phoneNumber;
-//	
-//	@Column(name = "email")
-//	private String email;
-	
-	@Column(name = "note")
+
 	private String note;
-	
-	
-	//@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.LAZY)
-	@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_rubrica")
-	@JsonManagedReference
+
 	private List<ContactDetail> details;
 	
 	
@@ -66,19 +38,6 @@ public class Contact {
 		this.surname = surname;
 	}
 	
-//	public String getPhoneNumber() {
-//		return phoneNumber;
-//	}
-//	public void setPhoneNumber(String phoneNumber) {
-//		this.phoneNumber = phoneNumber;
-//	}
-//	
-//	public String getEmail() {
-//		return email;
-//	}
-//	public void setEmail(String email) {
-//		this.email = email;
-//	}
 	
 	public String getNote() {
 		return note;

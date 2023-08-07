@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.beije.suormary.model.Contact;
+import it.beije.suormary.model.ContactDTO;
 import it.beije.suormary.service.ContactService;
 
 
@@ -57,9 +58,8 @@ public class ContactRestController {
 	public Contact insertContact(@RequestBody Contact contact) {
 		System.out.println("POST /api/contact : " + contact);
 		
-		contactService.insertContact(contact);
-		
-		return contact;
+		return contactService.insertContact(contact);
+
 	}
 
 	@PutMapping(value = "/contact/{id}")

@@ -5,7 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 
 @Entity
@@ -16,9 +20,10 @@ public class ContactDetail {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Integer id;
-	
-	@Column(name = "id_rubrica")
-	private Integer contactId;
+	@ManyToOne
+	@JoinColumn(name = "id_rubrica")
+	@JsonBackReference
+	private Contact contact;
 
 	@Column(name = "contatto")
 	private String detail;
@@ -39,12 +44,12 @@ public class ContactDetail {
 	}
 
 
-	public Integer getContactId() {
-		return contactId;
+	public Contact getContact() {
+		return contact;
 	}
 
-	public void setContactId(Integer contactId) {
-		this.contactId = contactId;
+	public void setContact(Contact contact) {
+		this.contact = contact;
 	}
 
 
@@ -79,7 +84,6 @@ public class ContactDetail {
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
-				.append(", contactId : ").append(contactId)
 				.append(", detail : ").append(detail)
 				.append(", type : ").append(type)
 				.append(", label : ").append(label)
