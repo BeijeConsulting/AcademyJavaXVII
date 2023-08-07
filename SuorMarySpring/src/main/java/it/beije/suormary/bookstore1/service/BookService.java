@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,13 +60,38 @@ public class BookService {
 	public Book getBookById(Integer id) {
 		Optional<Book> optional = bookRepository.findById(id);
 		if(optional.isPresent()) {
-			return optional.get();
+			Book b = optional.get();
+			b.setItemQuantity(b.getQuantity());
+			return b;
 		}
 		return null;
 	}
 	
 	public Author getAuthorById(Integer id) {
 		return authorService.findById(id);
+	}
+	
+	@Transactional
+	public Book updateBook(Integer id, Book book) {
+		Book myBook = getBookById(id);
+		myBook.setTitle(book.getTitle());
+		myBook.setDescription(book.getDescription());
+		myBook.setQuantity(book.getQuantity());
+		myBook.setEditor(book.getEditor());
+		myBook.setPrice(book.getPrice());
+		myBook.setItemQuantity(book.getQuantity());
+		myBook.setAuthor(book.getAuthor());
+		
+		bookRepository.save(myBook);
+		
+		return myBook;
+		
+	}
+	
+	@Transactional
+	public void deleteBook(Integer id) {
+		Book myBook = getBookById(id);
+		bookRepository.delete(myBook);
 	}
 	
 }

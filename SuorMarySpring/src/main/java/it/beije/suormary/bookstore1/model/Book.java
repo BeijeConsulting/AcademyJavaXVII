@@ -159,6 +159,10 @@ public class Book {
 		}
 	}
 	
+	public void setItemQuantity(List<Integer> itemQuantity) {
+		this.itemQuantity = itemQuantity;
+	}
+	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
