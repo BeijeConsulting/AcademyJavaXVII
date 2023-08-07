@@ -4,20 +4,17 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>CONTACT LIST</title>
+<title>CONTACT</title>
 </head>
 <body>
 
 <c:choose>
-	<c:when test="${empty contacts}">NO CONTACTS</c:when>
+	<c:when test="${empty contact}">NO CONTACT</c:when>
 	<c:otherwise>
-		<c:forEach items="${contacts}" var="contact">
 			${contact.surname}&nbsp;${contact.name}<br/>
 			<c:forEach items="${contact.details}" var="detail">
 			&nbsp;&nbsp;${detail.type}&nbsp;${detail.detail}<br/>
 			</c:forEach>
-			<br/>
-		</c:forEach>
 	</c:otherwise>
 </c:choose>
 
