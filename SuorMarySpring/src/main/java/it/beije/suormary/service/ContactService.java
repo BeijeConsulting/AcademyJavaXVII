@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.beije.suormary.model.Contact;
+import it.beije.suormary.model.ContactDetail;
+import it.beije.suormary.repository.ContactDetailRepository;
 import it.beije.suormary.repository.ContactRepository;
 
 
@@ -18,6 +20,8 @@ public class ContactService {
 	
 	@Autowired
 	private ContactRepository contactRepository;
+	@Autowired
+	private ContactDetailRepository contactDetailRepository;
 	
 //	@Transactional
 //	public Contact getContact(Integer id) {
@@ -71,8 +75,16 @@ public class ContactService {
 		return contactRepository.countBySurname(surname); 
 	}
 
+	@Transactional
 	public Contact insertContact(Contact contact) {
 		// ... elaborazione per dettagli
+		contactRepository.save(contact);
+		List<ContactDetail> contactDetails = contact.getDetails();
+		for(ContactDetail cd : contactDetails ) {
+			cd.setContactId(contact.getId());
+			contactDetailRepository.save(cd);
+		}
+		
 		return contactRepository.save(contact);
 	}
 	
