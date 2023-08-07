@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "riferimento")
+@Table(name = "reference")
 public class ContactDetail {
 	
 	@Id
@@ -20,10 +20,10 @@ public class ContactDetail {
 	@Column(name = "id_rubrica")
 	private Integer contactId;
 
-	@Column(name = "contatto")
+	@Column(name = "contact")
 	private String detail;
 	
-	@Column(name = "tipo")
+	@Column(name = "type")
 	private String type;
 	
 	@Column(name = "label")

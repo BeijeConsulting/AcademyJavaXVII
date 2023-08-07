@@ -22,10 +22,10 @@ public class Contact {
 	@Column(name = "id")
 	private Integer id;
 
-	@Column(name = "nome")
+	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "cognome")
+	@Column(name = "surname")
 	private String surname;
 	
 //	@Column(name = "telefono")
