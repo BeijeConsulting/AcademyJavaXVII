@@ -14,7 +14,7 @@ import it.beije.suormary.bookstore1.model.Book;
 import it.beije.suormary.bookstore1.service.BookService;
 
 @RestController
-@RequestMapping(value = "/book_api")
+@RequestMapping(value = "/api")
 public class BookRestController {
 	
 	@Autowired

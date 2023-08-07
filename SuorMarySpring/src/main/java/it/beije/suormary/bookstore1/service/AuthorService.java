@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,4 +37,9 @@ public class AuthorService {
 		}
 	}
 	
+	@Transactional
+	public void deleteAuthor(Integer id) {
+		Author author = findById(id);
+		authorRepository.delete(author);
+	}
 }
