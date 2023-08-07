@@ -1,22 +1,15 @@
 package it.beije.suormary.model;
 
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
 
 @Entity
 @Table(name = "rubrica")
-public class Contact {
+public class ContactBin {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -37,13 +30,6 @@ public class Contact {
 	
 	@Column(name = "note")
 	private String note;
-	
-	
-	//@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.LAZY)
-	@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_rubrica")
-	private List<ContactDetail> details;
-	
 	
 	public Integer getId() {
 		return id;
@@ -86,16 +72,15 @@ public class Contact {
 	public void setNote(String note) {
 		this.note = note;
 	}
-
 	
-	public List<ContactDetail> getDetails() {
-		return details;
+	public ContactBin() {}
+	
+	public ContactBin(Contact c) {
+		this.name=c.getName();
+		this.surname = c.getSurname();
+		this.note=c.getNote();
+		this.id=c.getId();
 	}
-	
-	public void setDetails(List<ContactDetail> details) {
-		this.details = details;
-	}
-	
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
@@ -105,9 +90,9 @@ public class Contact {
 //				.append(", phoneNumber : ").append(phoneNumber)
 //				.append(", email : ").append(email)
 				.append(", note : ").append(note)
-				.append(", details : ").append(details)
 				.append(" }");
 		
 		return builder.toString();
 	}
+
 }
