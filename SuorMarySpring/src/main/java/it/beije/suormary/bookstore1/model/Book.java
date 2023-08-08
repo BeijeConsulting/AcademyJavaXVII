@@ -18,6 +18,10 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /*
 
 CREATE TABLE `books` (
@@ -35,7 +39,7 @@ CREATE TABLE `books` (
 
 */
 
-
+@JsonInclude(Include.NON_NULL)
 @Entity
 @Table(name = "books")
 public class Book {
@@ -68,8 +72,9 @@ public class Book {
 	@JoinColumn(name="author_id")
 	private Author author;
 	
+	@JsonProperty(value = "item_cart_quantity")
 	@Transient
-	private List<Integer> itemQuantity;
+	private List<Integer> itemCartQuantity;
 	
 	public Book() {
 		
@@ -147,21 +152,33 @@ public class Book {
 	public void setAuthor(Author author) {
 		this.author = author;
 	}
-
+	
+	@JsonProperty(value = "item_quantity")
 	public List<Integer> getItemQuantity() {
+		List<Integer> itemQuantity  = new ArrayList<Integer>();
+		for(int i=1; i<=quantity; i++) {
+			itemQuantity.add(i);
+		}
 		return itemQuantity;
 	}
-
-	public void setItemQuantity(Integer quantity) {
-		this.itemQuantity = new ArrayList<Integer>();
+	
+	@JsonProperty(value = "item_cart_quantity")
+	public List<Integer> getItemCartQuantity() {
+		return this.itemCartQuantity;
+	}
+	
+	@JsonProperty(value = "item_cart_quantity")
+	public void setItemCartQuantity(Integer quantity) {
+		this.itemCartQuantity = new ArrayList<Integer>();
 		for(int i=1; i<=quantity; i++) {
-			this.itemQuantity.add(i);
+			this.itemCartQuantity.add(i);
 		}
 	}
 	
+	/*@JsonProperty(value = "item_quantity")
 	public void setItemQuantity(List<Integer> itemQuantity) {
 		this.itemQuantity = itemQuantity;
-	}
+	}*/
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")

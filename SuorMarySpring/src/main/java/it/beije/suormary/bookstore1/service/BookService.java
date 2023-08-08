@@ -29,7 +29,6 @@ public class BookService {
 		List<Integer> quantityBook = null;
 		for(int i = 0; i<books.size(); i++) {
 			quantityBook=new ArrayList<>();	
-			books.get(i).setItemQuantity(books.get(i).getQuantity());
 			//books.get(i).setAuthor(getAuthorById(books.get(i).getAuthorId()));
 		}
 		return books;
@@ -45,7 +44,7 @@ public class BookService {
 		Optional<Book> b = null;
 		for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
 			b = getBook(entry.getKey());
-			b.get().setItemQuantity(entry.getValue());
+			b.get().setItemCartQuantity(entry.getValue());
 			//b.get().setAuthor(getAuthorById(b.get().getAuthorId()));
 			books.put(b.get(), entry.getValue());
 			
@@ -61,7 +60,6 @@ public class BookService {
 		Optional<Book> optional = bookRepository.findById(id);
 		if(optional.isPresent()) {
 			Book b = optional.get();
-			b.setItemQuantity(b.getQuantity());
 			return b;
 		}
 		return null;
@@ -79,7 +77,6 @@ public class BookService {
 		myBook.setQuantity(book.getQuantity());
 		myBook.setEditor(book.getEditor());
 		myBook.setPrice(book.getPrice());
-		myBook.setItemQuantity(book.getQuantity());
 		myBook.setAuthor(book.getAuthor());
 		
 		bookRepository.save(myBook);

@@ -42,4 +42,14 @@ public class AuthorService {
 		Author author = findById(id);
 		authorRepository.delete(author);
 	}
+	
+	@Transactional
+	public Author updateAuthor(Integer id, Author author) {
+		Author updateAuthor = findById(id);
+		updateAuthor.setName(author.getName());
+		updateAuthor.setSurname(author.getSurname());
+		updateAuthor.setDescription(author.getDescription());
+		authorRepository.save(updateAuthor);
+		return updateAuthor;
+	}
 }
