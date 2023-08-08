@@ -42,7 +42,7 @@ public class OrderService {
 	private BookService bookService;
 	
 	@Transactional
-	public void createOrder(String address, HttpSession session) {
+	public Order createOrder(String address, HttpSession session) {
 			
 			
 			try {
@@ -72,8 +72,10 @@ public class OrderService {
 				
 				order.setItems(createOrderItems(order.getId(), books));
 				orderRepository.save(order);
+				return order;
 			} catch (Exception e){
 				e.printStackTrace();
+				return null;
 				//TRANSACTION ROLLBACK DA CAPIRE COME FARE!!!!
 			}
 		
@@ -127,7 +129,7 @@ public class OrderService {
 	}
 	
 	@Transactional
-	public void editStatus(String status, int orderId) {
+	public Order editStatus(String status, int orderId) {
 		try {
 			Order order = null;
 			Optional<Order> optional = orderRepository.findById(orderId);
@@ -135,11 +137,13 @@ public class OrderService {
 				order=optional.get();
 				order.setStatus(status);
 				orderRepository.save(order);
+				return order;
 			}else {
 				throw new Exception("non è stato trovato un ordine con l'id fornito");
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 		
 	}
@@ -165,7 +169,28 @@ public class OrderService {
 		return lo;
 	}
 	
-
+	@Transactional
+	public List<Order> getAllOrders(){
+		List<Order> lo= orderRepository.findAll();
+		for(int i = 0; i<lo.size(); i++) {			
+			System.out.println(lo.get(i).getItems());
+			for(int j=0; j<lo.get(i).getItems().size(); j++) {
+				System.out.println(lo.get(i).getItems().get(j).getBook());
+			}
+		}
+		return lo;
+	}
+	
+	@Transactional
+	public Order getOrder(Integer id) {
+		Optional<Order> optOrder = orderRepository.findById(id);
+		if(optOrder.isPresent()) {
+			System.out.println(optOrder.get().getItems());
+			return optOrder.get();
+		}else {
+			return null;
+		}
+	}
 	
 	public String getInserted() {
 		return "I";
