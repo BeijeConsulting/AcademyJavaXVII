@@ -40,7 +40,7 @@ public class AuthorService {
 		 return author;
 		 
 	 }
-	 public Author updateAuthor(Integer id,Author authorReq) {
+	 public Author updateAuthor(Integer id, Author authorReq) {
 		 Author author = getAuthorById(id);
 		 author.setName(authorReq.getName());
 		 author.setSurname(authorReq.getSurname());
