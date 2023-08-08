@@ -52,6 +52,10 @@ public class AuthorService {
 		 Author author = getAuthorById(idStr);
 		 authorRepository.delete(author);
 	 }
+	 public void deleteAuthor(Integer id) {
+		 Author author = getAuthorById(id);
+		 authorRepository.delete(author);
+	 }
 	
 
 }
