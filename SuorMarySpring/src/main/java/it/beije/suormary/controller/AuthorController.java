@@ -7,34 +7,35 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import it.beije.suormary.model.Author;
 import it.beije.suormary.model.Book;
 import it.beije.suormary.service.AuthorService;
 import it.beije.suormary.service.BookService;
 
-@Controller
+@RestController
 public class AuthorController {
 	@Autowired
 	private AuthorService authorService;
 	@Autowired
 	private BookService bookService;
-	@RequestMapping(value = "/createAuthor", method = RequestMethod.GET)
+	@GetMapping(value = "/createAuthor")
 	public String createAuthorGet() {
 		return "createAuthor";
 	}
-	@RequestMapping(value = "/createAuthor", method = RequestMethod.POST)
-	public String createAuthorPost(HttpServletRequest request, Model model) {
-		String name = request.getParameter("name");
-		String surname = request.getParameter("surname");
-		String description = request.getParameter("description");
-		authorService.createAuthor(name, surname, description);
-		List<Author> authors = authorService.getAuthors();
-		model.addAttribute("authors", authors);
-		return "listAuthors";
+	@PostMapping(value = "/createAuthor")
+	public Author createAuthorPost(@RequestBody Author author) {
+
+		author = authorService.createAuthor(author);
+
+		return author;
 	}
 	@RequestMapping(value = "/listAuthors", method = RequestMethod.GET)
 	public String listAuthors(Model model) {

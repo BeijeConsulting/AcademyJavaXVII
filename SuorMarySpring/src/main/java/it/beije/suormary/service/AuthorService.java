@@ -18,12 +18,13 @@ public class AuthorService {
 	  	   List<Author> authors = authorRepository.findAll();
 	  	   return authors;
 	     }
-	 public void createAuthor(String name, String surname, String description) {
+	 public Author createAuthor(Author authorReq) {
 		 Author author = new Author();
-		 author.setName(name);
-		 author.setSurname(surname);
-		 author.setDescription(description);
+		 author.setName(authorReq.getName());
+		 author.setSurname(authorReq.getSurname());
+		 author.setDescription(authorReq.getDescription());
 		 authorRepository.save(author);
+		 return author;
 		 
 	 }
 	 public Author getAuthorById(String idStr) {
