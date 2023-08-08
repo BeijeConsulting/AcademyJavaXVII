@@ -51,7 +51,7 @@ public class Contact {
 	
 	
 	//@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.LAZY)
-	@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_rubrica")
 	private List<ContactDetail> details;
 	

@@ -1,6 +1,5 @@
 package it.beije.suormary.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ public class ContactController {
 	@Autowired
 	private ContactService contactService;
 
-//	@Autowired
-//	private ContactRepository contactRepository;
 
 	@RequestMapping(value = "/contacts", method = RequestMethod.GET)
 	public String contacts(Model model,

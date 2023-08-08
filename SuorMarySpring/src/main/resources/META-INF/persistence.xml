@@ -3,6 +3,8 @@
 	<persistence-unit name="SuorMarySpring">
 		<class>it.beije.suormary.model.Contact</class>
 		<class>it.beije.suormary.model.ContactDetail</class>
+		<class>it.beije.suormary.model.Author</class>
+		<class>it.beije.suormary.model.Book</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		
 		<properties>

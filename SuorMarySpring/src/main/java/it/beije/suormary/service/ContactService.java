@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import it.beije.suormary.model.Contact;
 import it.beije.suormary.model.ContactDetail;
-import it.beije.suormary.repository.ContactDetailsRepository;
 import it.beije.suormary.repository.ContactRepository;
 
 @Service
@@ -22,24 +21,8 @@ public class ContactService {
 	private ContactRepository contactRepository;
 
 	@Autowired
-	private ContactDetailsRepository contactDetailsRepository;
+	private ContactDetailsService contactDetailsService;
 
-//	@Transactional
-//	public Contact getContact(Integer id) {
-//		
-//		Contact contact = null;
-//		try {
-//			contact = contactRepository.getOne(id);
-//			//contact.getDetails();
-//		} catch (EntityNotFoundException e) {
-//			System.out.println("### " + e);
-//			//e.printStackTrace();
-//		}
-//		
-//		System.out.println("contact : " + contact);
-//		
-//		return contact;
-//	}
 
 	public Contact getContact(Integer id) {
 
@@ -80,7 +63,7 @@ public class ContactService {
 	public Contact insertContact(Contact contact) {
 		// ... elaborazione per dettagli
 		contactRepository.save(contact);
-		contactRepository.flush();
+		
 		List<Contact> contacts = contactRepository.findBySurname(contact.getSurname());
 		List<ContactDetail> details = new ArrayList<>();
 		if (contact.getDetails() != null) {
@@ -90,8 +73,7 @@ public class ContactService {
 				cd.setContactId(contacts.get(0).getId());
 
 			}
-			contactDetailsRepository.saveAll(details);
-			contactDetailsRepository.flush();
+			contactDetailsService.saveAllContactDetails(details);
 
 		}
 
@@ -119,8 +101,7 @@ public class ContactService {
 
 	@Transactional
 	public void deleteContact(Integer id) {
-		contactDetailsRepository.deleteByContactId(id);
-		contactDetailsRepository.flush();
+		contactDetailsService.deleteByContactId(id);
 		contactRepository.deleteById(id);
 	}
 
