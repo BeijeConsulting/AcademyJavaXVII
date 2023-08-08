@@ -9,7 +9,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import it.beije.suormary.ContactWithDetailsRequest;
 import it.beije.suormary.model.Contact;
+import it.beije.suormary.model.ContactDetail;
+import it.beije.suormary.repository.ContactDetailRepository;
 import it.beije.suormary.repository.ContactRepository;
 
 
@@ -18,6 +21,12 @@ public class ContactService {
 	
 	@Autowired
 	private ContactRepository contactRepository;
+	
+	@Autowired
+	private ContactDetailService contactDetailService;
+	
+	@Autowired
+	private ContactDetailRepository contactDetailRepository;
 	
 //	@Transactional
 //	public Contact getContact(Integer id) {
@@ -71,10 +80,30 @@ public class ContactService {
 		return contactRepository.countBySurname(surname); 
 	}
 
-	public Contact insertContact(Contact contact) {
+	@Transactional
+	public Contact insertContact(ContactWithDetailsRequest request) {
 		// ... elaborazione per dettagli
-		return contactRepository.save(contact);
-	}
+		
+		Contact contact = request.getContact();
+	    List<ContactDetail> details = request.getDetails();
+		contactRepository.save(contact);
+		
+		contactRepository.flush();
+		
+		// Aggiungi dettagli al contatto
+        //List<ContactDetail> details = contact.getDetails();
+		contact.setDetails(details);
+        if (details != null && !details.isEmpty()) {
+            for (ContactDetail detail : details) {
+                detail.setContactId(contact.getId()); // Imposta l'ID del contatto nei dettagli
+                contactDetailService.saveContactDetail(detail); // Salva il dettaglio nel database
+                //contactDetailRepository.flush();
+            }
+        }
+
+        return contact;
+    }
+	
 	
 	public Contact updateContact(Contact contact) {
 		
@@ -92,6 +121,8 @@ public class ContactService {
 		
 		return contact;
 	}
+	
+	
 	
 	public void deleteContact(Integer id) {
 		contactRepository.deleteById(id);

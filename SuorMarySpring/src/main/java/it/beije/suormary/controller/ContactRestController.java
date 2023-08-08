@@ -1,8 +1,11 @@
 package it.beije.suormary.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +22,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.beije.suormary.ContactWithDetailsRequest;
 import it.beije.suormary.model.Contact;
+import it.beije.suormary.model.ContactDetail;
+import it.beije.suormary.service.ContactDetailService;
 import it.beije.suormary.service.ContactService;
+
 
 
 //@Controller
@@ -30,6 +37,8 @@ public class ContactRestController {
 
 	@Autowired
 	private ContactService contactService;
+	@Autowired
+	private ContactDetailService contactDetailService;
 
 //	@RequestMapping(value = "/contact", method = RequestMethod.GET)
 //	public @ResponseBody Contact contacts(@RequestParam Integer id) {
@@ -54,10 +63,11 @@ public class ContactRestController {
 	}
 	
 	@PostMapping(value = "/contact")
-	public Contact insertContact(@RequestBody Contact contact) {
-		System.out.println("POST /api/contact : " + contact);
+	public Contact insertContact(@RequestBody ContactWithDetailsRequest request) {
+		System.out.println("POST /api/contact : " + request);
 		
-		contactService.insertContact(contact);
+		Contact contact=contactService.insertContact(request);
+		//contact = addContactDetail(contact.getId(), detail);
 		
 		return contact;
 	}
@@ -85,6 +95,24 @@ public class ContactRestController {
 		}		
 		
 		return message;
+	}
+	
+	@Transactional
+	@PostMapping(value = "/contact/{id}/details")
+	public Contact addContactDetail(@PathVariable Integer id, @RequestBody ContactDetail detail){
+		
+		Contact c = contactService.getContact(id);
+		if(c==null) {
+			return null;
+		}
+		 if (c.getDetails() == null) {
+		        return c;
+		    }
+		contactDetailService.saveContactDetail(detail);
+		detail.setContactId(id);
+		c.getDetails().add(detail);
+		contactService.updateContact(c);
+		return c;
 	}
 
 }
