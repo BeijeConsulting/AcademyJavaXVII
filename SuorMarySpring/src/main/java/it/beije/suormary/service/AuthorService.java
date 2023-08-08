@@ -40,12 +40,12 @@ public class AuthorService {
 		 return author;
 		 
 	 }
-	 public void updateAuthor(String idStr, String name, String surname, String description) {
-		 Author author = getAuthorById(idStr);
-		 author.setName(name);
-		 author.setSurname(surname);
-		 author.setDescription(description);
-		 authorRepository.save(author);
+	 public Author updateAuthor(Integer id,Author authorReq) {
+		 Author author = getAuthorById(id);
+		 author.setName(authorReq.getName());
+		 author.setSurname(authorReq.getSurname());
+		 author.setDescription(authorReq.getDescription());
+		return authorRepository.save(author);
 		 
 	 }
 	 public void deleteAuthor(String idStr) {

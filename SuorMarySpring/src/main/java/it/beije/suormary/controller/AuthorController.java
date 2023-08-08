@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,19 +42,12 @@ public class AuthorController {
 		return authorService.getAuthors();
 	}
 	@GetMapping(value = "/updateAuthor/{id}")
-	public Author updateAuthorGet(@RequestBody Integer id) {
+	public Author updateAuthorGet(@PathVariable Integer id) {
 		return authorService.getAuthorById(id);
 	}
-	@RequestMapping(value = "/updateAuthor", method = RequestMethod.POST)
-	public String updateAuthorPost(HttpServletRequest request, Model model) {
-		String id = request.getParameter("id");
-		String name = request.getParameter("name");
-		String surname = request.getParameter("surname");
-		String description = request.getParameter("description");
-		authorService.updateAuthor(id,name, surname, description);
-		List<Author> authors = authorService.getAuthors();
-		model.addAttribute("authors", authors);
-		return "listAuthors";
+	@PostMapping(value = "/updateAuthor/{id}")
+	public Author updateAuthorPost(@PathVariable Integer id, @RequestBody Author author) {
+		return authorService.updateAuthor(id,author);
 	}
 	@RequestMapping(value = "/deleteAuthor", method = RequestMethod.GET)
 	public String deleteAuthor(@RequestParam String id, Model model) {
