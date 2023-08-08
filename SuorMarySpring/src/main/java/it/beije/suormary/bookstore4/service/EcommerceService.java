@@ -209,7 +209,7 @@ public class EcommerceService {
 		Order order = new Order();
 		order.setUserId(userId);
 		order.setShippingAddress(address);
-		order.setStatus(typePayment.equalsIgnoreCase("cash") ? "P" : "I");
+		order.setStatus(typePayment.equalsIgnoreCase("card") ? "P" : "I");
 		order.setDate(LocalDateTime.now());
 		order.setAmount(sumBasket(userId));
 		orderRepository.save(order);
@@ -265,6 +265,11 @@ public class EcommerceService {
 			order.setItems(items);
 		}
 		return orders;
+	}
+	
+	public Order getOrder (Integer id) {
+		Optional<Order> order = orderRepository.findById(id);
+		return order.isPresent() ? order.get() : null;
 	}
 	
 	@Transactional

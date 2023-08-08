@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /*
 
 CREATE TABLE `orders` (
@@ -36,9 +39,11 @@ public class Order {
 	@Column(name = "id")
 	private Integer id;
 
+	@JsonProperty(value = "date")
 	@Column(name = "date")
 	private LocalDateTime date;
 
+	@JsonIgnore
 	@Column(name = "user_id")
 	private int userId;
 
@@ -71,7 +76,13 @@ public class Order {
 	public LocalDateTime getDate() {
 		return date;
 	}
+	
+	@JsonProperty(value = "date")
+	public String getDateAsString() {
+		return date != null ? date.toString() : null;
+	}
 
+	@JsonProperty(value = "date")
 	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}

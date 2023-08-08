@@ -1,5 +1,6 @@
 package it.beije.suormary.bookstore4.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.beije.suormary.bookstore4.dto.PaymentDetails;
 import it.beije.suormary.bookstore4.model.Author;
 import it.beije.suormary.bookstore4.model.Book;
 import it.beije.suormary.bookstore4.model.Order;
+import it.beije.suormary.bookstore4.model.OrderItem;
 import it.beije.suormary.bookstore4.service.EcommerceService;
 import it.beije.suormary.model.Contact;
 
@@ -37,12 +40,6 @@ public class BookstoreRestController {
 		return books;
 	}
 	
-	@GetMapping(value = "/all_authors")
-	public List<Author> allauthors() {
-		List<Author> authors = ecommerceService.authorsList();
-		return authors;  
-	}
-	
 	@PutMapping(value = "/book/{id}")
 	public Book updateBook(@PathVariable Integer id, @RequestBody Book book) {
 		if (id.compareTo(book.getId()) != 0) throw new RuntimeException("ID NON CORRISPONDENTI!!!");
@@ -56,6 +53,25 @@ public class BookstoreRestController {
 		return book;
 	}
 	
+	@GetMapping(value = "/all_authors")
+	public List<Author> allauthors() {
+		List<Author> authors = ecommerceService.authorsList();
+		return authors;  
+	}
+	
+	@PutMapping(value = "/author/{id}")
+	public Author updateAuthor(@PathVariable Integer id, @RequestBody Author author) {
+		if (id.compareTo(author.getId()) != 0) throw new RuntimeException("ID NON CORRISPONDENTI!!!");
+		ecommerceService.updateAuthor(id, author.getDescription());
+		return author;
+	}
+	
+	@PostMapping(value = "/author")
+	public Author insertAuthor(@RequestBody Author author) {
+		ecommerceService.insertAuthor(author.getName(), author.getSurname(), author.getDescription());
+		return author;
+	}
+	
 	@DeleteMapping(value="/empty_basket/{userId}")
 	public String emptyBasket(@PathVariable Integer userId) {
 		ecommerceService.emptyBasket(userId);
@@ -67,4 +83,25 @@ public class BookstoreRestController {
 		List<Order> orders = ecommerceService.getOrders(userId);
 		return orders;
 	}
+	
+	@PutMapping(value = "/order/{id}")
+	public Order updateOrder(@PathVariable Integer id) {
+		ecommerceService.deleteOrder(id);
+		return ecommerceService.getOrder(id);
+	}
+	
+	@PostMapping(value = "/buy/{userId}")
+	public Order buyBasket(@PathVariable Integer userId, @RequestBody PaymentDetails paymentDetails) {
+		ecommerceService.buyBasket(userId, paymentDetails.getShippingAddress(), paymentDetails.getPayment());
+		List<Order> orders = ecommerceService.getOrders(userId);
+		return orders.get(orders.size() - 1);
+	}
+	
+	@PostMapping(value = "/add_to_basket/{userId}")
+	public HashMap<Book, Integer> addToBasket(@PathVariable Integer userId, @RequestBody Integer bookId) {
+		ecommerceService.addToBasket(bookId, userId);
+		return ecommerceService.basket(userId);
+	}
+	
+	
 }
