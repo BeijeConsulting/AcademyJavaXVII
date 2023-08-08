@@ -1,5 +1,7 @@
 package it.beije.suormary.model;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,7 +16,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+
+
+@JsonInclude(Include.NON_NULL)
 @Entity
 @Table(name = "rubrica")
 public class Contact {
@@ -36,6 +44,10 @@ public class Contact {
 	
 	@Column(name = "note")
 	private String note;
+	
+	@JsonProperty(value = "birth_date")
+	@Column(name = "data_nascita")
+	private LocalDate birthDate;
 	
 	
 	//@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.LAZY)
@@ -96,6 +108,24 @@ public class Contact {
 		this.details = details;
 	}
 	
+	public LocalDate getBirthDate() {
+		return birthDate;
+	}
+	
+	@JsonProperty(value = "birth_date")
+	public String getBirthDateAsString() {
+		return birthDate != null ? birthDate.toString() : null;
+	}
+	
+	public void setBirthDate(LocalDate birthDate) {
+		this.birthDate = birthDate;
+	}
+	
+	@JsonProperty(value = "birth_date")
+	public void setBirthDate(String birthDate) {
+		this.birthDate =  LocalDate.parse(birthDate, DateTimeFormatter.ISO_LOCAL_DATE);
+	}
+
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
@@ -105,6 +135,7 @@ public class Contact {
 //				.append(", phoneNumber : ").append(phoneNumber)
 //				.append(", email : ").append(email)
 				.append(", note : ").append(note)
+				.append(", birthDate : ").append(birthDate)
 				.append(", details : ").append(details)
 				.append(" }");
 		

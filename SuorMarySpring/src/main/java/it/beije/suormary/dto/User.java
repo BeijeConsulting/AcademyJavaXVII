@@ -1,5 +1,6 @@
-package it.beije.suormary.controller;
+package it.beije.suormary.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class User {
 	
@@ -29,6 +30,7 @@ public class User {
 		this.surname = surname;
 	}
 	
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
