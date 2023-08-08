@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import it.beije.suormary.model.Author;
-import it.beije.suormary.model.Book;
 import it.beije.suormary.service.AuthorService;
 
 

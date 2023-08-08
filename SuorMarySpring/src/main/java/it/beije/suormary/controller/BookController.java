@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import it.beije.suormary.model.Book;
-import it.beije.suormary.model.Contact;
 import it.beije.suormary.service.BookService;
 
 
