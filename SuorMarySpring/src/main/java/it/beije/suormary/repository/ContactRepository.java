@@ -20,5 +20,6 @@ public interface ContactRepository extends JpaRepository<Contact, Integer>{
 	//@Query(value = "SELECT COUNT(id) FROM Contact WHERE surname = :surname")
 	@Query(value = "SELECT COUNT(*) FROM rubrica WHERE cognome = :surname", nativeQuery = true)
 	public int countBySurname(@Param("surname") String surname);
+	
 
 }

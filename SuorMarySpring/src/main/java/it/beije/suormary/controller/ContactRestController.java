@@ -64,7 +64,7 @@ public class ContactRestController {
 
 	@PutMapping(value = "/contact/{id}")
 	public Contact updateContact(@PathVariable Integer id, @RequestBody Contact contact) {
-		System.out.println("PUT /api/contact/ " + id + " : " + contact);
+		System.out.println("PUT /api/contact/" + id + " : " + contact);
 		
 		if (id.compareTo(contact.getId()) != 0) throw new RuntimeException("ID NON CORRISPONDENTI!!!");
 		
