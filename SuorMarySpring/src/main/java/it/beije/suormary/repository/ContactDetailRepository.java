@@ -7,4 +7,6 @@ import it.beije.suormary.model.ContactDetail;
 
 public interface ContactDetailRepository extends JpaRepository<ContactDetail, Integer>{
 
+	void deleteByContactId(Integer id);
+
 }

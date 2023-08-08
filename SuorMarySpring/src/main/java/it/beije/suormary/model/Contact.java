@@ -2,6 +2,7 @@ package it.beije.suormary.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,7 +40,7 @@ public class Contact {
 	
 	
 	//@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.LAZY)
-	@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.EAGER)
+	@OneToMany(targetEntity = ContactDetail.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_rubrica")
 	private List<ContactDetail> details;
 	

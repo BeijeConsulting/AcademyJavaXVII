@@ -80,11 +80,12 @@ public class ContactService {
 		// ... elaborazione per dettagli
 		contactRepository.save(contact);
 		List<ContactDetail> contactDetails = contact.getDetails();
-		for(ContactDetail cd : contactDetails ) {
-			cd.setContactId(contact.getId());
-			contactDetailRepository.save(cd);
+		if(contactDetails != null) {
+			for(ContactDetail cd : contactDetails ) {
+				cd.setContactId(contact.getId());
+				contactDetailRepository.save(cd);
+			}
 		}
-		
 		return contactRepository.save(contact);
 	}
 	
@@ -105,7 +106,10 @@ public class ContactService {
 		return contact;
 	}
 	
+	@Transactional
 	public void deleteContact(Integer id) {
+		contactDetailRepository.deleteByContactId(id);
+		contactDetailRepository.flush();
 		contactRepository.deleteById(id);
 	}
 
