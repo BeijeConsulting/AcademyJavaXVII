@@ -346,9 +346,9 @@ public class DBthroughHBM {
 		
 	}
 
-	public static Contact getContactFromId(int id) {
-		
-		
-		return contact
-	}
+//	public static Contact getContactFromId(int id) {
+//		
+//		
+//		return contact
+//	}
 }

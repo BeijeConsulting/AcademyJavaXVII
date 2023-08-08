@@ -8,9 +8,9 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
-<body>
- <input type="hidden" name="id" value="<%= contatto.getId() %>">
+<!--  body>
+ <input type="hidden" name="id" value="">
   <label for="nome">Nome:</label>
-  <input type="text" id="nome" name="nome" value="<%= contatto.getNome() %>">
-</body>
+  <input type="text" id="nome" name="nome" value="">
+</body-->
 </html>
