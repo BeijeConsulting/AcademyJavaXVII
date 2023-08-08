@@ -62,7 +62,7 @@ public class ContactRestController {
 		return contact;
 	}
 
-	@PutMapping(value = "/contact/{id}")
+	@PutMapping(value = "/contacts/{id}")
 	public Contact updateContact(@PathVariable Integer id, @RequestBody Contact contact) {
 		System.out.println("PUT /api/contact/" + id + " : " + contact);
 		

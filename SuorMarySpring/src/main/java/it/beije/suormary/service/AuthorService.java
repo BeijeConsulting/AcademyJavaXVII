@@ -3,6 +3,7 @@ package it.beije.suormary.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,26 @@ public class AuthorService {
 		}
 		
 		authorRepository.deleteById(id);
+	}
+	
+	
+    public Author updateAuthor(Author author) {
+
+		Optional<Author> a = authorRepository.findById(author.getId());
+
+		if (!a.isPresent()) throw new RuntimeException("ID ERRATO!!!");
+
+		Author a2 = a.get();
+		System.out.println("updated book : " + a2);
+		
+
+		BeanUtils.copyProperties(author, a2);
+	
+		authorRepository.save(a2);
+
+		System.out.println("updated book : " + a2);
+
+		return author;
 	}
 	
 }

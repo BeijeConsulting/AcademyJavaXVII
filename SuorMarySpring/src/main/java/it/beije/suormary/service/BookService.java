@@ -3,6 +3,9 @@ package it.beije.suormary.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +43,28 @@ public class BookService {
     public List<Book> findBookFromAuthorId(Integer authorId) {
     	return bookRepository.findByAuthorId(authorId);
     }
+    
+    
+    public Book updateBook(Book book) {
+
+		Optional<Book> b = bookRepository.findById(book.getId());
+		System.out.println(b.get());
+
+		if (!b.isPresent()) throw new RuntimeException("ID ERRATO!!!");
+
+		Book b2 = b.get();
+		System.out.println("updated book : " + b2);
+		
+
+		BeanUtils.copyProperties(book, b2);
+	
+
+		bookRepository.save(b2);
+
+		System.out.println("updated book : " + b2);
+
+		return book;
+	}
+    
 }
 

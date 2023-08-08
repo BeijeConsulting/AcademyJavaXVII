@@ -80,6 +80,8 @@ public class ContactService {
 		return contact;
 
 	}
+	
+	
 
 	public Contact updateContact(Contact contact) {
 
