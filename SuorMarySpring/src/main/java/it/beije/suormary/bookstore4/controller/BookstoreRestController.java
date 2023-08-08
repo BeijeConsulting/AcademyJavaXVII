@@ -97,11 +97,20 @@ public class BookstoreRestController {
 		return orders.get(orders.size() - 1);
 	}
 	
+	@PostMapping(value = "/basket/{userId}")
+	public HashMap<Book, Integer> addToBasket(@PathVariable Integer userId) {
+		return ecommerceService.basket(userId);
+	}
+	
 	@PostMapping(value = "/add_to_basket/{userId}")
 	public HashMap<Book, Integer> addToBasket(@PathVariable Integer userId, @RequestBody Integer bookId) {
 		ecommerceService.addToBasket(bookId, userId);
 		return ecommerceService.basket(userId);
 	}
 	
-	
+	@DeleteMapping(value = "/remove_from_basket/{userId}")
+	public HashMap<Book, Integer> removeFromBasket(@PathVariable Integer userId, @RequestBody Integer bookId) {
+		ecommerceService.removeFromBasket(bookId, userId);
+		return ecommerceService.basket(userId);
+	}
 }
