@@ -3,6 +3,7 @@ package it.beije.suormary.bookstore1.service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -56,6 +57,19 @@ public class UserService {
 		user.setCreationDate(LocalDateTime.now());
 		userRepository.save(user);
 		
+	}
+	
+	public User getUserById(Integer id) {
+		Optional<User> user = userRepository.findById(id);
+		if(user.isPresent()) {
+			return user.get();
+		} else {
+			return null;
+		}
+	}
+	
+	public List<User> getAllUsers(){
+		return userRepository.findAll();
 	}
 	
 }
