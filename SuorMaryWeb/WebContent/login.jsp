@@ -7,24 +7,15 @@
 </head>
 <body>
 
-<%
-String loginError = (String) session.getAttribute("loginError");
-if (loginError != null) {
-	%>
-	<p style="color:red"><%= loginError %></p>
-	<%
-	
-	session.removeAttribute("loginError");
-}
-%>
-
+<h3>Non hai un account? <a href="http://localhost:8080/SuorMaryWeb/register">Registrati</a></h3>
 <form action="./login" method="POST">
-  <label for="username">Username:</label><br>
-  <input type="text" name="username" ><br>
+  <label for="email">Email:</label><br>
+  <input type="text" name="email" ><br>
   <label for="password">Password:</label><br>
-  <input type="text" name="password" ><br><br>
-  <input type="submit" value="Submit">
+  <input type="password" name="password" ><br><br>
+  <input type="submit" value="Login">
 </form> 
+
 
 </body>
 </html>

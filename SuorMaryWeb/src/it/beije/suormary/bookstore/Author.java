@@ -19,6 +19,7 @@ CREATE TABLE `authors` (
 
  */
 
+
 @Entity
 @Table(name = "authors")
 public class Author {
