@@ -20,10 +20,10 @@ public class ContactDetail {
 	@Column(name = "id_rubrica")
 	private Integer contactId;
 
-	@Column(name = "contact")
+	@Column(name = "contatto")
 	private String detail;
 	
-	@Column(name = "type")
+	@Column(name = "tipo")
 	private String type;
 	
 	@Column(name = "label")
