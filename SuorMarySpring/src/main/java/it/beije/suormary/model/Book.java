@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /*
@@ -48,8 +50,8 @@ public class Book {
 
 	@Column(name = "quantity")
 	private int quantity;
-
-	@Column(name = "author_id")
+    @ManyToOne
+	@JoinColumn(name = "author_id")
 	private int authorId;
 	
 

@@ -23,18 +23,15 @@ public class BookService {
 	@Autowired
 	private BookRepository bookRepository;
 	
-     public void addBook(String title, String description, String editor, String priceString, String quantityString, String authorIdStr) {
-  	   int authorId = Integer.parseInt(authorIdStr);
-  	   double price = Double.parseDouble(priceString);
-  	   int quantity = Integer.parseInt(quantityString);	  
+     public Book addBook(Book bookReq) {
   		   Book book = new Book();
-  		   book.setTitle(title);
-  		   book.setDescription(description);
-  		   book.setEditor(editor);
-  		   book.setQuantity(quantity);
-  		   book.setPrice(price);
-  		   book.setAuthorId(authorId);
-  		   bookRepository.save(book);	
+  		   book.setTitle(bookReq.getTitle());
+  		   book.setDescription(bookReq.getDescription());
+  		   book.setEditor(bookReq.getEditor());
+  		   book.setQuantity(bookReq.getQuantity());
+  		   book.setPrice(bookReq.getPrice());
+  		   book.setAuthorId(bookReq.getAuthorId());
+  		  return bookRepository.save(book);	
      }
      public Book getBookById(String idStr) {
   	   int id = Integer.parseInt(idStr);
