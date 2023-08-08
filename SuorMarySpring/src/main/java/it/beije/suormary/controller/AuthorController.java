@@ -17,7 +17,8 @@ import it.beije.suormary.service.AuthorService;
 @Controller
 public class AuthorController {
 	@Autowired
-	private AuthorService authorService;;
+	private AuthorService authorService;
+	
 	@RequestMapping(value = "/createAuthor", method = RequestMethod.GET)
 	public String createAuthorGet() {
 		return "createAuthor";

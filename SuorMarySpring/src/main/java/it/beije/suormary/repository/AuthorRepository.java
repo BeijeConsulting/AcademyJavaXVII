@@ -6,4 +6,6 @@ import it.beije.suormary.model.Author;
 
 public interface AuthorRepository extends JpaRepository<Author,Integer> {
 
+	public Author findAuthorBySurname(String surname);
+
 }

@@ -30,8 +30,6 @@ import it.beije.suormary.service.BookService;
 public class BookRestController {
 	
 	@Autowired
-	private AuthorService authorService;
-	@Autowired
 	private BookService bookService;
 	
 	@GetMapping(value = "/books")
