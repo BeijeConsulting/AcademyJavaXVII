@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,17 +52,9 @@ public class BookController {
 		   return bookService.addBook(book);
 
        }
-	   @RequestMapping(value = "/updateBook", method = RequestMethod.GET)
-       public String updateBookGet(HttpSession session, Model model,@RequestParam(name="id") String id) {
-		    if(session.getAttribute("email")!= null) {
-				Book book = bookService.getBookById(id);
-				model.addAttribute("book",book);
-				List<Author> authors = BookStoreUtility.getAuthors();
-				model.addAttribute("authors", authors);
-		    	return "updateBook";
-		    }
-		    else return "login";
-	
+	   @GetMapping(value = "/updateBook/{id}")
+       public Book updateBookGet(@PathVariable Integer id) {
+		   return bookService.getBookById(id);	
        }
 	   @RequestMapping(value = "/updateBook", method = RequestMethod.POST)
        public String updateBookPost(HttpSession session, HttpServletRequest request, Model model) {
