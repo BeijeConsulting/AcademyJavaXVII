@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 /*
 
 CREATE TABLE `books` (
@@ -38,10 +41,12 @@ public class Book {
 
 	@Column(name = "title")
 	private String title;
-
+	
+	@JsonInclude(Include.NON_NULL)
 	@Column(name = "description")
 	private String description;
 
+	@JsonInclude(Include.NON_NULL)
 	@Column(name = "editor")
 	private String editor;
 

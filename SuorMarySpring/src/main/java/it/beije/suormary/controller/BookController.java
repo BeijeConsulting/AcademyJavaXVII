@@ -2,7 +2,9 @@ package it.beije.suormary.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,7 @@ import it.beije.suormary.service.TestService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -62,39 +65,25 @@ public class BookController {
 		   if (id.compareTo(book.getId()) != 0) throw new RuntimeException("ID NON CORRISPONDENTI!!!");
 			return bookService.updateBook(book);
        }
-	   @RequestMapping(value = "/deleteBook", method=RequestMethod.GET)
-	   public String deleteBook(HttpSession session,@RequestParam String id, Model model) {
-		   if(session.getAttribute("email")!= null) {
+	   @DeleteMapping(value = "/deleteBook/{id}")
+	   public void deleteBook(@PathVariable Integer id) {	   
 			   bookService.deleteBook(id);
-			   List<Book> books = bookService.loadBooks();
-			   model.addAttribute("books", books);	
-			return "welcome";
-		   }
-		   else {
-			    return "login";  
-		   }
 	
 	   }
 	   @RequestMapping(value = "/quantityBook", method=RequestMethod.GET)
-	   public String quantityBook(HttpServletRequest request, Model model, HttpSession session) {
-				String quantity = request.getParameter("quantity");
-				String idStr = request.getParameter("bookId");
-				Book book = bookService.getBookById(idStr);
-				int quantityId = Integer.parseInt(quantity);
-				List<Book> booksOrder =(List) session.getAttribute("booksOrder");
-				List<Book> books = BookStoreUtility.loadBooks();
-				model.addAttribute("booksOrder", booksOrder);
-				model.addAttribute("books", books);
-				Order order = (Order) session.getAttribute("order");
-				model.addAttribute("orderId", order.getId());
-				if(quantityId > book.getQuantity() ) {
-					model.addAttribute("ErrorQuantity", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
-				}
-				else {
-					session.setAttribute("quantity", quantityId);
-					model.addAttribute("quantity", quantityId);
-				}
-				return "createOrder";
+	   public Map<String, Object> quantityBook(@RequestParam String quantity,@RequestParam String bookId) {
+		   Map<String, Object> response = new HashMap<>();
+
+	        Book book = bookService.getBookById(bookId);
+	        int quantityId = Integer.parseInt(quantity);
+
+	        if (quantityId > book.getQuantity()) {
+	            response.put("error", "Hai inserito una quantità maggiore rispetto a quelli disponibili");
+	        } else {
+	            response.put("quantity", quantityId);
+	        }
+
+	        return response;
 
 			
 	   }

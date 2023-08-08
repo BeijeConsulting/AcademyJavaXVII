@@ -56,8 +56,7 @@ public class BookService {
   		   book.setAuthor(bookReq.getAuthor());
   		  return bookRepository.save(book);
      }
-     public  void deleteBook(String idStr) {
-  	   int id = Integer.parseInt(idStr);
+     public  void deleteBook(Integer id) {
   	   Book book = getBookById(id);
   	   bookRepository.delete(book);
      }
