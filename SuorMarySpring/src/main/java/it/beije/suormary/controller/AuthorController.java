@@ -49,7 +49,9 @@ public class AuthorController {
 	}
 	@PutMapping(value = "/updateAuthor/{id}")
 	public Author updateAuthorPost(@PathVariable Integer id, @RequestBody Author author) {
-		return authorService.updateAuthor(id,author);
+		
+		if (id.compareTo(author.getId()) != 0) throw new RuntimeException("ID NON CORRISPONDENTI!!!");
+		return authorService.updateAuthor(author);
 	}
 	@DeleteMapping(value = "/deleteAuthor/{id}")
 	public void deleteAuthor(@PathVariable Integer id) {

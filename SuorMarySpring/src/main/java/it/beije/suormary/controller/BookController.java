@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,19 +57,10 @@ public class BookController {
        public Book updateBookGet(@PathVariable Integer id) {
 		   return bookService.getBookById(id);	
        }
-	   @RequestMapping(value = "/updateBook", method = RequestMethod.POST)
-       public String updateBookPost(HttpSession session, HttpServletRequest request, Model model) {
-			String bookId = request.getParameter("id");
-			String title = request.getParameter("title");
-			String description = request.getParameter("description");
-			String editor = request.getParameter("editor");
-			String price = request.getParameter("price");
-			String quantity = request.getParameter("quantity");
-			String authorId = request.getParameter("authorId");
-			bookService.updateBook(title, description, editor, price, quantity, authorId,bookId);
-			  List<Book> books = bookService.loadBooks();
-			   model.addAttribute("books", books);	
-			return "welcome";
+	   @PutMapping(value = "/updateBook/{id}")
+       public Book updateBookPost(@PathVariable Integer id,@RequestBody Book book) {
+		   if (id.compareTo(book.getId()) != 0) throw new RuntimeException("ID NON CORRISPONDENTI!!!");
+			return bookService.updateBook(book);
        }
 	   @RequestMapping(value = "/deleteBook", method=RequestMethod.GET)
 	   public String deleteBook(HttpSession session,@RequestParam String id, Model model) {

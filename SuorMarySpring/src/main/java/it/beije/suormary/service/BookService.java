@@ -45,20 +45,16 @@ public class BookService {
        Book book = b.isPresent() ? b.get() : null;
   	   return book;
      }
-     public  void updateBook(String title, String description, String editor, String priceString, String quantityString, String authorIdStr,String bookIdStr) {
-  	   int authorId = Integer.parseInt(authorIdStr);
-  	   int bookId = Integer.parseInt(bookIdStr);
-  	   double price = Double.parseDouble(priceString);
-  	   int quantity = Integer.parseInt(quantityString);
-  	
-  		   Book book = getBookById(bookId);
-  		   book.setTitle(title);
-  		   book.setDescription(description);
-  		   book.setEditor(editor);
-  		   book.setQuantity(quantity);
-  		   book.setPrice(price);
-//  		   book.setAuthor(author);
-  		   bookRepository.save(book);
+     public  Book updateBook(Book bookReq) {
+	
+  		   Book book = getBookById(bookReq.getId());
+  		   book.setTitle(bookReq.getTitle());
+  		   book.setDescription(bookReq.getDescription());
+  		   book.setEditor(bookReq.getEditor());
+  		   book.setQuantity(bookReq.getQuantity());
+  		   book.setPrice(bookReq.getPrice());
+  		   book.setAuthor(bookReq.getAuthor());
+  		  return bookRepository.save(book);
      }
      public  void deleteBook(String idStr) {
   	   int id = Integer.parseInt(idStr);
