@@ -30,7 +30,7 @@ public class BookService {
   		   book.setEditor(bookReq.getEditor());
   		   book.setQuantity(bookReq.getQuantity());
   		   book.setPrice(bookReq.getPrice());
-  		   book.setAuthorId(bookReq.getAuthorId());
+  		   book.setAuthor(bookReq.getAuthor());
   		  return bookRepository.save(book);	
      }
      public Book getBookById(String idStr) {
@@ -57,7 +57,7 @@ public class BookService {
   		   book.setEditor(editor);
   		   book.setQuantity(quantity);
   		   book.setPrice(price);
-  		   book.setAuthorId(authorId);
+//  		   book.setAuthor(author);
   		   bookRepository.save(book);
      }
      public  void deleteBook(String idStr) {

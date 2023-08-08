@@ -96,7 +96,7 @@ public class BookStoreUtility {
     		   book.setEditor(editor);
     		   book.setQuantity(quantity);
     		   book.setPrice(price);
-    		   book.setAuthorId(authorId);
+//    		   book.setAuthor(author);
     		   entityManager.persist(book);
     		   transaction.commit();
     		   
@@ -158,7 +158,7 @@ public class BookStoreUtility {
     		   book.setEditor(editor);
     		   book.setQuantity(quantity);
     		   book.setPrice(price);
-    		   book.setAuthorId(authorId);
+//    		   book.setAuthorId(authorId);
     		   transaction.commit();
     		   
     	   } catch(Exception e) {

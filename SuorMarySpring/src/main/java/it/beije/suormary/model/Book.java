@@ -52,7 +52,7 @@ public class Book {
 	private int quantity;
     @ManyToOne
 	@JoinColumn(name = "author_id")
-	private int authorId;
+	private Author author;
 	
 
 	
@@ -104,12 +104,12 @@ public class Book {
 		this.quantity = quantity;
 	}
 
-	public int getAuthorId() {
-		return authorId;
+	public Author getAuthor() {
+		return author;
 	}
 
-	public void setAuthorId(int authorId) {
-		this.authorId = authorId;
+	public void setAuthor(Author author) {
+		this.author = author;
 	}
 
 	public String toString() {
@@ -120,7 +120,7 @@ public class Book {
 				.append(", editor : ").append(editor)
 				.append(", price : ").append(price)
 				.append(", quantity : ").append(quantity)
-				.append(", authorId : ").append(authorId)
+				.append(", author : ").append(author)
 				.append(" }");
 		
 		return builder.toString();

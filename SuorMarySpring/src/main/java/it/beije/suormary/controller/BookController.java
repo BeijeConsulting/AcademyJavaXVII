@@ -55,7 +55,6 @@ public class BookController {
        public String updateBookGet(HttpSession session, Model model,@RequestParam(name="id") String id) {
 		    if(session.getAttribute("email")!= null) {
 				Book book = bookService.getBookById(id);
-				System.out.println(book.getAuthorId());
 				model.addAttribute("book",book);
 				List<Author> authors = BookStoreUtility.getAuthors();
 				model.addAttribute("authors", authors);
