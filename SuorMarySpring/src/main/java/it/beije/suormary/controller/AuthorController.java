@@ -33,21 +33,16 @@ public class AuthorController {
 	@PostMapping(value = "/createAuthor")
 	public Author createAuthorPost(@RequestBody Author author) {
 
-		author = authorService.createAuthor(author);
+		return authorService.createAuthor(author);
 
-		return author;
 	}
-	@RequestMapping(value = "/listAuthors", method = RequestMethod.GET)
-	public String listAuthors(Model model) {
-		List<Author> authors = authorService.getAuthors();
-		model.addAttribute("authors", authors);
-		return "listAuthors";
+	@GetMapping(value = "/listAuthors")
+	public List<Author> listAuthors() {
+		return authorService.getAuthors();
 	}
-	@RequestMapping(value = "/updateAuthor", method = RequestMethod.GET)
-	public String updateAuthorGet(@RequestParam String id, Model model) {
-		Author author = authorService.getAuthorById(id);
-		model.addAttribute("author", author);
-		return "updateAuthor";
+	@GetMapping(value = "/updateAuthor/{id}")
+	public Author updateAuthorGet(@RequestBody Integer id) {
+		return authorService.getAuthorById(id);
 	}
 	@RequestMapping(value = "/updateAuthor", method = RequestMethod.POST)
 	public String updateAuthorPost(HttpServletRequest request, Model model) {

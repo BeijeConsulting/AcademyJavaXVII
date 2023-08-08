@@ -34,6 +34,12 @@ public class AuthorService {
 		 return author;
 		 
 	 }
+	 public Author getAuthorById(Integer id) {
+		 Optional<Author> authorOpt = authorRepository.findById(id);
+		 Author author = authorOpt.isPresent() ? authorOpt.get() : null;
+		 return author;
+		 
+	 }
 	 public void updateAuthor(String idStr, String name, String surname, String description) {
 		 Author author = getAuthorById(idStr);
 		 author.setName(name);
