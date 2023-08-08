@@ -19,7 +19,7 @@ public class ContactDetail {
 	@Column(name = "id")
 	private Integer id;
 	
-	@JsonIgnore
+	//@JsonIgnore
 	@Column(name = "id_rubrica")
 	private Integer contactId;
 
