@@ -11,26 +11,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.beije.suormary.controller.JPAmanagerFactory;
+import it.beije.suormary.dto.UserDTO;
 import it.beije.suormary.model.User;
 import it.beije.suormary.repository.UserRepository;
 @Service
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
-	 public  User registerUser(User userReq) { 
+	 public  User registerUser(UserDTO userDTO) { 
   		   User  user = new User();
-  		   user.setEmail(userReq.getEmail());
-  		   user.setName(userReq.getName());
-  		   user.setSurname(userReq.getSurname());
+  		   user.setEmail(userDTO.getEmail());
+  		   user.setName(userDTO.getName());
+  		   user.setSurname(userDTO.getSurname());
   		   user.setCreationDate(LocalDateTime.now());
-  		   user.setPassword(userReq.getPassword());
+  		   user.setPassword(userDTO.getPassword());
   		   return userRepository.save(user);
   	   
      }
-     public  User loginUser(User userReq) {
-    	User user = userRepository.findUserByEmailAndPassword(userReq.getEmail(),userReq.getPassword());
+     public  User loginUser(UserDTO userDTO) {
+    	User user = userRepository.findUserByEmailAndPassword(userDTO.getEmail(),userDTO.getPassword());
   	    return user;
-     }
+     
+	 }
+
      public  User loginUser(String email) {
      	User user = userRepository.findUserByEmail(email);
    	    return user;

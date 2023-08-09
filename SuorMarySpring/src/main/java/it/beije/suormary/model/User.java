@@ -24,6 +24,7 @@ public class User {
 
 	@Column(name = "email")
 	private String email;
+	@JsonIgnore
 	@Column(name = "password")
 	private String password;
 
@@ -65,7 +66,6 @@ public class User {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}

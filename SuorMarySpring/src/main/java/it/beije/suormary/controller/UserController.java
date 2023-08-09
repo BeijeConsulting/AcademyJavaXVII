@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.beije.suormary.dto.UserDTO;
 import it.beije.suormary.model.Book;
 import it.beije.suormary.model.User;
 import it.beije.suormary.service.BookService;
@@ -42,10 +43,11 @@ public class UserController {
 		else return "login"; 
 	}
 	@PostMapping(value = "/login")
-	public User loginPost(@RequestBody User user) {
-		return  userService.loginUser(user);
+	public User loginPost(@RequestBody UserDTO userDTO) {
+		return  userService.loginUser(userDTO);
 
 	}
+
 	@GetMapping(value = "/register")
 	public String registerGet(HttpSession session, Model model) {
 
@@ -57,9 +59,8 @@ public class UserController {
          else return "register";
 	}
 	@PostMapping(value = "/register")
-	public User registerPost(@RequestBody User user) {
-		System.out.println("pass" + user.getPassword());
-		return userService.registerUser(user);
+	public User registerPost(@RequestBody UserDTO userDTO) {
+		return userService.registerUser(userDTO);
 
 		
 	}
