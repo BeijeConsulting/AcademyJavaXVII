@@ -17,19 +17,23 @@ import it.beije.suormary.repository.UserRepository;
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
-	 public  void registerUser(String name, String surname, String email, String password, LocalDateTime date) { 
+	 public  User registerUser(User userReq) { 
   		   User  user = new User();
-  		   user.setEmail(email);
-  		   user.setName(name);
-  		   user.setSurname(surname);
-  		   user.setCreationDate(date);
-  		   user.setPassword(password);
-  		   userRepository.save(user);
+  		   user.setEmail(userReq.getEmail());
+  		   user.setName(userReq.getName());
+  		   user.setSurname(userReq.getSurname());
+  		   user.setCreationDate(LocalDateTime.now());
+  		   user.setPassword(userReq.getPassword());
+  		   return userRepository.save(user);
   	   
      }
-     public  User loginUser(String email) {
-    	User user = userRepository.findUserByEmail(email);
+     public  User loginUser(User userReq) {
+    	User user = userRepository.findUserByEmailAndPassword(userReq.getEmail(),userReq.getPassword());
   	    return user;
      }
+     public  User loginUser(String email) {
+     	User user = userRepository.findUserByEmail(email);
+   	    return user;
+      }
 
 }

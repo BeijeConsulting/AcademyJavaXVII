@@ -8,5 +8,6 @@ import it.beije.suormary.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User,Integer>  {
 	public User findUserByEmail(String email);
+	public User findUserByEmailAndPassword(String email, String password);
       
 }

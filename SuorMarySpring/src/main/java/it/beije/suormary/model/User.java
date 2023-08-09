@@ -9,6 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -21,7 +24,6 @@ public class User {
 
 	@Column(name = "email")
 	private String email;
-
 	@Column(name = "password")
 	private String password;
 
@@ -30,7 +32,8 @@ public class User {
 
 	@Column(name = "surname")
 	private String surname;
-
+	
+    @JsonProperty(value = "creation_date")
 	@Column(name = "create_date")
 	private LocalDateTime creationDate;
 	
@@ -62,7 +65,7 @@ public class User {
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-	
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
@@ -72,6 +75,10 @@ public class User {
 	
 	public LocalDateTime getCreationDate() {
 		return creationDate;
+	}
+	@JsonProperty(value = "creation_date")
+	public String getCreationDateJson() {
+		return creationDate.toString();
 	}
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
@@ -84,7 +91,7 @@ public class User {
 				.append(", email : ").append(email)
 				.append(", name : ").append(name)
 				.append(", surname : ").append(surname)
-				.append(", creationDate : ").append(creationDate)		
+				.append(", creationDate : ").append(getCreationDate())		
 				.append(" }");
 		
 		return builder.toString();

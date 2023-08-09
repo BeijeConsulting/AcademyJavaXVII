@@ -33,11 +33,7 @@ public class OrderController {
 	private OrderItemService orderItemService;
 	
 	@RequestMapping(value = "/createOrder", method = RequestMethod.GET)
-	public String createOrderGet(HttpSession session, Model model) {
-		if(session.getAttribute("email") == null) {
-			return "login";
-		}
-		else {		
+	public String createOrderGet(HttpSession session, Model model) {	
 		List<Book> booksOrder = new ArrayList<>();
 		List<Book> books = BookStoreUtility.loadBooks();
 		session.setAttribute("booksOrder", booksOrder);
@@ -50,7 +46,7 @@ public class OrderController {
 		model.addAttribute("orderId", order.getId());
 		session.setAttribute("orderId", order.getId());
 		return "createOrder";
-	    }
+	    
 	}
 	@RequestMapping(value="/addBookToOrder", method = RequestMethod.GET)
 	public String addBookToOrder(HttpSession session,HttpServletRequest request, Model model) {

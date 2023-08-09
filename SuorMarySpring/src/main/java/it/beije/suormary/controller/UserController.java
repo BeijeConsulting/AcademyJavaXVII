@@ -12,23 +12,27 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import it.beije.suormary.model.Book;
 import it.beije.suormary.model.User;
 import it.beije.suormary.service.BookService;
 import it.beije.suormary.service.UserService;
 
-@Controller
+@RestController
 public class UserController {
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private BookService bookService;
  
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@GetMapping(value = "/login")
 	public String loginGet(HttpSession session, Model model) {
 		if(session.getAttribute("email") != null) {
 			List<Book> books = bookService.loadBooks();
@@ -37,30 +41,12 @@ public class UserController {
 		}
 		else return "login"; 
 	}
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String loginPost(HttpSession session, @RequestParam(name = "email")String email, Model model) {
+	@PostMapping(value = "/login")
+	public User loginPost(@RequestBody User user) {
+		return  userService.loginUser(user);
 
-		List<Book> books = bookService.loadBooks();
-		model.addAttribute("books", books);
-		
-		
-		if(session.getAttribute("email") != null) {
-			return "welcome";
-		}
-		System.out.println(email);
-		User user = userService.loginUser(email);
-		if(user != null) {
-		    session.setAttribute("email", email);
-		    model.addAttribute("email", email);	    
-			return "welcome";
-		}
-		else {
-			  model.addAttribute("loginError", "CREDENZIALI NON VALIDE!!");
-			    
-			  return "login";
-		}
 	}
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@GetMapping(value = "/register")
 	public String registerGet(HttpSession session, Model model) {
 
         if(session.getAttribute("email") != null) {
@@ -70,19 +56,11 @@ public class UserController {
          }
          else return "register";
 	}
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String registerPost(HttpServletRequest request,HttpSession session, Model model) {
-		List<Book> books = bookService.loadBooks();
-		model.addAttribute("books", books);
-		
-		String name=request.getParameter("name");
-		String surname = request.getParameter("surname");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		LocalDateTime date = LocalDateTime.now();
-		userService.registerUser(name, surname, email, password, date);
-		session.setAttribute("email", email);
-		return "welcome";
+	@PostMapping(value = "/register")
+	public User registerPost(@RequestBody User user) {
+		System.out.println("pass" + user.getPassword());
+		return userService.registerUser(user);
+
 		
 	}
 	@RequestMapping(value="/logout", method=RequestMethod.GET)
