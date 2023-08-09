@@ -1,6 +1,7 @@
 package it.beije.suormary.model;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 
 @Entity
@@ -20,8 +23,9 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")
-	private int id;
+	private Integer id;
 
+	@JsonProperty(value = "date")
 	@Column(name = "date")
 	private LocalDateTime date;
 
@@ -39,15 +43,18 @@ public class Order {
 	@Column(name = "amount")
 	private double amount;
 	
+	@Column(name = "shipping_address")
+	private String shippingAddress;
+	
 	@Transient
 	private List<OrderItem> items;
 
 	
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -57,6 +64,16 @@ public class Order {
 
 	public void setDate(LocalDateTime date) {
 		this.date = date;
+	}
+	
+	@JsonProperty(value = "date")
+	public String getDateAsString() {
+		return date != null ? date.toString() : null;
+	}
+	
+	@JsonProperty(value = "date")
+	public void setDate(String date) {
+		this.date =  LocalDateTime.parse(date, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 	}
 
 	public int getUserId() {
@@ -82,7 +99,15 @@ public class Order {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	
+		
+
+	public String getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public void setShippingAddress(String shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
 
 	public List<OrderItem> getItems() {
 		return items;

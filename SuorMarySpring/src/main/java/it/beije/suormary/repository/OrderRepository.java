@@ -8,4 +8,5 @@ import it.beije.suormary.model.Order;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer>{
 
+
 }

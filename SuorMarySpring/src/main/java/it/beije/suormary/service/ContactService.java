@@ -23,7 +23,6 @@ public class ContactService {
 	@Autowired
 	private ContactDetailsService contactDetailsService;
 
-
 	public Contact getContact(Integer id) {
 
 		Optional<Contact> c = contactRepository.findById(id);
@@ -63,7 +62,7 @@ public class ContactService {
 	public Contact insertContact(Contact contact) {
 		// ... elaborazione per dettagli
 		contactRepository.save(contact);
-		
+
 		List<Contact> contacts = contactRepository.findBySurname(contact.getSurname());
 		List<ContactDetail> details = new ArrayList<>();
 		if (contact.getDetails() != null) {
@@ -80,8 +79,6 @@ public class ContactService {
 		return contact;
 
 	}
-	
-	
 
 	public Contact updateContact(Contact contact) {
 
