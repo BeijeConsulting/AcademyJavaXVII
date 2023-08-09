@@ -45,7 +45,7 @@ public class OrderController {
 
         try {
             orderService.deleteOrderById(id);
-            message.put("message", "autore rimosso correttamente");
+            message.put("message", "order rimosso correttamente");
         } catch (Exception e) {
             message.put("message", e.getMessage());
         }

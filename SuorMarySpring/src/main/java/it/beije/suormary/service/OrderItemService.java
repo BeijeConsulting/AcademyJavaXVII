@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import it.beije.suormary.model.Order;
 import it.beije.suormary.model.OrderItem;
 import it.beije.suormary.repository.OrderItemRepository;
 @Service
@@ -14,6 +16,9 @@ public class OrderItemService {
 
     @Autowired
     private OrderItemRepository orderItemRepository;
+    
+    @Autowired
+    private OrderService orderService;
 
     public List<OrderItem> getAllOrderItems() {
         return orderItemRepository.findAll();
@@ -53,6 +58,18 @@ public class OrderItemService {
         orderItemRepository.save(or);
 
         System.out.println("updated contact : " + or);
+
+        return orderItem;
+    }
+    
+    @Transactional
+    public OrderItem createOrderItem(OrderItem orderItem, Integer orderId) {
+
+        Order order = orderService.getOrderById(orderId);
+
+        orderItem.setOrder(order);
+
+        orderItemRepository.save(orderItem);
 
         return orderItem;
     }

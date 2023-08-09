@@ -34,9 +34,9 @@ public class OrderItemController {
         return orderItemService.getOrderItemsById(id);
     }
 
-    @PostMapping(value = "/orderItems")
-    public OrderItem insertOrderItem(@RequestBody OrderItem orderItem) {
-        return orderItemService.insertOrderItem(orderItem);
+    @PostMapping("/orders/{id}/orderItems")
+    public OrderItem insertOrderItem(@RequestBody OrderItem orderItem, @PathVariable Integer id) {
+        return orderItemService.createOrderItem(orderItem, id);
     }
 
     @DeleteMapping(value = "/orderItems/{id}")
@@ -45,7 +45,7 @@ public class OrderItemController {
 
         try {
             orderItemService.deleteOrderItemById(id);
-            message.put("message", "autore rimosso correttamente");
+            message.put("message", "orderItem rimosso correttamente");
         } catch (Exception e) {
             message.put("message", e.getMessage());
         }
