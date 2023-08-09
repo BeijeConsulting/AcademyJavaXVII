@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import it.beije.suormary.model.ContactDetail;
 
 
@@ -43,6 +45,7 @@ public class User {
 	@Column(name = "create_date")
 	private LocalDateTime creationDate;
 	
+	@JsonIgnore
 	 @Transient
 	 private HashMap<Book, Integer> basket;
 

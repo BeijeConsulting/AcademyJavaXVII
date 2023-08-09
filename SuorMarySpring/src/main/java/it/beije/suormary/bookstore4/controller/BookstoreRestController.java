@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import it.beije.suormary.bookstore4.dto.AuthCredentials;
 import it.beije.suormary.bookstore4.dto.PaymentDetails;
 import it.beije.suormary.bookstore4.model.Author;
 import it.beije.suormary.bookstore4.model.Book;
 import it.beije.suormary.bookstore4.model.Order;
 import it.beije.suormary.bookstore4.model.OrderItem;
+import it.beije.suormary.bookstore4.model.User;
 import it.beije.suormary.bookstore4.service.EcommerceService;
 import it.beije.suormary.model.Contact;
 
@@ -97,7 +99,7 @@ public class BookstoreRestController {
 		return orders.get(orders.size() - 1);
 	}
 	
-	@PostMapping(value = "/basket/{userId}")
+	@GetMapping(value = "/basket/{userId}")
 	public HashMap<Book, Integer> addToBasket(@PathVariable Integer userId) {
 		return ecommerceService.basket(userId);
 	}
@@ -113,4 +115,26 @@ public class BookstoreRestController {
 		ecommerceService.removeFromBasket(bookId, userId);
 		return ecommerceService.basket(userId);
 	}
+	
+	@PostMapping(value = "/login")
+	public String login(@RequestBody AuthCredentials auth) {
+		System.out.println(auth.toString());
+		boolean logged = ecommerceService.findUser(auth.getEmail(), auth.getPassword()) != null;
+		return logged ? "Logged in" : "Wrong username or password";
+	}
+	
+	@GetMapping(value = "/user/{id}")
+	public User user(@PathVariable Integer id) {
+		User user = ecommerceService.findUserById(id);
+		return user;  
+	}
+	
+	@PostMapping(value = "/user")
+	public String newUser(@RequestBody User user) {
+		System.out.println(user);
+		boolean newUser = ecommerceService.addUser(user.getName(), user.getSurname(), user.getEmail(), user.getPassword());
+		return newUser ? "Welcome" : "Something went wrong...try again";
+	}
+	
+	
 }

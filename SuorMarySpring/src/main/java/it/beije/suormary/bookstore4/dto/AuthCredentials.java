@@ -25,4 +25,11 @@ public class AuthCredentials implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	@Override
+	public String toString() {
+		return "AuthCredentials [email=" + email + ", password=" + password + "]";
+	}
+	
+	
 }

@@ -315,4 +315,9 @@ public class EcommerceService {
 		order.setStatus("C");
 		orderRepository.save(order);
 	}
+
+	public User findUserById(Integer id) {
+		Optional<User> user = userRepository.findById(id);
+		return user.isPresent() ? user.get() : null;
+	}
 }
