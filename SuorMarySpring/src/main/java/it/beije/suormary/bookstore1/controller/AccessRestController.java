@@ -1,31 +1,86 @@
 package it.beije.suormary.bookstore1.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.beije.suormary.bookstore1.model.Book;
+import it.beije.suormary.bookstore1.dto.UserCredential;
+
 import it.beije.suormary.bookstore1.model.User;
-import it.beije.suormary.bookstore1.service.BookService;
-import it.beije.suormary.bookstore1.service.UserService;
+
+import it.beije.suormary.bookstore1.service.UserServiceRest;
 
 @RestController
+@RequestMapping(value = "/personal")
 public class AccessRestController {
 	@Autowired
-	private UserService userService;
+	private UserServiceRest userServiceRest;
 	
-	@Autowired
-	private BookService bookService;
 	
-	//@GetMapping(value="/login")
+	@GetMapping(value="/login/{email}/{password}")
+	public ResponseEntity<String> loginGet(@PathVariable String email, @PathVariable String password){
+		User u = userServiceRest.checkUser(email, password);
+		if(u!=null) {
+			return ResponseEntity.ok("utente con tali credenziali presente");
+		} else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("non presente");
+		}
+	}
 	
+	@PostMapping(value="/registration")
+	public User registrationPost(@RequestBody User u) {
+		if(u!=null) {
+			userServiceRest.insertUser(u);
+			return u;
+		}
+		return null;
+	}
+	
+	@PutMapping(value="/registration/{id}")
+	public User registrationPut(@PathVariable Integer id, @RequestBody User u) {
+		User output=null;
+		
+			if(u!=null && id>0) {
+				if(id.compareTo(u.getId()) == 0){
+					output=userServiceRest.updateUser(u);
+					
+				}
+			} else throw new RuntimeException("id non valido");
+			
+		return output;
+	}
+	
+	@DeleteMapping(value = "/registration/{id}")
+	public Map<String, String> registrationDelete(@PathVariable("id") Integer id){
+		Map<String, String> message = new HashMap<>();
+		try {
+			userServiceRest.deleteUser(id);
+			message.put("message", "utente eliminato!");
+		} catch(Exception e) {
+			message.put("message", "impossibile eliminare utente");
+		}
+		return message;
+	}
+	
+	
+	/*
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginGet(HttpSession session) {
 		System.out.println("GET /login");
@@ -42,6 +97,8 @@ public class AccessRestController {
 
 		
 	}
+	
+
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String loginPost(HttpSession session, Model model,
@@ -104,5 +161,6 @@ public class AccessRestController {
 		}
 		
 	}
+	*/
 
 }

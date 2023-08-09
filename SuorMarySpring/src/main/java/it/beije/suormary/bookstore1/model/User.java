@@ -1,6 +1,8 @@
 package it.beije.suormary.bookstore1.model;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 
 /*
  
@@ -24,6 +31,7 @@ CREATE TABLE `users` (
 
 */
 
+//@JsonInclude(Include.NON_NULL)
 @Entity
 @Table(name = "users")
 public class User {
@@ -46,6 +54,7 @@ public class User {
 	@Column(name = "surname")
 	private String surname;
 
+	@JsonProperty(value="creationDate")
 	@Column(name = "create_date")
 	private LocalDateTime creationDate;
 	
@@ -85,11 +94,23 @@ public class User {
 		this.password = password;
 	}
 	
+	
 	public LocalDateTime getCreationDate() {
 		return creationDate;
 	}
+	
+	@JsonProperty(value="creationDate")
+	public String getCrationDateAsString() {
+		return creationDate!=null ? creationDate.toString() : null;
+	}
+	
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
+	}
+	
+	@JsonProperty(value="creationDate")
+	public void setCreationDate(String creationDate) {
+		this.creationDate=LocalDateTime.parse(creationDate, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 	}
 	
 	public User() {}
@@ -100,6 +121,14 @@ public class User {
 		this.name = name;
 		this.surname = surname;
 		this.creationDate = LocalDateTime.now();
+	}
+	
+	public User(String email, String password, String name, String surname, LocalDateTime ldt) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.creationDate = ldt;
 	}
 	
 	public String toString() {

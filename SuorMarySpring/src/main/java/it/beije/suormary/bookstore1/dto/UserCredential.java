@@ -3,6 +3,15 @@ package it.beije.suormary.bookstore1.dto;
 public class UserCredential {
 	private String email;
 	private String password;
+	
+	public UserCredential() {
+		
+	}
+	
+	public UserCredential(String email, String password) {
+		setEmail(email);
+		setPassword(password);
+	}
 	public String getEmail() {
 		return email;
 	}

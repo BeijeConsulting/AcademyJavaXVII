@@ -8,6 +8,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+
 /*
 
 CREATE TABLE `authors` (
@@ -20,6 +24,7 @@ CREATE TABLE `authors` (
 
  */
 
+@JsonInclude(Include.NON_EMPTY)
 @Entity
 @Table(name = "authors")
 public class Author {
