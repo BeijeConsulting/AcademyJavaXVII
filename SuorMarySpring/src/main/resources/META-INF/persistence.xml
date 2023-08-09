@@ -5,6 +5,9 @@
 		<class>it.beije.suormary.model.ContactDetail</class>
 		<class>it.beije.suormary.model.Author</class>
 		<class>it.beije.suormary.model.Book</class>
+		<class>it.beije.suormary.model.Order</class>
+		<class>it.beije.suormary.model.OrderItem</class>
+		<class>it.beije.suormary.model.User</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		
 		<properties>
