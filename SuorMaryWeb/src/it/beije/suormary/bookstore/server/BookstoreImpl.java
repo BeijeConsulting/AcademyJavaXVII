@@ -11,6 +11,9 @@ import it.beije.suormary.bookstore.entities.CartItem;
 import it.beije.suormary.bookstore.entities.Order;
 import it.beije.suormary.bookstore.entities.OrderItem;
 import it.beije.suormary.bookstore.entities.User;
+import it.beije.suormary.bookstore.utils.AuthorUtils;
+import it.beije.suormary.bookstore.utils.CartUtils;
+import it.beije.suormary.bookstore.utils.UserUtils;
 
 import it.beije.suormary.bookstore.utils.BookUtils;
 import it.beije.suormary.bookstore.utils.UserUtils;
@@ -43,8 +46,8 @@ public class BookstoreImpl implements Bookstore{
 
 	@Override
 	public List<Author> getAuthorList() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Author> authors = AuthorUtils.getAuthorList();
+		return authors;
 	}
 
 	@Override
@@ -89,8 +92,8 @@ public class BookstoreImpl implements Bookstore{
 
 	@Override
 	public int getUserId(String email) {
-		// TODO Auto-generated method stub
-		return 0;
+		int userId = UserUtils.getUserId(email);
+		return userId;
 	}
 
 	@Override
@@ -100,20 +103,25 @@ public class BookstoreImpl implements Bookstore{
 
 	@Override
 	public Cart getCart(int userId) {
-		// TODO Auto-generated method stub
-		return null;
+		return CartUtils.getCart(userId);
 	}
 
 	@Override
-	public void addCartItem(int userId, CartItem cartItem) {
-		// TODO Auto-generated method stub
+	public void addCartItem(CartItem cartItem) {
+		CartUtils.addCartItem(cartItem);
 		
 	}
 
 	@Override
-	public void removeCartItem(int userId, CartItem cartItem) {
-		// TODO Auto-generated method stub
+	public void removeCartItem(int itemId) {
+		CartUtils.removeCartItem(itemId);
 		
 	}
-
+	
+	@Override
+	public void deleteCart(int userId) {
+		CartUtils.deleteCart(userId);
+		
+	}
+	
 }

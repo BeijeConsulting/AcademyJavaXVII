@@ -67,10 +67,13 @@ public interface Bookstore {
 	Cart getCart(int userId);
 	
 	@WebMethod
-	void addCartItem(int userId, CartItem cartItem);
+	void addCartItem(CartItem cartItem);
 	
 	@WebMethod
-	void removeCartItem(int userId, CartItem cartItem);
+	void removeCartItem(int itemId);
+	
+	@WebMethod
+	void deleteCart(int userId);
 	
 	
 }
