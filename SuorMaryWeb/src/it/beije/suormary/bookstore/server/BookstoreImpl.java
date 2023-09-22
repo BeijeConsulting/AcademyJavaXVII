@@ -70,7 +70,7 @@ public class BookstoreImpl implements Bookstore{
 	}
 
 	@Override
-	public List<OrderItem> getOrderItems(int orderId) {
+	public Order getOrder(int orderId) {
 		// TODO Auto-generated method stub
 		return null;
 	}

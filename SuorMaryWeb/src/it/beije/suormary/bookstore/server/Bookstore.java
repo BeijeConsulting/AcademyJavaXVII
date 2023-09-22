@@ -49,7 +49,7 @@ public interface Bookstore {
 	List<Order> getOrders(int userId);
 	
 	@WebMethod
-	List<OrderItem> getOrderItems(int orderId);
+	Order getOrder(int orderId);
 	
 	@WebMethod
 	User checkUser(String email, String password);
