@@ -24,14 +24,26 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _AddBookResponse_QNAME = new QName("http://server.jaxws.ws.web.suormary.beije.it/", "addBookResponse");
     private final static QName _GetBooks_QNAME = new QName("http://server.jaxws.ws.web.suormary.beije.it/", "getBooks");
+    private final static QName _GetOrdersResponse_QNAME = new QName("http://server.jaxws.ws.web.suormary.beije.it/", "getOrdersResponse");
     private final static QName _GetBooksResponse_QNAME = new QName("http://server.jaxws.ws.web.suormary.beije.it/", "getBooksResponse");
+    private final static QName _GetOrders_QNAME = new QName("http://server.jaxws.ws.web.suormary.beije.it/", "getOrders");
+    private final static QName _AddBook_QNAME = new QName("http://server.jaxws.ws.web.suormary.beije.it/", "addBook");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: it.beije.suormary.web.ws.jaxws.client
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link GetOrdersResponse }
+     * 
+     */
+    public GetOrdersResponse createGetOrdersResponse() {
+        return new GetOrdersResponse();
     }
 
     /**
@@ -43,6 +55,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link AddBookResponse }
+     * 
+     */
+    public AddBookResponse createAddBookResponse() {
+        return new AddBookResponse();
+    }
+
+    /**
+     * Create an instance of {@link AddBook }
+     * 
+     */
+    public AddBook createAddBook() {
+        return new AddBook();
+    }
+
+    /**
+     * Create an instance of {@link GetOrders }
+     * 
+     */
+    public GetOrders createGetOrders() {
+        return new GetOrders();
+    }
+
+    /**
      * Create an instance of {@link GetBooksResponse }
      * 
      */
@@ -51,11 +87,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Book }
+     * Create an instance of {@link JAXBElement }{@code <}{@link AddBookResponse }{@code >}}
      * 
      */
-    public Book createBook() {
-        return new Book();
+    @XmlElementDecl(namespace = "http://server.jaxws.ws.web.suormary.beije.it/", name = "addBookResponse")
+    public JAXBElement<AddBookResponse> createAddBookResponse(AddBookResponse value) {
+        return new JAXBElement<AddBookResponse>(_AddBookResponse_QNAME, AddBookResponse.class, null, value);
     }
 
     /**
@@ -68,12 +105,39 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetOrdersResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.jaxws.ws.web.suormary.beije.it/", name = "getOrdersResponse")
+    public JAXBElement<GetOrdersResponse> createGetOrdersResponse(GetOrdersResponse value) {
+        return new JAXBElement<GetOrdersResponse>(_GetOrdersResponse_QNAME, GetOrdersResponse.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link GetBooksResponse }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://server.jaxws.ws.web.suormary.beije.it/", name = "getBooksResponse")
     public JAXBElement<GetBooksResponse> createGetBooksResponse(GetBooksResponse value) {
         return new JAXBElement<GetBooksResponse>(_GetBooksResponse_QNAME, GetBooksResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetOrders }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.jaxws.ws.web.suormary.beije.it/", name = "getOrders")
+    public JAXBElement<GetOrders> createGetOrders(GetOrders value) {
+        return new JAXBElement<GetOrders>(_GetOrders_QNAME, GetOrders.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AddBook }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://server.jaxws.ws.web.suormary.beije.it/", name = "addBook")
+    public JAXBElement<AddBook> createAddBook(AddBook value) {
+        return new JAXBElement<AddBook>(_AddBook_QNAME, AddBook.class, null, value);
     }
 
 }
