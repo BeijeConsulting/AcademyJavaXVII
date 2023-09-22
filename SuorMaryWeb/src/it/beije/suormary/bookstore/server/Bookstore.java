@@ -18,7 +18,7 @@ import it.beije.suormary.bookstore.entities.OrderItem;
 import it.beije.suormary.bookstore.entities.User;
 
 @WebService
-@SOAPBinding(style = Style.RPC)
+@SOAPBinding(style = Style.DOCUMENT)
 public interface Bookstore {
 	
 	@WebMethod
