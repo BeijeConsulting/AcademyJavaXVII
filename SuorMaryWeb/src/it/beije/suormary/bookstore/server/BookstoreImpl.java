@@ -52,19 +52,19 @@ public class BookstoreImpl implements Bookstore{
 
 	@Override
 	public void createOrder(String address, int userId) {
-		// TODO Auto-generated method stub
+		OrderUtils.createOrder(address, userId);
 		
 	}
 
 	@Override
 	public void deleteOrder(int idOrder) {
-		// TODO Auto-generated method stub
+		OrderUtils.deleteOrder(idOrder);
 		
 	}
 
 	@Override
 	public void editStatus(Character status, int orderId) {
-		// TODO Auto-generated method stub
+		OrderUtils.editStatus(status, orderId);
 		
 	}
 

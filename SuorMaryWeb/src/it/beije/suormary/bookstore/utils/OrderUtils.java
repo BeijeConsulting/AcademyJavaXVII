@@ -11,15 +11,18 @@ import javax.servlet.http.HttpServletRequest;
 
 import it.beije.suormary.bookstore.entities.Book;
 import it.beije.suormary.bookstore.entities.Cart;
+import it.beije.suormary.bookstore.entities.CartItem;
 import it.beije.suormary.bookstore.entities.JPAManagerFactory;
 import it.beije.suormary.bookstore.entities.Order;
 import it.beije.suormary.bookstore.entities.OrderItem;
 
 public class OrderUtils {
 	
-	public static void createOrder(String address, HttpServletRequest request) {
+	public static void createOrder(String address, int userId) {
 		EntityManager em = null;
 		EntityTransaction transaction = null;
+		List<Book> books = null;
+		
 		try {
 			
 			em = JPAManagerFactory.getEntityManager();
@@ -27,35 +30,35 @@ public class OrderUtils {
 			
 			transaction.begin();
 			
-			int id = UserUtils.getUserId((String)request.getSession().getAttribute("email"));
-			
 			Order order = new Order();
 					
-			order.setUserId(id);
+			order.setUserId(userId);
 			order.setShippingAddress(address);
 			order.setDate(LocalDateTime.now());
 			order.setStatus('I');
 			
-			Map<Integer,Integer> cart = Cart.getCart(request);
+			List<CartItem> cartItems = (List<CartItem>) CartUtils.getCartItems(userId);
 			
-			Map<Book,Integer> books = BookUtils.getBooks(cart);
+			for(int i=0; i < cartItems.size(); i++) {
+				int bookId = cartItems.get(i).getBookId();
+				Book book = BookUtils.getBook(bookId);
+				books.add(book);
+			}
 			
 			double amount = 0;
-			for (Map.Entry<Book, Integer> entry : books.entrySet()) {
-				double price = entry.getKey().getPrice() * entry.getValue();
+			for (Book b : books) {
+				double price = b.getPrice();
 				amount += price;
 			}
 			
 			order.setAmount(amount);
 			em.persist(order);
 			em.flush();
-			
-			
-			
+		
 			int idOrder = order.getId();
 			
 			System.out.println("Ordine inserito, inizio gli item");
-			insertOrderItems(idOrder, books, em, transaction);
+			insertOrderItems(idOrder, cartItems, em, transaction);
 			transaction.commit();
 		} catch(Exception e) {
 			if(transaction != null) {
@@ -67,24 +70,21 @@ public class OrderUtils {
 		}
 	}
 	
-	public static void insertOrderItems(int orderId, Map<Book,Integer> books, EntityManager em, EntityTransaction transaction) throws Exception {
+	public static void insertOrderItems(int orderId, List<CartItem> cartItems, EntityManager em, EntityTransaction transaction) throws Exception {
 
 			System.out.println("Item iniziati");
 			OrderItem om = null;
 			Book book = null;
-			for (Map.Entry<Book, Integer> entry : books.entrySet()) {
+			for (CartItem ci : cartItems) {
+				book = BookUtils.getBook(ci.getBookId());
 				om = new OrderItem();
-				om.setBookId(entry.getKey().getId());
+				om.setBookId(ci.getBookId());
 				om.setOrderId(orderId);
-				om.setPrice(entry.getKey().getPrice());
-				om.setQuantity(entry.getValue());
+				om.setPrice(book.getPrice());
+				om.setQuantity(ci.getQuantity());
 				em.persist(om);
 				
-				Query query = em.createQuery("SELECT b FROM Book as b WHERE b.id = :id");
-				query.setParameter("id", entry.getKey().getId());
-				book = (Book) query.getSingleResult();
-				
-				book.setQuantity(book.getQuantity() - entry.getValue());
+				book.setQuantity(book.getQuantity() - ci.getQuantity());
 				em.persist(book);
 			}
 			System.out.println("Item finiti");
