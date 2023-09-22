@@ -26,6 +26,21 @@ public interface Bookstore {
 
     /**
      * 
+     * @param userid
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getOrders", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.GetOrders")
+    @ResponseWrapper(localName = "getOrdersResponse", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.GetOrdersResponse")
+    @Action(input = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/getOrdersRequest", output = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/getOrdersResponse")
+    public String getOrders(
+        @WebParam(name = "userid", targetNamespace = "")
+        int userid);
+
+    /**
+     * 
      * @return
      *     returns java.lang.String
      */
@@ -38,18 +53,51 @@ public interface Bookstore {
 
     /**
      * 
-     * @param user_0020Id
+     * @param editor
+     * @param quantity
+     * @param price
+     * @param description
+     * @param title
+     * @param authorid
      * @return
      *     returns java.lang.String
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getOrders", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.GetOrders")
-    @ResponseWrapper(localName = "getOrdersResponse", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.GetOrdersResponse")
-    @Action(input = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/getOrdersRequest", output = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/getOrdersResponse")
-    public String getOrders(
-        @WebParam(name = "user id", targetNamespace = "")
-        int user_0020Id);
+    @RequestWrapper(localName = "addBook", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.AddBook")
+    @ResponseWrapper(localName = "addBookResponse", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.AddBookResponse")
+    @Action(input = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/addBookRequest", output = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/addBookResponse")
+    public String addBook(
+        @WebParam(name = "title", targetNamespace = "")
+        String title,
+        @WebParam(name = "description", targetNamespace = "")
+        String description,
+        @WebParam(name = "authorid", targetNamespace = "")
+        int authorid,
+        @WebParam(name = "editor", targetNamespace = "")
+        String editor,
+        @WebParam(name = "price", targetNamespace = "")
+        double price,
+        @WebParam(name = "quantity", targetNamespace = "")
+        int quantity);
+
+    /**
+     * 
+     * @param password
+     * @param email
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "login", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.Login")
+    @ResponseWrapper(localName = "loginResponse", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.LoginResponse")
+    @Action(input = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/loginRequest", output = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/loginResponse")
+    public String login(
+        @WebParam(name = "email", targetNamespace = "")
+        String email,
+        @WebParam(name = "password", targetNamespace = "")
+        String password);
 
     /**
      * 
@@ -89,51 +137,6 @@ public interface Bookstore {
 
     /**
      * 
-     * @param user_0020Id
-     * @param books_0020Ids
-     * @param books_0020Quantities
-     * @param shipping_0020Address
-     * @param payment_0020Type
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "instantBuy", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.InstantBuy")
-    @ResponseWrapper(localName = "instantBuyResponse", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.InstantBuyResponse")
-    @Action(input = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/instantBuyRequest", output = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/instantBuyResponse")
-    public String instantBuy(
-        @WebParam(name = "Books ids", targetNamespace = "")
-        String books_0020Ids,
-        @WebParam(name = "Books quantities", targetNamespace = "")
-        String books_0020Quantities,
-        @WebParam(name = "user id", targetNamespace = "")
-        int user_0020Id,
-        @WebParam(name = "shipping address", targetNamespace = "")
-        String shipping_0020Address,
-        @WebParam(name = "payment type", targetNamespace = "")
-        String payment_0020Type);
-
-    /**
-     * 
-     * @param password
-     * @param email
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "login", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.Login")
-    @ResponseWrapper(localName = "loginResponse", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.LoginResponse")
-    @Action(input = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/loginRequest", output = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/loginResponse")
-    public String login(
-        @WebParam(name = "email", targetNamespace = "")
-        String email,
-        @WebParam(name = "password", targetNamespace = "")
-        String password);
-
-    /**
-     * 
      * @param surname
      * @param name
      * @param description
@@ -155,32 +158,29 @@ public interface Bookstore {
 
     /**
      * 
-     * @param editor
-     * @param quantity
-     * @param price
-     * @param description
-     * @param title
-     * @param author_0020Id
+     * @param shippingaddress
+     * @param booksids
+     * @param booksquantities
+     * @param userid
+     * @param paymenttype
      * @return
      *     returns java.lang.String
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "addBook", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.AddBook")
-    @ResponseWrapper(localName = "addBookResponse", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.AddBookResponse")
-    @Action(input = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/addBookRequest", output = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/addBookResponse")
-    public String addBook(
-        @WebParam(name = "title", targetNamespace = "")
-        String title,
-        @WebParam(name = "description", targetNamespace = "")
-        String description,
-        @WebParam(name = "author id", targetNamespace = "")
-        int author_0020Id,
-        @WebParam(name = "editor", targetNamespace = "")
-        String editor,
-        @WebParam(name = "price", targetNamespace = "")
-        double price,
-        @WebParam(name = "quantity", targetNamespace = "")
-        int quantity);
+    @RequestWrapper(localName = "instantBuy", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.InstantBuy")
+    @ResponseWrapper(localName = "instantBuyResponse", targetNamespace = "http://server.jaxws.ws.web.suormary.beije.it/", className = "it.beije.suormary.web.ws.jaxws.client.InstantBuyResponse")
+    @Action(input = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/instantBuyRequest", output = "http://server.jaxws.ws.web.suormary.beije.it/Bookstore/instantBuyResponse")
+    public String instantBuy(
+        @WebParam(name = "booksids", targetNamespace = "")
+        String booksids,
+        @WebParam(name = "booksquantities", targetNamespace = "")
+        String booksquantities,
+        @WebParam(name = "userid", targetNamespace = "")
+        int userid,
+        @WebParam(name = "shippingaddress", targetNamespace = "")
+        String shippingaddress,
+        @WebParam(name = "paymenttype", targetNamespace = "")
+        String paymenttype);
 
 }

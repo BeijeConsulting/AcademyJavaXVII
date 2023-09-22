@@ -18,10 +18,10 @@ public interface Bookstore {
 	public String getBooks();
 	
 	@WebMethod
-	public String addBook(@WebParam(name = "title") String title,@WebParam(name = "description") String description,@WebParam(name = "author id") int idAuthor, @WebParam(name = "editor") String editor, @WebParam(name = "price") double price, @WebParam(name = "quantity") int quantity);
+	public String addBook(@WebParam(name = "title") String title,@WebParam(name = "description") String description,@WebParam(name = "authorid") int idAuthor, @WebParam(name = "editor") String editor, @WebParam(name = "price") double price, @WebParam(name = "quantity") int quantity);
 	
 	@WebMethod
-	public String getOrders(@WebParam(name = "user id") int userId);
+	public String getOrders(@WebParam(name = "userid") int userId);
 	
 	
 	//AUTHOR	
@@ -41,5 +41,6 @@ public interface Bookstore {
 	
 	
 	//ORDER
-	public String instantBuy(@WebParam(name = "Books ids") String bookListId, @WebParam(name = "Books quantities") String bookListQuantity,@WebParam(name = "user id") int userId, @WebParam(name = "shipping address") String shippingAddress, @WebParam(name = "payment type") String paymentType);
+	@WebMethod
+	public String instantBuy(@WebParam(name = "booksids") String bookListId, @WebParam(name = "booksquantities") String bookListQuantity,@WebParam(name = "userid") int userId, @WebParam(name = "shippingaddress") String shippingAddress, @WebParam(name = "paymenttype") String paymentType);
 }

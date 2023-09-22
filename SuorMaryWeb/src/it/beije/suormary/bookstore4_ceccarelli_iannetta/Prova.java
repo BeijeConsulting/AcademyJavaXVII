@@ -25,6 +25,8 @@ public class Prova {
 		String paymentType = "cash";
 		
 		em.instantBuy(bookListId, bookListQuantity, userId, shippingAddress, paymentType);
+		
+//		System.out.println(em.userOrders(5));
 
 	}
 

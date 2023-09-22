@@ -277,6 +277,8 @@ public class EcommerceManager {
     }
     
     public Order instantBuy(List<Integer> bookListId, List<Integer> bookListQuantity, int userId, String shippingAddress, String paymentType){
+    	em = JPAEntityFactory.openEntity();
+    	EntityTransaction transaction = null;
     	
     	try{
     		Order order = new Order();
@@ -288,11 +290,9 @@ public class EcommerceManager {
     	order.setShippingAddress(shippingAddress);
     	order.setItems(new ArrayList<OrderItem>());
     	
-    	em = JPAEntityFactory.openEntity();
-    	EntityTransaction transaction = em.getTransaction();
+    	transaction = em.getTransaction();
     	transaction.begin();
     	em.persist(order);
-    	transaction.commit();
     	
     	int orderId = order.getId();
     	//List <OrderItem> items = new ArrayList<OrderItem>();
@@ -300,9 +300,6 @@ public class EcommerceManager {
     	OrderItem oi;
     	double totalPrice = 0;
     	for (int i = 0; i < bookListId.size(); i++) {
-    		
-        	transaction = em.getTransaction();
-        	transaction.begin();
     		
     		Query query = em.createQuery("SELECT b from Book as b WHERE b.id = :bookId");
     		query.setParameter("bookId", bookListId.get(i));
@@ -323,22 +320,25 @@ public class EcommerceManager {
     		totalPrice += oi.getPrice();
     		
     		em.persist(oi);
-    		transaction.commit();
+    		//transaction.commit();
     		
     		order.getItems().add(oi);
     		
     	}
-    		transaction = em.getTransaction();
-    		transaction.begin();
+    		//transaction = em.getTransaction();
+    		//transaction.begin();
     		//order.setItems(items);
     		order.setAmount(totalPrice);
     		//em.persist(order);
     		transaction.commit();
-    		em.close();
     	return order;
     	}
     	catch (Exception e){
+    		transaction.rollback();
     		return null;
+    	}
+    	finally {
+    		em.close();
     	}
     }
     

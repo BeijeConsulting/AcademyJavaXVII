@@ -3,7 +3,6 @@ package it.beije.suormary.web.ws.jaxws.client;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -19,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="author id" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="authorid" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *         &lt;element name="editor" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="price" type="{http://www.w3.org/2001/XMLSchema}double"/>
  *         &lt;element name="quantity" type="{http://www.w3.org/2001/XMLSchema}int"/>
@@ -35,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "addBook", propOrder = {
     "title",
     "description",
-    "author0020Id",
+    "authorid",
     "editor",
     "price",
     "quantity"
@@ -44,8 +43,7 @@ public class AddBook {
 
     protected String title;
     protected String description;
-    @XmlElement(name = "author id")
-    protected int author0020Id;
+    protected int authorid;
     protected String editor;
     protected double price;
     protected int quantity;
@@ -99,19 +97,19 @@ public class AddBook {
     }
 
     /**
-     * Recupera il valore della proprietà author0020Id.
+     * Recupera il valore della proprietà authorid.
      * 
      */
-    public int getAuthor_0020Id() {
-        return author0020Id;
+    public int getAuthorid() {
+        return authorid;
     }
 
     /**
-     * Imposta il valore della proprietà author0020Id.
+     * Imposta il valore della proprietà authorid.
      * 
      */
-    public void setAuthor_0020Id(int value) {
-        this.author0020Id = value;
+    public void setAuthorid(int value) {
+        this.authorid = value;
     }
 
     /**

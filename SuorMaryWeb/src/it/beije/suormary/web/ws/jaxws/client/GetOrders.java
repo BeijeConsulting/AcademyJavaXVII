@@ -3,7 +3,6 @@ package it.beije.suormary.web.ws.jaxws.client;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -17,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="user id" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="userid" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -28,27 +27,26 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "getOrders", propOrder = {
-    "user0020Id"
+    "userid"
 })
 public class GetOrders {
 
-    @XmlElement(name = "user id")
-    protected int user0020Id;
+    protected int userid;
 
     /**
-     * Recupera il valore della proprietà user0020Id.
+     * Recupera il valore della proprietà userid.
      * 
      */
-    public int getUser_0020Id() {
-        return user0020Id;
+    public int getUserid() {
+        return userid;
     }
 
     /**
-     * Imposta il valore della proprietà user0020Id.
+     * Imposta il valore della proprietà userid.
      * 
      */
-    public void setUser_0020Id(int value) {
-        this.user0020Id = value;
+    public void setUserid(int value) {
+        this.userid = value;
     }
 
 }
