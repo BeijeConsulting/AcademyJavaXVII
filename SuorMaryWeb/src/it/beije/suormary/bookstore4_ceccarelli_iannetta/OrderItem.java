@@ -1,5 +1,7 @@
 package it.beije.suormary.bookstore4_ceccarelli_iannetta;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +28,9 @@ CREATE TABLE `order_items` (
 
 @Entity
 @Table(name = "order_items")
-public class OrderItem {
+public class OrderItem implements Serializable{
+
+	private static final long serialVersionUID = 2505163881822796090L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

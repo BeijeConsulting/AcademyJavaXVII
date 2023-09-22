@@ -46,8 +46,8 @@ public class User {
 	private LocalDateTime creationDate;
 	
 	@JsonIgnore
-	 @Transient
-	 private HashMap<Book, Integer> basket;
+	@Transient
+	private HashMap<Book, Integer> basket;
 
 	public HashMap<Book, Integer> getBasket() {
 		return basket;

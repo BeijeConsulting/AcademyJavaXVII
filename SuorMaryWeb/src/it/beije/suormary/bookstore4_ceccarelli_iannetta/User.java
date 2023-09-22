@@ -1,5 +1,6 @@
 package it.beije.suormary.bookstore4_ceccarelli_iannetta;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,8 +29,9 @@ CREATE TABLE `users` (
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable{
 	
+	private static final long serialVersionUID = -5068958536097385537L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
