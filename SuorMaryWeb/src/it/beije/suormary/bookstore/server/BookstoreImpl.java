@@ -6,7 +6,6 @@ import javax.jws.WebService;
 
 import it.beije.suormary.bookstore.entities.Author;
 import it.beije.suormary.bookstore.entities.Book;
-import it.beije.suormary.bookstore.entities.Cart;
 import it.beije.suormary.bookstore.entities.CartItem;
 import it.beije.suormary.bookstore.entities.Order;
 import it.beije.suormary.bookstore.entities.OrderItem;
@@ -40,7 +39,7 @@ public class BookstoreImpl implements Bookstore{
 
 	@Override
 	public void addAuthor(String name, String surname, String description) {
-		// TODO Auto-generated method stub
+		AuthorUtils.addAuthor(name, surname, description);
 		
 	}
 
@@ -100,13 +99,13 @@ public class BookstoreImpl implements Bookstore{
 	}
 
 	@Override
-	public Cart getCart(int userId) {
-		return CartUtils.getCart(userId);
+	public List<CartItem> getCart(int userId) {
+		return CartUtils.getCartItems(userId);
 	}
 
 	@Override
-	public void addCartItem(CartItem cartItem) {
-		CartUtils.addCartItem(cartItem);
+	public void addCartItem(Integer userId, Integer bookId, Integer quantity) {
+		CartUtils.addCartItem(userId, bookId, quantity);
 		
 	}
 

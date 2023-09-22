@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-import it.beije.suormary.bookstore.entities.Cart;
 import it.beije.suormary.bookstore.entities.CartItem;
 import it.beije.suormary.bookstore.entities.JPAManagerFactory;
 import it.beije.suormary.bookstore.entities.Order;
@@ -33,14 +32,6 @@ public class CartUtils {
 			entityManager.close();
 		}
 		return items;
-	}
-	
-	public static Cart getCart(int userId) {
-		List<CartItem> items = getCartItems(userId);
-		Cart cart = new Cart();
-		cart.setItems(items);
-		cart.setUserId(userId);
-		return cart;
 	}
 	
 	public static void deleteCart(int userId) {
@@ -87,8 +78,14 @@ public class CartUtils {
 		}
 	}
 	
-	public static void addCartItem(CartItem item) {
+	public static void addCartItem(Integer userId, Integer bookId, Integer quantity) {
 		EntityManager em = null;
+		
+		CartItem item = new CartItem();
+		item.setBookId(bookId);
+		item.setQuantity(quantity);
+		item.setUserId(userId);
+		
 		try {
 			em = JPAManagerFactory.getEntityManager();
 			EntityTransaction transaction = em.getTransaction();

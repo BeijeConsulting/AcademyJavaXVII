@@ -2,15 +2,11 @@ package it.beije.suormary.bookstore.utils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
-import javax.servlet.http.HttpServletRequest;
 
 import it.beije.suormary.bookstore.entities.Book;
-import it.beije.suormary.bookstore.entities.Cart;
 import it.beije.suormary.bookstore.entities.CartItem;
 import it.beije.suormary.bookstore.entities.JPAManagerFactory;
 import it.beije.suormary.bookstore.entities.Order;
@@ -58,7 +54,7 @@ public class OrderUtils {
 			int idOrder = order.getId();
 			
 			System.out.println("Ordine inserito, inizio gli item");
-			insertOrderItems(idOrder, cartItems, em, transaction);
+			insertOrderItems(idOrder, userId, em, transaction);
 			transaction.commit();
 		} catch(Exception e) {
 			if(transaction != null) {
@@ -70,11 +66,14 @@ public class OrderUtils {
 		}
 	}
 	
-	public static void insertOrderItems(int orderId, List<CartItem> cartItems, EntityManager em, EntityTransaction transaction) throws Exception {
+	public static void insertOrderItems(int orderId, int userId, EntityManager em, EntityTransaction transaction) throws Exception {
 
 			System.out.println("Item iniziati");
 			OrderItem om = null;
 			Book book = null;
+			
+			List<CartItem> cartItems = CartUtils.getCartItems(userId);
+			
 			for (CartItem ci : cartItems) {
 				book = BookUtils.getBook(ci.getBookId());
 				om = new OrderItem();
@@ -167,7 +166,7 @@ public class OrderUtils {
 			em = JPAManagerFactory.getEntityManager();
 			Query query = em.createQuery("SELECT o FROM Order as o WHERE o.id = :id");
 			query.setParameter("id", orderId);
-			order = (Order) query.getResultList();
+			order = (Order) query.getSingleResult();
 	
 			order.setItems(OrderItemUtils.getOrderItems(order));
 		

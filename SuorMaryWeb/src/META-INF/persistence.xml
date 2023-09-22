@@ -6,6 +6,7 @@
 		<class>it.beije.suormary.bookstore.entities.Order</class>
 		<class>it.beije.suormary.bookstore.entities.OrderItem</class>
 		<class>it.beije.suormary.bookstore.entities.User</class>
+		<class>it.beije.suormary.bookstore.entities.CartItem</class>
 		<exclude-unlisted-classes>true</exclude-unlisted-classes>
 		
 		<properties>

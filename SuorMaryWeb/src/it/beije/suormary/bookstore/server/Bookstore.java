@@ -1,24 +1,21 @@
 package it.beije.suormary.bookstore.server;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
-import javax.servlet.http.HttpServletRequest;
+import javax.jws.soap.SOAPBinding.Use;
 
 import it.beije.suormary.bookstore.entities.Author;
 import it.beije.suormary.bookstore.entities.Book;
-import it.beije.suormary.bookstore.entities.Cart;
 import it.beije.suormary.bookstore.entities.CartItem;
 import it.beije.suormary.bookstore.entities.Order;
-import it.beije.suormary.bookstore.entities.OrderItem;
 import it.beije.suormary.bookstore.entities.User;
 
 @WebService
-@SOAPBinding(style = Style.DOCUMENT)
+@SOAPBinding(style = Style.DOCUMENT, use = Use.LITERAL)
 public interface Bookstore {
 	
 	@WebMethod
@@ -64,10 +61,10 @@ public interface Bookstore {
 	void createUser(String email, String password, String name, String surname);
 	
 	@WebMethod
-	Cart getCart(int userId);
+	List<CartItem> getCart(int userId);
 	
 	@WebMethod
-	void addCartItem(CartItem cartItem);
+	void addCartItem(Integer userId, Integer bookId, Integer quantity);
 	
 	@WebMethod
 	void removeCartItem(int itemId);
