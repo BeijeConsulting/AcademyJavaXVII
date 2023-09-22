@@ -160,4 +160,24 @@ public class OrderUtils {
 		return orders;
 	}
 	
+	public static Order getOrder(int orderId) {
+		EntityManager em = null;
+		Order order = null;
+		try {
+			em = JPAManagerFactory.getEntityManager();
+			Query query = em.createQuery("SELECT o FROM Order as o WHERE o.id = :id");
+			query.setParameter("id", orderId);
+			order = (Order) query.getResultList();
+	
+			order.setItems(OrderItemUtils.getOrderItems(order));
+		
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return order;
+	}
+	
 }
