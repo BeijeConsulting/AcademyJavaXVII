@@ -11,7 +11,7 @@ import it.beije.suormary.bookstore.entities.JPAManagerFactory;
 
 public class AuthorUtils {
 	
-	public static void addAuthor(String name, String surname, String description) {
+	public static boolean addAuthor(String name, String surname, String description) {
 		Author author = null;
 		EntityManager entityManager = null;
 		EntityTransaction transaction = null;
@@ -26,11 +26,14 @@ public class AuthorUtils {
 			
 			transaction.commit();
 			
+			return true;
+			
 		} catch (Exception e) {
 			if(transaction != null) {
 				transaction.rollback();
 			}
 			e.printStackTrace();
+			return false;
 		} finally {
 			entityManager.close();
 		}

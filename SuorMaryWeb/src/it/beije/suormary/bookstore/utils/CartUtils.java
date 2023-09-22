@@ -34,11 +34,12 @@ public class CartUtils {
 		return items;
 	}
 	
-	public static void deleteCart(int userId) {
+	public static boolean deleteCart(int userId) {
 		EntityManager em = null;
+		EntityTransaction transaction = null;
 		try {
 			em = JPAManagerFactory.getEntityManager();
-			EntityTransaction transaction = em.getTransaction();
+			transaction = em.getTransaction();
 			transaction.begin();
 			
 			Query query = em.createQuery("SELECT c FROM CartItem as c WHERE c.userId = :id");
@@ -50,18 +51,26 @@ public class CartUtils {
 			}
 			
 			transaction.commit();
+			
+			return true;
 		}catch(Exception e) {
+			if(transaction != null) {
+				transaction.rollback();
+			}
+			
 			e.printStackTrace();
+			return false;
 		} finally {
 			em.close();
 		}
 	}
 	
-	public static void removeCartItem(int itemId) {
+	public static boolean removeCartItem(int itemId) {
 		EntityManager em = null;
+		EntityTransaction transaction = null;
 		try {
 			em = JPAManagerFactory.getEntityManager();
-			EntityTransaction transaction = em.getTransaction();
+			transaction = em.getTransaction();
 			transaction.begin();
 			
 			Query query = em.createQuery("SELECT c FROM CartItem as c WHERE c.id = :id");
@@ -71,15 +80,23 @@ public class CartUtils {
 			em.remove(item);
 			
 			transaction.commit();
+			
+			return true;
 		}catch(Exception e) {
+			if(transaction != null) {
+				transaction.rollback();
+			}
+			
 			e.printStackTrace();
+			return false;
 		} finally {
 			em.close();
 		}
 	}
 	
-	public static void addCartItem(Integer userId, Integer bookId, Integer quantity) {
+	public static boolean addCartItem(Integer userId, Integer bookId, Integer quantity) {
 		EntityManager em = null;
+		EntityTransaction transaction = null;
 		
 		CartItem item = new CartItem();
 		item.setBookId(bookId);
@@ -88,14 +105,20 @@ public class CartUtils {
 		
 		try {
 			em = JPAManagerFactory.getEntityManager();
-			EntityTransaction transaction = em.getTransaction();
+			transaction = em.getTransaction();
 			transaction.begin();
 		
 			em.persist(item);
 			
 			transaction.commit();
+			return true;
 		}catch(Exception e) {
+			if(transaction != null) {
+				transaction.rollback();
+			}
+			
 			e.printStackTrace();
+			return false;
 		} finally {
 			em.close();
 		}

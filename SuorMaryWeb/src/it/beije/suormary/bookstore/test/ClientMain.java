@@ -12,6 +12,7 @@ public class ClientMain {
         System.out.println("Book to string: " + bookstore.getBook(1).toString());
         System.out.println("Book: " + bookstore.getBook(1));
         System.out.println("Book: " + bookstore.getBook(1).getTitle());
+
 	}
 
 }
