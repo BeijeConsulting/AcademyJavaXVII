@@ -49,7 +49,7 @@ public class User {
     protected String surname;
 
     /**
-     * Recupera il valore della proprietà creationDate.
+     * Recupera il valore della proprietï¿½ creationDate.
      * 
      * @return
      *     possible object is
@@ -61,7 +61,7 @@ public class User {
     }
 
     /**
-     * Imposta il valore della proprietà creationDate.
+     * Imposta il valore della proprietï¿½ creationDate.
      * 
      * @param value
      *     allowed object is
@@ -73,7 +73,7 @@ public class User {
     }
 
     /**
-     * Recupera il valore della proprietà email.
+     * Recupera il valore della proprietï¿½ email.
      * 
      * @return
      *     possible object is
@@ -85,7 +85,7 @@ public class User {
     }
 
     /**
-     * Imposta il valore della proprietà email.
+     * Imposta il valore della proprietï¿½ email.
      * 
      * @param value
      *     allowed object is
@@ -97,7 +97,7 @@ public class User {
     }
 
     /**
-     * Recupera il valore della proprietà id.
+     * Recupera il valore della proprietï¿½ id.
      * 
      */
     public int getId() {
@@ -105,7 +105,7 @@ public class User {
     }
 
     /**
-     * Imposta il valore della proprietà id.
+     * Imposta il valore della proprietï¿½ id.
      * 
      */
     public void setId(int value) {
@@ -113,7 +113,7 @@ public class User {
     }
 
     /**
-     * Recupera il valore della proprietà name.
+     * Recupera il valore della proprietï¿½ name.
      * 
      * @return
      *     possible object is
@@ -125,7 +125,7 @@ public class User {
     }
 
     /**
-     * Imposta il valore della proprietà name.
+     * Imposta il valore della proprietï¿½ name.
      * 
      * @param value
      *     allowed object is
@@ -137,7 +137,7 @@ public class User {
     }
 
     /**
-     * Recupera il valore della proprietà password.
+     * Recupera il valore della proprietï¿½ password.
      * 
      * @return
      *     possible object is
@@ -149,7 +149,7 @@ public class User {
     }
 
     /**
-     * Imposta il valore della proprietà password.
+     * Imposta il valore della proprietï¿½ password.
      * 
      * @param value
      *     allowed object is
@@ -161,7 +161,7 @@ public class User {
     }
 
     /**
-     * Recupera il valore della proprietà surname.
+     * Recupera il valore della proprietï¿½ surname.
      * 
      * @return
      *     possible object is
@@ -173,7 +173,7 @@ public class User {
     }
 
     /**
-     * Imposta il valore della proprietà surname.
+     * Imposta il valore della proprietï¿½ surname.
      * 
      * @param value
      *     allowed object is
@@ -183,5 +183,17 @@ public class User {
     public void setSurname(String value) {
         this.surname = value;
     }
-
+    
+    public String toString() {
+		StringBuilder builder = new StringBuilder("{ ")
+				.append("id : ").append(id)
+				.append(", email : ").append(email)
+				.append(", name : ").append(name)
+				.append(", surname : ").append(surname)
+				.append(", creationDate : ").append(creationDate)
+				.append(" }");
+		
+		return builder.toString();
+	}	
+    
 }

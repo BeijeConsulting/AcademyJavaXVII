@@ -43,7 +43,7 @@ public class CartItem {
     protected Integer userId;
 
     /**
-     * Recupera il valore della proprietà bookId.
+     * Recupera il valore della proprietï¿½ bookId.
      * 
      * @return
      *     possible object is
@@ -55,7 +55,7 @@ public class CartItem {
     }
 
     /**
-     * Imposta il valore della proprietà bookId.
+     * Imposta il valore della proprietï¿½ bookId.
      * 
      * @param value
      *     allowed object is
@@ -67,7 +67,7 @@ public class CartItem {
     }
 
     /**
-     * Recupera il valore della proprietà id.
+     * Recupera il valore della proprietï¿½ id.
      * 
      */
     public int getId() {
@@ -75,7 +75,7 @@ public class CartItem {
     }
 
     /**
-     * Imposta il valore della proprietà id.
+     * Imposta il valore della proprietï¿½ id.
      * 
      */
     public void setId(int value) {
@@ -83,7 +83,7 @@ public class CartItem {
     }
 
     /**
-     * Recupera il valore della proprietà quantity.
+     * Recupera il valore della proprietï¿½ quantity.
      * 
      * @return
      *     possible object is
@@ -95,7 +95,7 @@ public class CartItem {
     }
 
     /**
-     * Imposta il valore della proprietà quantity.
+     * Imposta il valore della proprietï¿½ quantity.
      * 
      * @param value
      *     allowed object is
@@ -107,7 +107,7 @@ public class CartItem {
     }
 
     /**
-     * Recupera il valore della proprietà userId.
+     * Recupera il valore della proprietï¿½ userId.
      * 
      * @return
      *     possible object is
@@ -119,7 +119,7 @@ public class CartItem {
     }
 
     /**
-     * Imposta il valore della proprietà userId.
+     * Imposta il valore della proprietï¿½ userId.
      * 
      * @param value
      *     allowed object is
@@ -129,5 +129,10 @@ public class CartItem {
     public void setUserId(Integer value) {
         this.userId = value;
     }
-
+    
+    @Override
+	public String toString() {
+		return "CartItem [id=" + id + ", userId=" + userId + ", bookId=" + bookId + ", quantity=" + quantity + "]";
+	}
+    
 }

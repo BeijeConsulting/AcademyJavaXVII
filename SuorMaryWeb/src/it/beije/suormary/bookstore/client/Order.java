@@ -58,7 +58,7 @@ public class Order {
     protected int userId;
 
     /**
-     * Recupera il valore della proprietà amount.
+     * Recupera il valore della proprietï¿½ amount.
      * 
      */
     public double getAmount() {
@@ -66,7 +66,7 @@ public class Order {
     }
 
     /**
-     * Imposta il valore della proprietà amount.
+     * Imposta il valore della proprietï¿½ amount.
      * 
      */
     public void setAmount(double value) {
@@ -74,7 +74,7 @@ public class Order {
     }
 
     /**
-     * Recupera il valore della proprietà date.
+     * Recupera il valore della proprietï¿½ date.
      * 
      * @return
      *     possible object is
@@ -86,7 +86,7 @@ public class Order {
     }
 
     /**
-     * Imposta il valore della proprietà date.
+     * Imposta il valore della proprietï¿½ date.
      * 
      * @param value
      *     allowed object is
@@ -98,7 +98,7 @@ public class Order {
     }
 
     /**
-     * Recupera il valore della proprietà id.
+     * Recupera il valore della proprietï¿½ id.
      * 
      */
     public int getId() {
@@ -106,7 +106,7 @@ public class Order {
     }
 
     /**
-     * Imposta il valore della proprietà id.
+     * Imposta il valore della proprietï¿½ id.
      * 
      */
     public void setId(int value) {
@@ -143,7 +143,7 @@ public class Order {
     }
 
     /**
-     * Recupera il valore della proprietà shippingAddress.
+     * Recupera il valore della proprietï¿½ shippingAddress.
      * 
      * @return
      *     possible object is
@@ -155,7 +155,7 @@ public class Order {
     }
 
     /**
-     * Imposta il valore della proprietà shippingAddress.
+     * Imposta il valore della proprietï¿½ shippingAddress.
      * 
      * @param value
      *     allowed object is
@@ -167,7 +167,7 @@ public class Order {
     }
 
     /**
-     * Recupera il valore della proprietà status.
+     * Recupera il valore della proprietï¿½ status.
      * 
      */
     public int getStatus() {
@@ -175,7 +175,7 @@ public class Order {
     }
 
     /**
-     * Imposta il valore della proprietà status.
+     * Imposta il valore della proprietï¿½ status.
      * 
      */
     public void setStatus(int value) {
@@ -183,7 +183,7 @@ public class Order {
     }
 
     /**
-     * Recupera il valore della proprietà userId.
+     * Recupera il valore della proprietï¿½ userId.
      * 
      */
     public int getUserId() {
@@ -191,11 +191,25 @@ public class Order {
     }
 
     /**
-     * Imposta il valore della proprietà userId.
+     * Imposta il valore della proprietï¿½ userId.
      * 
      */
     public void setUserId(int value) {
         this.userId = value;
     }
-
+    
+    public String toString() {
+		StringBuilder builder = new StringBuilder("{ ")
+				.append("id : ").append(id)
+				.append(", userId : ").append(userId)
+				.append(", date : ").append(date)
+				.append(", status : ").append(status)
+				.append(", amount : ").append(amount)
+				.append(", shippingAddress : ").append(shippingAddress)
+				.append(", items : ").append(items)
+				.append(" }");
+		
+		return builder.toString();
+	}	
+    
 }

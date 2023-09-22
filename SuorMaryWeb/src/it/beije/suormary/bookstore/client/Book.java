@@ -55,7 +55,7 @@ public class Book {
     protected String title;
 
     /**
-     * Recupera il valore della proprietà author.
+     * Recupera il valore della proprietï¿½ author.
      * 
      * @return
      *     possible object is
@@ -67,7 +67,7 @@ public class Book {
     }
 
     /**
-     * Imposta il valore della proprietà author.
+     * Imposta il valore della proprietï¿½ author.
      * 
      * @param value
      *     allowed object is
@@ -79,7 +79,7 @@ public class Book {
     }
 
     /**
-     * Recupera il valore della proprietà authorId.
+     * Recupera il valore della proprietï¿½ authorId.
      * 
      */
     public int getAuthorId() {
@@ -87,7 +87,7 @@ public class Book {
     }
 
     /**
-     * Imposta il valore della proprietà authorId.
+     * Imposta il valore della proprietï¿½ authorId.
      * 
      */
     public void setAuthorId(int value) {
@@ -95,7 +95,7 @@ public class Book {
     }
 
     /**
-     * Recupera il valore della proprietà description.
+     * Recupera il valore della proprietï¿½ description.
      * 
      * @return
      *     possible object is
@@ -107,7 +107,7 @@ public class Book {
     }
 
     /**
-     * Imposta il valore della proprietà description.
+     * Imposta il valore della proprietï¿½ description.
      * 
      * @param value
      *     allowed object is
@@ -119,7 +119,7 @@ public class Book {
     }
 
     /**
-     * Recupera il valore della proprietà editor.
+     * Recupera il valore della proprietï¿½ editor.
      * 
      * @return
      *     possible object is
@@ -131,7 +131,7 @@ public class Book {
     }
 
     /**
-     * Imposta il valore della proprietà editor.
+     * Imposta il valore della proprietï¿½ editor.
      * 
      * @param value
      *     allowed object is
@@ -143,7 +143,7 @@ public class Book {
     }
 
     /**
-     * Recupera il valore della proprietà id.
+     * Recupera il valore della proprietï¿½ id.
      * 
      */
     public int getId() {
@@ -151,7 +151,7 @@ public class Book {
     }
 
     /**
-     * Imposta il valore della proprietà id.
+     * Imposta il valore della proprietï¿½ id.
      * 
      */
     public void setId(int value) {
@@ -159,7 +159,7 @@ public class Book {
     }
 
     /**
-     * Recupera il valore della proprietà price.
+     * Recupera il valore della proprietï¿½ price.
      * 
      */
     public double getPrice() {
@@ -167,7 +167,7 @@ public class Book {
     }
 
     /**
-     * Imposta il valore della proprietà price.
+     * Imposta il valore della proprietï¿½ price.
      * 
      */
     public void setPrice(double value) {
@@ -175,7 +175,7 @@ public class Book {
     }
 
     /**
-     * Recupera il valore della proprietà quantity.
+     * Recupera il valore della proprietï¿½ quantity.
      * 
      */
     public int getQuantity() {
@@ -183,7 +183,7 @@ public class Book {
     }
 
     /**
-     * Imposta il valore della proprietà quantity.
+     * Imposta il valore della proprietï¿½ quantity.
      * 
      */
     public void setQuantity(int value) {
@@ -191,7 +191,7 @@ public class Book {
     }
 
     /**
-     * Recupera il valore della proprietà title.
+     * Recupera il valore della proprietï¿½ title.
      * 
      * @return
      *     possible object is
@@ -203,7 +203,7 @@ public class Book {
     }
 
     /**
-     * Imposta il valore della proprietà title.
+     * Imposta il valore della proprietï¿½ title.
      * 
      * @param value
      *     allowed object is
@@ -213,5 +213,19 @@ public class Book {
     public void setTitle(String value) {
         this.title = value;
     }
+    
+    @Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder("{ ")
+				.append("id : ").append(id)
+				.append(", title : ").append(title)
+				.append(", description : ").append(description)
+				.append(", editor : ").append(editor)
+				.append(", price : ").append(price)
+				.append(", quantity : ").append(quantity)
+				.append(", authorId : ").append(authorId)
+				.append(" }");
+		return builder.toString();
+	}	
 
 }

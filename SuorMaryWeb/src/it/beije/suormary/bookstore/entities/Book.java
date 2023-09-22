@@ -132,7 +132,8 @@ public class Book {
 	public void setAuthor(Author author) {
 		this.author = author;
 	}
-
+	
+	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
@@ -143,7 +144,6 @@ public class Book {
 				.append(", quantity : ").append(quantity)
 				.append(", authorId : ").append(authorId)
 				.append(" }");
-		
 		return builder.toString();
 	}	
 

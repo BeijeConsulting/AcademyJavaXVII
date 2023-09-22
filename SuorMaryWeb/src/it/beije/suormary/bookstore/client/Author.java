@@ -43,7 +43,7 @@ public class Author {
     protected String surname;
 
     /**
-     * Recupera il valore della proprietà description.
+     * Recupera il valore della proprietï¿½ description.
      * 
      * @return
      *     possible object is
@@ -55,7 +55,7 @@ public class Author {
     }
 
     /**
-     * Imposta il valore della proprietà description.
+     * Imposta il valore della proprietï¿½ description.
      * 
      * @param value
      *     allowed object is
@@ -67,7 +67,7 @@ public class Author {
     }
 
     /**
-     * Recupera il valore della proprietà id.
+     * Recupera il valore della proprietï¿½ id.
      * 
      */
     public int getId() {
@@ -75,7 +75,7 @@ public class Author {
     }
 
     /**
-     * Imposta il valore della proprietà id.
+     * Imposta il valore della proprietï¿½ id.
      * 
      */
     public void setId(int value) {
@@ -83,7 +83,7 @@ public class Author {
     }
 
     /**
-     * Recupera il valore della proprietà name.
+     * Recupera il valore della proprietï¿½ name.
      * 
      * @return
      *     possible object is
@@ -95,7 +95,7 @@ public class Author {
     }
 
     /**
-     * Imposta il valore della proprietà name.
+     * Imposta il valore della proprietï¿½ name.
      * 
      * @param value
      *     allowed object is
@@ -107,7 +107,7 @@ public class Author {
     }
 
     /**
-     * Recupera il valore della proprietà surname.
+     * Recupera il valore della proprietï¿½ surname.
      * 
      * @return
      *     possible object is
@@ -119,7 +119,7 @@ public class Author {
     }
 
     /**
-     * Imposta il valore della proprietà surname.
+     * Imposta il valore della proprietï¿½ surname.
      * 
      * @param value
      *     allowed object is
@@ -129,5 +129,17 @@ public class Author {
     public void setSurname(String value) {
         this.surname = value;
     }
+    
+    
+    public String toString() {
+		StringBuilder builder = new StringBuilder("{ ")
+				.append("id : ").append(id)
+				.append(", name : ").append(name)
+				.append(", surname : ").append(surname)
+				.append(", description : ").append(description)
+				.append(" }");
+		
+		return builder.toString();
+	}	
 
 }

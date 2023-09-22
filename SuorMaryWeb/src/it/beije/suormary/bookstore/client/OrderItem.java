@@ -49,7 +49,7 @@ public class OrderItem {
     protected int quantity;
 
     /**
-     * Recupera il valore della proprietà book.
+     * Recupera il valore della proprietï¿½ book.
      * 
      * @return
      *     possible object is
@@ -61,7 +61,7 @@ public class OrderItem {
     }
 
     /**
-     * Imposta il valore della proprietà book.
+     * Imposta il valore della proprietï¿½ book.
      * 
      * @param value
      *     allowed object is
@@ -73,7 +73,7 @@ public class OrderItem {
     }
 
     /**
-     * Recupera il valore della proprietà bookId.
+     * Recupera il valore della proprietï¿½ bookId.
      * 
      */
     public int getBookId() {
@@ -81,7 +81,7 @@ public class OrderItem {
     }
 
     /**
-     * Imposta il valore della proprietà bookId.
+     * Imposta il valore della proprietï¿½ bookId.
      * 
      */
     public void setBookId(int value) {
@@ -89,7 +89,7 @@ public class OrderItem {
     }
 
     /**
-     * Recupera il valore della proprietà id.
+     * Recupera il valore della proprietï¿½ id.
      * 
      */
     public int getId() {
@@ -97,7 +97,7 @@ public class OrderItem {
     }
 
     /**
-     * Imposta il valore della proprietà id.
+     * Imposta il valore della proprietï¿½ id.
      * 
      */
     public void setId(int value) {
@@ -105,7 +105,7 @@ public class OrderItem {
     }
 
     /**
-     * Recupera il valore della proprietà orderId.
+     * Recupera il valore della proprietï¿½ orderId.
      * 
      */
     public int getOrderId() {
@@ -113,7 +113,7 @@ public class OrderItem {
     }
 
     /**
-     * Imposta il valore della proprietà orderId.
+     * Imposta il valore della proprietï¿½ orderId.
      * 
      */
     public void setOrderId(int value) {
@@ -121,7 +121,7 @@ public class OrderItem {
     }
 
     /**
-     * Recupera il valore della proprietà price.
+     * Recupera il valore della proprietï¿½ price.
      * 
      */
     public double getPrice() {
@@ -129,7 +129,7 @@ public class OrderItem {
     }
 
     /**
-     * Imposta il valore della proprietà price.
+     * Imposta il valore della proprietï¿½ price.
      * 
      */
     public void setPrice(double value) {
@@ -137,7 +137,7 @@ public class OrderItem {
     }
 
     /**
-     * Recupera il valore della proprietà quantity.
+     * Recupera il valore della proprietï¿½ quantity.
      * 
      */
     public int getQuantity() {
@@ -145,11 +145,23 @@ public class OrderItem {
     }
 
     /**
-     * Imposta il valore della proprietà quantity.
+     * Imposta il valore della proprietï¿½ quantity.
      * 
      */
     public void setQuantity(int value) {
         this.quantity = value;
     }
-
+    
+    public String toString() {
+		StringBuilder builder = new StringBuilder("{ ")
+				.append("id : ").append(id)
+				.append(", orderId : ").append(orderId)
+				.append(", bookId : ").append(bookId)
+				.append(", price : ").append(price)
+				.append(", quantity : ").append(quantity)
+				.append(" }");
+		
+		return builder.toString();
+	}	
+    
 }
