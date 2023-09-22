@@ -74,28 +74,33 @@ public class BookUtils {
 	
 
 	
-	public static void addNewBook(String title, String description, String editor, double price, int quantity, int authorId){
+	public static boolean addNewBook(String title, String description, String editor, double price, int quantity, int authorId){
 		EntityManager em = null;
 		Book book = null;
+		EntityTransaction transaction = null;
 		try {
 			em = JPAManagerFactory.getEntityManager();
-			EntityTransaction transaction = em.getTransaction();
+			transaction = em.getTransaction();
 			transaction.begin();
 			
 			book=new Book(title, description, editor, price, quantity, authorId);
-			
-			
-			
+
 			em.persist(book);
 			
 			transaction.commit();
-						
+			
+			return true;
+			
 		}catch(Exception e) {
+			if(transaction != null) {
+				transaction.rollback();
+			}
 			e.printStackTrace();
+			return false;
 		}finally {
 			em.close();
 		}
-			
+
 	}
 	
 }

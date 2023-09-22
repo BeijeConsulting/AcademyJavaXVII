@@ -32,14 +32,14 @@ public class BookstoreImpl implements Bookstore{
 	}
 
 	@Override
-	public void addNewBook(String title, String description, String editor, double price, int quantity, int authorId) {
-		BookUtils.addNewBook(title, description, editor, price, quantity, authorId);
+	public boolean addNewBook(String title, String description, String editor, double price, int quantity, int authorId) {
+		return BookUtils.addNewBook(title, description, editor, price, quantity, authorId);
 		
 	}
 
 	@Override
-	public void addAuthor(String name, String surname, String description) {
-		AuthorUtils.addAuthor(name, surname, description);
+	public boolean addAuthor(String name, String surname, String description) {
+		return AuthorUtils.addAuthor(name, surname, description);
 		
 	}
 
@@ -50,20 +50,20 @@ public class BookstoreImpl implements Bookstore{
 	}
 
 	@Override
-	public void createOrder(String address, int userId) {
-		OrderUtils.createOrder(address, userId);
+	public boolean createOrder(String address, int userId) {
+		return OrderUtils.createOrder(address, userId);
 		
 	}
 
 	@Override
-	public void deleteOrder(int idOrder) {
-		OrderUtils.deleteOrder(idOrder);
+	public boolean deleteOrder(int idOrder) {
+		return OrderUtils.deleteOrder(idOrder);
 		
 	}
 
 	@Override
-	public void editStatus(Character status, int orderId) {
-		OrderUtils.editStatus(status, orderId);
+	public boolean editStatus(Character status, int orderId) {
+		return OrderUtils.editStatus(status, orderId);
 		
 	}
 
@@ -94,8 +94,8 @@ public class BookstoreImpl implements Bookstore{
 	}
 
 	@Override
-	public void createUser(String email, String password, String name, String surname) {
-		UserUtils.createUser(email, password, name, surname);
+	public boolean createUser(String email, String password, String name, String surname) {
+		return UserUtils.createUser(email, password, name, surname);
 	}
 
 	@Override
@@ -104,20 +104,20 @@ public class BookstoreImpl implements Bookstore{
 	}
 
 	@Override
-	public void addCartItem(Integer userId, Integer bookId, Integer quantity) {
-		CartUtils.addCartItem(userId, bookId, quantity);
+	public boolean addCartItem(Integer userId, Integer bookId, Integer quantity) {
+		return CartUtils.addCartItem(userId, bookId, quantity);
 		
 	}
 
 	@Override
-	public void removeCartItem(int itemId) {
-		CartUtils.removeCartItem(itemId);
+	public boolean removeCartItem(int itemId) {
+		return CartUtils.removeCartItem(itemId);
 		
 	}
 	
 	@Override
-	public void deleteCart(int userId) {
-		CartUtils.deleteCart(userId);
+	public boolean deleteCart(int userId) {
+		return CartUtils.deleteCart(userId);
 		
 	}
 	

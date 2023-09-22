@@ -25,22 +25,22 @@ public interface Bookstore {
 	Book getBook(int id);
 	
 	@WebMethod
-	void addNewBook(String title, String description, String editor, double price, int quantity, int authorId);
+	boolean addNewBook(String title, String description, String editor, double price, int quantity, int authorId);
 	
 	@WebMethod
-	void addAuthor(String name, String surname, String description);
+	boolean addAuthor(String name, String surname, String description);
 	
 	@WebMethod
 	List<Author> getAuthorList();
 	
 	@WebMethod
-	void createOrder(String address, int userId);
+	boolean createOrder(String address, int userId);
 	
 	@WebMethod
-	void deleteOrder(int idOrder);
+	boolean deleteOrder(int idOrder);
 	
 	@WebMethod
-	void editStatus(Character status, int orderId);
+	boolean editStatus(Character status, int orderId);
 	
 	@WebMethod
 	List<Order> getOrders(int userId);
@@ -58,19 +58,19 @@ public interface Bookstore {
 	int getUserId(String email);
 	
 	@WebMethod
-	void createUser(String email, String password, String name, String surname);
+	boolean createUser(String email, String password, String name, String surname);
 	
 	@WebMethod
 	List<CartItem> getCart(int userId);
 	
 	@WebMethod
-	void addCartItem(Integer userId, Integer bookId, Integer quantity);
+	boolean addCartItem(Integer userId, Integer bookId, Integer quantity);
 	
 	@WebMethod
-	void removeCartItem(int itemId);
+	boolean removeCartItem(int itemId);
 	
 	@WebMethod
-	void deleteCart(int userId);
+	boolean deleteCart(int userId);
 	
 	
 }

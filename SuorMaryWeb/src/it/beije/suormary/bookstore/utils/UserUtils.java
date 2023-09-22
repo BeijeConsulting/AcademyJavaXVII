@@ -72,12 +72,13 @@ public class UserUtils {
 		
 	}
 	
-	public static void createUser(String email, String password, String name, String surname) {
+	public static boolean createUser(String email, String password, String name, String surname) {
 		EntityManager entityManager = null;
 		User user = null;
+		EntityTransaction transaction = null;
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
-			EntityTransaction transaction = entityManager.getTransaction();
+			transaction = entityManager.getTransaction();
 			
 			transaction.begin();
 			
@@ -87,8 +88,15 @@ public class UserUtils {
 			
 			transaction.commit();
 			
+			return true;
+			
 		}catch(Exception e) {
+			if(transaction != null) {
+				transaction.rollback();
+			}
+			
 			e.printStackTrace();
+			return false;
 		}finally {
 			entityManager.close();
 		}

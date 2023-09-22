@@ -10,6 +10,9 @@ public class ClientMain {
         Bookstore bookstore = service.getBookstoreImplPort();
         
         System.out.println("Book: " + bookstore.getBook(1));
+        System.out.println("Book: " + bookstore.getBook(1).toString());
+        System.out.println("AddBook: " + bookstore.addNewBook("Libro", "Libro", "Editor", 12, 100, 1));
+        System.out.println("AddBook: " + bookstore.addNewBook("Libro", "Libro", "Editor", 12, 100, 0));
 	}
 
 }

@@ -14,7 +14,7 @@ import it.beije.suormary.bookstore.entities.OrderItem;
 
 public class OrderUtils {
 	
-	public static void createOrder(String address, int userId) {
+	public static boolean createOrder(String address, int userId) {
 		EntityManager em = null;
 		EntityTransaction transaction = null;
 		List<Book> books = null;
@@ -56,11 +56,14 @@ public class OrderUtils {
 			System.out.println("Ordine inserito, inizio gli item");
 			insertOrderItems(idOrder, userId, em, transaction);
 			transaction.commit();
+			
+			return true;
 		} catch(Exception e) {
 			if(transaction != null) {
 				transaction.rollback();
 			}
 			e.printStackTrace();
+			return false;
 		}finally {
 			em.close();
 		}
@@ -90,11 +93,12 @@ public class OrderUtils {
 
 	}
 	
-	public static void deleteOrder(int idOrder) {
+	public static boolean deleteOrder(int idOrder) {
 		EntityManager em = null;
+		EntityTransaction transaction = null;
 		try {
 			em = JPAManagerFactory.getEntityManager();
-			EntityTransaction transaction = em.getTransaction();
+			transaction = em.getTransaction();
 
 			transaction.begin();
 					
@@ -106,18 +110,26 @@ public class OrderUtils {
 			
 			transaction.commit();
 			
+			return true;
+			
 		} catch(Exception e) {
+			if(transaction != null) {
+				transaction.rollback();
+			}
+
 			e.printStackTrace();
+			return false;
 		} finally {
 			em.close();
 		}
 	}
 	
-	public static void editStatus(Character status, int orderId) {
+	public static boolean editStatus(Character status, int orderId) {
 		EntityManager em = null;
+		EntityTransaction transaction = null;
 		try {
 			em = JPAManagerFactory.getEntityManager();
-			EntityTransaction transaction = em.getTransaction();
+			transaction = em.getTransaction();
 
 			transaction.begin();
 					
@@ -130,8 +142,15 @@ public class OrderUtils {
 			
 			transaction.commit();
 			
+			return true;
+			
 		} catch(Exception e) {
+			if(transaction != null) {
+				transaction.rollback();
+			}
+			
 			e.printStackTrace();
+			return false;
 		} finally {
 			em.close();
 		}
