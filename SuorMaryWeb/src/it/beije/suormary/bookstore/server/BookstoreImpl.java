@@ -11,25 +11,25 @@ import it.beije.suormary.bookstore.entities.CartItem;
 import it.beije.suormary.bookstore.entities.Order;
 import it.beije.suormary.bookstore.entities.OrderItem;
 import it.beije.suormary.bookstore.entities.User;
+import it.beije.suormary.bookstore.utils.BookUtils;
+import it.beije.suormary.bookstore.utils.UserUtils;
 
 @WebService(endpointInterface = "it.beije.suormary.bookstore.server.Bookstore")
 public class BookstoreImpl implements Bookstore{
 
 	@Override
 	public List<Book> getAllBooks() {
-		// TODO Auto-generated method stub
-		return null;
+		return BookUtils.getAllBooks();
 	}
 
 	@Override
 	public Book getBook(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return BookUtils.getBook(id);
 	}
 
 	@Override
 	public void addNewBook(String title, String description, String editor, double price, int quantity, int authorId) {
-		// TODO Auto-generated method stub
+		BookUtils.addNewBook(title, description, editor, price, quantity, authorId);
 		
 	}
 
@@ -95,8 +95,7 @@ public class BookstoreImpl implements Bookstore{
 
 	@Override
 	public void createUser(String email, String password, String name, String surname) {
-		// TODO Auto-generated method stub
-		
+		UserUtils.createUser(email, password, name, surname);
 	}
 
 	@Override
