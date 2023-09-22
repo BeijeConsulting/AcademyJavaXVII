@@ -2,15 +2,12 @@
 
 package it.beije.suormary.web.ws.jaxws.server;
 
-import java.util.List;
-
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.jws.soap.SOAPBinding.Use;
-import it.beije.suormary.bookstore4_ceccarelli_iannetta.*;
 
 @WebService
 @SOAPBinding(style = Style.DOCUMENT, use = Use.LITERAL)
@@ -42,4 +39,7 @@ public interface Bookstore {
 	@WebMethod
     public String signup(@WebParam(name = "name") String name,@WebParam(name = "surname")  String surname, @WebParam(name = "email") String email,@WebParam(name = "password")  String password);
 	
+	
+	//ORDER
+	public String instantBuy(@WebParam(name = "Books ids") String bookListId, @WebParam(name = "Books quantities") String bookListQuantity,@WebParam(name = "user id") int userId, @WebParam(name = "shipping address") String shippingAddress, @WebParam(name = "payment type") String paymentType);
 }

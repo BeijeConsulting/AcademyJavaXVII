@@ -3,6 +3,7 @@ package it.beije.suormary.web.ws.jaxws.client;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -16,12 +17,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="arg0" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="arg1" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="arg2" type="{http://www.w3.org/2001/XMLSchema}int"/>
- *         &lt;element name="arg3" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="arg4" type="{http://www.w3.org/2001/XMLSchema}double"/>
- *         &lt;element name="arg5" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="author id" type="{http://www.w3.org/2001/XMLSchema}int"/>
+ *         &lt;element name="editor" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="price" type="{http://www.w3.org/2001/XMLSchema}double"/>
+ *         &lt;element name="quantity" type="{http://www.w3.org/2001/XMLSchema}int"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -32,140 +33,141 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "addBook", propOrder = {
-    "arg0",
-    "arg1",
-    "arg2",
-    "arg3",
-    "arg4",
-    "arg5"
+    "title",
+    "description",
+    "author0020Id",
+    "editor",
+    "price",
+    "quantity"
 })
 public class AddBook {
 
-    protected String arg0;
-    protected String arg1;
-    protected int arg2;
-    protected String arg3;
-    protected double arg4;
-    protected int arg5;
+    protected String title;
+    protected String description;
+    @XmlElement(name = "author id")
+    protected int author0020Id;
+    protected String editor;
+    protected double price;
+    protected int quantity;
 
     /**
-     * Recupera il valore della proprietà arg0.
+     * Recupera il valore della proprietà title.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getArg0() {
-        return arg0;
+    public String getTitle() {
+        return title;
     }
 
     /**
-     * Imposta il valore della proprietà arg0.
+     * Imposta il valore della proprietà title.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setArg0(String value) {
-        this.arg0 = value;
+    public void setTitle(String value) {
+        this.title = value;
     }
 
     /**
-     * Recupera il valore della proprietà arg1.
+     * Recupera il valore della proprietà description.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getArg1() {
-        return arg1;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * Imposta il valore della proprietà arg1.
+     * Imposta il valore della proprietà description.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setArg1(String value) {
-        this.arg1 = value;
+    public void setDescription(String value) {
+        this.description = value;
     }
 
     /**
-     * Recupera il valore della proprietà arg2.
+     * Recupera il valore della proprietà author0020Id.
      * 
      */
-    public int getArg2() {
-        return arg2;
+    public int getAuthor_0020Id() {
+        return author0020Id;
     }
 
     /**
-     * Imposta il valore della proprietà arg2.
+     * Imposta il valore della proprietà author0020Id.
      * 
      */
-    public void setArg2(int value) {
-        this.arg2 = value;
+    public void setAuthor_0020Id(int value) {
+        this.author0020Id = value;
     }
 
     /**
-     * Recupera il valore della proprietà arg3.
+     * Recupera il valore della proprietà editor.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getArg3() {
-        return arg3;
+    public String getEditor() {
+        return editor;
     }
 
     /**
-     * Imposta il valore della proprietà arg3.
+     * Imposta il valore della proprietà editor.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setArg3(String value) {
-        this.arg3 = value;
+    public void setEditor(String value) {
+        this.editor = value;
     }
 
     /**
-     * Recupera il valore della proprietà arg4.
+     * Recupera il valore della proprietà price.
      * 
      */
-    public double getArg4() {
-        return arg4;
+    public double getPrice() {
+        return price;
     }
 
     /**
-     * Imposta il valore della proprietà arg4.
+     * Imposta il valore della proprietà price.
      * 
      */
-    public void setArg4(double value) {
-        this.arg4 = value;
+    public void setPrice(double value) {
+        this.price = value;
     }
 
     /**
-     * Recupera il valore della proprietà arg5.
+     * Recupera il valore della proprietà quantity.
      * 
      */
-    public int getArg5() {
-        return arg5;
+    public int getQuantity() {
+        return quantity;
     }
 
     /**
-     * Imposta il valore della proprietà arg5.
+     * Imposta il valore della proprietà quantity.
      * 
      */
-    public void setArg5(int value) {
-        this.arg5 = value;
+    public void setQuantity(int value) {
+        this.quantity = value;
     }
 
 }

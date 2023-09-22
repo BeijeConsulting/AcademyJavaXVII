@@ -1,5 +1,6 @@
 package it.beije.suormary.web.ws.jaxws.server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebService;
@@ -43,7 +44,6 @@ public class BookstoreImpl implements Bookstore{
 	@Override
     public String getAuthors() {
         StringBuilder result = new StringBuilder();
-
         List<Author> authors = manager.listAuthor();
         for (Author a : authors) result.append(a.toString() + "\n");
         return result.toString();
@@ -75,4 +75,27 @@ public class BookstoreImpl implements Bookstore{
         if(manager.insertUser(name, surname, email, password) == null) return "error";
         else return "You are now registered";
     }
+
+    
+    //ORDER
+	@Override
+	public String instantBuy(String bookListId, String bookListQuantity, int userId,
+			String shippingAddress, String paymentType) {
+		
+		List<Integer> ids = new ArrayList<>();
+		for(String s : bookListId.split("-")) {
+			ids.add(Integer.parseInt(s));
+		}
+		System.out.println("bookListId: " + ids);
+		
+		List<Integer> quantities = new ArrayList<>();
+		for(String s : bookListQuantity.split("-")) {
+			quantities.add(Integer.parseInt(s));
+		}
+		System.out.println("bookListId: " + quantities);
+		
+       Order order = manager.instantBuy(ids, quantities, userId, shippingAddress, paymentType);
+       System.out.println("order: " + order);
+       return (order == null ) ? "Something went wrong" : "Book added";
+	}
 }
