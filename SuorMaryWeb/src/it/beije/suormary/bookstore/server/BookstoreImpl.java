@@ -11,6 +11,7 @@ import it.beije.suormary.bookstore.entities.CartItem;
 import it.beije.suormary.bookstore.entities.Order;
 import it.beije.suormary.bookstore.entities.OrderItem;
 import it.beije.suormary.bookstore.entities.User;
+import it.beije.suormary.bookstore.utils.OrderUtils;
 
 @WebService(endpointInterface = "it.beije.suormary.bookstore.server.Bookstore")
 public class BookstoreImpl implements Bookstore{
@@ -65,14 +66,12 @@ public class BookstoreImpl implements Bookstore{
 
 	@Override
 	public List<Order> getOrders(int userId) {
-		// TODO Auto-generated method stub
-		return null;
+		return OrderUtils.getOrders(userId);
 	}
 
 	@Override
 	public Order getOrder(int orderId) {
-		// TODO Auto-generated method stub
-		return null;
+		return OrderUtils.getOrder(orderId);
 	}
 
 	@Override
