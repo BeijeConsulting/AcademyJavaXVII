@@ -214,7 +214,6 @@ public class Book {
         this.title = value;
     }
     
-    @Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
@@ -226,6 +225,6 @@ public class Book {
 				.append(", authorId : ").append(authorId)
 				.append(" }");
 		return builder.toString();
-	}	
+	}
 
 }

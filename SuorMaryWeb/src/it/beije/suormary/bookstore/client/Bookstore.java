@@ -27,6 +27,36 @@ public interface Bookstore {
 
     /**
      * 
+     * @param arg0
+     * @return
+     *     returns java.util.List<it.beije.suormary.bookstore.client.Order>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getOrders", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetOrders")
+    @ResponseWrapper(localName = "getOrdersResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetOrdersResponse")
+    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/getOrdersRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/getOrdersResponse")
+    public List<Order> getOrders(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "userExists", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.UserExists")
+    @ResponseWrapper(localName = "userExistsResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.UserExistsResponse")
+    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/userExistsRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/userExistsResponse")
+    public boolean userExists(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
+
+    /**
+     * 
      * @param arg1
      * @param arg0
      * @return
@@ -42,6 +72,27 @@ public interface Bookstore {
         Integer arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         int arg1);
+
+    /**
+     * 
+     * @param arg2
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "addAuthor", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.AddAuthor")
+    @ResponseWrapper(localName = "addAuthorResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.AddAuthorResponse")
+    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/addAuthorRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/addAuthorResponse")
+    public boolean addAuthor(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        String arg1,
+        @WebParam(name = "arg2", targetNamespace = "")
+        String arg2);
 
     /**
      * 
@@ -63,24 +114,6 @@ public interface Bookstore {
      * @param arg1
      * @param arg0
      * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "createOrder", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.CreateOrder")
-    @ResponseWrapper(localName = "createOrderResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.CreateOrderResponse")
-    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/createOrderRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/createOrderResponse")
-    public boolean createOrder(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        int arg1);
-
-    /**
-     * 
-     * @param arg1
-     * @param arg0
-     * @return
      *     returns it.beije.suormary.bookstore.client.User
      */
     @WebMethod
@@ -93,6 +126,21 @@ public interface Bookstore {
         String arg0,
         @WebParam(name = "arg1", targetNamespace = "")
         String arg1);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns int
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getUserId", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetUserId")
+    @ResponseWrapper(localName = "getUserIdResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetUserIdResponse")
+    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/getUserIdRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/getUserIdResponse")
+    public int getUserId(
+        @WebParam(name = "arg0", targetNamespace = "")
+        String arg0);
 
     /**
      * 
@@ -123,10 +171,10 @@ public interface Bookstore {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "removeCartItem", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.RemoveCartItem")
-    @ResponseWrapper(localName = "removeCartItemResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.RemoveCartItemResponse")
-    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/removeCartItemRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/removeCartItemResponse")
-    public boolean removeCartItem(
+    @RequestWrapper(localName = "deleteCart", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.DeleteCart")
+    @ResponseWrapper(localName = "deleteCartResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.DeleteCartResponse")
+    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/deleteCartRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/deleteCartResponse")
+    public boolean deleteCart(
         @WebParam(name = "arg0", targetNamespace = "")
         int arg0);
 
@@ -162,96 +210,6 @@ public interface Bookstore {
 
     /**
      * 
-     * @return
-     *     returns java.util.List<it.beije.suormary.bookstore.client.Book>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getAllBooks", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetAllBooks")
-    @ResponseWrapper(localName = "getAllBooksResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetAllBooksResponse")
-    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/getAllBooksRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/getAllBooksResponse")
-    public List<Book> getAllBooks();
-
-    /**
-     * 
-     * @param arg2
-     * @param arg1
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "addAuthor", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.AddAuthor")
-    @ResponseWrapper(localName = "addAuthorResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.AddAuthorResponse")
-    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/addAuthorRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/addAuthorResponse")
-    public boolean addAuthor(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0,
-        @WebParam(name = "arg1", targetNamespace = "")
-        String arg1,
-        @WebParam(name = "arg2", targetNamespace = "")
-        String arg2);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "deleteOrder", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.DeleteOrder")
-    @ResponseWrapper(localName = "deleteOrderResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.DeleteOrderResponse")
-    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/deleteOrderRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/deleteOrderResponse")
-    public boolean deleteOrder(
-        @WebParam(name = "arg0", targetNamespace = "")
-        int arg0);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "userExists", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.UserExists")
-    @ResponseWrapper(localName = "userExistsResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.UserExistsResponse")
-    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/userExistsRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/userExistsResponse")
-    public boolean userExists(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
-
-    /**
-     * 
-     * @param arg0
-     * @return
-     *     returns int
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getUserId", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetUserId")
-    @ResponseWrapper(localName = "getUserIdResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetUserIdResponse")
-    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/getUserIdRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/getUserIdResponse")
-    public int getUserId(
-        @WebParam(name = "arg0", targetNamespace = "")
-        String arg0);
-
-    /**
-     * 
-     * @return
-     *     returns java.util.List<it.beije.suormary.bookstore.client.Author>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getAuthorList", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetAuthorList")
-    @ResponseWrapper(localName = "getAuthorListResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetAuthorListResponse")
-    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/getAuthorListRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/getAuthorListResponse")
-    public List<Author> getAuthorList();
-
-    /**
-     * 
      * @param arg3
      * @param arg2
      * @param arg1
@@ -273,6 +231,21 @@ public interface Bookstore {
         String arg2,
         @WebParam(name = "arg3", targetNamespace = "")
         String arg3);
+
+    /**
+     * 
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "removeCartItem", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.RemoveCartItem")
+    @ResponseWrapper(localName = "removeCartItemResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.RemoveCartItemResponse")
+    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/removeCartItemRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/removeCartItemResponse")
+    public boolean removeCartItem(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0);
 
     /**
      * 
@@ -306,18 +279,45 @@ public interface Bookstore {
 
     /**
      * 
-     * @param arg0
      * @return
-     *     returns java.util.List<it.beije.suormary.bookstore.client.Order>
+     *     returns java.util.List<it.beije.suormary.bookstore.client.Book>
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getOrders", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetOrders")
-    @ResponseWrapper(localName = "getOrdersResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetOrdersResponse")
-    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/getOrdersRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/getOrdersResponse")
-    public List<Order> getOrders(
+    @RequestWrapper(localName = "getAllBooks", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetAllBooks")
+    @ResponseWrapper(localName = "getAllBooksResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetAllBooksResponse")
+    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/getAllBooksRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/getAllBooksResponse")
+    public List<Book> getAllBooks();
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<it.beije.suormary.bookstore.client.Author>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getAuthorList", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetAuthorList")
+    @ResponseWrapper(localName = "getAuthorListResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.GetAuthorListResponse")
+    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/getAuthorListRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/getAuthorListResponse")
+    public List<Author> getAuthorList();
+
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "createOrder", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.CreateOrder")
+    @ResponseWrapper(localName = "createOrderResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.CreateOrderResponse")
+    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/createOrderRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/createOrderResponse")
+    public boolean createOrder(
         @WebParam(name = "arg0", targetNamespace = "")
-        int arg0);
+        String arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        int arg1);
 
     /**
      * 
@@ -327,10 +327,10 @@ public interface Bookstore {
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "deleteCart", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.DeleteCart")
-    @ResponseWrapper(localName = "deleteCartResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.DeleteCartResponse")
-    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/deleteCartRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/deleteCartResponse")
-    public boolean deleteCart(
+    @RequestWrapper(localName = "deleteOrder", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.DeleteOrder")
+    @ResponseWrapper(localName = "deleteOrderResponse", targetNamespace = "http://server.bookstore.suormary.beije.it/", className = "it.beije.suormary.bookstore.client.DeleteOrderResponse")
+    @Action(input = "http://server.bookstore.suormary.beije.it/Bookstore/deleteOrderRequest", output = "http://server.bookstore.suormary.beije.it/Bookstore/deleteOrderResponse")
+    public boolean deleteOrder(
         @WebParam(name = "arg0", targetNamespace = "")
         int arg0);
 

@@ -130,9 +130,14 @@ public class CartItem {
         this.userId = value;
     }
     
-    @Override
 	public String toString() {
-		return "CartItem [id=" + id + ", userId=" + userId + ", bookId=" + bookId + ", quantity=" + quantity + "]";
+		StringBuilder builder = new StringBuilder("{ ")
+				.append("id : ").append(id)
+				.append(", userId : ").append(userId)
+				.append(", bookId : ").append(bookId)
+				.append(", quantity : ").append(quantity)
+				.append(" }");
+		return builder.toString();
 	}
-    
+
 }

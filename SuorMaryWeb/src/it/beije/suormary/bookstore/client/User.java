@@ -184,7 +184,7 @@ public class User {
         this.surname = value;
     }
     
-    public String toString() {
+	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
 				.append(", email : ").append(email)
@@ -194,6 +194,5 @@ public class User {
 				.append(" }");
 		
 		return builder.toString();
-	}	
-    
+	}
 }

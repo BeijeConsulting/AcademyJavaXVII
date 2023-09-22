@@ -130,8 +130,7 @@ public class Author {
         this.surname = value;
     }
     
-    
-    public String toString() {
+	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
 				.append(", name : ").append(name)

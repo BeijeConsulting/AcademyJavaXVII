@@ -198,7 +198,7 @@ public class Order {
         this.userId = value;
     }
     
-    public String toString() {
+	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
 				.append(", userId : ").append(userId)
@@ -211,5 +211,4 @@ public class Order {
 		
 		return builder.toString();
 	}	
-    
 }

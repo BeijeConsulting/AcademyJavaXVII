@@ -152,7 +152,7 @@ public class OrderItem {
         this.quantity = value;
     }
     
-    public String toString() {
+	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)
 				.append(", orderId : ").append(orderId)
@@ -162,6 +162,6 @@ public class OrderItem {
 				.append(" }");
 		
 		return builder.toString();
-	}	
-    
+	}
+
 }
