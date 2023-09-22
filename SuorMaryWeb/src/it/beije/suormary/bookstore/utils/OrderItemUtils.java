@@ -1,5 +1,6 @@
 package it.beije.suormary.bookstore.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -15,7 +16,7 @@ public class OrderItemUtils {
 	public static List<OrderItem> getOrderItems(Order o){
 		int idO = o.getId();
 		EntityManager entityManager = null;
-		List<OrderItem> loi=null;
+		List<OrderItem> loi = new ArrayList<OrderItem>();
 		
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();

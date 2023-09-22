@@ -1,5 +1,6 @@
 package it.beije.suormary.bookstore.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -41,7 +42,7 @@ public class AuthorUtils {
 	
 	public static List<Author> getAuthorList(){
 		EntityManager entityManager = null;
-		List<Author> la = null;
+		List<Author> la = new ArrayList<Author>();
 		try {
 			entityManager = JPAManagerFactory.getEntityManager();
 			Query query = entityManager.createQuery("SELECT a FROM Author as a");

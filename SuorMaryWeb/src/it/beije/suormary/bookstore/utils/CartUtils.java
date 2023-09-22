@@ -65,6 +65,18 @@ public class CartUtils {
 		}
 	}
 	
+	public static void deleteCart(int userId, EntityManager em) {
+
+		Query query = em.createQuery("SELECT c FROM CartItem as c WHERE c.userId = :id");
+		query.setParameter("id", userId);
+		List<CartItem> items = query.getResultList();
+		
+		for(CartItem i : items) {
+			em.remove(i);
+		}
+
+	}
+	
 	public static boolean removeCartItem(int itemId) {
 		EntityManager em = null;
 		EntityTransaction transaction = null;

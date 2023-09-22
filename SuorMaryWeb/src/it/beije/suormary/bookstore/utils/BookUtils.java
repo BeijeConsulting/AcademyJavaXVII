@@ -103,4 +103,24 @@ public class BookUtils {
 
 	}
 	
+	public static void editBookQuantity(int bookId, int quantity, EntityManager em) {
+
+		Book book = null;
+
+		Query query = em.createQuery("SELECT b FROM Book as b WHERE b.id = :id");
+		query.setParameter("id", bookId);
+		book = (Book) query.getSingleResult();
+			
+		query = em.createQuery("SELECT a FROM Author as a WHERE a.id = :authId ");
+		query.setParameter("authId", book.getAuthorId());
+		Author a = (Author) query.getSingleResult();
+		book.setAuthor(a);
+			
+		book.setQuantity(book.getQuantity()-quantity);
+		
+		em.persist(book);
+			
+
+	}
+	
 }

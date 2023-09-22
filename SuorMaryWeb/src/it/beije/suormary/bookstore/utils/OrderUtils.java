@@ -1,6 +1,7 @@
 package it.beije.suormary.bookstore.utils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -14,10 +15,11 @@ import it.beije.suormary.bookstore.entities.OrderItem;
 
 public class OrderUtils {
 	
+
 	public static boolean createOrder(String address, int userId) {
 		EntityManager em = null;
 		EntityTransaction transaction = null;
-		List<Book> books = null;
+		List<Book> books = new ArrayList<Book>();
 		
 		try {
 			
@@ -55,6 +57,9 @@ public class OrderUtils {
 			
 			System.out.println("Ordine inserito, inizio gli item");
 			insertOrderItems(idOrder, userId, em, transaction);
+			
+			CartUtils.deleteCart(userId, em);
+			
 			transaction.commit();
 			
 			return true;
@@ -86,8 +91,7 @@ public class OrderUtils {
 				om.setQuantity(ci.getQuantity());
 				em.persist(om);
 				
-				book.setQuantity(book.getQuantity() - ci.getQuantity());
-				em.persist(book);
+				BookUtils.editBookQuantity(ci.getBookId(), ci.getQuantity(), em);
 			}
 			System.out.println("Item finiti");
 
@@ -158,7 +162,7 @@ public class OrderUtils {
 	
 	public static List<Order> getOrders(int userId){
 		EntityManager em = null;
-		List<Order> orders = null;
+		List<Order> orders = new ArrayList<Order>();
 		try {
 			em = JPAManagerFactory.getEntityManager();
 					
