@@ -60,7 +60,7 @@ public interface Bookstore {
      * @param arg1
      * @param arg0
      * @return
-     *     returns java.lang.String
+     *     returns java.lang.String 
      */
     @WebMethod
     @WebResult(targetNamespace = "")
