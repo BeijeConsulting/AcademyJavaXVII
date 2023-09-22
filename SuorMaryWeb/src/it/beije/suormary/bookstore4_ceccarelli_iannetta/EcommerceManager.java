@@ -276,6 +276,72 @@ public class EcommerceManager {
     	return basketAmount;
     }
     
+    public List<Book> instantBuy(List<Integer> bookListId, List<Integer> bookListQuantity, int userId, String shippingAddress, String paymentType){
+    	Order order = new Order();
+    	order.setDate(LocalDateTime.now());
+    	order.setUserId(userId);
+    	order.setStatus(paymentType.equals("cash") ? "I" : "P");
+    	order.setAmount(getBasketAmount(userId));
+    	order.setShippingAddress(shippingAddress);
+    	order.setItems(new ArrayList<OrderItem>());
+    	
+    	em = JPAEntityFactory.openEntity();
+    	EntityTransaction transaction = em.getTransaction();
+    	transaction.begin();
+    	em.persist(order);
+    	transaction.commit();
+    	em.flush();
+    	em.close();
+    	
+    	int orderId = order.getId();
+    	//List <OrderItem> items = new ArrayList<OrderItem>();
+    	Book book;
+    	OrderItem oi;
+    	double totalPrice = 0;
+    	for (int i = 0; i < bookListId.size(); i++) {
+    		
+    		em = JPAEntityFactory.openEntity();
+        	transaction = em.getTransaction();
+        	transaction.begin();
+    		
+    		Query query = em.createQuery("Select b from book where b.id = :bookId");
+    		query.setParameter("bookId", bookListId.get(i));
+    		
+    		book = new Book();
+    		book = (Book) query.getSingleResult();
+    		
+    		oi = new OrderItem();
+    		oi.setBookId(i);
+    		oi.setOrderId(orderId);
+    		
+    		int quantity = bookListQuantity.get(i);
+    		oi.setQuantity(quantity);
+    		
+    		double bookPrice = book.getPrice();
+    		
+    		oi.setPrice(quantity * bookPrice);
+    		totalPrice += oi.getPrice();
+    		
+    		em.persist(oi);
+    		transaction.commit();
+    		em.flush();
+    		
+    		//items.add(oi);
+    		em.close();
+    	}
+    		em = JPAEntityFactory.openEntity();
+    		transaction = em.getTransaction();
+    		transaction.begin();
+    		//order.setItems(items);
+    		order.setAmount(totalPrice);
+    		em.persist(order);
+    		transaction.commit();
+    		em.close();
+    	return null;
+    }
+    
+    
+    
     public void buy(int userId, String shippingAddress, String paymentType) {
     	
     	Order order = new Order();
