@@ -1,5 +1,6 @@
 package it.beije.suormary.bookstore;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,7 +30,9 @@ CREATE TABLE `orders` (
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order implements Serializable{
+
+	private static final long serialVersionUID = 8478420519412854444L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

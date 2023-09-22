@@ -1,5 +1,6 @@
 package it.beije.suormary.bookstore;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -26,8 +27,9 @@ CREATE TABLE `users` (
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable{
 	
+	private static final long serialVersionUID = 3237333244031458039L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)

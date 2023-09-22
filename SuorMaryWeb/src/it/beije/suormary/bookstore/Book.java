@@ -1,5 +1,7 @@
 package it.beije.suormary.bookstore;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +29,9 @@ CREATE TABLE `books` (
 
 @Entity
 @Table(name = "books")
-public class Book {
+public class Book implements Serializable{
+
+	private static final long serialVersionUID = 6027671413683401000L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
