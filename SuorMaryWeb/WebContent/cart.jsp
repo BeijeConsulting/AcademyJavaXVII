@@ -1,5 +1,5 @@
 <%@page import="java.util.Map"%>
-<%@page import="it.beije.suormary.bookstore1.Book"%>
+<%@page import="it.beije.suormary.bookstore.entities.Book"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>

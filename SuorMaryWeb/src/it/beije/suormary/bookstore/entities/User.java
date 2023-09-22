@@ -1,4 +1,4 @@
-package it.beije.suormary.bookstore;
+package it.beije.suormary.bookstore.entities;
 
 import java.time.LocalDateTime;
 
@@ -91,7 +91,16 @@ public class User {
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
-
+	
+	public User() {}
+	
+	public User(String email, String password, String name, String surname) {
+		this.email = email;
+		this.password = password;
+		this.name = name;
+		this.surname = surname;
+		this.creationDate = LocalDateTime.now();
+	}
 	
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")

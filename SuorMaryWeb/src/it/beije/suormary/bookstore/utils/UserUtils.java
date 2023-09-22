@@ -1,4 +1,4 @@
-package it.beije.suormary.bookstore1;
+package it.beije.suormary.bookstore.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+
+import it.beije.suormary.bookstore.entities.JPAManagerFactory;
+import it.beije.suormary.bookstore.entities.User;
 
 public class UserUtils {
 	

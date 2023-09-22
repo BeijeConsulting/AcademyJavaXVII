@@ -1,10 +1,13 @@
-package it.beije.suormary.bookstore1;
+package it.beije.suormary.bookstore.utils;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+
+import it.beije.suormary.bookstore.entities.Author;
+import it.beije.suormary.bookstore.entities.JPAManagerFactory;
 
 public class AuthorUtils {
 	

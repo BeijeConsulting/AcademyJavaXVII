@@ -1,4 +1,4 @@
-package it.beije.suormary.bookstore1;
+package it.beije.suormary.bookstore.utils;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,6 +8,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
+
+import it.beije.suormary.bookstore.entities.Book;
+import it.beije.suormary.bookstore.entities.Cart;
+import it.beije.suormary.bookstore.entities.JPAManagerFactory;
+import it.beije.suormary.bookstore.entities.Order;
+import it.beije.suormary.bookstore.entities.OrderItem;
 
 public class OrderUtils {
 	

@@ -1,4 +1,4 @@
-package it.beije.suormary.bookstore;
+package it.beije.suormary.bookstore.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /*
 
@@ -51,7 +52,22 @@ public class Book {
 
 	@Column(name = "author_id")
 	private int authorId;
-
+	
+	@Transient
+	private Author author;
+	
+	public Book() {
+		
+	}
+	
+	public Book(String title, String description, String editor, double price, int quantity, int authorId) {
+		this.title=title;
+		this.description=description;
+		this.editor=editor;
+		this.price=price;
+		this.quantity=quantity;
+		this.authorId=authorId;	
+	}
 	
 	public int getId() {
 		return id;
@@ -109,7 +125,14 @@ public class Book {
 		this.authorId = authorId;
 	}
 	
-	
+	public Author getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(Author author) {
+		this.author = author;
+	}
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{ ")
 				.append("id : ").append(id)

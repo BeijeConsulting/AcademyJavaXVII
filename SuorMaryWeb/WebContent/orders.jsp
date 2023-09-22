@@ -1,5 +1,5 @@
-<%@page import="it.beije.suormary.bookstore1.OrderItem"%>
-<%@page import="it.beije.suormary.bookstore1.Order"%>
+<%@page import="it.beije.suormary.bookstore.entities.OrderItem"%>
+<%@page import="it.beije.suormary.bookstore.entities.Order"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
