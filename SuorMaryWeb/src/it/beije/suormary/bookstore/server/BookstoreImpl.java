@@ -80,14 +80,12 @@ public class BookstoreImpl implements Bookstore{
 
 	@Override
 	public User checkUser(String email, String password) {
-		// TODO Auto-generated method stub
-		return null;
+		return UserUtils.checkUser(email, password);
 	}
 
 	@Override
 	public boolean userExists(String email) {
-		// TODO Auto-generated method stub
-		return false;
+		return UserUtils.userExists(email);
 	}
 
 	@Override
