@@ -1,44 +1,35 @@
 package it.beije.suormary.lambda;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import it.beije.suormary.bin.Person;
+import java.util.function.Function;
 
 public class LambdaExample4 {
-	public static void main(String[] args) {  
-		List<Person> list=new ArrayList<Person>();  
-	          
-	    //Adding people  
-	    list.add(new Person("Mario", 25));  
-	    list.add(new Person("Gianni", 54));  
-	    list.add(new Person("Sara", 33));  
-	    
-	          
-	    System.out.println("Sorting on the basis of name...");  
-	  
-	    // Notice how the lambda expression is used to pass a function as a parameter
-	    
-	    Collections.sort(list,(p1,p2)->{  
-	    	return p1.getName().compareTo(p2.getName());  
-	    });  
-	    
-	    list.forEach((p) -> System.out.println(p.getName() + " - " + p.getAge()));
-	    
-	    
-	    System.out.println("----------------");
-	    System.out.println("Sorting on the basis of age...");  
+	
+	// Another example of how a function can be passed as a parameter
+	public String manipulate(String string, Function<String, String> fn) {
+	    return fn.apply(string);
+	}
+	
+	public static void main(String[] args) {
+
+		// The first function concatenates two strings
+		Function<String, String> fn = parameter -> parameter + " from lambda";
 		
-	    
-	    // One only needs to change from getName() to getAge()
-	   
-	    Collections.sort(list,(p1,p2)->{  
-	    	return p1.getAge().compareTo(p2.getAge());  
-	    });  
-	    
-	    
-	    list.forEach((p) -> System.out.println(p.getName() + " - " + p.getAge()));
-	    
-	}  
+		String result = new LambdaExample4().manipulate("Message", fn);
+		
+		System.out.println(result);
+		System.out.println("----------------");
+		
+		// The second function replaces the parameter string from "This is a Message" with "Warning"
+		fn = parameter -> "This is a Message".replace(parameter, "Warning");
+		result = new LambdaExample4().manipulate("Message", fn);
+		
+		System.out.println(result);
+		System.out.println("----------------");
+		
+		fn = parameter -> "This is a Message".replace(parameter, "Warning");
+		result = new LambdaExample4().manipulate("This is", fn);
+		
+		System.out.println(result);
+	}
+
 }
