@@ -19,6 +19,6 @@ public class TestContoBancario {
 	    @Test(expected = IllegalArgumentException.class)
 	    public void testPrelevaConSaldoInsufficiente() {
 	        ContoBancario conto = new ContoBancario("Giovanni", 500.0);
-	        conto.preleva(1000.0); // Dovrebbe lanciare un'eccezione
+	        conto.preleva(400.0); // Dovrebbe lanciare un'eccezione
 	    }
 }
