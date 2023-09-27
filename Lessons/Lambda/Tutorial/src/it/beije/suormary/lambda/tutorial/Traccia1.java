@@ -59,8 +59,10 @@ public class Traccia1 {
 				correct = true;
 			}else if(input.contains("B") || input.contains("D")) {
 				System.out.println("\nRisposta parzialmente corretta... :|");
+				System.out.println("Riproviamo!!!\n");
 			}else {
 				System.out.println("\nRisposta errata :(");
+				System.out.println("Riproviamo!!!\n");
 			}
 		}
 		
