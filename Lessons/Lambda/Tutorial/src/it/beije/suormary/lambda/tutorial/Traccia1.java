@@ -64,7 +64,12 @@ public class Traccia1 {
 				System.out.println("\nRisposta errata :(");
 				System.out.println("Riproviamo!!!\n");
 			}
+			
+			
+			
 		}
+		System.out.println("Premi un tasto per uscire...");
+		keyboard.nextLine();
 		
 		keyboard.close();
 	}
