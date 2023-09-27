@@ -12,8 +12,8 @@ public class LambdaExample4 {
 	public static void main(String[] args) {
 
 		// The first function concatenates two strings
-		Function<String, String> fn = parameter -> parameter + " from lambda";
 		
+		Function<String, String> fn = parameter -> parameter + " from lambda";
 		String result = new LambdaExample4().manipulate("Message", fn);
 		
 		System.out.println(result);

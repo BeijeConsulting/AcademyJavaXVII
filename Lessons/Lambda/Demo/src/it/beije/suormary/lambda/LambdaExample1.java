@@ -13,6 +13,7 @@ public class LambdaExample1 {
         // With Lambda
 		
 		Addable ad1=(a,b)->(a+b);  
+		
         System.out.println("First: " + ad1.add(10,20));  
         
         
@@ -25,23 +26,22 @@ public class LambdaExample1 {
         Addable ad2 = new Addable(){  
             public int add(int a, int b){return (a+b);}  
         };  
+        
         System.out.println("Second: " + ad2.add(10,20));  
         
         
         // Or create a class that implements Addable
         
         Addable ad3 = new NoLambda();
+        
         System.out.println("Third: " + ad3.add(10,20));  
 	}
 
 }
 
 class NoLambda implements Addable{
-
 	@Override
 	public int add(int a, int b) {
 		return a + b;
 	}
-	
-	
 }
