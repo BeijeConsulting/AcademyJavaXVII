@@ -28,7 +28,7 @@ public class OptimisePath {
 		}
 		
 		int oldLength = sb.length();
-		if (oldLength == 0) return null;
+		if (oldLength == 0) return new String[]{};
 		
 		int newLength = 0;
 		String path = sb.toString();
@@ -56,11 +56,21 @@ public class OptimisePath {
 	
 	
 //	public static void main (String arg[]) {
-//		String[] input = {"E", "S", "N", "E","W", "W", "S"};
-//		String[] output = optimise(input);
+//		String[][] input = {{"S", "S", "N", "E"},
+//				   {"S", "N"},
+//				   {"E"},
+//				   {"W", "W", "N", "S", "N"},
+//				   {"W", "E", "E", "E", "S"},
+//				   {"N", "N", "E", "W", "S"},
+//				   {"E", "E", "W", "E", "S","N", "W", "E", "E", "S"}};
+//		String[] output;
 //		
+//		for ( int i = 0; i< input.length; i++) {
+//			output = optimise(input[i]);
+//			System.out.println(Arrays.toString(input[i]));
+//			System.out.println(Arrays.toString(output));
+//			System.out.println("");
+//		}
 //		
-//		System.out.println(Arrays.toString(input));
-//		System.out.println(Arrays.toString(output));
 //	}
 }
