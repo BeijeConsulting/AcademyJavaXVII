@@ -14,12 +14,14 @@ import Demo.Persona;
 
 public class Ex_9 {
 
-    public static Map<Persona, Citta> personsByCity(List<Persona> inputList) {
-        return inputList.stream().collect(Collectors.toMap(p -> p, p -> p.getCitta()));
+    public static Map<Persona, String> personsByCity(List<Persona> inputList) {
+    	//TODO
+        return null;
     }
 
-    public static Map<Citta, List<Persona>> personsByCityOfSea(List<Persona> inputList) {
-        return inputList.stream().collect(Collectors.groupingBy(p -> p.getCitta()));
+    public static Map<String, List<Persona>> personsByCityOfSea(List<Persona> inputList) {
+    	//TODO
+        return null;
     }
     
     

@@ -1,5 +1,7 @@
 package Demo;
 
+import Esercizi.Citta;
+
 public class Persona {
 	
 	private String nome;
@@ -28,7 +30,4 @@ public class Persona {
 	public String toString() {
 		return "Persona [nome=" + nome + ", eta=" + eta + ", citta=" + citta + "]";
 	}
-
-	
-	
 }
