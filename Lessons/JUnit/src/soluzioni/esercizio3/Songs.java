@@ -1,5 +1,6 @@
-package esercizi.esercizio3;
+package soluzioni.esercizio3;
 
+import java.util.Objects;
 
 public class Songs {
 	
@@ -39,5 +40,23 @@ public class Songs {
 		this.albumTitle = albumTitle;
 	}
 
+	//INSERIRE OVERRIDE EQUALS
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Songs other = (Songs) obj;
+		return Objects.equals(albumTitle, other.albumTitle) && Objects.equals(author, other.author)
+				&& Objects.equals(title, other.title);
+	}
+
+
+	
+	
+	
 	
 }

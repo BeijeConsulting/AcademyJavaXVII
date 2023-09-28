@@ -1,11 +1,10 @@
-package esercizi.esercizio3;
+package soluzioni.esercizio3;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -15,7 +14,8 @@ public class UtilsMusicTest {
     private Album album;
     private UtilsMusic utilsMusic;
 
-    @BeforeClass
+    //ANZICHE' @BeforeClass, che dovendo essere eseguito solo una volta prima di tutto il resto necessiterebbe di essere statico
+    @Before
     public void setUp() {
         album = new Album("Soundtracks", "Hans Zimmer");
         utilsMusic = new UtilsMusic();
@@ -28,9 +28,10 @@ public class UtilsMusicTest {
 
         for (int i = 0; i < 5; i++) {
             String title = "Song" + i;
-            assertFalse(utilsMusic.addSongs(album, title));
+            //ANZICHE' assertFalse: il metodo addSongs ritorna true se aggiunta correttamente
+            assertTrue(utilsMusic.addSongs(album, title));
         }
-      
+        
         assertFalse(utilsMusic.isAlbumFull(album));
     }
 
@@ -51,7 +52,7 @@ public class UtilsMusicTest {
 
 
         List<Songs> albumSongs = album.getAlbumSongs();
-        assertSame(5, albumSongs.size());
+        assertEquals(5, albumSongs.size());
         for (int i = 0; i < 5; i++) {
             String expectedTitle = "Song" + i;
             assertEquals(expectedTitle, albumSongs.get(i).getTitle());

@@ -1,7 +1,8 @@
-package esercizi.esercizio3;
+package soluzioni.esercizio3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Album {
 	
@@ -18,6 +19,8 @@ public class Album {
 		super();
 		this.title = title;
 		this.author = author;
+		//MANCAVA inizializzazione della lista di canzoni
+		this.albumSongs = new ArrayList<>();
 	}	
 	
 	public String getTitle() {
@@ -46,5 +49,21 @@ public class Album {
 		return maxSongs;
 	}
 
+	
+    //INSERIRE OVERRIDE EQUALS
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Album other = (Album) obj;
+		return Objects.equals(albumSongs, other.albumSongs) && Objects.equals(author, other.author)
+				&& maxSongs == other.maxSongs && Objects.equals(title, other.title);
+	}
+	
+	
 
 }

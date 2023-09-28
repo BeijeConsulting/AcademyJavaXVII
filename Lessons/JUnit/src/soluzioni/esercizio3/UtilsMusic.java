@@ -1,4 +1,4 @@
-package esercizi.esercizio3;
+package soluzioni.esercizio3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +21,17 @@ public class UtilsMusic {
     public boolean addSongs(Album album, String titleSong) {
         
     	for(Songs s : album.getAlbumSongs()) {
-    		
-    		if( s.getTitle()==titleSong) {
+    		//non == ma equals, si parla di stringhe
+    		if( s.getTitle().equals(titleSong)) {
     			return false;
-    		} else {
-    			
-    			Songs songs = new Songs(titleSong);
-    			album.getAlbumSongs().add(songs);
-    		}
+    			} 
     	}
-    	
+    		
+    	//FUORI DAL CICLO, se inserito all'interno non aggiungerà correttamente la canzone,
+    	//aggiungendo una nuova canzone per ogni canzone con titolo diverso
+    	Songs songs = new Songs(titleSong);
+    	album.getAlbumSongs().add(songs);
+    		
     	return true;
     }
 
