@@ -26,7 +26,7 @@ public class Ex_9 {
         return null;
     }
     
-    public static List<Citta> getListOfCities(List<Persona> ps) {
+    public static List<String> getListOfCities(List<Persona> ps) {
     	//TODO
     	return null;
     }

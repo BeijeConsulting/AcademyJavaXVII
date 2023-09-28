@@ -32,8 +32,8 @@ public class Ex_9_soluzione {
         				); // La mappa risultante ha le città come chiavi e le liste di persone che vivono in ciascuna città come valori
     }
     
-    public static List<Citta> getListOfCities(List<Persona> ps) {
-    	List<Citta> listOfCities = ps.stream()
+    public static List<String> getListOfCities(List<Persona> ps) {
+    	List<String> listOfCities = ps.stream()
                 .filter(p -> p.getEta() > 30) //filtra le persone in base all'eta' superiore a 30 anni
                 .map(p -> p.getCitta()) //prende ciascun elemento rimanente dello stream e mappa l'oggetto Citta associato a quella persona
                 .distinct() //rimuove i duplicati dallo stream risultante, in modo che ogni numero appaia solo una volta
