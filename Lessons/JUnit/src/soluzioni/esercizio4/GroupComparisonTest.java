@@ -1,4 +1,4 @@
-package esercizi.esercizio4;
+package soluzioni.esercizio4;
 
 
 public class GroupComparisonTest {
