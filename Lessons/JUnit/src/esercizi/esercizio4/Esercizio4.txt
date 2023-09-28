@@ -1,0 +1,27 @@
+
+SEZIONE 1
+PEOPLECOMPARISON / PEOPLECOMPARISONTEST
+
+1)
+Scrivere un test che crei un oggetto Person, e che controlli che non sia null.
+Questo test deve essere eseguito prima di ogni altro test.
+
+2)
+Commentare in nel test il metodo createPerson()
+Scrivere un metodo nella classe PeopleComparison che faccia funzionare il test 2.
+
+2.1)
+Modificare il metodo del punto precedente, in modo che restituisca null nel caso in cui le due persone abbiano la stessa età.
+Implementare il test 2.1 sameAgeTest() in modo che testi il metodo precedente con due persone della stessa età
+
+3)
+Scrivere uno o più test che testino il metodo sameCity(p1, p2) 
+
+
+
+SEZIONE 2
+GROUPCOMPARISON / GROUPCOMPARISONTEST
+
+4) Scrivere un test che controlli il metodo relatives(Person[] people, Person p1) che cerca i parenti della persona p1
+
+5) Scrivere un metodo che ordini le persone in ordine alfabetico e il rispettivo test. (Persone da testare scritte nella classe di test)
