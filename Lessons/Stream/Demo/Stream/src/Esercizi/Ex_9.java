@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import Demo.Persona;
+
 /*
  * Raggruppare, utilizzando lo stream(), le persone in base all'attributo citta'
  * Raggruppare le persone in base all'attributo booleano diMare della classe Citta creata precedentemente utilizzando lo stream()
