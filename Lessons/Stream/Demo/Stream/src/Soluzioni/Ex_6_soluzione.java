@@ -18,7 +18,7 @@ import Demo.Persona;
 
 public class Ex_6_soluzione {
 	
-	public static List<Persona> filteredListOfPeople(List<Persona> people) {
+	public static List<Persona> ex6(List<Persona> people) {
 		List<Persona> filteredPeople = people.stream() // // crea uno stream a partire dalla lista di input "people"
                 .filter( // il metodo filter serve per definire il criterio di filtraggio. 
                 		

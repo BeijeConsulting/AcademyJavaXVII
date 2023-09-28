@@ -9,7 +9,7 @@ import java.util.List;
  * */
 
 public class Ex_7 {
-	public static List<Integer> filteredList(List<Integer> list1, List<Integer> list2) {
+	public static List<Integer> ex7(List<Integer> list1, List<Integer> list2) {
 		//TODO
 		return null;
 	}

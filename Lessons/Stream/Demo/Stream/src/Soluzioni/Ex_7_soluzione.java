@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  * */
 
 public class Ex_7_soluzione {
-	public static List<Integer> filteredList(List<Integer> list1, List<Integer> list2) {
+	public static List<Integer> ex7(List<Integer> list1, List<Integer> list2) {
 		List<Integer> mergedAndSorted = Stream.concat(list1.stream(), list2.stream()) // viene utilizzato Stream.concat per unire i due stream risultanti in un unico stream.
                 .distinct() // il metodo "distinct" rimuove i duplicati dallo stream risultante, in modo che ogni numero appaia solo una volta
                 .sorted( // il metodo sorted ordina gli elementi dello stream in ordine decrescente

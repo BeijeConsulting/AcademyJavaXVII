@@ -17,7 +17,7 @@ import Demo.Persona;
  * */
 
 public class Ex_6 {
-	public static List<Persona> filteredListOfPeople(List<Persona> people) {
+	public static List<Persona> ex6(List<Persona> people) {
 		//TODO
 		return null;
 
