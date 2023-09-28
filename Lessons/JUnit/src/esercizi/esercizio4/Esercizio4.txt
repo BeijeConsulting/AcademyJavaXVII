@@ -1,4 +1,8 @@
 
+ANTEFATTO
+0)
+Scrivere una classe TestSuite che testi le due classi PersonComparisonTest e GroupComparisonTest
+
 SEZIONE 1
 PEOPLECOMPARISON / PEOPLECOMPARISONTEST
 
@@ -30,5 +34,6 @@ Scrivere un metodo che ordini le persone in ordine alfabetico per nome e il risp
 Il metodo prende in input Person[] (Persone da testare scritte nella classe di test)
 
 6)
-Scrivere un metodo che cont quante persone abitano in una città e il rispettivo test. Il metedo prende in input una stringa e un array di persone
+Scrivere un metodo che conti quante persone abitano in una città e il rispettivo test. Il metedo prende in input una stringa e un array di persone
 (Persoen da testare scitte nella classe)
+
