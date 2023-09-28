@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
  * Raggruppare le persone in base all'attributo booleano diMare della classe Citta creata precedentemente utilizzando lo stream()
  * */
 
+
 public class Ex_9 {
 
     public static Map<Persona, Citta> personsByCity(List<Persona> inputList) {
