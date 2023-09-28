@@ -10,6 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+//sorry not sorry
 public class UtilsMusicTest {
 
     private Album album;
@@ -20,7 +21,8 @@ public class UtilsMusicTest {
         album = new Album("Soundtracks", "Hans Zimmer");
         utilsMusic = new UtilsMusic();
     }
-
+    
+    //Controllo se che l'album sia vuoto e lo popolo, poi controllo che sia popolato correttamente
     @Test
     public void testIsAlbumFull() {
 
@@ -35,7 +37,7 @@ public class UtilsMusicTest {
     }
 
     
-    
+    //Controllo se che l'album sia vuoto e lo popolo, poi provo ad aggiungere una canzone già presente
     @Test
     public void testAddSongs() {
         assertTrue(utilsMusic.isAlbumFull(album));

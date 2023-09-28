@@ -5,6 +5,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.runners.MethodSorters;
 import org.junit.FixMethodOrder;
 
+/*
+ * Aggiungi le annotazioni sui metodi in modo che l'output sia sensato.
+ * Se hai bisogno che alcuni test seguano un ordine preciso, allora
+ * aggiungi delle lettere davanti al nome, così da eseguirli in ordine alfabetico.
+ * Se necessario puoi modificare il tipo di metodo
+ * 
+ */
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)		/*Testa i metodi in ordine alfabetico*/
 public class ExampleClassTest {

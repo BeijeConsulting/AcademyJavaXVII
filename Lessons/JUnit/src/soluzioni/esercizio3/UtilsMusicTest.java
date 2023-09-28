@@ -23,8 +23,6 @@ public class UtilsMusicTest {
         utilsMusic = new UtilsMusic();
     }
 
-    
-    //Controllo se che l'album sia vuoto e lo popolo e controllo che sia popolato correttamente
     @Test
     public void testIsAlbumFull() {
     	
@@ -41,7 +39,6 @@ public class UtilsMusicTest {
     }
 
     
-    //Controllo se che l'album sia vuoto e lo popolo, poi provo ad aggiungere una canzone già presente
     @Test
     public void testAddSongs() {
     	//ANZICHE' True avendo cambiato i return del metodo

@@ -12,7 +12,4 @@ public class ExampleClass {
 		this.message = message;
 	}
 	
-	
-
-	
 }
