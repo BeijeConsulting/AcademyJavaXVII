@@ -1,5 +1,7 @@
 package Esercizi;
 
+import java.util.List;
+
 /*
  *Unisci e ordina: 
  *Unisci due stream di numeri, elimina i duplicati e ordina il risultato in ordine decrescente.
@@ -8,11 +10,8 @@ package Esercizi;
 
 public class Ex_7 {
 	public static List<Integer> filteredList(List<Integer> list1, List<Integer> list2) {
-		List<Integer> mergedAndSorted = Stream.concat(list1.stream(), list2.stream())
-                .distinct()
-                .sorted(Comparator.reverseOrder())
-                .collect(Collectors.toList());
-		return mergedAndSorted;
+		//TODO
+		return null;
 	}
 
 }

@@ -1,5 +1,7 @@
 package Esercizi;
 
+import java.util.List;
+
 /*
  *Dopo aver aggiunto degli attributi (String nome,boolean capoluogo,boolean di Mare)
  *alla classe Citta' con i metodi getter e setter: 
@@ -11,15 +13,18 @@ package Esercizi;
 
 public class Ex_8 {
 	public static List<Citta> seaCities(List<Citta> inputList) {
-		return inputList.stream().filter(c -> c.diMare()).collect(Collectors.toList());
+		//TODO
+		return null;
 	}
 
 	public static List<Citta> listOfCities(List<Citta> inputList) {
-	return inputList.stream().filter(c -> c.capoluogo()).collect(Collectors.toList());
+		//TODO
+	return null;
 }
 
 	public static List<Citta> cities(List<Citta> inputList) {
-		return inputList.stream().filter(c -> c.getNome()).endsWith('a').collect(Collectors.toList());
+		//TODO
+		return null;
 	}
 	
 }
