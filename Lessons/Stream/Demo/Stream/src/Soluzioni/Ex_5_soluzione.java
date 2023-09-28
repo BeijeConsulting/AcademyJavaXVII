@@ -19,7 +19,9 @@ public class Ex_5_soluzione {
 	public static Map<Integer, List<Persona>> ex5(List<Persona> p) {
         Map<Integer, List<Persona>> peopleByAge = p.stream() // creato uno stream a partire dalla lista di oggetti "Persona" p
                 .collect( //  il metodo collect con Collectors.groupingBy serve a raggruppare le persone in base all'età.
-                		Collectors.groupingBy(per -> per.getEta())
+                		Collectors.groupingBy( // crea una mappa in cui le chiavi sono le età e i valori sono le liste delle persone con quella età.
+                				per -> per.getEta() // lambda utilizzata per estrarre l'età da ciascuna persona e usarla come chiave nel raggruppamento.
+                				)
                 		);
         return peopleByAge;
     }
