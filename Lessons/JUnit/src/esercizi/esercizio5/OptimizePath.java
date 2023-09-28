@@ -2,7 +2,7 @@ package esercizi.esercizio5;
 /*
  * https://www.codewars.com/kata/550f22f4d758534c1100025a
  * Ti viene dato un percorso sotto forma di array con direzioni N, S, E, W
- * ottimizza il percorso eliminando le coppie di direzioni opporte vicine
+ * ottimizza il percorso eliminando le coppie di direzioni opposte vicine
  * es. [E, S, N, E, W, W, S] DIVENTERà [E, W, S] e poi [S]
  * perchè andare prima a sud e immediatamente poi a nord è come rimanere fermi,
  * idem per est e ovest

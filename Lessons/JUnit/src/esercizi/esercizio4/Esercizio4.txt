@@ -1,4 +1,3 @@
-
 ANTEFATTO
 0)
 Scrivere una classe TestSuite che testi le due classi PersonComparisonTest e GroupComparisonTest

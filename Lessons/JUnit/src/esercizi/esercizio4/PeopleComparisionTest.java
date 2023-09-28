@@ -26,6 +26,4 @@ public class PeopleComparisionTest {
 	/* 3
 	*  INSERISCI QUI IL/I TEST 
 	*/
-	
-	
 }

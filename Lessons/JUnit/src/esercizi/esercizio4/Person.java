@@ -8,11 +8,8 @@ public class Person {
 	private String surname;
 	private int age;
 	private String city;
-	
-	
-	
+
 	public Person() {
-		super();
 	}
 
 	public Person(String name, String surname, int age, String city) {
@@ -64,8 +61,5 @@ public class Person {
 	public String toString() {
 		return "Person [name=" + name + ", surname=" + surname + ", age=" + age + ", city=" + city + "]";
 	}
-	
-	
-
 	
 }
