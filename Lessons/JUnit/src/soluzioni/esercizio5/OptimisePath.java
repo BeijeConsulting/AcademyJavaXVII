@@ -13,7 +13,27 @@ import java.util.Arrays;
  * 
  * Dopo aver scritto il programma, scrivi le classi TestJunit e TestRunner
  * 
- * ******test da fare******
+ * PERSCORSI DA TESTARE / SOLUZIONI
+ * {"S", "S", "N", "E"}
+ * {"S", "E"}
+ * 					
+ * {"S", "N"}
+ * {""}
+ * 
+ * {"E"}
+ * {"E"}
+ * 
+ * {"W", "W", "N", "S", "N"}
+ * {"W", "W", "N"}
+ * 
+ * {"W", "E", "E", "E", "S"}
+ * {"E", "E", "S"}
+ * 
+ * {"N", "N", "E", "W", "S"}
+ * {"N"}
+ * 
+ * {"E", "E", "W", "E", "S","N", "W", "E", "E", "S"}
+ * {"E", "E", "E", "S"}
  */
 
 public class OptimisePath {
