@@ -4,7 +4,7 @@ import java.util.List;
 
 /*
  * Unione di due stream:
- *  Unisci due stream di stringhe in un unico stream.
+ *  Unisci due stream di stringhe in un unico stream e raccogli in una nuova lista gli elementi filtrati.
  * Esempio: ["a", "b", "c"], ["d", "e", "f"] -> ["a", "b", "c", "d", "e", "f"]
  * */
 

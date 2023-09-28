@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 /*
  *Unisci e ordina: 
- *Unisci due stream di numeri, elimina i duplicati e ordina il risultato in ordine decrescente.
+ *Unisci due stream di numeri, elimina i duplicati, ordina il risultato in ordine decrescente e raccogli in una nuova lista gli elementi filtrati.
  *Esempio: [1, 2, 3], [3, 4, 5] -> [5, 4, 3, 2, 1]
  * */
 

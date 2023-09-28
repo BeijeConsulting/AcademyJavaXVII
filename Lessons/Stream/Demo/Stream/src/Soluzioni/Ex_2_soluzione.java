@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /*
- * Dato uno stream di stringhe, trasforma ogni stringa in maiuscolo.
+ * Dato uno stream di stringhe, trasforma ogni stringa in maiuscolo e raccogli in una nuova lista gli elementi filtrati.
  * Esempio: ["a", "b", "c"] -> ["A", "B", "C"]
  */
 

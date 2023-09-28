@@ -7,10 +7,13 @@ import java.util.stream.Collectors;
 import Demo.Persona;
 
 /*
- *1- Raggruppare, utilizzando lo stream(), le persone in base all'attributo citta'
+ *1- Raggruppare, utilizzando lo stream(), le persone in base all'attributo citta' e raccogli in una nuova lista gli elementi filtrati.
+ *
  *2- Raggruppare le persone in base all'attributo booleano diMare della classe Citta creata precedentemente utilizzando lo stream()
+ *	 e raccogli in una nuova lista gli elementi filtrati.
+ *
  *3- utilizza lo stream con le classi Persona e Citta' per ottenere una lista di tutte le città uniche
- * 	 in cui vive almeno una persona di età superiore a 30 anni.
+ * 	 in cui vive almeno una persona di età superiore a 30 anni e raccogli in una nuova lista gli elementi filtrati.
  * */
 
 
