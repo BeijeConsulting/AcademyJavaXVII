@@ -8,12 +8,12 @@ public class UtilsMusic {
 	public Album album = new Album("Soundtracks","Hans Zimmer");
 	public List<Songs> songs = new ArrayList<>();
 	
-	
+	//si devono invertire i return, deve dare falso se la condizione NON è vera
     public boolean isAlbumFull(Album album) {
         if(album.getAlbumSongs().size() >= album.getMaxSongs()) {
-        	 return false;
+        	 return true;
         } else {
-        	return true;
+        	return false;
         }
     }
 
