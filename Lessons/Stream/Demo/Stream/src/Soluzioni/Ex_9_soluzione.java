@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import Demo.Persona;
-import Esercizi.Citta;
 
 /*
  *1- Raggruppare, utilizzando lo stream(), le persone in base all'attributo citta' e raccogli in una nuova lista gli elementi filtrati.
