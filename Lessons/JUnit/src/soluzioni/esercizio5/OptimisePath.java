@@ -9,6 +9,7 @@ import java.util.Arrays;
  * es. [E, S, N, E, W, W, S] DIVENTERà [E, W, S] e poi [S]
  * perchè andare prima a sud e immediatamente poi a nord è come rimanere fermi,
  * idem per est e ovest
+ * Se l'input è null allora lo è anche l'output 
  * 
  * Dopo aver scritto il programma, scrivi le classi TestJunit e TestRunner
  * 
