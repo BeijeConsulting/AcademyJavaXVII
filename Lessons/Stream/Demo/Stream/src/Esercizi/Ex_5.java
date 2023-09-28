@@ -9,9 +9,9 @@ package Esercizi;
 
 public class Ex_5 {
 	
-	public static List<Persona> ex5(List<Persona> p) {
-		        return p.stream()
-		                .collect(Collectors.groupingBy(p -> p.getEta()));
-		    }
-    }
+	 public static Map<Integer, List<Persona>> ex5(List<Persona> p) {
+	        Map<Integer, List<Persona>> peopleByAge = p.stream()
+	                .collect(Collectors.groupingBy(per -> per.getEta()));
+	        return peopleByAge;
+	    }
 }
