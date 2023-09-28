@@ -7,7 +7,20 @@ public class Person {
 	private String name;
 	private String surname;
 	private int age;
+	private String city;
 	
+	
+	
+	public Person() {
+		super();
+	}
+
+	public Person(String name, String surname, int age, String city) {
+		this.name = name;
+		this.surname = surname;
+		this.age = age;
+		this.city = city;
+	}
 	
 	public String getName() {
 		return name;
@@ -27,6 +40,12 @@ public class Person {
 	public void setAge(int age) {
 		this.age = age;
 	}
+	public String getCity() {
+		return this.city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -37,8 +56,16 @@ public class Person {
 		if (getClass() != obj.getClass())
 			return false;
 		Person other = (Person) obj;
-		return age == other.age && Objects.equals(name, other.name) && Objects.equals(surname, other.surname);
+		return age == other.age && Objects.equals(name, other.name) && Objects.equals(surname, other.surname) &&
+				Objects.equals(city, other.city);
 	}
+
+	@Override
+	public String toString() {
+		return "Person [name=" + name + ", surname=" + surname + ", age=" + age + ", city=" + city + "]";
+	}
+	
+	
 
 	
 }

@@ -3,10 +3,10 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 public class TestBanca {
     @Test
-    public void testApriConto() {
+    public void testApriConto() {   	
         Banca banca = new Banca();
         banca.apriConto("Carlo", 1000.0);
-        assertNotNull(banca);
+        assertEquals(1,banca.getConti().size());
     }
 
     @Test
