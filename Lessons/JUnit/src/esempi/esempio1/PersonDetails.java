@@ -28,16 +28,16 @@ public class PersonDetails {
 		this.age = age;
 	}
 	
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PersonDetails other = (PersonDetails) obj;
-		return age == other.age && Objects.equals(name, other.name) && Objects.equals(surname, other.surname);
-	}
+//	@Override
+//	public boolean equals(Object obj) {
+//		if (this == obj)
+//			return true;
+//		if (obj == null)
+//			return false;
+//		if (getClass() != obj.getClass())
+//			return false;
+//		PersonDetails other = (PersonDetails) obj;
+//		return age == other.age && Objects.equals(name, other.name) && Objects.equals(surname, other.surname);
+//	}
 
 }

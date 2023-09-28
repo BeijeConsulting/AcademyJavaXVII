@@ -25,7 +25,7 @@ public class TestPersonDetails {
 	}	
 	
 	//NO OVERRIDE EQUALS
-	@Ignore
+	//@Ignore
 	@Test
 	public void testNoOverrideEquals() {
 		
@@ -51,7 +51,7 @@ public class TestPersonDetails {
 	}
 	
 	//CON OVERRIDE EQUALS
-	//@Ignore
+	@Ignore
 	@Test
 	public void testOverrideEquals() {
 
