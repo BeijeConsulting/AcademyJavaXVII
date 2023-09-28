@@ -170,7 +170,7 @@ public class Quiz {
 			
 			System.out.println(explain);
 			
-			System.out.println("\n2) " + input2);
+			System.out.println("\n2 - CODE 1) " + input2);
 			
 			System.out.println("Spiegazione:");
 			
@@ -186,7 +186,7 @@ public class Quiz {
 			
 			System.out.println(explain);
 			
-			System.out.println("\n3) " + input3);
+			System.out.println("\n2 - CODE 2) " + input3);
 			
 			System.out.println("Spiegazione:");
 			explain = ANSI_GREEN + "A) Corretta; La sintassi è corretta, la somma viene calcolata nel for\n"
