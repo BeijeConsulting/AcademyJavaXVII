@@ -14,32 +14,38 @@ public class UtilsMusicTest {
     private Album album;
     private UtilsMusic utilsMusic;
 
-    //ANZICHE' @BeforeClass, che dovendo essere eseguito solo una volta prima di tutto il resto necessiterebbe di essere statico
+    //ANZICHE' @BeforeClass, che dovendo essere eseguito solo una volta prima di tutto il resto
+    //necessiterebbe di essere statico
+    //SERVE il before perchè serve che si crei l'oggetto per ogni metodo   
     @Before
     public void setUp() {
         album = new Album("Soundtracks", "Hans Zimmer");
         utilsMusic = new UtilsMusic();
     }
 
+    
+    //Controllo se che l'album sia vuoto e lo popolo e controllo che sia popolato correttamente
     @Test
     public void testIsAlbumFull() {
-
-        assertTrue(utilsMusic.isAlbumFull(album));
+    	
+    	//ANZICHE' True avendo cambiato i return del metodo
+        assertFalse(utilsMusic.isAlbumFull(album));
 
         for (int i = 0; i < 5; i++) {
             String title = "Song" + i;
             //ANZICHE' assertFalse: il metodo addSongs ritorna true se aggiunta correttamente
             assertTrue(utilsMusic.addSongs(album, title));
         }
-        
-        assertFalse(utilsMusic.isAlbumFull(album));
+        //ANZICHE' False anvendo cambiato i return del metodo
+        assertTrue(utilsMusic.isAlbumFull(album));
     }
 
     
-    
+    //Controllo se che l'album sia vuoto e lo popolo, poi provo ad aggiungere una canzone già presente
     @Test
     public void testAddSongs() {
-        assertTrue(utilsMusic.isAlbumFull(album));
+    	//ANZICHE' True avendo cambiato i return del metodo
+        assertFalse(utilsMusic.isAlbumFull(album));
 
 
         for (int i = 0; i < 5; i++) {
@@ -52,6 +58,7 @@ public class UtilsMusicTest {
 
 
         List<Songs> albumSongs = album.getAlbumSongs();
+        //Serve l'ecquals, controlla il valore non il riferimento
         assertEquals(5, albumSongs.size());
         for (int i = 0; i < 5; i++) {
             String expectedTitle = "Song" + i;
