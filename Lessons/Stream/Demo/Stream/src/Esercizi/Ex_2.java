@@ -3,7 +3,7 @@ package Esercizi;
 import java.util.List;
 
 /*
- * Dato uno stream di stringhe, trasforma ogni stringa in maiuscolo e raccogli in una nuova lista gli elementi filtrati.
+ * Dato uno stream di stringhe, trasforma ogni stringa in maiuscolo e raccogli in una nuova lista gli elementi.
  * Esempio: ["a", "b", "c"] -> ["A", "B", "C"]
  */
 

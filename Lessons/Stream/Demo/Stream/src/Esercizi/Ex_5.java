@@ -7,10 +7,9 @@ import Demo.Persona;
 
 /*
  * (fare riferimento alla classe persona nel package Demo) 
- * Raggruppa una lista di persone per età e raccogli in una nuova lista gli elementi filtrati.
- * Esempio: [Person("Mario", 10), Person("Luigi", 20), 
- * 			 Person("Pippo", 10)] -> {10: [Person("Mario", 10), 
- * 			 Person("Pippo", 10)], 20: [Person("Luigi", 20)]}
+ * Raggruppa una lista di persone per età e raccogli in una nuova lista gli elementi.
+ * Esempio: [Persona("Mario", 4, "Roma"), Persona("Luigi", 30, "Milano")] ->
+ * 			 {4=[Persona [nome=Mario, eta=4, citta=Roma]], 30=[Persona [nome=Luigi, eta=30, citta=Milano]]}
  * */
 
 public class Ex_5 {

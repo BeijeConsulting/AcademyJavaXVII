@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 /*
  * Filtraggio semplice: 
- * Crea uno stream di numeri interi, filtra solo i numeri pari e raccogli in una nuova lista gli elementi filtrati.
+ * Crea uno stream di numeri interi, filtra solo i numeri pari e raccogli in una nuova lista gli elementi.
  * Esempio: [1, 2, 3, 4, 5, 6] -> [2, 4, 6]
 */
 
