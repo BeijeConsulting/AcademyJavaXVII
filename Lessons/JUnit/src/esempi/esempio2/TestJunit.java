@@ -40,26 +40,29 @@ public class TestJunit {
 	
 	@Test
 	public void testBubbleSort() {
-		//assertEquals(Arrays.toString(orderedArray),Arrays.toString(oa.bubbleSort(array)));
-		assertEquals(orderedArray, array);
+		//array = oa.bubbleSort(array);
+		assertEquals(Arrays.toString(orderedArray),Arrays.toString(oa.bubbleSort(array)));
+		//assertEquals(orderedArray, array);
+		
+//		assertArrayEquals(orderedArray, array);
 	}
 	   
 	@Test(timeout = 500)
-	public void testSelectionSort() {
-		//assertEquals(Arrays.toString(orderedArray),Arrays.toString(oa.selectionSort(array)));
-		assertEquals(orderedArray, array);
+	public void testSelectionSort() throws InterruptedException {
+		assertEquals(Arrays.toString(orderedArray),Arrays.toString(oa.selectionSort(array)));
+		//assertEquals(orderedArray, array);
 	}
 	
 	@Test
 	public void testFakeSort() {
-		//assertEquals(Arrays.toString(orderedArray),Arrays.toString(oa.fakeSort(array)));
-		assertEquals(orderedArray, array);
+		assertEquals(Arrays.toString(orderedArray),Arrays.toString(oa.fakeSort(array)));
+		//assertEquals(orderedArray, array);
 	}
 	
 	@Test(timeout = 500)
 	public void testTimeoutSort() {
-		//assertEquals(Arrays.toString(orderedArray),Arrays.toString(oa.timeoutSort(array)));
-		assertEquals(orderedArray, array);
+		assertEquals(Arrays.toString(orderedArray),Arrays.toString(oa.timeoutSort(array)));
+		//assertEquals(orderedArray, array);
 	}
 	
 }
