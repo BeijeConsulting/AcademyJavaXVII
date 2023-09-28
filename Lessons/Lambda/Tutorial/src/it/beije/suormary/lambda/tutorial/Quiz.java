@@ -41,7 +41,7 @@ public class Quiz {
 					+ "}")
 			.append("\n")
 			.append("\n")
-			.append("public class Traccia1 {")
+			.append("public class Esercizio1 {")
 			.append("\n")
 			.append("\tpublic static void main(String[] args) {")
 			.append("\n")
@@ -80,7 +80,7 @@ public class Quiz {
 					+ "\tInteger add(Integer n1, Integer n2);\r\n"
 					+ "}")
 			.append("\n")
-			.append("public class Traccia2 {")
+			.append("public class Esercizio2 {")
 			.append("\n")
 			.append("\tpublic static void main(String[] args) {")
 			.append("\n")
@@ -164,9 +164,10 @@ public class Quiz {
 					 + "B) Corretta; parametro scritto correttamente, body corretto perchè non sono necessari ; e return quando non sono specificate le parentesi graffe.\n "
 					 + "Non è necessario scrivere le parentesi graffe perchè l'operazione eseguita è una sola\n"
 					 + ANSI_RED
-					 + "C) Errata; Se il body omette le parentesi graffe non bisogna scrivere return"
+					 + "C) Errata; Se il body omette le parentesi graffe non bisogna scrivere return\n"
 					 + ANSI_GREEN
-					 + "D) Corretta; Sintassi corretta, parentesi non necessarie al parametro singolo non tipato, sintassi del body corretta con graffe, return e ;\n";
+					 + "D) Corretta; Sintassi corretta, parentesi non necessarie al parametro singolo non tipato, sintassi del body corretta con graffe, return e ;\n"
+					 + ANSI_RESET;
 			
 			System.out.println(explain);
 			
