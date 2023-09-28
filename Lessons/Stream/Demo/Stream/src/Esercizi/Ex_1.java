@@ -1,5 +1,8 @@
 package Esercizi;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /*
  * Filtraggio semplice: 
  * Crea uno stream di numeri interi e filtra solo i numeri pari.
@@ -9,9 +12,7 @@ package Esercizi;
 public class Ex_1 {
 
 	public static List<Integer> ex1(List<Integer> integersList) {
-        List<Integer> evenNumbers = integersList.stream()
-                .filter(x -> x % 2 == 0)
-                .collect(Collectors.toList());
-        return evenNumbers;
-    }
+        //TODO
+		return null;
+	}
 }
