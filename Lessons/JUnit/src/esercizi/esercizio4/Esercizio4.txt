@@ -22,6 +22,12 @@ Scrivere uno o più test che testino il metodo sameCity(p1, p2)
 SEZIONE 2
 GROUPCOMPARISON / GROUPCOMPARISONTEST
 
-4) Scrivere un test che controlli il metodo relatives(Person[] people, Person p1) che cerca i parenti della persona p1
+4)
+Scrivere un test che controlli il metodo relatives(Person[] people, Person p1) che cerca i parenti della persona p1
 
-5) Scrivere un metodo che ordini le persone in ordine alfabetico e il rispettivo test. (Persone da testare scritte nella classe di test)
+5)
+Scrivere un metodo che ordini le persone in ordine alfabetico per nome e il rispettivo test. (Persone da testare scritte nella classe di test)
+
+6)
+Scrivere un metodo che cont quante persone abitano in una città e il rispettivo test. Il metedo prende in input una stringa e un array di persone
+(Persoen da testare scitte nella classe)
