@@ -1,5 +1,10 @@
 package Esercizi;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import Demo.Persona;
+
 /*
  * Raggruppa una lista di persone per età.
  * Esempio: [Person("Mario", 10), Person("Luigi", 20), 
@@ -8,10 +13,4 @@ package Esercizi;
  * */
 
 public class Ex_5 {
-	
-	public static List<Persona> ex5(List<Persona> p) {
-		        return p.stream()
-		                .collect(Collectors.groupingBy(p -> p.getEta()));
-		    }
-    }
 }

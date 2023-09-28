@@ -1,5 +1,7 @@
 package Esercizi;
 
+import java.util.List;
+
 /*
  * Unione di due stream:
  *  Unisci due stream di stringhe in un unico stream.
@@ -9,7 +11,7 @@ package Esercizi;
 public class Ex_4 {
 
 	public static List<String> ex4(List<String> list1, List<String> list2) {
-        return Stream.concat(list1.stream(), list2.stream())
-                .collect(Collectors.toList());
+        //TODO
+		return null;
     }
 }
