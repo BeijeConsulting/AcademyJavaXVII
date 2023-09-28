@@ -13,7 +13,7 @@ public class Ex_6 {
                 .filter(p -> p.getAge() >= 30 && p.getName().startsWith("A"))
                 .collect(Collectors.toList());
 
-
+		
 	}
 	
 }
