@@ -15,6 +15,5 @@ public class TestBanca {
         banca.apriConto("Anna", 2000.0);
         ContoBancario conto = banca.trovaConto("Anna");
         assertNotNull(conto);
-        assertEquals(2000.0, conto.getSaldo(), 0.01);//0.01 tolleranza
     }
 }

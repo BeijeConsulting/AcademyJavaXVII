@@ -13,12 +13,12 @@ public class TestContoBancario {
 	    public void testPrelevaConSaldoSufficiente() {
 	        ContoBancario conto = new ContoBancario("Luigi", 2000.0);
 	        conto.preleva(1000.0);
-	        assertEquals(1000.0, conto.getSaldo(), 0.01);
+	        assertEquals(1000.0, conto.getSaldo(), 0.01); //tolleranza
 	    }
 
 	    @Test(expected = IllegalArgumentException.class)
 	    public void testPrelevaConSaldoInsufficiente() {
 	        ContoBancario conto = new ContoBancario("Giovanni", 500.0);
-	        conto.preleva(800.0); // Dovrebbe lanciare un'eccezione
+	        conto.preleva(300.0); // Dovrebbe lanciare un'eccezione
 	    }
 }
