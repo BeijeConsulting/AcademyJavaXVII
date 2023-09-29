@@ -1,0 +1,5 @@
+Nel seguente esercizio sono presenti delle classi java e una classe di test JUnit
+
+Attualmente TUTTE le classi contengono errori.
+
+Correggere tali errori in modo tale da ottenere entrambi i test con risultato POSITIVO.
