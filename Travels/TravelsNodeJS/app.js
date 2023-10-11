@@ -1,4 +1,5 @@
 const myModule = require('./mysql');
+const purchasesUtils = require('./Utils/purchaseUtils');
 
 const express = require('express')
 const app = express()
@@ -31,13 +32,13 @@ app.listen(port, () => {
 })
 
 
-app.get('/api/test', (req, res) => {
-    connection.query('SELECT * FROM cities', (err, rows, fields) => {
-        if (err) throw err
-      
-        console.log('rows: ', rows)
-        res.json(rows)
+app.get('/api/purchases', (req, res) => {
+    purchasesUtils.getAllPurchase().then((purchases) => {
+        res.json(purchases);
     })
+
+//     console.log("ciao", purchases)
+//    res.send(purchases);
 })
 /* 
 app.post('/api/contact', (req, res) => {
