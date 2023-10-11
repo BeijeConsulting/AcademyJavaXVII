@@ -1,9 +1,6 @@
 const myModule = require('./mysql');
-<<<<<<< HEAD
 const dayOfWeekUtils = require('./Utils/dayOfWeekUtils');
-=======
 const purchasesUtils = require('./Utils/purchaseUtils');
->>>>>>> 5d26c0fb70786b0aa9f45eeb5fa9b414968cfd9f
 
 const express = require('express')
 const app = express()
