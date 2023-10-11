@@ -1,14 +1,12 @@
 const myModule = require('./mysql');
+
+const bookingUtils = require('./Utils/bookingUtils');
+const cityUtils = require('./Utils/cityUtils');
+const companyUtils = require('./Utils/companyUtils');
+const countryUtils = require('./Utils/countryUtils');
 const dayOfWeekUtils = require('./Utils/dayOfWeekUtils');
 const purchasesUtils = require('./Utils/purchaseUtils');
 const travelsUtils = require('./Utils/travelUtils');
-<<<<<<< HEAD
-const companyUtils = require('./Utils/companyUtils');
-const countryUtils = require('./Utils/countryUtils');
-const bookingUtils = require('./Utils/bookingUtils');
-=======
-const cityUtils = require('./Utils/cityUtils');
->>>>>>> f4d16f4bbe5e27dcce531e0e5656ab3a25fa92f3
 
 const express = require('express')
 const app = express()
@@ -47,43 +45,50 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-
-
-app.get('/api/test', (req, res) => {
-    dayOfWeekUtils.getAllDayOfWeek().then((days => {
-        res.json(days);
-    }))
-})
-
-app.get('/api/purchases', (req, res) => {
-    purchasesUtils.getAllPurchase().then((purchases) => {
-        res.json(purchases);
+//bookings
+app.get('/api/bookings', (req, res) => {
+    bookingUtils.getAllBookings().then((bookings) => {
+        res.json(bookings);
     })
 })
 
-<<<<<<< HEAD
-
-//companies
-app.get('/api/companies', (req, res) => {
-    companyUtils.getAllCompanies().then((companies) => {
-        res.json(companies);
+app.get('/api/booking/:id', (req, res) => {
+    const id = req.params.id;
+    bookingUtils.getBookingById(id).then((booking) => {
+        res.json(booking);
     })
-=======
+})
+
+app.get('/api/booking_by_purchase/:purchase_id', (req, res) => {
+    const purchase_id = req.params.purchase_id;
+    bookingUtils.getBookingByPurchaseId(purchase_id).then((booking) => {
+        res.json(booking);
+    })
+})
+
+app.get('/api/booking_by_travel/:travel_id', (req, res) => {
+    const travel_id = req.params.travel_id;
+    bookingUtils.getBookingByTravelId(travel_id).then((booking) => {
+        res.json(booking);
+    })
+})
+
+
+//cities
 app.get('/api/getCityByCountry/:country', (req, res) => {
     const country = req.params.country;
     cityUtils.getCityByCountry(country).then((cities) => {
         res.json(cities);
     })
 })
-/* 
-app.post('/api/contact', (req, res) => {
-    //console.log(req)
 
-    let c = req.body;
-    console.log(c.nome)
 
-    res.json(c)
->>>>>>> f4d16f4bbe5e27dcce531e0e5656ab3a25fa92f3
+//companies
+app.get('/api/companies', (req, res) => {
+    companyUtils.getAllCompanies().then((companies) => {
+        res.json(companies);
+    })
+
 })
 
 app.get('/api/company/:id', (req, res) => {
@@ -137,43 +142,14 @@ app.get('/api/country/:id', (req, res) => {
 })
 
 
-//bookings
-app.get('/api/bookings', (req, res) => {
-    bookingUtils.getAllBookings().then((bookings) => {
-        res.json(bookings);
+
+//purchases
+app.get('/api/purchases', (req, res) => {
+    purchasesUtils.getAllPurchase().then((purchases) => {
+        res.json(purchases);
     })
 })
 
-app.get('/api/booking/:id', (req, res) => {
-    const id = req.params.id;
-    bookingUtils.getBookingById(id).then((booking) => {
-        res.json(booking);
-    })
-})
-
-app.get('/api/booking_by_purchase/:purchase_id', (req, res) => {
-    const purchase_id = req.params.purchase_id;
-    bookingUtils.getBookingByPurchaseId(purchase_id).then((booking) => {
-        res.json(booking);
-    })
-})
-
-app.get('/api/booking_by_travel/:travel_id', (req, res) => {
-    const travel_id = req.params.travel_id;
-    bookingUtils.getBookingByTravelId(travel_id).then((booking) => {
-        res.json(booking);
-    })
-})
-
-
-
-//users
-app.get('/api/getUserById/:id', (req, res) => {
-    const id = req.params.id;
-    userUtils.getUserById(id).then((user) => {
-        res.json(user);
-    })
-})
 
 //travels
 app.get('/api/getAllTravels', (req, res) => {
@@ -210,6 +186,13 @@ app.get('/api/getTravelsByArrival/:arrival', (req, res) => {
     })
 })
 
+//users
+app.get('/api/getUserById/:id', (req, res) => {
+    const id = req.params.id;
+    userUtils.getUserById(id).then((user) => {
+        res.json(user);
+    })
+})
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
