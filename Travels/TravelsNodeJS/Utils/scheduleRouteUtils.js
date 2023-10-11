@@ -61,5 +61,38 @@ module.exports = {
                 }
             });
         });
+    },
+    getScheduleById: function (id) {
+        return new Promise((resolve, reject => {
+            connection.query("SELECT * FROM schedules WHERE id = ?", [id], (err, rows, fields) => {
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        }))
+    },
+    getScheduleByRoute: function (route) {
+        return new Promise((resolve, reject => {
+            connection.query("SELECT * FROM schedules WHERE route_id = ?", [route], (err, rows, fields) => {
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        }))
+    },
+    getAllRoutesByCityNameLike: function (cityName) {
+        return new Promise((resolve, reject) => {
+            connection.query("SELECT * FROM routes WHERE city_name LIKE ?", [cityName], (err, rows, fields) => {
+                if(err){
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            });
+        });
     }
 }
