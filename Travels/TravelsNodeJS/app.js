@@ -2,9 +2,13 @@ const myModule = require('./mysql');
 const dayOfWeekUtils = require('./Utils/dayOfWeekUtils');
 const purchasesUtils = require('./Utils/purchaseUtils');
 const travelsUtils = require('./Utils/travelUtils');
+<<<<<<< HEAD
 const companyUtils = require('./Utils/companyUtils');
 const countryUtils = require('./Utils/countryUtils');
 const bookingUtils = require('./Utils/bookingUtils');
+=======
+const cityUtils = require('./Utils/cityUtils');
+>>>>>>> f4d16f4bbe5e27dcce531e0e5656ab3a25fa92f3
 
 const express = require('express')
 const app = express()
@@ -57,12 +61,29 @@ app.get('/api/purchases', (req, res) => {
     })
 })
 
+<<<<<<< HEAD
 
 //companies
 app.get('/api/companies', (req, res) => {
     companyUtils.getAllCompanies().then((companies) => {
         res.json(companies);
     })
+=======
+app.get('/api/getCityByCountry/:country', (req, res) => {
+    const country = req.params.country;
+    cityUtils.getCityByCountry(country).then((cities) => {
+        res.json(cities);
+    })
+})
+/* 
+app.post('/api/contact', (req, res) => {
+    //console.log(req)
+
+    let c = req.body;
+    console.log(c.nome)
+
+    res.json(c)
+>>>>>>> f4d16f4bbe5e27dcce531e0e5656ab3a25fa92f3
 })
 
 app.get('/api/company/:id', (req, res) => {
