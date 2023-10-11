@@ -1,5 +1,6 @@
 const myModule = require('./mysql');
 const purchasesUtils = require('./Utils/purchaseUtils');
+const travelsUtils = require('./Utils/travelUtils');
 
 const express = require('express')
 const app = express()
@@ -25,7 +26,14 @@ app.use(express.static('Views'))
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+app.get('/api/getAllTravels', (req, res) => {
+    travelsUtils.getAllTravels().then((travel) => {
+        res.json(travel);
+    })
 
+//     console.log("ciao", purchases)
+//    res.send(purchases);
+})
     
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
@@ -40,6 +48,8 @@ app.get('/api/purchases', (req, res) => {
 //     console.log("ciao", purchases)
 //    res.send(purchases);
 })
+
+
 /* 
 app.post('/api/contact', (req, res) => {
     //console.log(req)
