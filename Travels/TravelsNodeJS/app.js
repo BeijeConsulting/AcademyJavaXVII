@@ -41,15 +41,12 @@ app.get('/api/test', (req, res) => {
     dayOfWeekUtils.getAllDayOfWeek().then((days => {
         res.json(days);
     }))
+})
 
 app.get('/api/purchases', (req, res) => {
     purchasesUtils.getAllPurchase().then((purchases) => {
         res.json(purchases);
     })
-
-//     console.log("ciao", purchases)
-//    res.send(purchases);
->>>>>>> 5d26c0fb70786b0aa9f45eeb5fa9b414968cfd9f
 })
 /* 
 app.post('/api/contact', (req, res) => {
