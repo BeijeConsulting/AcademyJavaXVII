@@ -1,5 +1,8 @@
 const myModule = require("../mysql");
 const dayOfWeek = require("./dayOfWeekUtils");
+const xportUtils = require("./xportutils");
+const xportUtils = require("./xportutils");
+const cityUtils = require("./cityUtils");
 
 let connection = myModule.getConnection();
 
@@ -190,20 +193,34 @@ module.exports = {
     // },
     getAllRoutesByXportNameLike: function (xportName) {
         return new Promise((resolve, reject) => {
-            connection.query('SELECT * FROM routes' +
-            'INNER JOIN xports AS departureXport ON routes.departure_xport_id = departureXport.id ' +
-            'INNER JOIN xports AS arrivalXport ON routes.arrival_xport_id = arrivalXport.id ' +
-            'WHERE departureXport.name = ? AND arrivalXport.name = ?', [xportName], (err, rows, fields) => {
-                if(err){
-                    reject(err);
+          xportUtils.getXportsByName(xportName)
+            .then(xports => {
+              const xportIds = xportUtils.getXportsIdFromList(xports);
+      
+              if (xportIds.length === 0) {
+                //torna un array vuoto
+                resolve([]);
+                return;
+              }
+      
+              const query = 'SELECT * FROM routes WHERE departure_xport_id IN (?) and arrival_xport_id IN (?)';
+              connection.query(query, [xportIds, xportIds], (err, rows) => {
+                if (err) {
+                  reject(err);
                 } else {
-                    resolve(rows);
+                  resolve(rows);
                 }
-            });
+              });
+            })
         });
-    },
-    getRoutesByArrCityName
+      },
+    //   getRoutesByArrCityName: function (arrival_city) {
+    //     return new Promise((resolve, reject) => {
+    //         cityUtils.getCityByName(arrival_city).then((city) => {
+    //             const cityId = cityUtils.getCityId
+    //     })
 
+        
 
         
 
