@@ -59,7 +59,7 @@ module.exports = {
         )
     },
 
-    getTravelsByCity: function (city) {
+   /* getTravelsByCity: function (city) {
         let routes = routeUtils.getAllRoutesByCityNameLike(city)
         console.log("ROUTES: " , routes)
         routes.forEach(element => {
@@ -76,7 +76,7 @@ module.exports = {
             )
         });
 
-    },
+    },*/
 
     // da testare schedule e date
     getTravelByScheduleAndDate: function (schedule, date) {
