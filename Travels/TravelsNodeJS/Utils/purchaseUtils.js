@@ -3,18 +3,6 @@ const myModule = require("../mysql");
 
 let connection = myModule.getConnection();
 
-// module.exports = {
-//   getAllPurchase: function () {
-//     connection.query("SELECT * FROM purchases", (err, rows, fields) => {
-//       if (err) throw err;
-
-//       console.log("rows: ", rows);
-//       //res.json(rows)
-//       return rows;
-//     });
-//   }
-// };
-
 module.exports = {
   getAllPurchase: function () {
     return new Promise((resolve, reject) => {
@@ -56,5 +44,23 @@ module.exports = {
         }
       );
     });
+  },
+  addPurchases: function (purchases) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "INSERT INTO purchases (user_id, n_tickets, amount) VALUES (?, ?, ?)",
+        [purchases.user_id, purchases.n_tickets, purchases.amount],
+        (err, rows, fields) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        }
+      );
+    });
   }
+  //mi devo ritornare l'id della purchase appena creata
+  //con questo id prendo la lista passeggeri e la metto nel db
+  //per ogni booking della lista mi devo vedere se ha il travel e lo cerco dalla schedule
 };
