@@ -15,11 +15,15 @@ module.exports = {
         })
 
     },
-    test: function(){
-        () => {
-            let a="10";
-            console.log(a);
-            return a;
-        };
+    getDayOfWeekById: function(id){
+        return new Promise((resolve, reject) =>{
+            connection.query('SELECT * FROM days_of_week WHERE id = ?', [id] ,(err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                }else{
+                    resolve(rows[0]);
+                }
+            })
+        })
     }
 }
