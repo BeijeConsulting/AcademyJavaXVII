@@ -26,5 +26,35 @@ module.exports = {
         }
       });
     });
+  },
+  getPurchaseById: function (id) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM purchases WHERE id = ?",
+        [id],
+        (err, rows, fields) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        }
+      );
+    });
+  },
+  getPurchaseByUser: function (user) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "SELECT * FROM purchases WHERE user = ?",
+        [user],
+        (err, rows, fields) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        }
+      );
+    });
   }
 };
