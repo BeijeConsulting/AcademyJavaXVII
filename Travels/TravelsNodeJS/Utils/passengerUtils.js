@@ -49,5 +49,16 @@ module.exports = {
     },
     getTravelPassengers: function(id){
         
+    },
+    addPassenger: function(passenger){
+        return new Promise((resolve, reject) =>{
+            connection.query('INSERT INTO passengers (purchase_id, name, surname) VALUES(?, ?, ?)', [passenger.purchase_id, passenger.name, passenger.surname] ,(err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                }else{
+                    resolve(true);
+                }
+            })
+        })
     }
 }
