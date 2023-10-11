@@ -2,6 +2,7 @@ const myModule = require('./mysql');
 const dayOfWeekUtils = require('./Utils/dayOfWeekUtils');
 const purchasesUtils = require('./Utils/purchaseUtils');
 const travelsUtils = require('./Utils/travelUtils');
+const cityUtils = require('./Utils/cityUtils');
 
 const express = require('express')
 const app = express()
@@ -54,7 +55,12 @@ app.get('/api/purchases', (req, res) => {
     })
 })
 
-
+app.get('/api/getCityByCountry/:country', (req, res) => {
+    const country = req.params.country;
+    cityUtils.getCityByCountry(country).then((cities) => {
+        res.json(cities);
+    })
+})
 /* 
 app.post('/api/contact', (req, res) => {
     //console.log(req)
