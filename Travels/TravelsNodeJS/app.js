@@ -2,6 +2,9 @@ const myModule = require('./mysql');
 const dayOfWeekUtils = require('./Utils/dayOfWeekUtils');
 const purchasesUtils = require('./Utils/purchaseUtils');
 const travelsUtils = require('./Utils/travelUtils');
+const companyUtils = require('./Utils/companyUtils');
+const countryUtils = require('./Utils/countryUtils');
+const bookingUtils = require('./Utils/bookingUtils');
 
 const express = require('express')
 const app = express()
@@ -55,32 +58,137 @@ app.get('/api/purchases', (req, res) => {
 })
 
 
-/* 
-app.post('/api/contact', (req, res) => {
-    //console.log(req)
-
-    let c = req.body;
-    console.log(c.nome)
-
-    res.json(c)
+//companies
+app.get('/api/companies', (req, res) => {
+    companyUtils.getAllCompanies().then((companies) => {
+        res.json(companies);
+    })
 })
 
-app.get('/', (req, res) => {
-    res.send('Hello Suor Mary!!!')
-  })
-
-
-app.get('/home', (req, res) => {
-    //res.status(205)
-    res.send('<h1>sono la home page</h1>')
+app.get('/api/company/:id', (req, res) => {
+    const id = req.params.id;
+    companyUtils.getCompanyById(id).then((company) => {
+        res.json(company);
+    })
 })
 
-app.get('/api/hello', (req, res) => {
-    let obj = {
-        message: "Hello Suor Mary!"
-    }
-
-    res.json(obj);
+app.get('/api/companies/:idsString', (req, res) => {
+    const idsString = req.params.idsString;
+    console.log("ho preso il parametro: ", idsString);
+    companyUtils.getCompaniesByIds(idsString).then((companies) => {
+        res.json(companies);
+    })
 })
 
-*/
+app.get('/api/enabled_companies', (req, res) => {
+    companyUtils.getAllEnabledCompanies().then((companies) => {
+        res.json(companies);
+    })
+})
+
+app.get('/api/disabled_companies', (req, res) => {
+    companyUtils.getAllDisabledCompanies().then((companies) => {
+        res.json(companies);
+    })
+})
+
+app.get('/api/company_by_name/:name', (req, res) => {
+    const name = req.params.name;
+    console.log(name);
+    companyUtils.getCompanyByName(name).then((company) => {
+        res.json(company);
+    })
+})
+
+
+//countries
+app.get('/api/countries', (req, res) => {
+    countryUtils.getAllCountries().then((countries) => {
+        res.json(countries);
+    })
+})
+
+app.get('/api/country/:id', (req, res) => {
+    const id = req.params.id;
+    countryUtils.getCountryById(id).then((country) => {
+        res.json(country);
+    })
+})
+
+
+//bookings
+app.get('/api/bookings', (req, res) => {
+    bookingUtils.getAllBookings().then((bookings) => {
+        res.json(bookings);
+    })
+})
+
+app.get('/api/booking/:id', (req, res) => {
+    const id = req.params.id;
+    bookingUtils.getBookingById(id).then((booking) => {
+        res.json(booking);
+    })
+})
+
+app.get('/api/booking_by_purchase/:purchase_id', (req, res) => {
+    const purchase_id = req.params.purchase_id;
+    bookingUtils.getBookingByPurchaseId(purchase_id).then((booking) => {
+        res.json(booking);
+    })
+})
+
+app.get('/api/booking_by_travel/:travel_id', (req, res) => {
+    const travel_id = req.params.travel_id;
+    bookingUtils.getBookingByTravelId(travel_id).then((booking) => {
+        res.json(booking);
+    })
+})
+
+
+
+//users
+app.get('/api/getUserById/:id', (req, res) => {
+    const id = req.params.id;
+    userUtils.getUserById(id).then((user) => {
+        res.json(user);
+    })
+})
+
+//travels
+app.get('/api/getAllTravels', (req, res) => {
+    travelsUtils.getAllTravels().then((travel) => {
+        res.json(travel);
+    })
+})
+
+app.get('/api/getTravelById/:id', (req, res) => {
+    const id = req.params.id;
+    travelsUtils.getTravelById(id).then((travel) => {
+        res.json(travel);
+    })
+})
+
+app.get('/api/getTravelsByDeparture/:departure', (req, res) => {
+    const departure = req.params.departure;
+    travelsUtils.getTravelsByDeparture(departure).then((travel) => {
+        res.json(travel);
+    })
+})
+
+app.get('/api/getTravelsByCity/:city', (req, res) => {
+    const city = req.params.city;
+    travelsUtils.getTravelsByCity(city).then((travel) => {
+        res.json(travel);
+    })
+})
+
+app.get('/api/getTravelsByArrival/:arrival', (req, res) => {
+    const arrival = req.params.arrival;
+    travelsUtils.getTravelsByArrival(arrival).then((travel) => {
+        res.json(travel);
+    })
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
