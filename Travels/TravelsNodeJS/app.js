@@ -1,16 +1,21 @@
+const myModule = require('./mysql');
+
 const express = require('express')
 const app = express()
 const port = 3000
 const path = require('path')
 const bodyParser = require('body-parser')
 
-const mysql = require('mysql')
+/*const mysql = require('mysql')
 const connection = mysql.createConnection({
   host: 'bookstore.cvzu4xrxvkdz.eu-south-1.rds.amazonaws.com',
   user: 'admin',
   password: 'tltBJwVWgoY62y08brB1',
   database: 'fly_mary'
-})
+})*/
+
+let connection = myModule.getConnection();
+
 //connection.connect()
 
 app.use(express.static('Views'))
@@ -25,16 +30,16 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-/* 
-app.get('/api/contacts', (req, res) => {
-    connection.query('SELECT * FROM rubrica', (err, rows, fields) => {
+
+app.get('/api/test', (req, res) => {
+    connection.query('SELECT * FROM cities', (err, rows, fields) => {
         if (err) throw err
       
         console.log('rows: ', rows)
         res.json(rows)
     })
 })
-
+/* 
 app.post('/api/contact', (req, res) => {
     //console.log(req)
 
