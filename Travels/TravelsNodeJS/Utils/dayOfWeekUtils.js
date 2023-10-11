@@ -25,5 +25,38 @@ module.exports = {
                 }
             })
         })
+    },
+    getDaysOfWeekBySchedule: function(schedule){
+        return new Promise((resolve, reject) =>{
+            connection.query('SELECT * FROM days_of_week WHERE schedule_id = ?', [schedule.id] ,(err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                }else{
+                    resolve(rows);
+                }
+            })
+        })
+    },
+    addDayOfWeek: function(day, schedule){
+        return new Promise((resolve, reject) =>{
+            connection.query('INSERT INTO days_of_week (schedule_id, day) VALUES(?, ?)', [schedule.id, day.day] ,(err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                }else{
+                    resolve(true);
+                }
+            })
+        })
+    },
+    deleteDayOfWeek: function(day){
+        return new Promise((resolve, reject) =>{
+            connection.query('DELETE FROM days_of_week WHERE id = ?', [day.id] ,(err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                }else{
+                    resolve(true);
+                }
+            })
+        })
     }
 }
