@@ -83,7 +83,7 @@ module.exports = {
                 }
             });
         }))
-    },
+    }/*,
     getAllRoutesByCityNameLike: function (cityName) {
         return new Promise((resolve, reject) => {
             connection.query("SELECT * FROM routes WHERE city_name LIKE ?", [cityName], (err, rows, fields) => {
@@ -94,5 +94,5 @@ module.exports = {
                 }
             });
         });
-    }
+    }*/
 }
