@@ -1,4 +1,5 @@
 const myModule = require('./mysql');
+const dayOfWeekUtils = require('./Utils/dayOfWeekUtils');
 const purchasesUtils = require('./Utils/purchaseUtils');
 const travelsUtils = require('./Utils/travelUtils');
 
@@ -40,13 +41,17 @@ app.listen(port, () => {
 })
 
 
+
+app.get('/api/test', (req, res) => {
+    dayOfWeekUtils.getAllDayOfWeek().then((days => {
+        res.json(days);
+    }))
+})
+
 app.get('/api/purchases', (req, res) => {
     purchasesUtils.getAllPurchase().then((purchases) => {
         res.json(purchases);
     })
-
-//     console.log("ciao", purchases)
-//    res.send(purchases);
 })
 
 
