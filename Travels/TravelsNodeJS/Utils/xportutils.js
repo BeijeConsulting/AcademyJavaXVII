@@ -10,7 +10,7 @@ module.exports = {
                 console.log("ERRORE get Xport By Id")
                 reject(err);
             }else {
-                resolve(rows);
+                resolve(rows[0]);
             }
            
         })

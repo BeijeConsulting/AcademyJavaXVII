@@ -7,6 +7,8 @@ const countryUtils = require('./Utils/countryUtils');
 const dayOfWeekUtils = require('./Utils/dayOfWeekUtils');
 const purchasesUtils = require('./Utils/purchaseUtils');
 const travelsUtils = require('./Utils/travelUtils');
+const userAuthorityUtils = require('./Utils/userAuthorityUtils');
+const xportUtils = require('./Utils/userUtils');
 
 const express = require('express')
 const app = express()
@@ -195,4 +197,59 @@ app.get('/api/getUserById/:id', (req, res) => {
 })
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
+})
+
+//users_authority
+app.get('/api/customers', (req, res) => {
+    userAuthorityUtils.getAllCustomers().then((customers) => {
+        res.json(customers);
+    })
+})
+
+app.get('/api/admins', (req, res) => {
+    userAuthorityUtils.getAllAdmins().then((admins) => {
+        res.json(admins);
+    })
+})
+
+app.get('/api/userAuthorityByUserId/:id', (req, res) => {
+    const id = req.params.id;
+    userAuthorityUtils.getUserAuthorityByUserId(id).then((userAuthority) => {
+        res.json(userAuthority);
+    })
+})
+
+//xports
+app.get('/api/xport/:id', (req, res) => {
+    const id = req.params.id;
+    xportUtils.getXportById(id).then((xport) => {
+        res.json(xport);
+    })
+})
+
+app.get('/api/xports', (req, res) => {
+    xportUtils.getAllXports().then((xports) => {
+        res.json(xports);
+    })
+})
+
+app.get('/api/xports_by_name/:name', (req, res) => {
+    const name = req.params.name;
+    xportUtils.getXportsByName(name).then((xports) => {
+        res.json(xports);
+    })
+})
+
+app.get('/api/xports_by_city/:id', (req, res) => {
+    const id = req.params.id;
+    xportUtils.getXportsByCity(id).then((xports) => {
+        res.json(xports);
+    })
+})
+
+app.get('/api/xports_by_type/:type', (req, res) => {
+    const type = req.params.type;
+    xportUtils.getXportsByType(type).then((xports) => {
+        res.json(xports);
+    })
 })
