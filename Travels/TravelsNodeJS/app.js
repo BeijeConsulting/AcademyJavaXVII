@@ -1,4 +1,5 @@
 const myModule = require('./mysql');
+const dayOfWeekUtils = require('./Utils/dayOfWeekUtils');
 
 const express = require('express')
 const app = express()
@@ -32,12 +33,9 @@ app.listen(port, () => {
 
 
 app.get('/api/test', (req, res) => {
-    connection.query('SELECT * FROM cities', (err, rows, fields) => {
-        if (err) throw err
-      
-        console.log('rows: ', rows)
-        res.json(rows)
-    })
+    dayOfWeekUtils.getAllDayOfWeek().then((days => {
+        res.json(days);
+    }))
 })
 /* 
 app.post('/api/contact', (req, res) => {
