@@ -1,5 +1,5 @@
 const myModule = require('./mysql');
-
+//uitls
 const bookingUtils = require('./Utils/bookingUtils');
 const cityUtils = require('./Utils/cityUtils');
 const companyUtils = require('./Utils/companyUtils');
@@ -8,13 +8,17 @@ const dayOfWeekUtils = require('./Utils/dayOfWeekUtils');
 const purchasesUtils = require('./Utils/purchaseUtils');
 const travelsUtils = require('./Utils/travelUtils');
 const userAuthorityUtils = require('./Utils/userAuthorityUtils');
-const xportUtils = require('./Utils/userUtils');
+const xportUtils = require('./Utils/xportUtils');
+
+//controller
+const cityController = require('./RestController/cityController');
+
 
 const express = require('express')
 const app = express()
 const port = 3000
 const path = require('path')
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 /*const mysql = require('mysql')
 const connection = mysql.createConnection({
@@ -33,19 +37,7 @@ app.use(express.static('Views'))
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.get('/api/getAllTravels', (req, res) => {
-    travelsUtils.getAllTravels().then((travel) => {
-        res.json(travel);
-    })
-
-//     console.log("ciao", purchases)
-//    res.send(purchases);
-})
     
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
 
 //bookings
 app.get('/api/bookings', (req, res) => {
@@ -131,7 +123,8 @@ app.get('/api/company_by_name/:name', (req, res) => {
 
 //countries
 app.get('/api/countries', (req, res) => {
-    countryUtils.getAllCountries().then((countries) => {
+    cityController.getAllCountries().then((countries) => {
+        console.log("countrieeeeeees: " , countries);
         res.json(countries);
     })
 })
@@ -195,9 +188,6 @@ app.get('/api/getUserById/:id', (req, res) => {
         res.json(user);
     })
 })
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
 
 //users_authority
 app.get('/api/customers', (req, res) => {
@@ -253,3 +243,7 @@ app.get('/api/xports_by_type/:type', (req, res) => {
         res.json(xports);
     })
 })
+
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+  })

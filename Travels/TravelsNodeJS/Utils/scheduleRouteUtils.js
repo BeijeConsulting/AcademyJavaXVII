@@ -1,7 +1,6 @@
 const myModule = require("../mysql");
 const dayOfWeek = require("./dayOfWeekUtils");
-const xportUtils = require("./xportutils");
-const xportUtils = require("./xportutils");
+const xportUtils = require("./xportUtils");
 const cityUtils = require("./cityUtils");
 
 let connection = myModule.getConnection();
