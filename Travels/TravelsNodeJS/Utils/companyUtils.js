@@ -125,6 +125,18 @@ module.exports = {
             }
             resolve(idsString.substring(1) );
         });
+    },
+
+    addCompany: function(name){
+      return new Promise((resolve, reject) => {
+        connection.query("INSERT INTO companies (`name`) VALUES (?)", [name] , (err, rows, fields) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(true);
+            }
+        });
+    });
     }
     
 }

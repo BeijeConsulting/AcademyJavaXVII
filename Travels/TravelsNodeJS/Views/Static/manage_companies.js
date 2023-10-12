@@ -8,6 +8,7 @@ function addCompany() {
 		'Content-type': 'application/json',
 		'Authorization': `Bearer ` + token
 	};
+	
 
 	let body = inputEl.value;
 

@@ -29,6 +29,9 @@ module.exports = {
 
     getAllEnabledCompanies: function (){
         return companyUtils.getAllEnabledCompanies();
-    }
+    },
 
+    addCompany: function(name){
+        return companyUtils.addCompany(name); 
+    }
 }
