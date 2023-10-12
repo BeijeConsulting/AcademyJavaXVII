@@ -137,22 +137,24 @@ app.get('/api/filtered_companies/viewAll', (req, res) => {
 
 app.get('/api/company_by_name/:name', (req, res) => {
     const name = req.params.name;
-    console.log(name);
     companyUtils.getCompanyByName(name).then((company) => {
         res.json(company);
     })
 })
 
 app.post('/api/insert_company', (req, res) =>{
-   /* console.log("ehi ehi");
-    let c = req.body;
-    console.log(c)
+    let company = req.body;
+    companyController.addCompany(company.name).then(() => res.json(company));
+})
 
-    res.json(c)
-    
-    let name = req.body;
-    console.log(req.body);
-    companyController.addCompany(name).then(() => true);*/
+app.put('/api/enable_company/:id', (req, res) => {
+    let id = req.params.id;
+    companyController.enableCompany(id).then(() => true);
+})
+
+app.put('/api/disable_company/:id', (req, res) => {
+    let id = req.params.id;
+    companyController.disableCompany(id).then(() => true);
 })
 
 //countries

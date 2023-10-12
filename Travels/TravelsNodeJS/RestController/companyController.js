@@ -33,5 +33,13 @@ module.exports = {
 
     addCompany: function(name){
         return companyUtils.addCompany(name); 
+    },
+
+    enableCompany : function(id){
+        return companyUtils.enableCompany(id);
+    },
+
+    disableCompany : function(id){
+        return companyUtils.disableCompany(id);
     }
 }

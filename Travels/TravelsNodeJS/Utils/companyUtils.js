@@ -136,7 +136,32 @@ module.exports = {
                 resolve(true);
             }
         });
-    });
+      });
+    },
+
+    enableCompany: function(id){
+      return new Promise((resolve, reject) => {
+        connection.query("UPDATE companies SET `disabled_date` = NULL WHERE `id` = ?", [id] , (err, rows, fields) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(true);
+            }
+        });
+      });
+    },
+
+    disableCompany: function(id){
+      const today = new Date();
+      return new Promise((resolve, reject) => {
+        connection.query("UPDATE companies SET `disabled_date` = ? WHERE `id` = ?", [today, id] , (err, rows, fields) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(true);
+            }
+        });
+      });
     }
     
 }

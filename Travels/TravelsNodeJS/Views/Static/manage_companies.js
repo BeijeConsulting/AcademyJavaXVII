@@ -8,9 +8,9 @@ function addCompany() {
 		'Content-type': 'application/json',
 		'Authorization': `Bearer ` + token
 	};
-	
 
-	let body = inputEl.value;
+	let body = "{\"name\": \""+inputEl.value+"\"}";
+	//let body = inputEl.value;
 
 	fetchContainer(api, method, body, headers)
 		.then((response) => {
