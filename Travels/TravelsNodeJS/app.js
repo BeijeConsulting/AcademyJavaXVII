@@ -124,7 +124,7 @@ app.get('/api/company_by_name/:name', (req, res) => {
 //countries
 app.get('/api/countries', (req, res) => {
     cityController.getAllCountries().then((countries) => {
-        console.log("countrieeeeeees: " , countries);
+        //console.log("countrieeeeeees: " , countries);
         res.json(countries);
     })
 })
