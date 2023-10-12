@@ -9,11 +9,12 @@ const purchasesUtils = require('./Utils/purchaseUtils');
 const travelsUtils = require('./Utils/travelUtils');
 const userAuthorityUtils = require('./Utils/userAuthorityUtils');
 const xportUtils = require('./Utils/xportUtils');
+const scheduleRouteUtils = require('./Utils/scheduleRouteUtils');
 
 //controller
 const cityController = require('./RestController/cityController');
 const companyController = require('./RestController/companyController');
-
+const scheduleRouteController  = require('./RestController/scheduleRouteController');
 
 const express = require('express')
 const app = express()
@@ -179,6 +180,30 @@ app.get('/api/purchases', (req, res) => {
     purchasesUtils.getAllPurchase().then((purchases) => {
         res.json(purchases);
     })
+})
+
+
+//routes
+app.get('/api/routes', (req, res) => {
+    scheduleRouteController.getAllRoutes().then((routes) => {
+        res.json(routes);
+    })
+})
+
+app.get('/api/route/:id', (req, res) =>{
+    const id = req.params.id;
+    scheduleRouteController.getRouteById(id).then((route) => {
+        res.json(route)
+    });
+})
+
+
+//schedules
+app.get('/api/schedules/:route_id', (req, res) =>{
+    const route_id = req.params.route_id;
+    scheduleRouteController.getSchedulesByRouteId(route_id).then((schedules) => {
+        res.json(schedules)
+    });
 })
 
 

@@ -84,10 +84,9 @@ module.exports = {
       })
     );
   },
-  getScheduleByRoute: function (routeId) {
+  getScheduleByRouteId: function (routeId) {
     return new Promise(
-      (resolve,
-      (reject) => {
+      (resolve, reject) => {
         connection.query(
           "SELECT * FROM schedules WHERE route_id = ?",
           [routeId],
@@ -100,7 +99,6 @@ module.exports = {
           }
         );
       })
-    );
   },
   getSchedulesByRouteOnlyActive: function (routeId) {
     //prendo la data di oggi

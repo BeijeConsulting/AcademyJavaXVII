@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<link href="./static/main_style.css" rel="stylesheet" type="text/css">
+<link href="./static/recap_booking.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="./static/main_functions.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com%22%3E/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Lumanosimo&display=swap"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+	rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+	rel="stylesheet">
+<title>Route's schedules</title>
+<style>
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.error-feedback {
+    padding: 8px;
+    border: 1px solid #e57373; /* Red */
+    background-color: #ffebee; /* Light red background */
+    color: #b71c1c; /* Dark red text */
+    font-weight: bold;
+}
+
+.success-feedback {
+    padding: 8px;
+    border: 1px solid #81c784; /* Green */
+    background-color: #e8f5e9; /* Light green background */
+    color: #1b5e20; /* Dark green text */
+    font-weight: bold;
+}
+
+.input-width{
+	width: 46%;
+}
+
+.form-label{
+	font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+	<div class="logo"><a href="./home.html" id="logo"><b>Beije Travels</b></a></div>
+	<div class="topnav" id="menu">
+			
+	</div>
+	  	
+</div>
+
+<script>
+	generateMenu();
+	
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+	const routeId = urlParams.get('routeId');
+	console.log(routeId);
+	let schedules;
+	let companies;
+	
+	
+	function loadSchedules(){
+		let api = "schedules/" + routeId;
+		let method = "GET";
+		let body = "";
+		
+		fetchContainer(api, method, body, headers)
+		.then((response) => {
+			if(response.ok){
+				return response.json();
+			} else {
+				return response.json()
+				.then(errorData => {
+	
+					console.error('Schedule retrieval failed:', errorData.message);
+					errorElement.textContent = errorData.message;
+					errorElement.classList.remove("hidden");
+				});
+			}
+		})
+		.then((data) => {
+			schedules = data;
+			let text = `<table>
+							<tr>
+								<th>Departure time</th>
+								<th>Arrival time</th>
+								<th>Duration (minutes)</th>
+								<th>Days Of Week</th>
+								<th>Company</th>
+								<th>Price</th>
+								<th>Start date</th>
+								<th>End date</th>
+								<th></th>
+							</tr>`;
+			console.log(schedules);
+			for(let i=0; i<schedules.length; i++){
+				let duration = schedules[i].duration / 60;
+				text += `<tr>
+							<td>` + schedules[i].departure_time + `</td>
+							<td>` + schedules[i].arrival_time + `</td>
+							<td>` + duration + `</td>
+							<td id="daysOfWeek-` + schedules[i].id + `"></td>`;
+				// read days of week
+				
+				api = "days_of_week/" + schedules[i].id;
+				method = "GET";
+				body = "";
+				headers = "";
+				fetchContainer(api, method, body, headers)
+				.then((innerResponse) => {
+					if(innerResponse.ok){
+						return innerResponse.json();
+					} else {
+						return innerResponse.json()
+						.then(innerErrorData => {
+	
+							console.error('Schedule days of week retrieval failed:', innerErrorData.message);
+						});
+					}
+				}).then((innerData) => {
+					let daysOfWeek = innerData;
+					let html = "";
+					for(let j=0; j<daysOfWeek.length; j++){
+						html += daysOfWeek[j].day;
+						if(j != daysOfWeek.length-1){
+							html += ` - `;
+							
+						}
+					}
+					schedules[i].daysOfWeek = daysOfWeek;
+					//console.log("controlla i days of week qui : ", schedules[i]);
+					document.getElementById("daysOfWeek-"+schedules[i].id).innerHTML = html;
+				});
+				text += `<td>` + schedules[i].company_name + `</td>
+						 <td>` + schedules[i].price + ` &euro;</td>
+						 <td>` + schedules[i].start_date + `</td>`;
+				if(schedules[i].end_date === undefined){
+					text += `<td id="dis-`+ schedules[i].id +`">
+						<div>
+							<label for="disableDate"></label> 
+							<input type="date" id="disableDate-`+ schedules[i].id +`" name="disableDate" min="` + schedules[i].start_date + `"/> <br> <br>
+							<button class="primary-button" onclick="disableSchedule(` + schedules[i].id + `)">Disable</button>
+						</div>
+					 </td>`;
+				}else{
+					 text += `<td>` + schedules[i].end_date + `</td>`;
+					 
+				}
+				text += `<td><a onclick="editSchedulePopUp(`+i+`)" href="#">Edit</a></td></tr>`;		
+			}
+			schedule_container.innerHTML = text;
+			
+		});
+	}
+	
+	function disableSchedule(scheduleId){
+		let date = document.getElementById("disableDate-"+scheduleId).value;
+		
+		let api = "disable_schedule/" + scheduleId;
+		let method = "PUT";
+		let body = JSON.stringify(date);
+		let token = localStorage.getItem("token");
+		console.log(token);
+		let  headers = {'Content-type': 'application/json',
+			    'Authorization': `Bearer ` + token};
+		fetchContainer(api, method, body, headers)
+		.then((response) => {
+			if(response.ok){
+				console.log("dsabled");
+				document.getElementById("dis-"+scheduleId).innerHTML = `<td>` + date + `</td>`;
+			} else {
+				return response.json()
+				.then(errorData => {
+
+					console.error('Schedule disabling failed:', errorData.message);
+					errorElement.textContent = errorData.message;
+					errorElement.classList.remove("hidden");
+				});
+			}
+		})
+	}
+	
+	function newSchedulePopUp(){	
+		schedulePopUp()
+		.then(response =>{
+				document.getElementById("popup-title").innerHTML = "New Schedule";
+				document.getElementById("button-container").innerHTML = `<button class="primary-button" onclick="addNewSchedule()">Add</button>`;
+		})	
+	}
+	
+	function editSchedulePopUp(scheduleIndex){
+		schedulePopUp()
+		.then((response) => {
+			
+			let popUp = document.getElementById("popUp");
+			document.getElementById("popup-title").innerHTML = "Edit Schedule";
+			//set default values
+			let time = schedules[scheduleIndex].departure_time.split(":");
+			document.getElementById("departure_time_hh").value = time[0];
+			document.getElementById("departure_time_mm").value = time[1];
+			console.log("schedule[i]: ", schedules[scheduleIndex]);
+			document.getElementById("duration").value = schedules[scheduleIndex].duration / 60;
+			document.getElementById("price").value = schedules[scheduleIndex].price;
+			document.getElementById("seats").value = schedules[scheduleIndex].seats;
+
+			let selected_company = schedules[scheduleIndex].company.id;
+			document.getElementById("company_id").innerHTML = "";
+			for(let i=0; i<companies.length; i++){
+				if (selected_company == companies[i].id){
+					document.getElementById("company_id").innerHTML += `<option value="`+ companies[i].id +`" selected>`+ companies[i].name +`</option>`;
+				} else {
+					document.getElementById("company_id").innerHTML += `<option value="`+ companies[i].id +`">`+ companies[i].name +`</option>`;	
+				}	
+			}
+			
+			document.getElementById("start_date").value = schedules[scheduleIndex].start_date;
+			
+			if (schedules[scheduleIndex].end_date != null){
+				document.getElementById("end_date").value = schedules[scheduleIndex].end_date;
+			}
+			
+			for (let i = 0; i < schedules[scheduleIndex].daysOfWeek.length; i++){
+				switch(schedules[scheduleIndex].daysOfWeek[i].day){
+				case 1:
+					document.getElementById("monday").checked = true;
+					break;
+				case 2:
+					document.getElementById("tuesday").checked = true;
+					break;
+				case 3:
+					document.getElementById("wednesday").checked = true;
+					break;
+				case 4:
+					document.getElementById("thursday").checked = true;
+					break;
+				case 5:
+					document.getElementById("friday").checked = true;
+					break;
+				case 6:
+					document.getElementById("saturday").checked = true;
+					break;
+				case 0:
+					document.getElementById("sunday").checked = true;
+					break;
+	
+				}
+			}
+			
+			//create scheduleDTO
+			
+			
+			 //add edit button
+			document.getElementById("button-container").innerHTML = `<button class="primary-button" onclick="editSchedule(`+ schedules[scheduleIndex].id +`)">Save</button>`;
+		});
+	}
+	
+	function schedulePopUp(){
+		let htmlContent = '';
+
+		return fetchContainer("companiesEnabled","GET","","")
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+
+				return response.json()
+					.then(errorData => {
+						console.error('get companies failed:', errorData.message);
+						errorElement.textContent = errorData.message;
+						errorElement.classList.remove("hidden");
+					});
+			}
+		}).then((data) => {
+			console.log("In fetch: " + data);
+			companies = data;
+			
+			htmlContent += `<div id="popUp" class="modal-content" style="text-align: left">
+				<h2 id="popup-title"></h2>
+				<hr class="line"/><br/>
+				<div id="error-message" class="error-message hidden">
+				</div>
+				
+				<label class="form-label">Departure time: </label><br/>
+				<input class="input-width" type="text" placeholder="Hour (ex. 14)" name="departure_time_hh" id="departure_time_hh"
+					pattern="([01]?[0-9]|2[0-3])" title="Enter a valid hour from 00 to 23" required/> <!--HH da 00 a 23 -->
+				<input class="input-width" type="text" placeholder="Minutes (ex. 50)" name="departure_time_mm" id="departure_time_mm"
+					pattern="[0-5][0-9]" title="Enter valid minutes from 00 to 59" required/> <!--mm da 00 a 59 -->
+				<br/><br/>
+				
+				<label class="form-label">Duration (minutes):</label><br/>
+				<input class="input-width" type="text" placeholder="120" name="duration" id="duration"
+					pattern="\d+" title="Enter a valid positive number for duration." required/>
+				<br/><br/>
+				
+				<label class="form-label">Company:</label><br/>
+				<select style="width: 98%;" name="company_id" id="company_id">
+					
+				</select>
+				<br/><br/>
+				
+				<label class="form-label">Price:</label><br/>
+				<input class="input-width" type="text" placeholder="15.50" name="price" id="price"
+					pattern="\d+(\.\d{1,2})?" title="Enter a valid numeric value with up to two decimal places." required/> &euro;
+				<br/><br/>
+				
+				<label class="form-label">Number of seats:</label><br/>
+				<input class="input-width" type="text" placeholder="20" name="seats" id="seats"
+					pattern="\d+" title="Enter a valid positive number for seats." required/>
+				<br/><br/><hr class="line"/><br/>
+				
+				<label class="form-label">Active from:</label><br/>
+				<input class="input-width" type="date" name="start_date" id="start_date" required/>
+				<br/><br/>
+				<label class="form-label">To:</label><br/>
+				<input class="input-width" type="date" name="end_date" id="end_date"/> (not required)
+				<br/><br/><br/>
+				
+				<label class="form-label">Days of week:</label>
+				<br>
+				
+				<input type="checkbox" name="monday" id="monday" value="1" /><label for="monday"> Monday </label><br/>
+				
+				<input type="checkbox" name="tuesday" id="tuesday" value="2" /><label for="tuesday"> Tuesday</label><br/>
+				
+				<input type="checkbox" name="wednesday" id="wednesday" value="3" /><label for="wednesday"> Wednesday</label><br/>
+				
+				<input type="checkbox" name="thursday" id="thursday" value="4" /><label for="thursday"> Thursday</label><br/>
+				
+				<input type="checkbox" name="friday" id="friday" value="5" /><label for="friday"> Friday</label><br/>
+				
+				<input type="checkbox" name="saturday" id="saturday" value="6" /><label for="saturday"> Saturday</label><br/>
+				
+				<input type="checkbox" name="sunday" id="sunday" value="0" /><label for="sunday"> Sunday</label><br/>
+				<br/><hr>
+				<div class="modal-buttons button-center-container" id="button-container">
+			    
+			    </div>
+		    </div>
+		    `;
+			generatePopup(htmlContent);
+			console.log("outside" + companies);
+			for(let i=0; i<companies.length; i++){
+				document.getElementById("company_id").innerHTML += `<option value="`+ companies[i].id +`">`+ companies[i].name +`</option>`;
+			}
+		});
+	}
+	
+	function createScheduleDTO(){
+		let departureTimeH = document.getElementById("departure_time_hh").value;
+		let departureTimeM = document.getElementById("departure_time_mm").value;
+		let duration = document.getElementById("duration").value;
+		let price = document.getElementById("price").value;
+		let seats = document.getElementById("seats").value;
+		let company = document.getElementById("company_id").value;
+		let from = document.getElementById("start_date").value;
+		let to =  document.getElementById("end_date");
+		
+		if(to.value != ""){
+			to = to.value;
+		}
+		
+		let monday = document.getElementById("monday");
+		let tuesday = document.getElementById("tuesday");
+		let wednesday = document.getElementById("wednesday");
+		let thursday = document.getElementById("thursday");
+		let friday = document.getElementById("friday");
+		let saturday = document.getElementById("saturday");
+		let sunday = document.getElementById("sunday");
+		
+		let daysOfWeek = [];
+		
+		if(monday.checked){
+			daysOfWeek.push({day: 1});
+		}
+		if(tuesday.checked){
+			daysOfWeek.push({day: 2});
+		}
+		if(wednesday.checked){
+			daysOfWeek.push({day: 3});
+		}
+		if(thursday.checked){
+			daysOfWeek.push({day: 4});
+		}
+		if(friday.checked){
+			daysOfWeek.push({day: 5});
+		}
+		if(saturday.checked){
+			daysOfWeek.push({day: 6});
+		}
+		if(sunday.checked){
+			daysOfWeek.push({day: 0});
+		}
+		
+		console.log("days of week: ", daysOfWeek);
+		
+		let scheduleDTO;
+		
+		if(to.value === ""){
+			scheduleDTO = {
+					departureTimeHH: departureTimeH,
+					departureTimeMM: departureTimeM,
+					durationMinutes: duration,
+					price: price,
+					seats: seats,
+					start_date: from,
+					routeId: routeId,
+					companyId: company,
+					daysOfWeek: daysOfWeek
+			}
+		}else{
+			scheduleDTO = {
+					departureTimeHH: departureTimeH,
+					departureTimeMM: departureTimeM,
+					durationMinutes: duration,
+					price: price,
+					seats: seats,
+					start_date: from,
+					end_date: to,
+					routeId: routeId,
+					companyId: company,
+					daysOfWeek: daysOfWeek
+			}	
+		}
+		
+		console.log("nella funzone create schedule dto", scheduleDTO);
+		return scheduleDTO;
+	}
+	
+	function editSchedule(scheduleId){
+		console.log("EDIT SCHEDULE");
+		let scheduleDTO = createScheduleDTO();
+		console.log("dto days: ", scheduleDTO.daysOfWeek);
+		
+		let body = JSON.stringify(scheduleDTO);
+		console.log("body: ",body);
+		let token = localStorage.getItem("token");
+		console.log("token: ", token);
+		let  headers = {'Content-type': 'application/json',
+			    'Authorization': `Bearer ` + token};
+		
+		fetchContainer("schedule/" + scheduleId, "PUT", body, headers) 
+		.then((response) => {
+			console.log("Schedule updated");
+			return response.json;
+		}).then((data) => {
+			loadSchedules();
+			closePopup();
+		});	
+	}
+	
+	function addNewSchedule(){
+		console.log("ADD NEW SCHEDULE");
+		let scheduleDTO = createScheduleDTO();
+		
+		let body = JSON.stringify(scheduleDTO);
+		console.log(body);
+		let token = localStorage.getItem("token");
+		console.log(token);
+		let  headers = {'Content-type': 'application/json',
+			    'Authorization': `Bearer ` + token};
+		
+		fetchContainer("schedule", "POST", body, headers) 
+		.then((response) => {
+			console.log("Schedule created");
+			return response.json;
+		}).then((data) => {
+			loadSchedules();
+			closePopup();
+		});
+		
+	}
+
+</script>
+
+<br>
+<div class="container">
+	<h2 id="route_title">Schedules</h2>
+	<!-- <a href="./manage_routes"><button class="secondary-button">Go Back</button></a>
+	<br/><br/> -->
+	<!-- <form method="GET" action="./manage_route_schedules">
+		<label for="onlyActive">Only active schedules: </label>
+		<input type="checkbox" id="onlyActive" name="onlyActive" <c:choose><c:when test="${onlyActive eq 'on'}">checked</c:when></c:choose>/>
+		<input type="hidden" name="routeId" value="${routeId}" />
+		<input type="submit" value="Go"/>
+	</form> -->
+	<br/>
+	<a id="add_new_schedule" href="#" onclick="newSchedulePopUp()"><button class="primary-button">Add new Schedule</button></a>
+	<!--<c:if test="${not empty feedbackMessage}">
+		<div class="${feedbackClass}">${feedbackMessage}</div>
+	</c:if>-->
+	<br/><br/>
+	<div id="schedule_container" class="card">
+	
+	</div>
+	
+	<script>
+	let token = localStorage.getItem("token");
+	let schedule_container = document.getElementById("schedule_container");
+	let headers =  {'Content-type': 'application/json',
+		    'Authorization': `Bearer ` + token};
+	
+	fetchContainer("route/"+routeId, "GET", "", headers)
+	.then((response) => {
+		if(response.ok){
+			return response.json();
+		} else {
+			return response.json()
+			.then(errorData => {
+				console.error('Schedule retrieval failed:', errorData.message);
+			});
+		}
+	}).then((data) => {
+		console.log(data);
+		document.getElementById("route_title").innerHTML = data.departureXport.name + " - " + data.arrivalXport.name;
+	});
+	
+	
+	
+	loadSchedules();
+	
+	
+	</script>
+</div>
+</body>
+</html>
