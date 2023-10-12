@@ -1,0 +1,112 @@
+@charset "ISO-8859-1";
+
+.large-card {
+	width: 800px;
+	/* Larghezza fissa della card */
+	border: 1px solid #ccc;
+	padding: 10px;
+	/*imposta lo stesso valore di padding di 10 pixel su tutti e quattro i lati dell'elemento*/
+	background-color: var(--surface-color);
+	border-radius: var(--border-radius-strong);
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+	/* Ombra più profonda */
+	margin-bottom: 20px;
+	/* Spazio tra le card. 
+       							Aggiunto uno spazio vuoto di 20 pixel tra il bordo inferiore dell'elemento selezionato e 
+       							l'elemento che lo segue direttamente nella struttura del documento HTML*/
+}
+.user-summary-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	/* Allineamento del testo al centro */
+	background-color: var(--surface-color);
+	border-radius: var(--border-radius-strong);
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+	margin: 20px;
+	/* Spazio per separare User Summary dalle colonne */
+	padding: 20px;
+	/* Spaziatura interna */
+}
+
+.user-summary {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	/* Larghezza al 100% */
+	padding: 20px;
+}
+
+.user_info {
+	flex: 1;
+	/* rappresenta un elemento all'interno del layout Flexbox.
+       				assegna a quell'elemento un "fattore di flessibilità" pari a 1:
+       				indica che questo elemento deve utilizzare tutto lo spazio rimanente disponibile 
+       				all'interno del contenitore Flexbox dopo che gli altri elementi hanno occupato il loro spazio*/
+}
+
+.user_actions {
+	display: flex;
+	gap: 10px;
+	/* Spazio tra gli elementi */
+}
+
+.columns-container {
+	display: flex;
+	justify-content: center;
+	/* Centro le colonne orizzontalmente */
+}
+
+.lato-sinistro,
+.lato-destro {
+	/*background-color: white;
+        border: 1px solid black;*/
+	/*commentato, serve solo per vedere dove si sposta il div*/
+	width: 100%;
+	padding: 10px;
+	/* Spaziatura interna */
+	margin: 20px;
+	/* margini uniformi a tutti i lati dell'elemento. 
+        				 margini tra le colonne */
+}
+
+.card-container {
+	width: 300px;
+	/* Larghezza fissa della card */
+	margin-top: 40px;
+}
+
+.margin-bottom {
+	margin-bottom: 20px;
+}
+
+.margin-top {
+	margin-top: 20px;
+}
+
+.half {
+	width: 50%;
+}
+
+.f-right {
+	float: right;
+}
+
+.f-left {
+	float: left;
+}
+
+.form-input {
+	border-radius: 5px;
+}
+
+.centered-text {
+	text-align: center;
+}
+
+.idk {
+	padding: 10px;
+}
+

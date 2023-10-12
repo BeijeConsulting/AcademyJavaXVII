@@ -1,0 +1,293 @@
+@charset "ISO-8859-1";
+	:root {
+		/*per evidenziare gli elementi principali e come sfondo per gli elementi chiave, 
+    	come barre di navigazione, pulsanti principali, titoli, schede attive e altri elementi che richiedano enfasi.*/
+    	--primary-color: #5da6da;
+    	--primary-color-hover: #0e7ce0;
+		/* enfatizzare elementi secondari o come alternativa al colore primario.
+		Utilizzato per pulsanti secondari, bordi o elementi di sfondo meno importanti*/
+		--secondary-color: #5dbe8e;
+		--secondary-color-hover: #4AAE76;
+		    
+		--background-color: linear-gradient(to bottom right,#63B4F6, #6ECFA0 );
+		--text-color: #333333;
+		/*Viene utilizzato per attirare l'attenzione dell'utente su azioni o 
+		informazioni importanti, come avvisi, notifiche o interazioni chiave*/
+		--accent-color: #FF4081; 
+		    
+		--surface-color: #F9F9F9; /* Colore delle superfici (sfondi delle card) */
+		--divider-color: #E0E0E0; /* Colore dei divisori */
+		    
+		--error-color: #B00020;
+		    
+		--font-family: "Roboto", sans-serif;
+		--font-size: 16px; /*Dimensione del carattere principale (paragrafi)*/
+		    
+		--border-radius: 4px; /* Raggio di arrotondamento dei bordi leggero*/
+		--border-radius-strong: 14px;
+	}
+
+       
+    body {
+    	background: var(--background-color);
+    	background-size: cover;
+		background-repeat: no-repeat;
+		background-attachment: fixed;
+    	width: 100vw;
+		height: 100vh;
+   		font-family: var(--font-family);
+       	margin: 0; /* Rimozione di tutti i margini esterni del corpo della pagina */
+    }
+                
+	h1 {
+		color: white;
+		text-align: center; /* Allineamento del testo al centro */
+	}
+		
+	h2, h3, h4 {
+		color: #424242;
+		text-align: center;
+	}
+		
+	p {
+		font-size: var(--font-size);
+	}
+		
+	button {
+		cursor: pointer; /* Cambio del cursore al passaggio del mouse */
+		border: none; /* Rimozione del bordo */
+		border-radius: var(--border-radius); /* Bordo arrotondato leggero*/
+		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Ombra leggermente meno profonda */
+		color: white; 
+		padding: 8px 16px; /* Padding per spaziatura interna. Padding: Si riferisce allo spazio tra il contenuto di un elemento HTML e il suo bordo
+		                           8 pixel si applica al padding sopra e sotto l'elemento
+		                           16 pixel si applica al padding a sinistra e a destra dell'elemento*/
+	}
+		
+	.primary-button {
+		background-color: var(--primary-color); /* Colore di sfondo dalla variabile --primary-color */
+	}
+	
+	.primary-button:hover {
+		background-color: var(--primary-color-hover); /* Colore del pulsante al passaggio */
+	}
+		
+	.secondary-button{
+		background-color: var(--secondary-color);
+	}
+	
+	.secondary-button:hover {
+	  background-color: var(--secondary-color-hover); /* Colore del pulsante al passaggio */
+	}
+	
+	.close-button {
+		background-color: white;/*var(--error-color);*/
+	    color: var(--error-color);
+	    border-radius: var(--border-radius-strong);
+	    width: 32px; /* Larghezza del pulsante */
+    	height: 32px; /* Altezza del pulsante */
+	    display: flex; /* Abilita il flexbox per centrare l'icona verticalmente ed orizzontalmente */
+	    align-items: center; /* Centra verticalmente */
+	    justify-content: center; /* Centra orizzontalmente */
+	}
+	
+	.close-button:hover {
+	    color: white; /* Cambio del colore al passaggio del mouse */
+	    background-color: var(--error-color);
+	}
+	
+	.button-left-container {
+	    display: flex;
+	    justify-content: flex-start;
+	    height: 100%;
+	    margin-right: auto;
+	}
+	
+	.button-right-container {
+	    display: flex;
+	    justify-content: flex-end; /* Allinea il contenuto a destra */
+	    height: 100%; /* Assicurati che la container abbia altezza al 100% della card */
+	    margin-left: auto; 
+	}
+	
+	.button-center-container {
+	    display: flex;
+	    justify-content: center; /* Allinea il contenuto al centro orizzontalmente */
+	    height: 100%; /* Assicurati che la container abbia altezza al 100% della card */
+	}
+	
+	.container{
+       	display: flex; /*Contenitore flex. All'interno di questo elemento, gli elementi figli avranno comportamenti specifici associati a Flexbox*/
+	    flex-direction: column; /*gli elementi figli saranno posizionati in una colonna verticale all'interno del contenitore*/
+	    align-items: center /*gli elementi figli saranno allineati orizzontalmente al centro del contenitore, garantendo che siano centrati orizzontalmente all'interno della colonna*/;
+	}
+	
+	.card {
+       	border: 1px solid #ccc; 
+       	padding: 10px; /*imposta lo stesso valore di padding di 10 pixel su tutti e quattro i lati dell'elemento*/
+       	background-color: var(--surface-color);
+       	border-radius: var(--border-radius-strong);
+       	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Ombra pi� profonda */
+       	margin-bottom: 20px; /* Spazio tra le card. 
+       							Aggiunto uno spazio vuoto di 20 pixel tra il bordo inferiore dell'elemento selezionato e 
+       							l'elemento che lo segue direttamente nella struttura del documento HTML*/
+	}
+
+	.modal {
+	  /*display: none;*/
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100%;
+	  background-color: rgba(0, 0, 0, 0.5); /* Sfondo semi-trasparente per il modal */
+	  z-index: 1000; /* Assicura che il modal sia sopra il contenuto */
+	}
+	
+	.modal-content {
+	  background-color: white;
+	  width: 300px;
+	  margin: 100px auto; /* Posiziona la finestra modale al centro della pagina */
+	  padding: 20px;
+	  border-radius: var(--border-radius-strong);
+	  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+	  text-align: center;
+	}
+	
+	.modal-buttons {
+	  margin-top: 20px;
+	}
+	
+	.form-input{
+    	border-radius: 5px;
+    }
+    
+	.hidden{
+		display: none;
+	}
+    
+    .line {
+	    border-color: var(--divider-color);
+	}
+	
+	.text-center {
+	 	text-align: center;
+	 }
+	     
+     
+	.header {
+       display: flex;
+       justify-content: space-between;
+       box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Ombra più profonda */
+       background-color: rgba(255, 255, 255, 0);
+       align-items: center;
+       padding-left : 16px;
+       padding-right : 16px;
+     }
+    
+    	/* Style the links inside the navigation bar */
+	.topnav a {
+	  float: left;
+	  color: var(--surface-color);
+	  text-align: center;
+	  vertical-align: middle;
+	  padding: 14px 16px;
+	  text-decoration: none;
+	  font-size: 22px;
+	}
+	
+	/* Change the color of links on hover */
+	.topnav a:hover {
+	  background-color: rgba(255, 255, 255, 0.4);
+	  
+	  color: black;
+	}
+	
+	.logo {
+		color: white;
+        font-size: 24px;
+    }
+    
+	.dropbtn {
+	  background-color: inherit;
+	  color: white;
+	  font-size: 22px;
+	  border: none;
+	  cursor: pointer;
+	  box-shadow: 0px 0px 0px;
+	}
+	
+	.dropbtn:hover, .dropbtn:focus {
+	  background-color: inherit;
+	  box-shadow: 0px 0px 0px;
+	  color: black;
+	}
+	
+	.dropdown {
+	  position: relative;
+	  display: inline-block;
+	}
+	
+	.dropdown-content {
+	  display: none;
+	  position: absolute;
+	  background-color: #f1f1f1;
+	  min-width: 155px;
+	  /*overflow: auto;*/
+	  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	  z-index: 1;
+	  margin-right: 54px;
+	  left: -200%;
+	}
+	
+	.sub-menu {
+	  left: -126%;
+	  margin-right: 160px;
+	  box-shadow: 0px 8px 4px -4px rgba(0,0,0,0.2);
+	}
+	
+	.dropdown-content a {
+	  color: black;
+	  padding: 12px 16px;
+	  text-decoration: none;
+	  display: block;
+	  width: -webkit-fill-available;
+	}
+	
+	.show {display: block;} 
+     
+    #logo{
+    
+    	font-size: 26px; 
+    	font-family: 'Dancing Script', cursive;
+    	text-shadow: 0 2px 4px rgb(0 0 0 / 41%);
+    	text-decoration: none;
+    	color: white;
+    }
+    
+    .error-message {
+	    background-color: var(--error-color); /* Colore di sfondo rosso per gli errori */
+	    color: white; 
+	    padding: 10px; 
+	    border-radius: var(--border-radius); 
+	    margin-top: 10px; 
+	    text-align: center; 
+	    font-weight: bold; 
+	}
+	
+	#menuAdmin {
+	display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
+    height: 50px;
+}
+
+#menuAdmin a {
+     margin: 0 10px; 
+    text-decoration: none;
+}
+
+	

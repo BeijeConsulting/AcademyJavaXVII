@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com%22%3E/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Lumanosimo&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<script src="./static/main_functions.js" type="text/javascript"></script>
+<script src="./static/manage_cities.js" type="text/javascript"></script>
+<link href="./static/main_style.css" rel="stylesheet" type="text/css">
+<meta charset="ISO-8859-1">
+<title>Manage cities</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+}
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+
+button{
+background-color : #5da6da;
+}
+
+</style>
+</head>
+
+<body>
+<script>
+getCountries()
+</script>
+<div class="header">
+	<div class="logo"><a href="./home.html" id="logo"><b>Beije Travels</b></a></div>
+	<div class="topnav" id="menu">
+			
+	</div>
+	  	
+</div>
+	<script>
+		generateMenu();
+	</script>
+
+<br/>
+
+<h1>Countries</h1>
+
+<div>
+<form action="./add_city_by_name" method="get">
+	<input type="text" name="cityName">
+    <button type="submit">Add city</button>
+</form><br/><br/>
+</div>
+
+<hr/>
+
+
+</body>
+</html>

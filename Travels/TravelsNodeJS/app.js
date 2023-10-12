@@ -12,6 +12,7 @@ const xportUtils = require('./Utils/xportUtils');
 
 //controller
 const cityController = require('./RestController/cityController');
+const companyController = require('./RestController/companyController');
 
 
 const express = require('express')
@@ -69,6 +70,13 @@ app.get('/api/booking_by_travel/:travel_id', (req, res) => {
 
 
 //cities
+
+app.get('/api/cities', (req, res) =>{
+    cityController.getAllCities().then((cities) =>{
+        res.json(cities);
+    })
+})
+
 app.get('/api/getCityByCountry/:country', (req, res) => {
     const country = req.params.country;
     cityUtils.getCityByCountry(country).then((cities) => {
@@ -77,9 +85,17 @@ app.get('/api/getCityByCountry/:country', (req, res) => {
 })
 
 
+app.get('/api/city_details/:id', (req, res) => {
+    const id = req.params.id;
+    cityController.getCityById(id).then((city) => {
+        console.log("quiii:", city);
+        res.json(city);
+    })
+})
+
 //companies
 app.get('/api/companies', (req, res) => {
-    companyUtils.getAllCompanies().then((companies) => {
+    companyController.getAllCompanies().then((companies) => {
         res.json(companies);
     })
 
@@ -100,17 +116,25 @@ app.get('/api/companies/:idsString', (req, res) => {
     })
 })
 
-app.get('/api/enabled_companies', (req, res) => {
-    companyUtils.getAllEnabledCompanies().then((companies) => {
+app.get('/api/filtered_companies/enableAll', (req, res) => {
+    companyController.getAllEnabledCompanies().then((companies) => {
         res.json(companies);
     })
 })
 
-app.get('/api/disabled_companies', (req, res) => {
-    companyUtils.getAllDisabledCompanies().then((companies) => {
+app.get('/api/filtered_companies/disableAll', (req, res) => {
+    companyController.getAllDisabledCompanies().then((companies) => {
         res.json(companies);
     })
 })
+
+app.get('/api/filtered_companies/viewAll', (req, res) => {
+    companyController.getAllCompanies().then((companies) => {
+        res.json(companies);
+    })
+
+})
+
 
 app.get('/api/company_by_name/:name', (req, res) => {
     const name = req.params.name;
@@ -232,7 +256,7 @@ app.get('/api/xports_by_name/:name', (req, res) => {
 
 app.get('/api/xports_by_city/:id', (req, res) => {
     const id = req.params.id;
-    xportUtils.getXportsByCity(id).then((xports) => {
+    xportController.getXportsByCity(id).then((xports) => {
         res.json(xports);
     })
 })

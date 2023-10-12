@@ -23,7 +23,7 @@ module.exports = {
                     console.log("ERRORE get city by id")
                     reject(err);
                 } else {
-                    resolve(rows);
+                    resolve(rows[0]);
                 }
             })
         }
@@ -37,7 +37,7 @@ module.exports = {
                     console.log("ERRORE get city by name")
                     reject(err);
                 } else {
-                    resolve(rows);
+                    resolve(rows[0]);
                 }
             })
         }
