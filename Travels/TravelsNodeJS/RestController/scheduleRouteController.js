@@ -51,7 +51,9 @@ module.exports = {
     },
 
     getSchedulesByRouteId: function(route_id){
-        return new Promise(async(resolve, reject) =>{
+        return scheduleRouteUtils.getSchedulesByRouteId(route_id);
+        
+        /*return new Promise(async(resolve, reject) =>{
             try {
                 let schedules = await  scheduleRouteUtils.getScheduleByRouteId(route_id);
                 const schedulesPromise = schedules.map(async (schedule) => {
@@ -70,7 +72,7 @@ module.exports = {
                 reject(error);
             }
             
-        });
+        });*/
     }
 
     /*

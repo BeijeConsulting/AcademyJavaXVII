@@ -96,6 +96,7 @@ th, td {
 		})
 		.then((data) => {
 			schedules = data;
+			console.log("len: " + schedules[0].days.length);
 			let text = `<table>
 							<tr>
 								<th>Departure time</th>
@@ -115,10 +116,17 @@ th, td {
 							<td>` + schedules[i].departure_time + `</td>
 							<td>` + schedules[i].arrival_time + `</td>
 							<td>` + duration + `</td>
-							<td id="daysOfWeek-` + schedules[i].id + `"></td>`;
+							<td id="daysOfWeek-` + schedules[i].id + `">`;
+				for(let j=0; j<schedules[i].days.length; j++){
+					text += schedules[i].days[j];
+					if(j<(schedules[i].days.length-1)){
+						text+= ` - `;
+					}
+				}
+				text += `</td>`;
 				// read days of week
 				
-				api = "days_of_week/" + schedules[i].id;
+				/*api = "days_of_week/" + schedules[i].id;
 				method = "GET";
 				body = "";
 				headers = "";
@@ -136,6 +144,7 @@ th, td {
 				}).then((innerData) => {
 					let daysOfWeek = innerData;
 					let html = "";
+					console.log("days: " + innerData);
 					for(let j=0; j<daysOfWeek.length; j++){
 						html += daysOfWeek[j].day;
 						if(j != daysOfWeek.length-1){
@@ -146,7 +155,7 @@ th, td {
 					schedules[i].daysOfWeek = daysOfWeek;
 					//console.log("controlla i days of week qui : ", schedules[i]);
 					document.getElementById("daysOfWeek-"+schedules[i].id).innerHTML = html;
-				});
+				});*/
 				text += `<td>` + schedules[i].company_name + `</td>
 						 <td>` + schedules[i].price + ` &euro;</td>
 						 <td>` + schedules[i].start_date + `</td>`;
@@ -273,7 +282,7 @@ th, td {
 	function schedulePopUp(){
 		let htmlContent = '';
 
-		return fetchContainer("companiesEnabled","GET","","")
+		return fetchContainer("filtered_companies/enableAll","GET","","")
 		.then((response) => {
 			if (response.ok) {
 				return response.json();

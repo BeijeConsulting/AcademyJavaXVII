@@ -18,6 +18,7 @@ const scheduleRouteController  = require('./RestController/scheduleRouteControll
 const travelController = require('./RestController/travelController');
 const bookingController = require('./RestController/bookingController');
 const passengerController = require('./RestController/passengerController');
+const dayOfWeekController = require('./RestController/dayOfWeekController');
 
 const express = require('express')
 const app = express()
@@ -314,6 +315,15 @@ app.get('/api/passengers/travel/:id', (req, res) => {
     const id = req.params.id;
     passengerController.getTravelPassengers(id).then((passengers) => {
         res.json(passengers);
+    })
+})
+
+// dow
+
+app.get('/api/days_of_week/:schedule_id', (req, res) => {
+    const id = req.params.schedule_id;
+    dayOfWeekController.getDaysOfWeekBySchedule(id).then((days) => {
+        res.json(days);
     })
 })
 
