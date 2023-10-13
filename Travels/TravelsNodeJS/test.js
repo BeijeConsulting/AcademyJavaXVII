@@ -12,17 +12,17 @@ const xportUtils = require('./Utils/xportUtils');
 const scheduleRouteUtils = require('./Utils/scheduleRouteUtils');
 
 //controller
+const bookingController = require('./RestController/bookingController');
 const cityController = require('./RestController/cityController');
 const companyController = require('./RestController/companyController');
 const scheduleRouteController  = require('./RestController/scheduleRouteController');
-const travelController = require('./RestController/travelController');
-const bookingController = require('./RestController/bookingController');
 
 const express = require('express')
 const app = express()
 const port = 3000
 const path = require('path')
 const bodyParser = require('body-parser');
+const purchaseController = require('./RestController/purchaseController');
 
 /*const mysql = require('mysql')
 const connection = mysql.createConnection({
@@ -45,28 +45,28 @@ app.use(bodyParser.json());
 
 //bookings
 app.get('/api/bookings', (req, res) => {
-    bookingUtils.getAllBookings().then((bookings) => {
+    bookingController.getAllBookings().then((bookings) => {
         res.json(bookings);
     })
 })
 
 app.get('/api/booking/:id', (req, res) => {
     const id = req.params.id;
-    bookingUtils.getBookingById(id).then((booking) => {
+    bookingController.getBookingById(id).then((booking) => {
         res.json(booking);
     })
 })
 
-app.get('/api/booking_by_purchase/:purchase_id', (req, res) => {
+app.get('/api/bookings_by_purchase/:purchase_id', (req, res) => {
     const purchase_id = req.params.purchase_id;
-    bookingUtils.getBookingByPurchaseId(purchase_id).then((booking) => {
+    bookingController.getBookingByPurchaseId(purchase_id).then((booking) => {
         res.json(booking);
     })
 })
 
 app.get('/api/bookings_by_travel/:travel_id', (req, res) => {
     const travel_id = req.params.travel_id;
-    bookingController.getBookingsByTravelId(travel_id).then((booking) => {
+    bookingController.getBookingByTravelId(travel_id).then((booking) => {
         res.json(booking);
     })
 })
@@ -179,11 +179,17 @@ app.get('/api/country/:id', (req, res) => {
 
 //purchases
 app.get('/api/purchases', (req, res) => {
-    purchasesUtils.getAllPurchase().then((purchases) => {
+    purchaseController.getAllPurchases().then((purchases) => {
         res.json(purchases);
     })
 })
 
+app.get('/api/purchase/:user_id', (req, res) =>{
+    const user_id = req.params.user_id;
+   purchaseController.getPurchasesByUserId(user_id).then((purchase) => {
+        res.json(purchase)
+    });
+})
 
 //routes
 app.get('/api/routes', (req, res) => {
@@ -210,8 +216,8 @@ app.get('/api/schedules/:route_id', (req, res) =>{
 
 
 //travels
-app.get('/api/travels', (req, res) => {
-    travelController.getAllTravels().then((travel) => {
+app.get('/api/getAllTravels', (req, res) => {
+    travelsUtils.getAllTravels().then((travel) => {
         res.json(travel);
     })
 })
@@ -306,20 +312,6 @@ app.get('/api/xports_by_type/:type', (req, res) => {
         res.json(xports);
     })
 })
-
-
-const userController = require('./RestController/userController');
-app.get('/api/customers_user', (req, res) => {
-    userController.getAllCustomers().then((users) => {
-        res.json(users);
-    })
-})
-/*
-app.get('/api/admins_user', (req, res) => {
-    userController.getAllAdmin().then((users) => {
-        res.json(users);
-    })
-})*/
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

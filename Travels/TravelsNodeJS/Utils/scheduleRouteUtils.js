@@ -68,8 +68,7 @@ module.exports = {
   },
   getScheduleById: function (id) {
     return new Promise(
-      (resolve,
-      (reject) => {
+      (resolve, reject) => {
         connection.query(
           "SELECT * FROM schedules WHERE id = ?",
           [id],
@@ -77,12 +76,11 @@ module.exports = {
             if (err) {
               reject(err);
             } else {
-              resolve(rows);
+              resolve(rows[0]);
             }
           }
         );
-      })
-    );
+      });
   },
   getScheduleByRouteId: function (routeId) {
     return new Promise(
@@ -194,7 +192,7 @@ module.exports = {
           if (err) {
             reject(err);
           } else {
-            resolve(rows);
+            resolve(rows[0]);
           }
         }
       );

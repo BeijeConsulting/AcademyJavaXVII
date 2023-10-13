@@ -1,0 +1,26 @@
+@charset "ISO-8859-1";
+
+	.columns-container {
+			display: flex;
+		    justify-content: center; /* Centro le colonne orizzontalmente */
+		}
+		    
+	.lato-sinistro,
+	.lato-destro {
+		/*background-color: white;
+		border: 1px solid black;*/ /*commentato, serve solo per vedere dove si sposta il div*/
+		width: 100%;
+		padding: 10px; /* Spaziatura interna */
+		margin: 20px; /* margini uniformi a tutti i lati dell'elemento. 
+					 margini tra le colonne */
+	}
+	
+	.close {
+		color: #424242;
+	    cursor: pointer;
+	}
+	
+	.close:hover{
+		color: var(--error-color);
+	    cursor: pointer;
+	}
