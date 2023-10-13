@@ -72,7 +72,7 @@ module.exports = {
     editUserPassword: function(id, oldPw, newPw) {
         //controllo parametri old/new uguali
         return new Promise((resolve, reject) => {
-            connection.query("UPDATE users SET `password` = ?, WHERE `id` = ?", [newPw, id], (err, rows, fields) => {
+            connection.query("UPDATE users SET `password` = ? WHERE `id` = ?", [newPw, id], (err, rows, fields) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -83,6 +83,7 @@ module.exports = {
     },
 
     disableUser: function(id){
+        //da randomizzare la mail
         const today = new Date();
         return new Promise((resolve, reject) => {
           connection.query("UPDATE users SET `disabled_date` = ? WHERE `id` = ?", [today, id] , (err, rows, fields) => {

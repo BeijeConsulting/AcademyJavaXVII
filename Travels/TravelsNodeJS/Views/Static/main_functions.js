@@ -49,6 +49,7 @@ function fetchContainer(api, method, body, headers) {
 	}
 
 	if (method != "GET") {
+		console.log("prova");
 		return fetch(baseUrl + apiPrefix + api, {
 			method: method,
 			body: body,

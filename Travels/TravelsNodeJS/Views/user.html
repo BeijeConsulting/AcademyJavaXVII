@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>User</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="preconnect" href="https://fonts.googleapis.com%22%3E/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Lumanosimo&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<link href="./static/main_style.css" rel="stylesheet" type="text/css">
+<link href="./static/user.css" rel="stylesheet" type="text/css">
+<script src="./static/main_functions.js" type="text/javascript"></script>
+<script src="./static/user.js" type="text/javascript"></script>
+
+
+</head>
+<script>
+//redirectHome();
+</script>
+<body>
+<div class="header">
+	<div class="logo"><a href="./home" id="logo"><b>Beije Travels</b></a></div>
+	<div class="topnav" id="menu">
+			
+	</div>
+	  	
+</div>
+
+<div class="container">
+	<h2>Welcome</h2>
+	
+	<div class="user-summary-container">
+		<div class="user_summary">
+			<div class="user_info" id="userInfo">
+			</div>
+			<div>
+		        <button class="primary-button" onclick="generatePopupEditUser()">Edit Profile</button>
+		        <button class="secondary-button" onclick="generatePopupDisableUser()">Disable User</button>
+	    	</div>
+		</div>
+	</div>
+	
+	<div class="columns-container">
+		<div class="lato-sinistro" id="leftSide">
+			<h3>Purchases: </h3>
+			
+		</div>
+		
+		<div class="lato-destro hidden" id="rightSide">
+		    <h3>Details:</h3>
+		    <div class="card hidden" id="bookingsDetails">
+		        <!-- Qui verranno inseriti i dettagli dei bookings --> 
+		        <div id="passengersDetails">		        
+		   		</div>
+		    </div>
+		   
+		</div>
+	</div>
+</div>
+
+<script>
+	generateMenu();
+	let modal = document.getElementById('confirmationModal');
+
+	let bookingsDetails = document.getElementById('bookingsDetails');
+	let rightSide = document.getElementById('rightSide');
+	let leftSide = document.getElementById('leftSide');
+	let userInfo = document.getElementById('userInfo');
+	
+	let token = localStorage.getItem("token");
+	//let userId = localStorage.getItem("userId");
+	let userId = 60;
+
+	let currentName = "";
+	let currentSurname = "";
+
+	fetchUser();
+	fetchPurchases();
+	
+	
+	
+</script>
+
+</body>
+</html>
