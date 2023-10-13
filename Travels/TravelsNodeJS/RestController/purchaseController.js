@@ -4,6 +4,9 @@ const userUtils = require('../Utils/userUtils');
 
 module.exports = {
     getAllPurchases: function(){
+
+        return purchaseUtils.getAllPurchases();
+        /*
         return new Promise(async (resolve, reject) =>{
             try{
                 let purchases = await purchaseUtils.getAllPurchases();
@@ -20,7 +23,7 @@ module.exports = {
                 reject(error);
             }
 
-        });
+        });*/
     },
 
     getPurchasesByUserId: function(user_id){
