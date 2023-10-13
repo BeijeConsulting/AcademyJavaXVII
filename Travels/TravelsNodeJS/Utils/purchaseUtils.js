@@ -30,10 +30,10 @@ module.exports = {
       );
     });
   },
-  getPurchaseByUser: function (user) {
+  getPurchaseByUserId: function (user_id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM purchases WHERE user = ?",
+        "SELECT * FROM purchases WHERE user_id = ?",
         [user],
         (err, rows, fields) => {
           if (err) {

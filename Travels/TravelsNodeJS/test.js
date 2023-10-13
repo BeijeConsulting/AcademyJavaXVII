@@ -22,6 +22,7 @@ const app = express()
 const port = 3000
 const path = require('path')
 const bodyParser = require('body-parser');
+const purchaseController = require('./RestController/purchaseController');
 
 /*const mysql = require('mysql')
 const connection = mysql.createConnection({
@@ -178,11 +179,17 @@ app.get('/api/country/:id', (req, res) => {
 
 //purchases
 app.get('/api/purchases', (req, res) => {
-    purchasesUtils.getAllPurchases().then((purchases) => {
+    purchaseController.getAllPurchases().then((purchases) => {
         res.json(purchases);
     })
 })
 
+app.get('/api/purchase/:user_id', (req, res) =>{
+    const user_id = req.params.user_id;
+   purchaseController.getPurchasesByUserId(user_id).then((purchase) => {
+        res.json(purchase)
+    });
+})
 
 //routes
 app.get('/api/routes', (req, res) => {
