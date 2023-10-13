@@ -305,6 +305,20 @@ app.get('/api/xports_by_type/:type', (req, res) => {
     })
 })
 
+
+const userController = require('./RestController/userController');
+app.get('/api/customers_user', (req, res) => {
+    userController.getAllCustomers().then((users) => {
+        res.json(users);
+    })
+})
+/*
+app.get('/api/admins_user', (req, res) => {
+    userController.getAllAdmin().then((users) => {
+        res.json(users);
+    })
+})*/
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
   })
