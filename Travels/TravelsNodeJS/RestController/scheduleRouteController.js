@@ -38,6 +38,17 @@ module.exports = {
             }
             
         });*/
+    },
+
+    addRoute: function(type, departure_xport_id, arrival_xport_id){
+        if (departure_xport_id === arrival_xport_id) {
+            //creo e lancio un errore a mio piacere
+            throw new Error('Departure and arrival Xport cannot be the same.'); //questa descrizione apparirà in error.message
+        }
+
+        return scheduleRouteUtils.addRoute(type, departure_xport_id, arrival_xport_id);
     }
+
+
 
 }

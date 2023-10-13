@@ -213,6 +213,23 @@ app.get('/api/route/:id', (req, res) =>{
     });
 })
 
+app.post('/api/route', (req, res) =>{
+    try {
+        let newRouteDTO = req.body; //il corpo json è inviato correttamente dal file js
+        scheduleRouteController.addRoute(newRouteDTO.type, newRouteDTO.departureXportId, newRouteDTO.arrivalXportId)
+        //bisogna inserire il parametro a sinistra del corpo della lambda altrimenti lo ritiene not defined e andrà 
+        //in errore la risposta dell api nonostante lui avesse aggiunto nel db correttamente la route 
+        //route in questo caso equivale a "true" per come è stato gestito l'inserimento nel db
+        .then((route) => {
+            res.json(route)
+        })
+        .catch(error => { //questo si attiverà quando ci sarà un errore nel db
+            res.status(503).json({ message: error.message });
+        });
+    } catch (error) { //questo si attiverà quando ci sarà un errore nel controller inserito volutamente
+        res.status(400).json({ message: error.message });
+    }
+})
 
 //schedules
 app.get('/api/schedules/:route_id', (req, res) =>{

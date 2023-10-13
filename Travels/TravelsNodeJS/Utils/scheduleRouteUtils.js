@@ -236,14 +236,23 @@ module.exports = {
   },
   getRouteById: function (id) {
     return new Promise((resolve, reject) => {
+      let query = `
+      SELECT r.id, r.departure_xport_id, r.arrival_xport_id, r.type, 
+        departure_xport.name as departure_xport_name, arrival_xport.name as arrival_xport_name
+      FROM routes as r
+      INNER JOIN xports AS departure_xport
+        ON r.departure_xport_id = departure_xport.id
+      INNER JOIN fly_mary.xports AS arrival_xport
+        ON r.arrival_xport_id = arrival_xport.id
+      WHERE r.id = ?`;
       connection.query(
-        "SELECT * FROM routes WHERE id = ?",
+        query,
         [id],
         (err, rows, fields) => {
           if (err) {
             reject(err);
           } else {
-            resolve(rows[0]);
+            resolve(mapRoutesResults(rows)[0]);
           }
         }
       );
@@ -380,4 +389,25 @@ module.exports = {
       });
     });
   },
+
+  addRoute: function (type, departure_xport_id, arrival_xport_id){
+    return new Promise((resolve, reject) => {
+      let query = `
+      INSERT INTO routes (departure_xport_id, arrival_xport_id, type)
+      VALUES (?,?,?)`;
+      connection.query(query, [departure_xport_id, arrival_xport_id, type] , (err, rows, fields) => {
+          if (err) {
+            if (err.code === 'ER_DUP_ENTRY') {
+              // ER_DUP_ENTRY Codice di errore specifico per duplicato
+              reject(new Error("Duplicate route detected. Route already exists.")); //questa descrizione apparirà in error.message
+            } else {
+              // Altro errore
+              reject(new Error("Error adding the route. Please try again."));
+            }
+          } else {
+              resolve(true);
+          }
+      });
+    });
+  }
 };
