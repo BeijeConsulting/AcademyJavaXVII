@@ -35,7 +35,7 @@ module.exports = {
               if (err) {
                 reject(err);
               } else {
-                resolve(rows[0]);
+                resolve(rows);
               }
             });
         });
@@ -59,7 +59,7 @@ module.exports = {
               if (err) {
                 reject(err);
               } else {
-                resolve(rows[0]);
+                resolve(rows);
               }
             });
         });
