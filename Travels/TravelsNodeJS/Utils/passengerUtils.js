@@ -55,7 +55,7 @@ module.exports = {
                 if (err) {
                     reject(err);
                 }else{
-                    resolve(true);
+                    resolve(rows);
                 }
            })
         })
