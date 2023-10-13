@@ -5,6 +5,21 @@ const cityUtils = require("./cityUtils");
 
 let connection = myModule.getConnection();
 
+function mapRoutesResults(rows) {
+  for(let i=0; i<rows.length; i++){
+    rows[i].departureXport = {
+      name: rows[i].departure_xport_name
+    }
+    rows[i].arrivalXport = {
+      name: rows[i].arrival_xport_name
+    }
+    delete rows[i].departure_xport_name;
+    delete rows[i].arrival_xport_name;
+  }
+
+  return rows;
+}
+
 module.exports = {
   getAllSchedulesByRoutes: function (routes, date) {
     let newSchedules = array();
@@ -174,11 +189,20 @@ module.exports = {
 
   getAllRoutes: function () {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM routes", (err, rows, fields) => {
+      let query = `
+      SELECT r.id, r.departure_xport_id, r.arrival_xport_id, r.type, 
+        departure_xport.name as departure_xport_name, arrival_xport.name as arrival_xport_name
+      FROM routes as r
+      INNER JOIN xports AS departure_xport
+        ON r.departure_xport_id = departure_xport.id
+      INNER JOIN fly_mary.xports AS arrival_xport
+        ON r.arrival_xport_id = arrival_xport.id`;
+      connection.query(
+        query, (err, rows, fields) => {
         if (err) {
           reject(err);
         } else {
-          resolve(rows);
+          resolve(mapRoutesResults(rows));
         }
       });
     });
@@ -201,24 +225,26 @@ module.exports = {
   getAllRoutesByCityXportNameLike: function (search_name) {
     return new Promise((resolve, reject) => {
       let query = `
-      (SELECT routes.id, routes.departure_xport_id, routes.arrival_xport_id, routes.type
-      FROM fly_mary.routes
-      INNER JOIN fly_mary.xports AS departure_xport
-        ON routes.departure_xport_id = departure_xport.id
-      INNER JOIN fly_mary.xports AS arrival_xport
-        ON routes.arrival_xport_id = arrival_xport.id
+      (SELECT r.id, r.departure_xport_id, r.arrival_xport_id, r.type, 
+        departure_xport.name as departure_xport_name, arrival_xport.name as arrival_xport_name
+      FROM routes AS r
+      INNER JOIN xports AS departure_xport
+        ON r.departure_xport_id = departure_xport.id
+      INNER JOIN xports AS arrival_xport
+        ON r.arrival_xport_id = arrival_xport.id
       WHERE departure_xport.name LIKE ?
       OR arrival_xport.name LIKE ?)
       UNION
-      (SELECT routes.id, routes.departure_xport_id, routes.arrival_xport_id, routes.type
-      FROM fly_mary.routes
-      INNER JOIN fly_mary.xports AS departure_xport
-        ON routes.departure_xport_id = departure_xport.id
-      INNER JOIN fly_mary.xports AS arrival_xport
-        ON routes.arrival_xport_id = arrival_xport.id
-      INNER JOIN fly_mary.cities AS departure_city
+      (SELECT r.id, r.departure_xport_id, r.arrival_xport_id, r.type,
+        departure_xport.name as departure_xport_name, arrival_xport.name as arrival_xport_name
+      FROM routes AS r
+      INNER JOIN xports AS departure_xport
+        ON r.departure_xport_id = departure_xport.id
+      INNER JOIN xports AS arrival_xport
+        ON r.arrival_xport_id = arrival_xport.id
+      INNER JOIN cities AS departure_city
         ON departure_xport.city_id = departure_city.id
-      INNER JOIN fly_mary.cities AS arrival_city
+      INNER JOIN cities AS arrival_city
         ON arrival_xport.city_id = arrival_city.id
       WHERE departure_city.name LIKE ?
       OR arrival_city.name LIKE ?)`;
@@ -230,7 +256,7 @@ module.exports = {
           if (err) {
             reject(err);
           } else {
-            resolve(rows);
+            resolve(mapRoutesResults(rows));
           }
         }
       );

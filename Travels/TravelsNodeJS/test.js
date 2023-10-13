@@ -23,6 +23,7 @@ const port = 3000
 const path = require('path')
 const bodyParser = require('body-parser');
 const purchaseController = require('./RestController/purchaseController');
+const xportController = require('./RestController/xportController');
 
 /*const mysql = require('mysql')
 const connection = mysql.createConnection({
@@ -287,7 +288,7 @@ app.get('/api/xport/:id', (req, res) => {
 })
 
 app.get('/api/xports', (req, res) => {
-    xportUtils.getAllXports().then((xports) => {
+    xportController.getAllXports().then((xports) => {
         res.json(xports);
     })
 })

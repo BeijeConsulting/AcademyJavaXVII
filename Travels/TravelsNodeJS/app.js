@@ -193,13 +193,19 @@ app.get('/api/routes', (req, res) => {
     })
 })
 
+app.get('/api/routes/:search_name', (req, res) => {
+    const search_name = req.params.search_name;
+    scheduleRouteController.getAllRoutesByCityXportNameLike(search_name).then((routes) => {
+        res.json(routes);
+    })
+})
+
 app.get('/api/route/:id', (req, res) =>{
     const id = req.params.id;
     scheduleRouteController.getRouteById(id).then((route) => {
         res.json(route)
     });
 })
-
 
 //schedules
 app.get('/api/schedules/:route_id', (req, res) =>{
