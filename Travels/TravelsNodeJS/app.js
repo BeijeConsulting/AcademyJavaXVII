@@ -63,9 +63,9 @@ app.get('/api/booking_by_purchase/:purchase_id', (req, res) => {
     })
 })
 
-app.get('/api/booking_by_travel/:travel_id', (req, res) => {
+app.get('/api/bookings_by_travel/:travel_id', (req, res) => {
     const travel_id = req.params.travel_id;
-    bookingUtils.getBookingByTravelId(travel_id).then((booking) => {
+    bookingUtils.getBookingsByTravelId(travel_id).then((booking) => {
         res.json(booking);
     })
 })

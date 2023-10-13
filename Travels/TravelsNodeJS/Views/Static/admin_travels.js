@@ -50,7 +50,7 @@ function showTravels(){
 		
 		let htmlContent = '';
 		
-		let api = "bookings/travel/" + travel_id;
+		let api = "bookings_by_travel/" + travel_id;
 
 		let body= "";
 		
