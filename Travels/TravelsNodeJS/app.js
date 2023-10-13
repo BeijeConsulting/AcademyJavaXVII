@@ -15,6 +15,7 @@ const scheduleRouteUtils = require('./Utils/scheduleRouteUtils');
 const cityController = require('./RestController/cityController');
 const companyController = require('./RestController/companyController');
 const scheduleRouteController  = require('./RestController/scheduleRouteController');
+const travelController = require('./RestController/travelController');
 
 const express = require('express')
 const app = express()
@@ -208,8 +209,8 @@ app.get('/api/schedules/:route_id', (req, res) =>{
 
 
 //travels
-app.get('/api/getAllTravels', (req, res) => {
-    travelsUtils.getAllTravels().then((travel) => {
+app.get('/api/travels', (req, res) => {
+    travelController.getAllTravels().then((travel) => {
         res.json(travel);
     })
 })
