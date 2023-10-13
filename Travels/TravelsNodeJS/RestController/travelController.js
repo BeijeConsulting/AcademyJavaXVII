@@ -21,7 +21,7 @@ module.exports = {
                 });
 
                 await Promise.all(travelPromises);
-                console.log(travels);
+                //console.log(travels);
                 resolve(travels);
             } catch (error) {
                 reject(error);

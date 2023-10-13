@@ -16,6 +16,7 @@ const cityController = require('./RestController/cityController');
 const companyController = require('./RestController/companyController');
 const scheduleRouteController  = require('./RestController/scheduleRouteController');
 const travelController = require('./RestController/travelController');
+const bookingController = require('./RestController/bookingController');
 
 const express = require('express')
 const app = express()
@@ -65,7 +66,7 @@ app.get('/api/booking_by_purchase/:purchase_id', (req, res) => {
 
 app.get('/api/bookings_by_travel/:travel_id', (req, res) => {
     const travel_id = req.params.travel_id;
-    bookingUtils.getBookingsByTravelId(travel_id).then((booking) => {
+    bookingController.getBookingsByTravelId(travel_id).then((booking) => {
         res.json(booking);
     })
 })

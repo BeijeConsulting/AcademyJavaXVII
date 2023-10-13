@@ -78,7 +78,7 @@ function showTravels(){
 		    			<h3>Booking N°: ` + booking.id + `</h3>
 		    			<b>User Id: </b>` + booking.purchase_user.id +`<br>
 		    			<b>Full Name: </b>` + booking.purchase_user.name + ` ` + booking.purchase_user.surname + `<br>
-		    			<b>Number of Tickets: </b>` + booking.numTickets + `<br>
+		    			<b>Number of Tickets: </b>` + booking.n_tickets + `<br>
 		    			<b>Amount Paid: </b>` + booking.amount + ` &euro; <br>
 	    			</div>`;
 	    	});

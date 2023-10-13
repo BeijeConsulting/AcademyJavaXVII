@@ -9,7 +9,7 @@ module.exports = {
                     console.log("ERRORE get user by id")
                     reject(err);
                 } else {
-                    resolve(rows);
+                    resolve(rows[0]);
                 }
             })
         }
