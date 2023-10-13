@@ -1,4 +1,6 @@
 const mysql = require('../mysql');
+const bookingUtils = require('../Utils/bookingUtils');
+const purchaseUtils = require('../Utils/purchaseUtils');
 
 const connection = mysql.getConnection();
 
@@ -25,9 +27,9 @@ module.exports = {
             })
         })
     },
-    getPassengersByPurchase: function(purchase){
+    getPassengersByPurchaseId: function(purchase_id){
         return new Promise((resolve, reject) =>{
-            connection.query('SELECT * FROM passengers WHERE purchase_id = ?', [purchase.id], (err, rows, fields) => {
+            connection.query('SELECT * FROM passengers WHERE purchase_id = ?', [purchase_id], (err, rows, fields) => {
                 if (err) {
                     reject(err);
                 }else{
@@ -47,8 +49,16 @@ module.exports = {
             })
         })
     },
-    getTravelPassengers: function(id){
-        
+    getTravelPassengers: function(travel_id){
+        return new Promise(async (resolve, reject) =>{
+           connection.query('SELECT p.* FROM bookings AS b JOIN passengers AS p ON b.purchase_id = p.purchase_id WHERE b.travel_id = ?', [travel_id],(err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                }else{
+                    resolve(rows);
+                }
+           })
+        })
     },
     addPassenger: function(passenger){
         return new Promise((resolve, reject) =>{

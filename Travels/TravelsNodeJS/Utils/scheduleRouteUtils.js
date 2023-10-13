@@ -198,6 +198,45 @@ module.exports = {
       );
     });
   },
+  getAllRoutesByCityXportNameLike: function (search_name) {
+    return new Promise((resolve, reject) => {
+      let query = `
+      (SELECT routes.id, routes.departure_xport_id, routes.arrival_xport_id, routes.type
+      FROM fly_mary.routes
+      INNER JOIN fly_mary.xports AS departure_xport
+        ON routes.departure_xport_id = departure_xport.id
+      INNER JOIN fly_mary.xports AS arrival_xport
+        ON routes.arrival_xport_id = arrival_xport.id
+      WHERE departure_xport.name LIKE ?
+      OR arrival_xport.name LIKE ?)
+      UNION
+      (SELECT routes.id, routes.departure_xport_id, routes.arrival_xport_id, routes.type
+      FROM fly_mary.routes
+      INNER JOIN fly_mary.xports AS departure_xport
+        ON routes.departure_xport_id = departure_xport.id
+      INNER JOIN fly_mary.xports AS arrival_xport
+        ON routes.arrival_xport_id = arrival_xport.id
+      INNER JOIN fly_mary.cities AS departure_city
+        ON departure_xport.city_id = departure_city.id
+      INNER JOIN fly_mary.cities AS arrival_city
+        ON arrival_xport.city_id = arrival_city.id
+      WHERE departure_city.name LIKE ?
+      OR arrival_city.name LIKE ?)`;
+      const likeParam = `%${search_name}%`;
+      connection.query(
+        query,
+        [likeParam, likeParam, likeParam, likeParam],
+        (err, rows, fields) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(rows);
+          }
+        }
+      );
+    });
+  },
+  
   getAllRoutesByCityNameLike: function (departure_city, arrival_city) {
     //mi servono gli id delle due citta passate
     //poi devo trovare gli xport che hanno quei city id

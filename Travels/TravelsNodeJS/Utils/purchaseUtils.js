@@ -6,7 +6,18 @@ let connection = myModule.getConnection();
 module.exports = {
   getAllPurchases: function () {
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM purchases", (err, rows, fields) => {
+      connection.query("SELECT purchases.*, users.name, users.surname "
+                      + "FROM purchases "
+                      + "INNER JOIN users ON purchases.user_id = users.id ",
+                      (err, rows, fields) => {
+        for (let i = 0; i < rows.length; i++){
+          rows[i].user = {
+            name : rows[i].name,
+            surname : rows[i].surname
+          };
+          delete rows[i].name;
+          delete rows[i].surname;
+        }
         if (err) {
           reject(err);
         } else {

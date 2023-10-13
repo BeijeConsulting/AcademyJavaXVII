@@ -25,6 +25,27 @@ module.exports = {
         });
     },
 
+    getAllRoutesByCityXportNameLike: function(search_name){
+        return new Promise(async (resolve, reject) =>{
+            try{
+                let routes = await scheduleRouteUtils.getAllRoutesByCityXportNameLike(search_name);
+                const routesPromise = routes.map(async (route) =>{
+                    let departureXport = await xportUtils.getXportById(route.departure_xport_id);
+                    route.departureXport = departureXport;
+                    let arrivalXport = await xportUtils.getXportById(route.arrival_xport_id);
+                    route.arrivalXport = arrivalXport;
+
+                });
+                await Promise.all(routesPromise);
+                resolve(routes);
+
+            } catch (error) {
+                reject(error);
+            }
+
+        });
+    },
+
     getRouteById: function(id){
         return scheduleRouteUtils.getRouteById(id);
     },
