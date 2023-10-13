@@ -52,7 +52,48 @@ module.exports = {
             users.push(getUserById(element.id))
         });
        return users;
-    }
+    },
 
     //METODI DA FARE: addUser, addAdmin, disableUser, editUserDetails, editUserPassword
+
+    editUserDetails: function(id, name, surname) {
+        //controllo parametri non nulli
+        return new Promise((resolve, reject) => {
+            connection.query("UPDATE users SET `name` = ?, `surname` = ? WHERE `id` = ?", [name, surname, id], (err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(true);
+                }
+            });
+        });
+    },
+
+    editUserPassword: function(id, oldPw, newPw) {
+        //controllo parametri old/new uguali
+        return new Promise((resolve, reject) => {
+            connection.query("UPDATE users SET `password` = ?, WHERE `id` = ?", [newPw, id], (err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(true);
+                }
+            });
+        });
+    },
+
+    disableUser: function(id){
+        const today = new Date();
+        return new Promise((resolve, reject) => {
+          connection.query("UPDATE users SET `disabled_date` = ? WHERE `id` = ?", [today, id] , (err, rows, fields) => {
+              if (err) {
+                  reject(err);
+              } else {
+                  resolve(true);
+              }
+          });
+        });
+      }
+
+
 }
