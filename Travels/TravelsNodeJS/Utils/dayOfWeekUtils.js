@@ -28,10 +28,11 @@ module.exports = {
     },
     getDaysOfWeekBySchedule: function(schedule){
         return new Promise((resolve, reject) =>{
-            connection.query('SELECT * FROM days_of_week WHERE schedule_id = ?', [schedule.id] ,(err, rows, fields) => {
+            connection.query('SELECT * FROM days_of_week WHERE schedule_id = ?', [schedule] ,(err, rows, fields) => {
                 if (err) {
                     reject(err);
                 }else{
+                    //console.log(rows);
                     resolve(rows);
                 }
             })
@@ -39,7 +40,7 @@ module.exports = {
     },
     addDayOfWeek: function(day, schedule){
         return new Promise((resolve, reject) =>{
-            connection.query('INSERT INTO days_of_week (schedule_id, day) VALUES(?, ?)', [schedule.id, day.day] ,(err, rows, fields) => {
+            connection.query('INSERT INTO days_of_week (schedule_id, day) VALUES(?, ?)', [schedule, day] ,(err, rows, fields) => {
                 if (err) {
                     reject(err);
                 }else{

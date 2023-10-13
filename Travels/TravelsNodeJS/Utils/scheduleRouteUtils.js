@@ -2,6 +2,7 @@ const myModule = require("../mysql");
 const dayOfWeek = require("./dayOfWeekUtils");
 const xportUtils = require("./xportUtils");
 const cityUtils = require("./cityUtils");
+const utils = require("./utils.js");
 
 let connection = myModule.getConnection();
 
@@ -97,17 +98,43 @@ module.exports = {
         );
       });
   },
-  getScheduleByRouteId: function (routeId) {
+  getSchedulesByRouteId: function (routeId) {
     return new Promise(
       (resolve, reject) => {
         connection.query(
-          "SELECT * FROM schedules WHERE route_id = ?",
+          "SELECT s.*, c.name as company_name, dow.day FROM schedules AS s JOIN companies AS c ON s.company_id = c.id " +
+          "JOIN days_of_week AS dow ON dow.schedule_id = s.id WHERE s.route_id = ?",
           [routeId],
           (err, rows, fields) => {
+            let finalSchedules = [];
+            let j=-1;
+            let ids = [];
+            for(let i=0; i<rows.length; i++){
+
+              if(!ids.includes(rows[i].id)){
+                j++;
+                let temp = utils.parseDate(rows[i].start_date);
+                rows[i].start_date = temp;
+                temp = utils.parseDate(rows[i].end_date);
+                rows[i].end_date = temp;
+
+                finalSchedules.push(rows[i]);
+                finalSchedules[j].days = [rows[i].day];
+                
+                delete finalSchedules[j].day;
+                ids.push(rows[i].id);
+              }else{
+                finalSchedules[j].days.push(rows[i].day);
+                //delete finalSchedules[j].day;
+              }
+
+              
+            }           
+            console.log(finalSchedules);
             if (err) {
               reject(err);
             } else {
-              resolve(rows);
+              resolve(finalSchedules);
             }
           }
         );
