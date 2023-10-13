@@ -249,7 +249,7 @@ function getAllCustomers() {
 			}
 		})
 		.then(data => {
-			console.log(data)
+			console.log("oooooooooooooo", data)
 
 			let tableContainer = document.createElement('div');
 			tableContainer.id = 'adminTable';

@@ -15,8 +15,6 @@ const scheduleRouteUtils = require('./Utils/scheduleRouteUtils');
 const cityController = require('./RestController/cityController');
 const companyController = require('./RestController/companyController');
 const scheduleRouteController  = require('./RestController/scheduleRouteController');
-const travelController = require('./RestController/travelController');
-const bookingController = require('./RestController/bookingController');
 
 const express = require('express')
 const app = express()
@@ -64,9 +62,9 @@ app.get('/api/booking_by_purchase/:purchase_id', (req, res) => {
     })
 })
 
-app.get('/api/bookings_by_travel/:travel_id', (req, res) => {
+app.get('/api/booking_by_travel/:travel_id', (req, res) => {
     const travel_id = req.params.travel_id;
-    bookingController.getBookingsByTravelId(travel_id).then((booking) => {
+    bookingUtils.getBookingByTravelId(travel_id).then((booking) => {
         res.json(booking);
     })
 })
@@ -210,8 +208,8 @@ app.get('/api/schedules/:route_id', (req, res) =>{
 
 
 //travels
-app.get('/api/travels', (req, res) => {
-    travelController.getAllTravels().then((travel) => {
+app.get('/api/getAllTravels', (req, res) => {
+    travelsUtils.getAllTravels().then((travel) => {
         res.json(travel);
     })
 })
@@ -306,20 +304,6 @@ app.get('/api/xports_by_type/:type', (req, res) => {
         res.json(xports);
     })
 })
-
-
-const userController = require('./RestController/userController');
-app.get('/api/customers_user', (req, res) => {
-    userController.getAllCustomers().then((users) => {
-        res.json(users);
-    })
-})
-/*
-app.get('/api/admins_user', (req, res) => {
-    userController.getAllAdmin().then((users) => {
-        res.json(users);
-    })
-})*/
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

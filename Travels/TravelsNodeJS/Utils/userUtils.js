@@ -54,7 +54,7 @@ module.exports = {
        return users;
     },
 
-    //METODI DA FARE: addUser, addAdmin, disableUser, editUserDetails, editUserPassword
+    //METODI DA FARE: addUser, addAdmin
 
     editUserDetails: function(id, name, surname) {
         //controllo parametri non nulli
