@@ -4,7 +4,7 @@ const myModule = require("../mysql");
 let connection = myModule.getConnection();
 
 module.exports = {
-  getAllPurchase: function () {
+  getAllPurchases: function () {
     return new Promise((resolve, reject) => {
       connection.query("SELECT * FROM purchases", (err, rows, fields) => {
         if (err) {
@@ -24,16 +24,16 @@ module.exports = {
           if (err) {
             reject(err);
           } else {
-            resolve(rows);
+            resolve(rows[0]);
           }
         }
       );
     });
   },
-  getPurchaseByUser: function (user) {
+  getPurchaseByUserId: function (user_id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM purchases WHERE user = ?",
+        "SELECT * FROM purchases WHERE user_id = ?",
         [user],
         (err, rows, fields) => {
           if (err) {

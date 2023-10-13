@@ -1,0 +1,120 @@
+@charset "ISO-8859-1";
+
+
+.container {
+           
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    justify-content: space-between;
+    height: 100vh;
+    border-radius: 14px;
+}
+ .welcome_container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    
+}
+ h1, h3{
+    font-size: 24px;
+    color: #333;
+    margin: 0;
+    text-align: start;
+}
+
+h4 {
+	text-align: start;
+	color: #333;
+	
+}
+
+.schedule {
+	width: 350px; 
+	border: 1px solid #ccc; 
+	padding: 10px; 
+	background-color: #f9f9f9;
+	border-radius: 14px;
+}
+ 
+#loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+		
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.firstContainer{
+  display:flex;
+  justify-content:center;
+  width:100%;
+  margin-top : 10px;
+  height: calc(100vh - 30px);
+
+}
+.filtersContainer{
+height: 100%;
+width:20%;
+margin-left: 30px;
+border:1px solid #F9F9F9;
+margin-right: 20px;
+border-radius: 8px;
+padding: 10px;
+margin-top : 25px;
+}
+
+#schedContainer{
+  height: 100%;
+  width: 80%;
+} 
+.schedule:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.form-select {
+	width:100%;
+	position: relative;
+	background-color: #F9F9F9;
+	height: 30px;
+	border-radius: 5px;
+	font-size:medium;
+}
+
+.slider_value {
+	width:100%;
+	background-color: #F9F9F9;
+	
+}
+
+.sliderValueElement {
+	font-size:14px; 
+}
+
+#containerCheckbox {
+	font-size: 17px;
+}
+
+.buttonRemove {
+	background-color: #F9F9F9;
+	color: black;
+	width: 100%;
+	font-size: 15px;
+	
+}
+
+.back_button {
+	margin-bottom: 0;
+	margin-top:30px;
+	margin-left:23%;
+}

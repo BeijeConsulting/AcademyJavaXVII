@@ -35,11 +35,23 @@ module.exports = {
               if (err) {
                 reject(err);
               } else {
-                resolve(rows[0]);
+                resolve(rows);
               }
             });
         });
     },
+
+    getBookingsByTravelId: function(travelId){
+      return new Promise((resolve, reject) => {
+          connection.query("SELECT * FROM bookings WHERE travel_id = ?", [travelId], (err, rows, fields) => {
+            if (err) {
+              reject(err);
+            } else {
+              resolve(rows);
+            }
+          });
+      });
+  },
 
     getBookingByTravelId: function(travelId){
         return new Promise((resolve, reject) => {
@@ -47,7 +59,7 @@ module.exports = {
               if (err) {
                 reject(err);
               } else {
-                resolve(rows[0]);
+                resolve(rows);
               }
             });
         });

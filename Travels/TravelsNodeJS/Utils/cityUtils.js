@@ -56,7 +56,21 @@ module.exports = {
             })
         }
         ) 
-    }
+    },
 
     //METODI DA FARE: addCity
+
+    addCity: function(city, country_id) {
+        return new Promise((resolve, reject) => {
+            connection.query('INSERT INTO cities (name, time_zone, country) VALUES (?, ?, ?)', [city.name, city.time_zone, country_id], (err, rows, fields) => {
+                if (err) {
+                    console.log("ERROR add city")
+                    reject(err);
+                } else {
+                    resolve(rows);
+                }
+            })
+        }
+        ) 
+    }
 }
