@@ -21,6 +21,10 @@ module.exports = {
             }
 
         });
+    },
+
+    getPurchasesByUserId: function(user_id){
+        return purchaseUtils.getPurchaseByUserId(user_id);
     }
 
 }
