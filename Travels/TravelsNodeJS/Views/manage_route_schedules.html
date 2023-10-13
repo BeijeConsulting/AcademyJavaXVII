@@ -296,7 +296,7 @@ th, td {
 					});
 			}
 		}).then((data) => {
-			console.log("In fetch: " + data);
+			//console.log("In fetch: " + data);
 			companies = data;
 			
 			htmlContent += `<div id="popUp" class="modal-content" style="text-align: left">
@@ -395,25 +395,25 @@ th, td {
 		let daysOfWeek = [];
 		
 		if(monday.checked){
-			daysOfWeek.push({day: 1});
+			daysOfWeek.push(1);
 		}
 		if(tuesday.checked){
-			daysOfWeek.push({day: 2});
+			daysOfWeek.push(2);
 		}
 		if(wednesday.checked){
-			daysOfWeek.push({day: 3});
+			daysOfWeek.push(3);
 		}
 		if(thursday.checked){
-			daysOfWeek.push({day: 4});
+			daysOfWeek.push(4);
 		}
 		if(friday.checked){
-			daysOfWeek.push({day: 5});
+			daysOfWeek.push(5);
 		}
 		if(saturday.checked){
-			daysOfWeek.push({day: 6});
+			daysOfWeek.push(6);
 		}
 		if(sunday.checked){
-			daysOfWeek.push({day: 0});
+			daysOfWeek.push(0);
 		}
 		
 		console.log("days of week: ", daysOfWeek);
@@ -536,7 +536,7 @@ th, td {
 		}
 	}).then((data) => {
 		console.log(data);
-		document.getElementById("route_title").innerHTML = data.departureXport.name + " - " + data.arrivalXport.name;
+		document.getElementById("route_title").innerHTML = data.departureXport + " - " + data.arrivalXport;
 	});
 	
 	

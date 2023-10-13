@@ -210,6 +210,13 @@ app.get('/api/schedules/:route_id', (req, res) =>{
     });
 })
 
+app.post('/api/schedule', (req, res) =>{
+    let scheduleDTO = req.body;
+    scheduleRouteController.addSchedule(scheduleDTO).then(() => {
+        res.json(true)
+    });
+})
+
 
 //travels
 app.get('/api/travels', (req, res) => {

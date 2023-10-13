@@ -199,6 +199,43 @@ module.exports = {
     return ids;
   },
 
+  addSchedule: function(scheduleDTO){
+    console.log(scheduleDTO);
+
+    let departure_time = scheduleDTO.departureTimeHH + ":" + scheduleDTO.departureTimeMM + ":00";
+    let hour = parseInt(scheduleDTO.departureTimeHH, 10) + parseInt(Math.trunc( scheduleDTO.durationMinutes/60 ),10);
+    let minute = parseInt(scheduleDTO.departureTimeMM,10) + parseInt(scheduleDTO.durationMinutes%60,10);
+    if(minute > 60){
+      hour += 1;
+      minute -= 60;
+    }
+    let arrival_time = hour + ":" + minute + ":00";
+    let durationSeconds = scheduleDTO.durationMinutes * 60;
+    let end_date;
+    if(scheduleDTO.hasOwnProperty("end_date")){
+      end_date = scheduleDTO.start_date;
+    }else{
+      end_date = null;
+    }
+     
+    /*console.log("departure_time: " + departure_time);
+    console.log("arrival_time: " + arrival_time);
+    console.log("hour: " + hour);
+    console.log("minutes: " + minute);*/
+
+    return new Promise((resolve, reject) => {
+      connection.query("INSERT INTO schedules (route_id, departure_time, arrival_time, duration, company_id, price, seats, start_date, end_date) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [scheduleDTO.routeId, departure_time, arrival_time, durationSeconds, scheduleDTO.companyId, scheduleDTO.price, scheduleDTO.seats, scheduleDTO.start_date,end_date],
+      (err, result, fields) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result.insertId);
+        }
+      });
+    });
+  },
+
   getAllRoutes: function () {
     return new Promise((resolve, reject) => {
       connection.query("SELECT * FROM routes", (err, rows, fields) => {
@@ -213,7 +250,8 @@ module.exports = {
   getRouteById: function (id) {
     return new Promise((resolve, reject) => {
       connection.query(
-        "SELECT * FROM routes WHERE id = ?",
+        `SELECT r.*, dep.name AS departureXport, arr.name AS arrivalXport FROM routes AS r JOIN xports AS dep ON r.departure_xport_id = dep.id 
+        JOIN xports AS arr ON r.arrival_xport_id = arr.id WHERE r.id = ?`,
         [id],
         (err, rows, fields) => {
           if (err) {

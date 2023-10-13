@@ -2,6 +2,7 @@ const companyUtils = require('../Utils/companyUtils');
 const scheduleRouteUtils = require('../Utils/scheduleRouteUtils');
 const xportUtils = require('../Utils/xportUtils');
 const utils = require('../Utils/utils');
+const dayOfWeekUtils = require('../Utils/dayOfWeekUtils');
 
 module.exports = {
     getAllRoutes: function(){
@@ -73,6 +74,14 @@ module.exports = {
             }
             
         });*/
+    },
+
+    addSchedule: function(scheduleDTO){
+        let scheduleId = scheduleRouteUtils.addSchedule(scheduleDTO);
+        for(let i=0; i<scheduleDTO.daysOfWeek.length; i++){
+            dayOfWeekUtils.addDayOfWeek(scheduleDTO.daysOfWeek[i], scheduleId);
+        }
+        return "ok";
     }
 
     /*
