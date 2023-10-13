@@ -59,7 +59,7 @@ app.get('/api/booking/:id', (req, res) => {
 
 app.get('/api/bookings_by_purchase/:purchase_id', (req, res) => {
     const purchase_id = req.params.purchase_id;
-    bookingController.getBookingByPurchaseId(purchase_id).then((booking) => {
+    bookingController.getBookingsByPurchaseId(purchase_id).then((booking) => {
         res.json(booking);
     })
 })

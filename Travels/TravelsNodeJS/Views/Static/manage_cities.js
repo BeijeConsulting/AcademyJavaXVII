@@ -30,19 +30,18 @@ function getCountries(){
         let rowHtml = `
           <td>${country.id}</td>
           <td>${country.name}</td>
-          <td>${country.local_name}</td>
+          <td>${country.localName}</td>
           <td>`;
 
         for (let j = 0; j < country.cities.length; j++) {
           let city = country.cities[j];
           rowHtml += `
-            <a href="./city_details.html?city_id=${city.id}">${city.name}</a><br/><br/>`;
+            <a href="./city_details.html?cityId=${city.id}">${city.cityName}</a><br/><br/>`;
         }
         rowHtml += `</td>`
-        rowHtml += ` <td>  <form action="./add_city? method="GET">
-        <input type="hidden" name="countryId" value=${country.id} />
-              <button type="submit">Add city</button><br>
-               </form></td>`
+        rowHtml += ` <td>
+              <a href="./insert_city.html?countryId=${country.id}"><button>Add city</button></a><br>
+              </td>`
                row.innerHTML = rowHtml;
 
       }
