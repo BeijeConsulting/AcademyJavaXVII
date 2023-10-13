@@ -39,6 +39,10 @@ module.exports = {
                 reject(error);
             }
         });
+    },
+
+    addCity: function(city, country_id){
+        return cityUtils.addCity(city,country_id);
     }
 
 }
