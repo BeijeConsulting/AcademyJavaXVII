@@ -16,6 +16,7 @@ const bookingController = require('./RestController/bookingController');
 const cityController = require('./RestController/cityController');
 const companyController = require('./RestController/companyController');
 const scheduleRouteController  = require('./RestController/scheduleRouteController');
+const xportController = require('./RestController/xportController');
 
 const express = require('express')
 const app = express()
@@ -23,7 +24,6 @@ const port = 3000
 const path = require('path')
 const bodyParser = require('body-parser');
 const purchaseController = require('./RestController/purchaseController');
-const xportController = require('./RestController/xportController');
 
 /*const mysql = require('mysql')
 const connection = mysql.createConnection({
@@ -195,6 +195,13 @@ app.get('/api/purchase/:user_id', (req, res) =>{
 //routes
 app.get('/api/routes', (req, res) => {
     scheduleRouteController.getAllRoutes().then((routes) => {
+        res.json(routes);
+    })
+})
+
+app.get('/api/routes/:search_name', (req, res) => {
+    const search_name = req.params.search_name;
+    scheduleRouteController.getAllRoutesByCityXportNameLike(search_name).then((routes) => {
         res.json(routes);
     })
 })

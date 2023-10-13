@@ -19,6 +19,7 @@ const travelController = require('./RestController/travelController');
 const bookingController = require('./RestController/bookingController');
 const passengerController = require('./RestController/passengerController');
 const dayOfWeekController = require('./RestController/dayOfWeekController');
+const xportController = require('./RestController/xportController');
 
 const express = require('express')
 const app = express()
@@ -289,7 +290,7 @@ app.get('/api/xport/:id', (req, res) => {
 })
 
 app.get('/api/xports', (req, res) => {
-    xportUtils.getAllXports().then((xports) => {
+    xportController.getAllXports().then((xports) => {
         res.json(xports);
     })
 })
