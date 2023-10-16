@@ -297,6 +297,14 @@ app.get('/api/admins', (req, res) => {
     })
 })
 
+app.post('/api/insert_user/:type', (req,res) => {
+    const type = req.params.type;
+    let body = req.body;
+    userController.addUser(body.name, body.surname, body.email, body.password, body.confirmPassword, type).then((users) => {
+        res.json(users);
+    })
+})
+
 app.get('/api/userAuthorityByUserId/:id', (req, res) => {
     const id = req.params.id;
     userAuthorityUtils.getUserAuthorityByUserId(id).then((userAuthority) => {
