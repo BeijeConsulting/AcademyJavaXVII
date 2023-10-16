@@ -12,13 +12,14 @@ const xportUtils = require('./Utils/xportUtils');
 const scheduleRouteUtils = require('./Utils/scheduleRouteUtils');
 
 //controller
+const bookingController = require('./RestController/bookingController');
 const cityController = require('./RestController/cityController');
 const companyController = require('./RestController/companyController');
+const dayOfWeekController = require('./RestController/dayOfWeekController');
+const passengerController = require('./RestController/passengerController');
+const purchaseController = require('./RestController/purchaseController');
 const scheduleRouteController  = require('./RestController/scheduleRouteController');
 const travelController = require('./RestController/travelController');
-const bookingController = require('./RestController/bookingController');
-const passengerController = require('./RestController/passengerController');
-const dayOfWeekController = require('./RestController/dayOfWeekController');
 const xportController = require('./RestController/xportController');
 
 const express = require('express')
@@ -178,7 +179,13 @@ app.get('/api/country/:id', (req, res) => {
     })
 })
 
-
+// dow
+app.get('/api/days_of_week/:schedule_id', (req, res) => {
+    const id = req.params.schedule_id;
+    dayOfWeekController.getDaysOfWeekBySchedule(id).then((days) => {
+        res.json(days);
+    })
+})
 
 //purchases
 app.get('/api/purchases', (req, res) => {
@@ -350,13 +357,18 @@ app.get('/api/passengers/travel/:id', (req, res) => {
     })
 })
 
-// dow
-
-app.get('/api/days_of_week/:schedule_id', (req, res) => {
-    const id = req.params.schedule_id;
-    dayOfWeekController.getDaysOfWeekBySchedule(id).then((days) => {
-        res.json(days);
+//purchases
+app.get('/api/purchases', (req, res) => {
+    purchaseController.getAllPurchases().then((purchases) => {
+        res.json(purchases);
     })
+})
+
+app.get('/api/purchase/:user_id', (req, res) =>{
+    const user_id = req.params.user_id;
+   purchaseController.getPurchasesByUserId(user_id).then((purchase) => {
+        res.json(purchase)
+    });
 })
 
 app.post('/api/xport', (req, res) =>{
