@@ -45,7 +45,7 @@ module.exports = {
     return new Promise((resolve, reject) => {
       connection.query(
         "SELECT * FROM purchases WHERE user_id = ?",
-        [user],
+        [user_id],
         (err, rows, fields) => {
           if (err) {
             reject(err);

@@ -1,149 +1,147 @@
 
 function fetchUser() {
-		let htmlContent = '';
-		
-		let api = "user/" + userId;
-		
+	let htmlContent = '';
 
-		let body= "";
-		let  headers = {
-	            'Content-type': 'application/json',
-	            'Authorization': `Bearer ` + token
-			};
+	let api = "user/" + userId;
 
 
-		let method = 'GET';
+	let body = "";
+	let headers = {
+		'Content-type': 'application/json',
+		'Authorization': `Bearer ` + token
+	};
 
-		fetchContainer(api, method, body, headers)
+
+	let method = 'GET';
+
+	fetchContainer(api, method, body, headers)
 		.then((response) => response.json())
 		.then((user) => {
 			currentName = user.name;
 			currentSurname = user.surname;
-			htmlContent += 
+			htmlContent +=
 				`<p>Name: ` + currentName + `</p>
 				<p>Surname: ` + currentSurname + `</p>
 				<p>Email: ` + user.email + `</p>
 				<p>Creation date: ` + parseDate(user.creation_date) + `</p>`;
-				
+
 			userInfo.innerHTML = htmlContent;
 		});
-	}
-	
-	function fetchEditUser() {
-		let htmlContent = '';
-		
-		let name = document.getElementById("newName").value;
-		let surname = document.getElementById("newSurname").value;
-		
-		let errorElement = document.getElementById("error-message");
-		errorElement.classList.add("hidden");
-		
-		let api = "user/" + userId;
-		
-		let body = "{\"id\": \"" + userId + "\", \"name\": \"" + name + "\", \"surname\": \"" + surname + "\"}";
+}
 
-		
-		let  headers = {
-	            'Content-type': 'application/json',
-	            'Authorization': `Bearer ` + token};
+function fetchEditUser() {
+	let htmlContent = '';
+
+	let name = document.getElementById("newName").value;
+	let surname = document.getElementById("newSurname").value;
+
+	let errorElement = document.getElementById("error-message");
+	errorElement.classList.add("hidden");
+
+	let api = "user/" + userId;
+
+	let body = "{\"id\": \"" + userId + "\", \"name\": \"" + name + "\", \"surname\": \"" + surname + "\"}";
 
 
-		let method = 'PUT';
+	let headers = {
+		'Content-type': 'application/json',
+	    'Authorization': `Bearer ` + token
+	};
 
-		fetchContainer(api, method, body, headers)
+
+	let method = 'PUT';
+
+	fetchContainer(api, method, body, headers)
 		.then(response => {
-			console.log(response.json());
-			if (response.ok) {			
-				return response.json();
-	        } else {
-				return response.json()
-	            .then(errorData => {
-					console.error('Edit user failed:', errorData.message);
-	                errorElement.textContent = errorData.message;
-	                errorElement.classList.remove("hidden");
-	                throw new Error('Edit user failed');
-	            });
-	        }
+			if (response.ok) {
+				return true;
+			} else {
+				console.error('Edit user failed:', data.message);
+				errorElement.textContent = data.message;
+				errorElement.classList.remove("hidden");
+				throw new Error('Edit user failed');
+			}
 		})
-		.then((json) => {
-			console.log("aggioramento");
-			fetchUser();
-			alert("Your profile has been updated successfully.");
+		.then(() => {
+			fetchUser();		
+			window.alert("Il tuo profilo è stato aggiornato con successo.");
 			closePopup();
 		})
 		.catch(error => {
-			console.error('Fetch error:', error);
-	    });
-	}
-	
-	function fetchEditUserPassword() {
-		let htmlContent = '';
-		
-		let currentPassword = document.getElementById("currentPassword").value;
-		let newPassword = document.getElementById("newPassword").value;
-		
-		let errorElement = document.getElementById("error-message");
-		errorElement.classList.add("hidden");
-		
-		let api = "changeUserPassword/" + userId;
-		
+			console.error('Errore nella richiesta:', error);
+		});
+}
 
-		let body="{\"id\": \"" + userId + "\", \"currentPassword\": \"" + currentPassword + "\", \"newPassword\": \"" + newPassword + "\"}";
+function fetchEditUserPassword() {
+	let htmlContent = '';
 
-		
-		let  headers = {
-	            'Content-type': 'application/json',
-	            'Authorization': `Bearer ` + token};
+	let currentPassword = document.getElementById("currentPassword").value;
+	let newPassword = document.getElementById("newPassword").value;
+
+	let errorElement = document.getElementById("error-message");
+	errorElement.classList.add("hidden");
+
+	let api = "changeUserPassword/" + userId;
 
 
-		let method = 'PUT';
+	let body = "{\"id\": \"" + userId + "\", \"currentPassword\": \"" + currentPassword + "\", \"newPassword\": \"" + newPassword + "\"}";
 
-		fetchContainer(api, method, body, headers)
+
+	let headers = {
+		'Content-type': 'application/json',
+		// 'Authorization': `Bearer ` + token
+	};
+
+
+	let method = 'PUT';
+
+	fetchContainer(api, method, body, headers)
 		.then(response => {
 			if (response.ok) {
-				return response.json();
-	        } else {
+				return;
+			} else {
 				return response.json()
-	            .then(errorData => {
-					console.error('Edit user password failed:', errorData.message);
-	                errorElement.textContent = errorData.message;
-	                errorElement.classList.remove("hidden");
-	                throw new Error('Edit user password failed');
-	            });
-	        }
+					.then(errorData => {
+						console.error('Edit user password failed:', errorData.message);
+						errorElement.textContent = errorData.message;
+						errorElement.classList.remove("hidden");
+						throw new Error('Edit user password failed');
+					});
+			}
 		})
-		.then((json) => {
+		.then(() => {
 			alert("Your password has been updated successfully.");
 			closePopup();
 		})
 		.catch(error => {
 			console.error('Fetch error:', error);
-	    });
-	}
-	
-	function fetchPurchases(){
-		let htmlContent = '';
-		
-		let api = "purchases/" + userId;
+		});
+}
 
-		let body= "";
-		let  headers = {
-	            'Content-type': 'application/json',
-	            'Authorization': `Bearer ` + token};
+function fetchPurchases() {
+	let htmlContent = '';
+
+	let api = "purchase/" + userId;
+
+	let body = "";
+	let headers = {
+		'Content-type': 'application/json',
+		'Authorization': `Bearer ` + token
+	};
 
 
-		let method = 'GET';
+	let method = 'GET';
 
-		fetchContainer(api, method, body, headers)
-	    .then((response) => response.json())
-	    .then((purchaseList) => {
-	    	console.log(purchaseList);
-	    	htmlContent += `<h3>Purchases: </h3>`;
-	    	
-	    	//LISTA PURCHASE VUOTA
-	    	
-	    	purchaseList.forEach((purchase) => {
-	            htmlContent +=  
+	fetchContainer(api, method, body, headers)
+		.then((response) => response.json())
+		.then((purchaseList) => {
+			console.log(purchaseList);
+			htmlContent += `<h3>Purchases: </h3>`;
+
+			//LISTA PURCHASE VUOTA
+
+			purchaseList.forEach((purchase) => {
+				htmlContent +=
 					`<div class="card">
 						<p><strong>ID:</strong> ` + purchase.id + `</p>
 						<p><strong>N° Tickets:</strong>` + purchase.nTickets + `</p>
@@ -151,31 +149,32 @@ function fetchUser() {
 							<div class="button-right-container">
 								<button class="primary-button" id="fetchDetails" onclick="fetchDetails(` + purchase.id + `)"> Details </button>
 							</div>
-					</div>`;  
-	    	});
-	    	
-	     	leftSide.innerHTML = htmlContent;
-	     	
-	     });
-	}
-	
-	function fetchDetails(purchase_id){
-		rightSide.classList.remove('hidden');
-		
-		let htmlContent = '';
-		
-		let api = "bookings/" + purchase_id;
+					</div>`;
+			});
 
-		let body= "";
-		let  headers = {
-	            'Content-type': 'application/json',
-	            'Authorization': `Bearer ` + token};
+			leftSide.innerHTML = htmlContent;
+
+		});
+}
+
+function fetchDetails(purchase_id) {
+	rightSide.classList.remove('hidden');
+
+	let htmlContent = '';
+
+	let api = "bookings/" + purchase_id;
+
+	let body = "";
+	let headers = {
+		'Content-type': 'application/json',
+		'Authorization': `Bearer ` + token
+	};
 
 
-		let method = 'GET';
+	let method = 'GET';
 
-		fetchContainer(api, method, body, headers)
-	    .then((response) => response.json())
+	fetchContainer(api, method, body, headers)
+		.then((response) => response.json())
 		.then((bookingsData) => {
 			htmlContent += `
 				<div class="button-right-container">
@@ -184,7 +183,7 @@ function fetchUser() {
 	    			</button>
 	    		</div>
     			`;
-			htmlContent += `<h4> Purchase `+ purchase_id + `</h4>`;
+			htmlContent += `<h4> Purchase ` + purchase_id + `</h4>`;
 			bookingsData.forEach((booking) => {
 				htmlContent += `
                 	<div>
@@ -198,7 +197,7 @@ function fetchUser() {
                 	<hr class="line">                	
                 	</div>
                 `;
-            });
+			});
 
 			htmlContent += ` 
 				<div class="button-center-container">
@@ -214,30 +213,31 @@ function fetchUser() {
 		.catch((error) => {
 			console.error('Fetch error:', error);
 		});
-		
-	}
-	
-	function fetchPassengers(purchase_id){
-		let passengersDetails = document.getElementById('passengersDetails');
-		let showPassengersButton = document.getElementById('fetchPassengers');
-		let hidePassengersButton = document.getElementById('closePassengersList');
-		
-		passengersDetails.classList.remove('hidden');
-		
-		let htmlContent = '';
-		
-		let api = "passengers_data/" + purchase_id;
 
-		let body= "";
-		let  headers = {
-	            'Content-type': 'application/json',
-	            'Authorization': `Bearer ` + token};
+}
+
+function fetchPassengers(purchase_id) {
+	let passengersDetails = document.getElementById('passengersDetails');
+	let showPassengersButton = document.getElementById('fetchPassengers');
+	let hidePassengersButton = document.getElementById('closePassengersList');
+
+	passengersDetails.classList.remove('hidden');
+
+	let htmlContent = '';
+
+	let api = "passengers_data/" + purchase_id;
+
+	let body = "";
+	let headers = {
+		'Content-type': 'application/json',
+		'Authorization': `Bearer ` + token
+	};
 
 
-		let method = 'GET';
+	let method = 'GET';
 
-		fetchContainer(api, method, body, headers)
-	    .then((response) => response.json())
+	fetchContainer(api, method, body, headers)
+		.then((response) => response.json())
 		.then((passengersData) => {
 			htmlContent += `<h4> Passengers List: </h4>`;
 			passengersData.forEach((passenger) => {
@@ -247,7 +247,7 @@ function fetchUser() {
 					</div>	
 				`;
 			});
-			
+
 			passengersDetails.innerHTML = htmlContent;
 			showPassengersButton.classList.add('hidden');
 			hidePassengersButton.classList.remove('hidden');
@@ -255,14 +255,14 @@ function fetchUser() {
 		.catch((error) => {
 			console.error('Fetch error:', error);
 		});
-	}
+}
 
 
 
-function generatePopupEditUser(){
-		let htmlContent = '';
-				
-		htmlContent += `
+function generatePopupEditUser() {
+	let htmlContent = '';
+
+	htmlContent += `
 			<div class="modal-content">
 				<h2>Edit User</h2>
 			
@@ -282,14 +282,14 @@ function generatePopupEditUser(){
 			    </div>
 			</div>
 			`;
-			
-		generatePopup(htmlContent);
-	}
-	
-	function generatePopupEditUserPassword(){
-		let htmlContent = '';
-				
-		htmlContent += `
+
+	generatePopup(htmlContent);
+}
+
+function generatePopupEditUserPassword() {
+	let htmlContent = '';
+
+	htmlContent += `
 			<div class="modal-content">
 				<h2>Edit Password</h2>
 			
@@ -309,14 +309,14 @@ function generatePopupEditUser(){
 			    </div>
 			</div>
 			`;
-			
-		generatePopup(htmlContent);
-	}
-	
-	function generatePopupDisableUser(){
-		let htmlContent = '';
-				
-		htmlContent += `
+
+	generatePopup(htmlContent);
+}
+
+function generatePopupDisableUser() {
+	let htmlContent = '';
+
+	htmlContent += `
 			<div class="modal-content">
 				<p>Are you sure you want to disable the user?</p>
 				<div class="modal-buttons">
@@ -325,69 +325,79 @@ function generatePopupEditUser(){
 			    </div>
 			</div>
 			`;
-			
-		generatePopup(htmlContent);
+
+	generatePopup(htmlContent);
+}
+
+function parseDate(date_input) {
+
+	let date = new Date(date_input);
+	let finalDate = '';
+
+	let day = String(date.getDate()).padStart(2, '0');
+	let month = String(date.getMonth() + 1).padStart(2, '0');
+	let year = date.getFullYear();
+	let hours = String(date.getHours()).padStart(2, '0');
+	let minutes = String(date.getMinutes()).padStart(2, '0');
+	let seconds = String(date.getSeconds()).padStart(2, '0');
+
+	if (seconds !== '00') {
+		finalDate = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+	} else {
+		finalDate = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes;
 	}
+	return finalDate;
+}
 
-	function parseDate(date_input) {
-		
-		  let date = new Date(date_input);
-		  let finalDate = '';
 
-		  let day = String(date.getDate()).padStart(2, '0');
-		  let month = String(date.getMonth() + 1).padStart(2, '0');
-		  let year = date.getFullYear();
-		  let hours = String(date.getHours()).padStart(2, '0');
-		  let minutes = String(date.getMinutes()).padStart(2, '0');
-		  let seconds = String(date.getSeconds()).padStart(2, '0');
-		  
-		  if (seconds !== '00') {
-			  finalDate = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes + ':' + seconds;
-		  } else {
-			  finalDate = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes;
-		  }
-		  return finalDate;
+
+function fetchDisableUser() {
+
+	let api = "disable_user/" + userId;
+
+	let body = "";
+	let headers = {
+		'Content-type': 'application/json',
+		'Authorization': `Bearer ` + token
+	};
+
+
+	let method = 'PUT';
+
+	fetchContainer(api, method, body, headers)
+		.then((response) => response.json())
+
+	alert("User disabled");
+	closePopup();
+	logout();
+}
+
+
+function closeDetails() {
+
+	rightSide.classList.add('hidden');
+	bookingsDetails.classList.add('hidden');
+}
+
+function closePassengers() {
+	let passengersDetails = document.getElementById('passengersDetails');
+	let showPassengersButton = document.getElementById('fetchPassengers');
+	let hidePassengersButton = document.getElementById('closePassengersList');
+
+	hidePassengersButton.classList.add('hidden');
+	passengersDetails.classList.add('hidden');
+	showPassengersButton.classList.remove('hidden');
+}
+
+function closePopup() {
+	console.log("sto chiudendo");
+	let modal = document.getElementById('modal');
+	if (modal) {
+		modal.remove(); // Rimuovi il popup dalla DOM
+		// Rimuovi l'event listener per evitare che venga chiuso più volte
+		//se non si rimuove l'event listener rimarrà attivo e continuerà ad ascoltare i clic sulla pagina
+		window.removeEventListener('click', closePopup);
 	}
-	
-	
+	generateMenu();
+}
 
-	function fetchDisableUser(){
-		
-		let api = "disable_user/" + userId;
-
-		let body= "";
-		let  headers = {
-	            'Content-type': 'application/json',
-	            'Authorization': `Bearer ` + token};
-
-
-		let method = 'PUT';
-
-		fetchContainer(api, method, body, headers)
-	    .then((response) => response.json())		
-		
-		alert("User disabled");
-		closePopup();
-		logout();
-	}
-	
-	
-	function closeDetails(){
-		
-		rightSide.classList.add('hidden');
-		bookingsDetails.classList.add('hidden');
-	}
-	
-	function closePassengers(){
-		let passengersDetails = document.getElementById('passengersDetails');
-		let showPassengersButton = document.getElementById('fetchPassengers');
-		let hidePassengersButton = document.getElementById('closePassengersList');
-		
-		hidePassengersButton.classList.add('hidden');
-		passengersDetails.classList.add('hidden');
-		showPassengersButton.classList.remove('hidden');
-	}
-
-	
-	
-	
