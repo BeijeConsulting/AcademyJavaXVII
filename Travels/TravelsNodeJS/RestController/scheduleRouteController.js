@@ -57,6 +57,7 @@ module.exports = {
                 reject(error);
             }
         } );
+    },
     addRoute: function(type, departure_xport_id, arrival_xport_id){
         if (departure_xport_id === arrival_xport_id) {
             //creo e lancio un errore a mio piacere
