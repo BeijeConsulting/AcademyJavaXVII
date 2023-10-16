@@ -1,6 +1,8 @@
 const bookingUtils = require('../Utils/bookingUtils');
 const purchaseUtils = require('../Utils/purchaseUtils');
 const userUtils = require('../Utils/userUtils');
+const xportUtils = require('../Utils/xportUtils');
+const utils = require('../Utils/utils');
 
 module.exports = {
     getAllBookings: function(){
@@ -11,8 +13,8 @@ module.exports = {
         return bookingUtils.getBookingById(id);
     },
     
-    getBookingByPurchaseId: function(purchase_id){
-        return bookingUtils.getBookingByPurchaseId(purchase_id);
+    getBookingsByPurchaseId: function(purchase_id){
+        return bookingUtils.getBookingsByPurchaseId(purchase_id);
     },
 
     getBookingsByTravelId: function(travel_id){

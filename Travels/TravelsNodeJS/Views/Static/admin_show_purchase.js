@@ -70,11 +70,11 @@ function showPurchases(){
 			htmlContent += `
             	<div>
             	<p><strong>ID Booking:</strong> ` + booking.id + `</p>
-            	<p><strong>Departure Date:</strong> ` + parseDate(booking.departure_date) + `</p>
-            	<p><strong>Arrival Date:</strong> ` + parseDate(booking.arrival_date) + `</p>
+            	<p><strong>Departure Date:</strong> ` + parseDate(booking.departure) + `</p>
+            	<p><strong>Arrival Date:</strong> ` + parseDate(booking.arrival) + `</p>
             	<p><strong>Departure Xport:</strong> ` + booking.departureXport.name + `</p>
             	<p><strong>Arrival Xport:</strong> ` + booking.arrivalXport.name + `</p>
-            	<p><strong>N° Tickets:</strong> ` + booking.numTickets + `</p>
+            	<p><strong>N° Tickets:</strong> ` + booking.n_tickets + `</p>
             	<p><strong>Price:</strong> ` + booking.amount + `</p>
             	<hr class="line">                	
             	</div>

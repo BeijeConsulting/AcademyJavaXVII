@@ -15,6 +15,9 @@ const scheduleRouteUtils = require('./Utils/scheduleRouteUtils');
 const cityController = require('./RestController/cityController');
 const companyController = require('./RestController/companyController');
 const scheduleRouteController  = require('./RestController/scheduleRouteController');
+const travelController = require('./RestController/travelController');
+const bookingController = require('./RestController/bookingController');
+const passengerController = require('./RestController/passengerController');
 
 const express = require('express')
 const app = express()
@@ -305,6 +308,18 @@ app.get('/api/xports_by_type/:type', (req, res) => {
     })
 })
 
+  //passengers
+
+app.get('/api/passengers/travel/:id', (req, res) => {
+    const id = req.params.id;
+    passengerController.getTravelPassengers(id).then((passengers) => {
+        res.json(passengers);
+    })
+})
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
   })
+
+
+
