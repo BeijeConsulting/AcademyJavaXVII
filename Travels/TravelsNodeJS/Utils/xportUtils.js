@@ -77,7 +77,7 @@ module.exports = {
     )},
     addXport: function(data) {
         return new Promise((resolve, reject) => {
-            connection.query("INSERT INTO xports (`name`, `city_id`, `type`) VALUES (?)", [data.xportName, data.cityId, data.type] , (err, rows, fields) => {
+            connection.query("INSERT INTO xports (`name`, `city_id`, `type`) VALUES (?, ?, ?)", [data.xportName, data.cityId, data.type] , (err, rows, fields) => {
                 if (err) {
                     reject(err);
                 } else {

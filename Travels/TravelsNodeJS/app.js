@@ -353,8 +353,8 @@ app.get('/api/days_of_week/:schedule_id', (req, res) => {
 })
 
 app.post('/api/xport', (req, res) =>{
-    let xport = req.body;
-    xportController.addXport(data).then(() => res.json(xport));
+    let data = req.body;
+    xportController.addXport(data).then(() => res.json(data));
 })
 
 app.listen(port, () => {

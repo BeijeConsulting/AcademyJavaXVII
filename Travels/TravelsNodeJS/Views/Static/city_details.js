@@ -44,11 +44,8 @@ fetchContainer("city_details/" + pathVariable, 'GET',body, headers)
   } else {
     html += 'No xports found. <br>';
   }
-  html += ` <form action="${baseUrl}insert_xport" method="GET">
-        <input type="hidden" name="cityId" value="${city.id}">
-			<button type="submit" >Insert xport</button><br><br>
-			
-		</form>`
+  html += `
+			<a href="./insert_xport.html?cityId=${city.id}"><button>Insert xport</button></a><br><br>`
 
   // Inserisci l'HTML generato nel tuo container
   cityDetailsContainer.innerHTML = html;
