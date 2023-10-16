@@ -18,7 +18,7 @@ const scheduleRouteController = require('./RestController/scheduleRouteControlle
 const travelController = require('./RestController/travelController');
 const bookingController = require('./RestController/bookingController');
 const userController = require('./RestController/userController');
-const userController = require('./RestController/userController');
+const xportController = require('./RestController/xportController');
 
 const express = require('express')
 const app = express()
@@ -362,13 +362,17 @@ app.put('/api/disable_user_by_email', (req, res) => {
         res.json(users);
     })
 })
-
 app.post('/api/insert_user/:type', (req, res) => {
     let user = req.body;
     let type = req.params.type;
     userController.addUser(user.name, user.surname, user.email, user.password, user.confirmPassword, type).then((users) => {
         res.json(users);
     })
+})
+
+app.put('/api/xport/:xport_id', (req, res) =>{
+    const id = req.params.xport_id;
+    xportController.editXport(req.body.name, id).then(() => true);
 })
 
 app.listen(port, () => {

@@ -33,7 +33,7 @@ module.exports = {
                 const xports = await Promise.all(xportsPromises);
                 city.xports = xports;
                 
-                console.log(city);
+                //console.log(city);
                 resolve(city);
             } catch (error) {
                 reject(error);

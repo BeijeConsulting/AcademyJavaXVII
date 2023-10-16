@@ -62,7 +62,7 @@ var parts = url.split('/');
 
 var pathVariable = parts[parts.length - 1];
 console.log("path " , pathVariable);
-let body = document.getElementById("xportName").value;
+let body = "{\"name\" : \"" + document.getElementById("xportName").value + "\"}";
 console.log(body);
 let token = localStorage.getItem("token");
 let headers = {
