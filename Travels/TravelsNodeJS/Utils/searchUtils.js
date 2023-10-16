@@ -1,5 +1,6 @@
 const { json } = require("express");
 const myModule = require("../mysql");
+const { parseDate } = require("./utils");
 
 let connection = myModule.getConnection();
 
@@ -8,9 +9,11 @@ module.exports={
         return new Promise((resolve, reject) => {
             let departure_date = data.departure_date;
             let passengers = data.passengers_number;
-            let day_of_week = departure_date.getDay();
+            let day_of_week = 3;
+            console.log(day_of_week);
+            console.log("dayyyy", departure_date);
             let departure_city = "'%" + data.departure_city + "%'";
-            let arrival_city = data.arrival_city;
+            let arrival_city = "'%" + data.arrival_city + "%'";
 
             connection.query(
                 "SELECT s.id, dx.name, s.departure_time, ax.name, s.arrival_time, s.duration, s.company_id, s.price, t.empty_seats, s.seats, t.departure_date, dow.day " + 
@@ -41,12 +44,19 @@ module.exports={
                 "(t.empty_seats >= ? OR t.empty_seats IS NULL) AND " +
                 "(s.seats >= ?) AND " +
                 "(dow.day = ?) AND " +
-                "(dc.name LIKE ? AND ac.name LIKE '%?%') ",
+                "(dc.name LIKE ? AND ac.name LIKE ?) ",
                 [departure_date, departure_date, departure_date, passengers, passengers, day_of_week, departure_city, arrival_city],
-                (err, rows, fields)
-            ).then(rows => console.log(rows));
+                (err, rows, fields) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        console.log(rows)
+                        resolve(rows);
+                    }
+                }
+            );
 
-            });
+        });
     }
 
 }

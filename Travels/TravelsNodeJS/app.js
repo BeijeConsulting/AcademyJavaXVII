@@ -401,9 +401,11 @@ app.put('/api/xport/:xport_id', (req, res) =>{
     xportController.editXport(req.body.name, id).then(() => true);
 })
 
-app.post('api/searchTravels', (req, res) =>{
+app.post('/api/searchTravels', (req, res) =>{
     const data = req.body;
-    searchController.searchTravels(data).then((travels) => res.json(travels));
+    searchController.searchTravels(data).then((travels) => 
+        res.json(travels)
+    );
 })
 
 app.listen(port, () => {
