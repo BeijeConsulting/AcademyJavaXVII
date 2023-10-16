@@ -15,6 +15,7 @@ const scheduleRouteUtils = require('./Utils/scheduleRouteUtils');
 const bookingController = require('./RestController/bookingController');
 const cityController = require('./RestController/cityController');
 const companyController = require('./RestController/companyController');
+const passengerController = require('./RestController/passengerController');
 const scheduleRouteController  = require('./RestController/scheduleRouteController');
 
 const express = require('express')
@@ -93,6 +94,13 @@ app.get('/api/city_details/:id', (req, res) => {
     cityController.getCityById(id).then((city) => {
         console.log("quiii:", city);
         res.json(city);
+    })
+})
+
+app.post('/api/add_city?:country_id', (req, res) => {
+    let city = req.body;
+    cityController.addCity(city, country_id).then(() => {
+        res.json(cities);
     })
 })
 
@@ -175,8 +183,13 @@ app.get('/api/country/:id', (req, res) => {
     })
 })
 
-
-
+//passengers
+app.get('/api/passengers_data/:purchase_id', (req, res) => {
+    const purchase_id = req.params.purchase_id;
+    passengerController.getPassengersByPurchaseId(purchase_id).then((purchase) => {
+        res.json(purchase);
+    })
+})
 //purchases
 app.get('/api/purchases', (req, res) => {
     purchaseController.getAllPurchases().then((purchases) => {
