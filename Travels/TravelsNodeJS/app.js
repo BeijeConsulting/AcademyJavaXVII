@@ -20,6 +20,7 @@ const passengerController = require('./RestController/passengerController');
 const purchaseController = require('./RestController/purchaseController');
 const scheduleRouteController  = require('./RestController/scheduleRouteController');
 const travelController = require('./RestController/travelController');
+const userController = require('./RestController/userController');
 const xportController = require('./RestController/xportController');
 
 const express = require('express')
@@ -27,6 +28,7 @@ const app = express()
 const port = 3000
 const path = require('path')
 const bodyParser = require('body-parser');
+
 
 /*const mysql = require('mysql')
 const connection = mysql.createConnection({
@@ -45,7 +47,7 @@ app.use(express.static('Views'))
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-    
+
 
 //bookings
 app.get('/api/bookings', (req, res) => {
@@ -78,8 +80,8 @@ app.get('/api/bookings_by_travel/:travel_id', (req, res) => {
 
 //cities
 
-app.get('/api/cities', (req, res) =>{
-    cityController.getAllCities().then((cities) =>{
+app.get('/api/cities', (req, res) => {
+    cityController.getAllCities().then((cities) => {
         res.json(cities);
     })
 })
@@ -149,7 +151,7 @@ app.get('/api/company_by_name/:name', (req, res) => {
     })
 })
 
-app.post('/api/insert_company', (req, res) =>{
+app.post('/api/insert_company', (req, res) => {
     let company = req.body;
     companyController.addCompany(company.name).then(() => res.json(company));
 })
@@ -194,6 +196,13 @@ app.get('/api/purchases', (req, res) => {
     })
 })
 
+app.get('/api/purchase/:id', (req, res) => {
+    const id = req.params.id;
+    purchaseController.getPurchasesByUserId(id).then((purchase) => {
+        res.json(purchase);
+    })
+})
+
 
 //routes
 app.get('/api/routes', (req, res) => {
@@ -202,50 +211,19 @@ app.get('/api/routes', (req, res) => {
     })
 })
 
-app.get('/api/routes/:search_name', (req, res) => {
-    const search_name = req.params.search_name;
-    scheduleRouteController.getAllRoutesByCityXportNameLike(search_name).then((routes) => {
-        res.json(routes);
-    })
-})
-
-app.get('/api/route/:id', (req, res) =>{
+app.get('/api/route/:id', (req, res) => {
     const id = req.params.id;
     scheduleRouteController.getRouteById(id).then((route) => {
         res.json(route)
     });
 })
 
-app.post('/api/route', (req, res) =>{
-    try {
-        let newRouteDTO = req.body; //il corpo json è inviato correttamente dal file js
-        scheduleRouteController.addRoute(newRouteDTO.type, newRouteDTO.departureXportId, newRouteDTO.arrivalXportId)
-        //bisogna inserire il parametro a sinistra del corpo della lambda altrimenti lo ritiene not defined e andrà 
-        //in errore la risposta dell api nonostante lui avesse aggiunto nel db correttamente la route 
-        //route in questo caso equivale a "true" per come è stato gestito l'inserimento nel db
-        .then((route) => {
-            res.json(route)
-        })
-        .catch(error => { //questo si attiverà quando ci sarà un errore nel db
-            res.status(503).json({ message: error.message });
-        });
-    } catch (error) { //questo si attiverà quando ci sarà un errore nel controller inserito volutamente
-        res.status(400).json({ message: error.message });
-    }
-})
 
 //schedules
-app.get('/api/schedules/:route_id', (req, res) =>{
+app.get('/api/schedules/:route_id', (req, res) => {
     const route_id = req.params.route_id;
     scheduleRouteController.getSchedulesByRouteId(route_id).then((schedules) => {
         res.json(schedules)
-    });
-})
-
-app.post('/api/schedule', (req, res) =>{
-    let scheduleDTO = req.body;
-    scheduleRouteController.addSchedule(scheduleDTO).then(() => {
-        res.json(true)
     });
 })
 
@@ -322,7 +300,7 @@ app.get('/api/xport/:id', (req, res) => {
 })
 
 app.get('/api/xports', (req, res) => {
-    xportController.getAllXports().then((xports) => {
+    xportUtils.getAllXports().then((xports) => {
         res.json(xports);
     })
 })
@@ -348,12 +326,11 @@ app.get('/api/xports_by_type/:type', (req, res) => {
     })
 })
 
-  //passengers
-
-app.get('/api/passengers/travel/:id', (req, res) => {
+//user profile
+app.get('/api/user/:id', (req, res) => {
     const id = req.params.id;
-    passengerController.getTravelPassengers(id).then((passengers) => {
-        res.json(passengers);
+    userController.getUserById(id).then((user) => {
+        res.json(user);
     })
 })
 
@@ -380,9 +357,7 @@ app.put('/api/xport/:xport_id', (req, res) =>{
     const id = req.params.xport_id;
     xportController.editXport(req.body.name, id).then(() => true);
 })
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
-  })
-
-
-
+})
