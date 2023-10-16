@@ -85,6 +85,17 @@ module.exports = {
                 }
             });
           });
+    },
+    editXport: function(name, id) {
+        return new Promise((resolve, reject) => {
+            connection.query("UPDATE xports SET `name` = ? WHERE `id` = ?", [name, id] , (err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(true);
+                }
+            });
+          });
     }
 
 }
