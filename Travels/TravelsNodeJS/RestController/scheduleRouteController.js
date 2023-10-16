@@ -1,6 +1,7 @@
 const companyUtils = require('../Utils/companyUtils');
 const scheduleRouteUtils = require('../Utils/scheduleRouteUtils');
 const utils = require('../Utils/utils');
+const dayOfWeekUtils = require('../Utils/dayOfWeekUtils');
 
 module.exports = {
     getAllRoutes: function(){
@@ -40,6 +41,22 @@ module.exports = {
         });*/
     },
 
+    addSchedule: function(scheduleDTO){
+        return new Promise(async (resolve, reject) =>{
+            try{
+                let scheduleId = await scheduleRouteUtils.addSchedule(scheduleDTO);
+                console.log("Hello");
+                console.log(scheduleId);
+                
+                for(let i=0; i<scheduleDTO.daysOfWeek.length; i++){
+                    dayOfWeekUtils.addDayOfWeek(scheduleDTO.daysOfWeek[i], scheduleId);
+                }
+
+                resolve("ok");
+            }catch (error) {
+                reject(error);
+            }
+        } );
     addRoute: function(type, departure_xport_id, arrival_xport_id){
         if (departure_xport_id === arrival_xport_id) {
             //creo e lancio un errore a mio piacere
