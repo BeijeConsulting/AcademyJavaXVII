@@ -365,9 +365,8 @@ app.post('/api/xport', (req, res) =>{
 })
 
 app.put('/api/xport/:xport_id', (req, res) =>{
-    let name = req.body;
     const id = req.params.xport_id;
-    xportController.editXport(name, id).then((xport) => res.json(xport));
+    xportController.editXport(req.body.name, id).then(() => true);
 })
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

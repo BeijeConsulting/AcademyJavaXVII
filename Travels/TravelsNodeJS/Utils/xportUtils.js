@@ -88,6 +88,7 @@ module.exports = {
     },
     editXport: function(name, id) {
         return new Promise((resolve, reject) => {
+            console.log("NOME: ", name);
             connection.query("UPDATE xports SET `name` = ? WHERE `id` = ?", [name, id] , (err, rows, fields) => {
                 if (err) {
                     reject(err);
