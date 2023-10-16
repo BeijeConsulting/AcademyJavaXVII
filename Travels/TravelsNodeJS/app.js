@@ -327,11 +327,28 @@ app.get('/api/xports_by_type/:type', (req, res) => {
 })
 
 //user profile
-app.get('/api/user/:id', (req, res) => {
-    const id = req.params.id;
+app.get('/api/user/:id', (req,res) => {
+    const id =req.params.id;
     userController.getUserById(id).then((user) => {
         res.json(user);
     })
+})
+
+app.put('/api/disable_user/:id', (req, res) => {
+    const id = req.params.id;
+    userController.disableUser(id).then(() => true);
+})
+
+app.put('/api/user/:id', (req, res) => {
+    const id = req.params.id;
+    const userDetails = req.body;
+    userController.editUserDetails(id,userDetails.name, userDetails.surname).then(() => true);
+})
+
+app.put('/api/changeUserPassword/:id', (req, res) => {
+    const id = req.params.id;
+    const changePassword = req.body;
+    userController.editUserPassword(id,changePassword.currentPassword, changePassword.newPassword).then(() => true);
 })
 
 //purchases
