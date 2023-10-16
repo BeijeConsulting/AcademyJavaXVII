@@ -444,7 +444,7 @@ function createBookings(scheduleId, passengers_number, departure_date) {
 }
 
 function getAllCompanies() {
-	let api = "companiesEnabled";
+	let api = "filtered_companies/enableAll";
 	let method = "GET";
 	let headers = "";
 	let body = "";

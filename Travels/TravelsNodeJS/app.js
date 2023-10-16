@@ -19,6 +19,7 @@ const dayOfWeekController = require('./RestController/dayOfWeekController');
 const passengerController = require('./RestController/passengerController');
 const purchaseController = require('./RestController/purchaseController');
 const scheduleRouteController  = require('./RestController/scheduleRouteController');
+const searchController = require('./RestController/searchController');
 const travelController = require('./RestController/travelController');
 const userController = require('./RestController/userController');
 const xportController = require('./RestController/xportController');
@@ -398,6 +399,11 @@ app.post('/api/xport', (req, res) =>{
 app.put('/api/xport/:xport_id', (req, res) =>{
     const id = req.params.xport_id;
     xportController.editXport(req.body.name, id).then(() => true);
+})
+
+app.post('api/searchTravels', (req, res) =>{
+    const data = req.body;
+    searchController.searchTravels(data).then((travels) => res.json(travels));
 })
 
 app.listen(port, () => {
