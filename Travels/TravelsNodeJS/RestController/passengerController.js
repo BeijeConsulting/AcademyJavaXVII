@@ -1,8 +1,8 @@
 const passengerUtils = require('../Utils/passengerUtils');
 
 module.exports = {
-    getPassengersByPurchase: function(purchase){
-        return passengerUtils.getPassengersByPurchase(purchase);
+    getPassengersByPurchaseId: function(purchase_id){
+        return passengerUtils.getPassengersByPurchaseId(purchase_id);
     },
     getTravelPassengers: function(travel_id){
         return passengerUtils.getTravelPassengers(travel_id);

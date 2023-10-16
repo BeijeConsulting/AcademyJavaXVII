@@ -75,4 +75,27 @@ module.exports = {
         })
     }
     )},
+    addXport: function(data) {
+        return new Promise((resolve, reject) => {
+            connection.query("INSERT INTO xports (`name`, `city_id`, `type`) VALUES (?, ?, ?)", [data.xportName, data.cityId, data.type] , (err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(true);
+                }
+            });
+          });
+    },
+    editXport: function(name, id) {
+        return new Promise((resolve, reject) => {
+            connection.query("UPDATE xports SET `name` = ? WHERE `id` = ?", [name, id] , (err, rows, fields) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(true);
+                }
+            });
+          });
+    }
+
 }

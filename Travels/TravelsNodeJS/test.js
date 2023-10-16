@@ -15,7 +15,9 @@ const scheduleRouteUtils = require('./Utils/scheduleRouteUtils');
 const bookingController = require('./RestController/bookingController');
 const cityController = require('./RestController/cityController');
 const companyController = require('./RestController/companyController');
+const passengerController = require('./RestController/passengerController');
 const scheduleRouteController  = require('./RestController/scheduleRouteController');
+const xportController = require('./RestController/xportController');
 
 const express = require('express')
 const app = express()
@@ -93,6 +95,13 @@ app.get('/api/city_details/:id', (req, res) => {
     cityController.getCityById(id).then((city) => {
         console.log("quiii:", city);
         res.json(city);
+    })
+})
+
+app.post('/api/add_city?:country_id', (req, res) => {
+    let city = req.body;
+    cityController.addCity(city, country_id).then(() => {
+        res.json(cities);
     })
 })
 
@@ -175,8 +184,13 @@ app.get('/api/country/:id', (req, res) => {
     })
 })
 
-
-
+//passengers
+app.get('/api/passengers_data/:purchase_id', (req, res) => {
+    const purchase_id = req.params.purchase_id;
+    passengerController.getPassengersByPurchaseId(purchase_id).then((purchase) => {
+        res.json(purchase);
+    })
+})
 //purchases
 app.get('/api/purchases', (req, res) => {
     purchaseController.getAllPurchases().then((purchases) => {
@@ -198,6 +212,13 @@ app.get('/api/routes', (req, res) => {
     })
 })
 
+app.get('/api/routes/:search_name', (req, res) => {
+    const search_name = req.params.search_name;
+    scheduleRouteController.getAllRoutesByCityXportNameLike(search_name).then((routes) => {
+        res.json(routes);
+    })
+})
+
 app.get('/api/route/:id', (req, res) =>{
     const id = req.params.id;
     scheduleRouteController.getRouteById(id).then((route) => {
@@ -205,6 +226,23 @@ app.get('/api/route/:id', (req, res) =>{
     });
 })
 
+app.post('/api/route', (req, res) =>{
+    try {
+        let newRouteDTO = req.body; //il corpo json è inviato correttamente dal file js
+        scheduleRouteController.addRoute(newRouteDTO.type, newRouteDTO.departureXportId, newRouteDTO.arrivalXportId)
+        //bisogna inserire il parametro a sinistra del corpo della lambda altrimenti lo ritiene not defined e andrà 
+        //in errore la risposta dell api nonostante lui avesse aggiunto nel db correttamente la route 
+        //route in questo caso equivale a "true" per come è stato gestito l'inserimento nel db
+        .then((route) => {
+            res.json(route)
+        })
+        .catch(error => { //questo si attiverà quando ci sarà un errore nel db
+            res.status(503).json({ message: error.message });
+        });
+    } catch (error) { //questo si attiverà quando ci sarà un errore nel controller inserito volutamente
+        res.status(400).json({ message: error.message });
+    }
+})
 
 //schedules
 app.get('/api/schedules/:route_id', (req, res) =>{
@@ -287,7 +325,7 @@ app.get('/api/xport/:id', (req, res) => {
 })
 
 app.get('/api/xports', (req, res) => {
-    xportUtils.getAllXports().then((xports) => {
+    xportController.getAllXports().then((xports) => {
         res.json(xports);
     })
 })

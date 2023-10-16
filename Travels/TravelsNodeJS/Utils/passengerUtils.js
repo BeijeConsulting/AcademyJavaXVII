@@ -27,9 +27,9 @@ module.exports = {
             })
         })
     },
-    getPassengersByPurchase: function(purchase){
+    getPassengersByPurchaseId: function(purchase_id){
         return new Promise((resolve, reject) =>{
-            connection.query('SELECT * FROM passengers WHERE purchase_id = ?', [purchase.id], (err, rows, fields) => {
+            connection.query('SELECT * FROM passengers WHERE purchase_id = ?', [purchase_id], (err, rows, fields) => {
                 if (err) {
                     reject(err);
                 }else{
@@ -55,7 +55,7 @@ module.exports = {
                 if (err) {
                     reject(err);
                 }else{
-                    resolve(true);
+                    resolve(rows);
                 }
            })
         })

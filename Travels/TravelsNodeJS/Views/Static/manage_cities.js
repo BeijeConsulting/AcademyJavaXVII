@@ -30,13 +30,13 @@ function getCountries(){
         let rowHtml = `
           <td>${country.id}</td>
           <td>${country.name}</td>
-          <td>${country.localName}</td>
+          <td>${country.local_name}</td>
           <td>`;
 
         for (let j = 0; j < country.cities.length; j++) {
           let city = country.cities[j];
           rowHtml += `
-            <a href="./city_details.html?cityId=${city.id}">${city.cityName}</a><br/><br/>`;
+            <a href="./city_details.html?cityId=${city.id}">${city.name}</a><br/><br/>`;
         }
         rowHtml += `</td>`
         rowHtml += ` <td>

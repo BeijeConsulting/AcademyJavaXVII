@@ -2,8 +2,24 @@ const myModule = require("../mysql");
 const dayOfWeek = require("./dayOfWeekUtils");
 const xportUtils = require("./xportUtils");
 const cityUtils = require("./cityUtils");
+const utils = require("./utils.js");
 
 let connection = myModule.getConnection();
+
+function mapRoutesResults(rows) {
+  for(let i=0; i<rows.length; i++){
+    rows[i].departureXport = {
+      name: rows[i].departure_xport_name
+    }
+    rows[i].arrivalXport = {
+      name: rows[i].arrival_xport_name
+    }
+    delete rows[i].departure_xport_name;
+    delete rows[i].arrival_xport_name;
+  }
+
+  return rows;
+}
 
 module.exports = {
   getAllSchedulesByRoutes: function (routes, date) {
@@ -82,17 +98,43 @@ module.exports = {
         );
       });
   },
-  getScheduleByRouteId: function (routeId) {
+  getSchedulesByRouteId: function (routeId) {
     return new Promise(
       (resolve, reject) => {
         connection.query(
-          "SELECT * FROM schedules WHERE route_id = ?",
+          "SELECT s.*, c.name as company_name, dow.day FROM schedules AS s JOIN companies AS c ON s.company_id = c.id " +
+          "JOIN days_of_week AS dow ON dow.schedule_id = s.id WHERE s.route_id = ?",
           [routeId],
           (err, rows, fields) => {
+            let finalSchedules = [];
+            let j=-1;
+            let ids = [];
+            for(let i=0; i<rows.length; i++){
+
+              if(!ids.includes(rows[i].id)){
+                j++;
+                let temp = utils.parseDate(rows[i].start_date);
+                rows[i].start_date = temp;
+                temp = utils.parseDate(rows[i].end_date);
+                rows[i].end_date = temp;
+
+                finalSchedules.push(rows[i]);
+                finalSchedules[j].days = [rows[i].day];
+                
+                delete finalSchedules[j].day;
+                ids.push(rows[i].id);
+              }else{
+                finalSchedules[j].days.push(rows[i].day);
+                //delete finalSchedules[j].day;
+              }
+
+              
+            }           
+            console.log(finalSchedules);
             if (err) {
               reject(err);
             } else {
-              resolve(rows);
+              resolve(finalSchedules);
             }
           }
         );
@@ -172,27 +214,82 @@ module.exports = {
     return ids;
   },
 
-  getAllRoutes: function () {
+  addSchedule: function(scheduleDTO){
+    console.log(scheduleDTO);
+
+    let departure_time = scheduleDTO.departureTimeHH + ":" + scheduleDTO.departureTimeMM + ":00";
+    let hour = parseInt(scheduleDTO.departureTimeHH, 10) + parseInt(Math.trunc( scheduleDTO.durationMinutes/60 ),10);
+    let minute = parseInt(scheduleDTO.departureTimeMM,10) + parseInt(scheduleDTO.durationMinutes%60,10);
+    if(minute > 60){
+      hour += 1;
+      minute -= 60;
+    }
+    let arrival_time = hour + ":" + minute + ":00";
+    let durationSeconds = scheduleDTO.durationMinutes * 60;
+    let end_date;
+    if(scheduleDTO.hasOwnProperty("end_date")){
+      end_date = scheduleDTO.start_date;
+    }else{
+      end_date = null;
+    }
+     
+    /*console.log("departure_time: " + departure_time);
+    console.log("arrival_time: " + arrival_time);
+    console.log("hour: " + hour);
+    console.log("minutes: " + minute);*/
+
     return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM routes", (err, rows, fields) => {
+      connection.query("INSERT INTO schedules (route_id, departure_time, arrival_time, duration, company_id, price, seats, start_date, end_date) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [scheduleDTO.routeId, departure_time, arrival_time, durationSeconds, scheduleDTO.companyId, scheduleDTO.price, scheduleDTO.seats, scheduleDTO.start_date,end_date],
+      (err, result, fields) => {
         if (err) {
           reject(err);
         } else {
-          resolve(rows);
+          resolve(result.insertId);
+        }
+      });
+    });
+  },
+
+  getAllRoutes: function () {
+    return new Promise((resolve, reject) => {
+      let query = `
+      SELECT r.id, r.departure_xport_id, r.arrival_xport_id, r.type, 
+        departure_xport.name as departure_xport_name, arrival_xport.name as arrival_xport_name
+      FROM routes as r
+      INNER JOIN xports AS departure_xport
+        ON r.departure_xport_id = departure_xport.id
+      INNER JOIN fly_mary.xports AS arrival_xport
+        ON r.arrival_xport_id = arrival_xport.id`;
+      connection.query(
+        query, (err, rows, fields) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(mapRoutesResults(rows));
         }
       });
     });
   },
   getRouteById: function (id) {
     return new Promise((resolve, reject) => {
+      let query = `
+      SELECT r.id, r.departure_xport_id, r.arrival_xport_id, r.type, 
+        departure_xport.name as departure_xport_name, arrival_xport.name as arrival_xport_name
+      FROM routes as r
+      INNER JOIN xports AS departure_xport
+        ON r.departure_xport_id = departure_xport.id
+      INNER JOIN fly_mary.xports AS arrival_xport
+        ON r.arrival_xport_id = arrival_xport.id
+      WHERE r.id = ?`;
       connection.query(
-        "SELECT * FROM routes WHERE id = ?",
+        query,
         [id],
         (err, rows, fields) => {
           if (err) {
             reject(err);
           } else {
-            resolve(rows[0]);
+            resolve(mapRoutesResults(rows)[0]);
           }
         }
       );
@@ -201,24 +298,26 @@ module.exports = {
   getAllRoutesByCityXportNameLike: function (search_name) {
     return new Promise((resolve, reject) => {
       let query = `
-      (SELECT routes.id, routes.departure_xport_id, routes.arrival_xport_id, routes.type
-      FROM fly_mary.routes
-      INNER JOIN fly_mary.xports AS departure_xport
-        ON routes.departure_xport_id = departure_xport.id
-      INNER JOIN fly_mary.xports AS arrival_xport
-        ON routes.arrival_xport_id = arrival_xport.id
+      (SELECT r.id, r.departure_xport_id, r.arrival_xport_id, r.type, 
+        departure_xport.name as departure_xport_name, arrival_xport.name as arrival_xport_name
+      FROM routes AS r
+      INNER JOIN xports AS departure_xport
+        ON r.departure_xport_id = departure_xport.id
+      INNER JOIN xports AS arrival_xport
+        ON r.arrival_xport_id = arrival_xport.id
       WHERE departure_xport.name LIKE ?
       OR arrival_xport.name LIKE ?)
       UNION
-      (SELECT routes.id, routes.departure_xport_id, routes.arrival_xport_id, routes.type
-      FROM fly_mary.routes
-      INNER JOIN fly_mary.xports AS departure_xport
-        ON routes.departure_xport_id = departure_xport.id
-      INNER JOIN fly_mary.xports AS arrival_xport
-        ON routes.arrival_xport_id = arrival_xport.id
-      INNER JOIN fly_mary.cities AS departure_city
+      (SELECT r.id, r.departure_xport_id, r.arrival_xport_id, r.type,
+        departure_xport.name as departure_xport_name, arrival_xport.name as arrival_xport_name
+      FROM routes AS r
+      INNER JOIN xports AS departure_xport
+        ON r.departure_xport_id = departure_xport.id
+      INNER JOIN xports AS arrival_xport
+        ON r.arrival_xport_id = arrival_xport.id
+      INNER JOIN cities AS departure_city
         ON departure_xport.city_id = departure_city.id
-      INNER JOIN fly_mary.cities AS arrival_city
+      INNER JOIN cities AS arrival_city
         ON arrival_xport.city_id = arrival_city.id
       WHERE departure_city.name LIKE ?
       OR arrival_city.name LIKE ?)`;
@@ -230,7 +329,7 @@ module.exports = {
           if (err) {
             reject(err);
           } else {
-            resolve(rows);
+            resolve(mapRoutesResults(rows));
           }
         }
       );
@@ -327,4 +426,25 @@ module.exports = {
       });
     });
   },
+
+  addRoute: function (type, departure_xport_id, arrival_xport_id){
+    return new Promise((resolve, reject) => {
+      let query = `
+      INSERT INTO routes (departure_xport_id, arrival_xport_id, type)
+      VALUES (?,?,?)`;
+      connection.query(query, [departure_xport_id, arrival_xport_id, type] , (err, rows, fields) => {
+          if (err) {
+            if (err.code === 'ER_DUP_ENTRY') {
+              // ER_DUP_ENTRY Codice di errore specifico per duplicato
+              reject(new Error("Duplicate route detected. Route already exists.")); //questa descrizione apparirà in error.message
+            } else {
+              // Altro errore
+              reject(new Error("Error adding the route. Please try again."));
+            }
+          } else {
+              resolve(true);
+          }
+      });
+    });
+  }
 };

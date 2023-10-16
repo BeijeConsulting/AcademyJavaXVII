@@ -18,6 +18,8 @@ const scheduleRouteController  = require('./RestController/scheduleRouteControll
 const travelController = require('./RestController/travelController');
 const bookingController = require('./RestController/bookingController');
 const passengerController = require('./RestController/passengerController');
+const dayOfWeekController = require('./RestController/dayOfWeekController');
+const xportController = require('./RestController/xportController');
 
 const express = require('express')
 const app = express()
@@ -193,6 +195,13 @@ app.get('/api/routes', (req, res) => {
     })
 })
 
+app.get('/api/routes/:search_name', (req, res) => {
+    const search_name = req.params.search_name;
+    scheduleRouteController.getAllRoutesByCityXportNameLike(search_name).then((routes) => {
+        res.json(routes);
+    })
+})
+
 app.get('/api/route/:id', (req, res) =>{
     const id = req.params.id;
     scheduleRouteController.getRouteById(id).then((route) => {
@@ -200,12 +209,36 @@ app.get('/api/route/:id', (req, res) =>{
     });
 })
 
+app.post('/api/route', (req, res) =>{
+    try {
+        let newRouteDTO = req.body; //il corpo json è inviato correttamente dal file js
+        scheduleRouteController.addRoute(newRouteDTO.type, newRouteDTO.departureXportId, newRouteDTO.arrivalXportId)
+        //bisogna inserire il parametro a sinistra del corpo della lambda altrimenti lo ritiene not defined e andrà 
+        //in errore la risposta dell api nonostante lui avesse aggiunto nel db correttamente la route 
+        //route in questo caso equivale a "true" per come è stato gestito l'inserimento nel db
+        .then((route) => {
+            res.json(route)
+        })
+        .catch(error => { //questo si attiverà quando ci sarà un errore nel db
+            res.status(503).json({ message: error.message });
+        });
+    } catch (error) { //questo si attiverà quando ci sarà un errore nel controller inserito volutamente
+        res.status(400).json({ message: error.message });
+    }
+})
 
 //schedules
 app.get('/api/schedules/:route_id', (req, res) =>{
     const route_id = req.params.route_id;
     scheduleRouteController.getSchedulesByRouteId(route_id).then((schedules) => {
         res.json(schedules)
+    });
+})
+
+app.post('/api/schedule', (req, res) =>{
+    let scheduleDTO = req.body;
+    scheduleRouteController.addSchedule(scheduleDTO).then(() => {
+        res.json(true)
     });
 })
 
@@ -282,7 +315,7 @@ app.get('/api/xport/:id', (req, res) => {
 })
 
 app.get('/api/xports', (req, res) => {
-    xportUtils.getAllXports().then((xports) => {
+    xportController.getAllXports().then((xports) => {
         res.json(xports);
     })
 })
@@ -317,6 +350,25 @@ app.get('/api/passengers/travel/:id', (req, res) => {
     })
 })
 
+// dow
+
+app.get('/api/days_of_week/:schedule_id', (req, res) => {
+    const id = req.params.schedule_id;
+    dayOfWeekController.getDaysOfWeekBySchedule(id).then((days) => {
+        res.json(days);
+    })
+})
+
+app.post('/api/xport', (req, res) =>{
+    let data = req.body;
+    xportController.addXport(data).then(() => res.json(data));
+})
+
+app.put('/api/xport/:xport_id', (req, res) =>{
+    let name = req.body;
+    const id = req.params.xport_id;
+    xportController.editXport(name, id).then((xport) => res.json(xport));
+})
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
   })

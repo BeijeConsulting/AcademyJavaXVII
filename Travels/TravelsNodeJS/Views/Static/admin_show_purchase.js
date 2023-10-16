@@ -22,7 +22,7 @@ function showPurchases(){
 				 <div class="card" id="purchases-` + purchase.id + `" onclick="fetchDetails(` + purchase.id + `)">
 				 	<p><strong>User:</strong>` + purchase.user.name + ` ` + purchase.user.surname + `</p>
                     <p><strong>Purchase ID:</strong> ` + purchase.id + `</p>
-                    <p><strong>N° Tickets:</strong>` + purchase.nTickets + `</p>
+                    <p><strong>N° Tickets:</strong>` + purchase.n_tickets + `</p>
                     <p><strong>Total Amount:</strong> &euro; ` + purchase.amount + `</p>               
                 </div>`;
 			});	
@@ -83,7 +83,7 @@ function showPurchases(){
 			htmlContent +=`
 		    	<div>
 		    		<div class="button-center-container">
-		    			<button class="primary-button" id="showPassenger" onclick="fetchPassengers(` + purchase_id + `)">Show Passenger Travel</button>
+		    			<button class="primary-button" id="showPassenger" onclick="fetchPassengers(` + purchase_id + `)">Show Passengers</button>
 		    			<button class="primary-button hidden" id="hidePassenger" onclick="closePassengers()">Hide Passenger Travel</button>
 		    		</div>
 		    	</div><br>
