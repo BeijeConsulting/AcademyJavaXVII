@@ -8,7 +8,8 @@ function fetchUser() {
 		let body= "";
 		let  headers = {
 	            'Content-type': 'application/json',
-	            'Authorization': `Bearer ` + token};
+	            'Authorization': `Bearer ` + token
+			};
 
 
 		let method = 'GET';
@@ -39,12 +40,8 @@ function fetchUser() {
 		
 		let api = "user/" + userId;
 		
+		let body = "{\"id\": \"" + userId + "\", \"name\": \"" + name + "\", \"surname\": \"" + surname + "\"}";
 
-		let body=JSON.stringify({
-			id: userId,
-			name: name,
-			surname: surname
-		  });
 		
 		let  headers = {
 	            'Content-type': 'application/json',
@@ -55,7 +52,8 @@ function fetchUser() {
 
 		fetchContainer(api, method, body, headers)
 		.then(response => {
-			if (response.ok) {
+			console.log(response.json());
+			if (response.ok) {			
 				return response.json();
 	        } else {
 				return response.json()
@@ -68,6 +66,7 @@ function fetchUser() {
 	        }
 		})
 		.then((json) => {
+			console.log("aggioramento");
 			fetchUser();
 			alert("Your profile has been updated successfully.");
 			closePopup();
@@ -89,11 +88,8 @@ function fetchUser() {
 		let api = "changeUserPassword/" + userId;
 		
 
-		let body=JSON.stringify({
-			id: userId,
-			currentPassword: currentPassword,
-			newPassword: newPassword
-		  });
+		let body="{\"id\": \"" + userId + "\", \"currentPassword\": \"" + currentPassword + "\", \"newPassword\": \"" + newPassword + "\"}";
+
 		
 		let  headers = {
 	            'Content-type': 'application/json',
