@@ -305,6 +305,11 @@ app.post('/api/insert_user/:type', (req,res) => {
     })
 })
 
+app.put('/api/disable_user_by_email', (req, res) => {
+    const email = req.body;
+    userController.disableUserByEmail(email.email).then(() => true);
+})
+
 app.get('/api/userAuthorityByUserId/:id', (req, res) => {
     const id = req.params.id;
     userAuthorityUtils.getUserAuthorityByUserId(id).then((userAuthority) => {
