@@ -323,7 +323,6 @@ app.put('/api/user/:id', (req, res) => {
     userController.editUserDetails(id,userDetails.name, userDetails.surname).then(() => true);
 })
 
-const userController = require('./RestController/userController');
 app.get('/api/customers_user', (req, res) => {
     userController.getAllCustomers().then((users) => {
         res.json(users);
