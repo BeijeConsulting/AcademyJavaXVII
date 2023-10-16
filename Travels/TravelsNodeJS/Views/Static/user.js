@@ -54,18 +54,20 @@ function fetchEditUser() {
 	fetchContainer(api, method, body, headers)
 		.then(response => {
 			if (response.ok) {
-				return true;
+				return ;
 			} else {
 				console.error('Edit user failed:', data.message);
 				errorElement.textContent = data.message;
 				errorElement.classList.remove("hidden");
 				throw new Error('Edit user failed');
 			}
-		})
-		.then(() => {
-			fetchUser();		
-			window.alert("Il tuo profilo è stato aggiornato con successo.");
+		}).then(() => {
+			console.log("ciao")
 			closePopup();
+			window.alert("Il tuo profilo è stato aggiornato con successo.");
+			//fetchUser();		
+			
+			
 		})
 		.catch(error => {
 			console.error('Errore nella richiesta:', error);
@@ -257,8 +259,6 @@ function fetchPassengers(purchase_id) {
 		});
 }
 
-
-
 function generatePopupEditUser() {
 	let htmlContent = '';
 
@@ -349,8 +349,6 @@ function parseDate(date_input) {
 	return finalDate;
 }
 
-
-
 function fetchDisableUser() {
 
 	let api = "disable_user/" + userId;
@@ -372,7 +370,6 @@ function fetchDisableUser() {
 	logout();
 }
 
-
 function closeDetails() {
 
 	rightSide.classList.add('hidden');
@@ -388,7 +385,7 @@ function closePassengers() {
 	passengersDetails.classList.add('hidden');
 	showPassengersButton.classList.remove('hidden');
 }
-
+/*
 function closePopup() {
 	console.log("sto chiudendo");
 	let modal = document.getElementById('modal');
@@ -399,5 +396,5 @@ function closePopup() {
 		window.removeEventListener('click', closePopup);
 	}
 	generateMenu();
-}
+}*/
 

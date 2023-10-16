@@ -220,9 +220,6 @@ function getAllAdmin() {
 		});
 }
 
-
-
-
 function getAllCustomers() {
 
 
@@ -323,7 +320,6 @@ function disableUser(id) {
 
 
 }
-
 
 function disableUserByEmail() {
 
