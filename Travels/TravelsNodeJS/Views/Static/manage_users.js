@@ -62,7 +62,7 @@ function generatePopupInsertUser() {
 		 	<br>
 		 	
 		 	<select id="type" name="type" required>
-				 	 <option value="0">Admin</option>
+				 	 <option value="2">Admin</option>
 				 	 <option value="1">Customer</option>
 			</select><br>
 		 	
@@ -86,7 +86,7 @@ function insertUser() {
 	let errorElement = document.getElementById("error-message");
 	errorElement.classList.add("hidden");
 
-	let api = "insert_user?type=" + type;
+	let api = "insert_user/" + type;
 
 	let body = JSON.stringify({
 		name: name,
@@ -106,7 +106,7 @@ function insertUser() {
 	fetchContainer(api, method, body, headers)
 		.then(response => {
 			if (response.ok) {
-				return response.json();
+				return ;
 			} else {
 				return response.json()
 					.then(errorData => {
@@ -117,10 +117,10 @@ function insertUser() {
 					});
 			}
 		})
-		.then((json) => {
-			generatePopupInsertUser();
-		})
-		.then((json) => {
+		//.then((json) => {
+			//generatePopupInsertUser();
+		//})
+		.then(() => {
 			// Chiudo il popup una volta che l'utente è stato inserito con successo
 			closePopup();
 			window.alert('Utente inserito con successo');	
@@ -329,11 +329,11 @@ function disableUserByEmail() {
 
 	let email = document.getElementById("customerEmail");
 
-	console.log("Email inserita: " + email);
+	console.log("Email inserita: " + email.value);
 	
-	let api = "disable_user";
+	let api = "disable_user_by_email";
 	let method = 'PUT';
-	let body = email.value;
+	let body = "{\"email\": \""+email.value+"\"}";
 	let headers = {
 		'Content-type': 'application/json',
 		'Authorization': `Bearer ` + token
