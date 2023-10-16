@@ -6,17 +6,18 @@ let connection = myModule.getConnection();
 
 module.exports={
     searchTravels: function(data){
+        console.log("DATA:" , data)
         return new Promise((resolve, reject) => {
             let departure_date = data.departure_date;
             let passengers = data.passengers_number;
             let day_of_week = 3;
             console.log(day_of_week);
             console.log("dayyyy", departure_date);
-            let departure_city = "'%" + data.departure_city + "%'";
-            let arrival_city = "'%" + data.arrival_city + "%'";
+            let departure_city = "%" + data.departure_city + "%";
+            let arrival_city = "%" + data.arrival_city + "%";
 
             connection.query(
-                "SELECT s.id, dx.name, s.departure_time, ax.name, s.arrival_time, s.duration, s.company_id, s.price, t.empty_seats, s.seats, t.departure_date, dow.day " + 
+                "SELECT s.id, dx.name as departure_name, s.departure_time, ax.name as arrival_name, s.arrival_time, s.duration, s.company_id, comp.name, s.price, t.empty_seats, s.seats, t.departure_date, dow.day " + 
                 "FROM schedules AS s " +
                             
                 "JOIN routes AS r " +
@@ -38,6 +39,9 @@ module.exports={
                 "JOIN days_of_week AS dow " +
                 "ON s.id = dow.schedule_id " +
 
+                "JOIN companies AS comp " +
+                "ON s.company_id = comp.id " +
+
                 "WHERE (s.start_date <= ?) AND " +
                 "(s.end_date IS NULL OR s.end_date > ?) AND " +
                 "(t.departure_date = ? OR t.departure_date IS NULL) AND " +
@@ -45,7 +49,7 @@ module.exports={
                 "(s.seats >= ?) AND " +
                 "(dow.day = ?) AND " +
                 "(dc.name LIKE ? AND ac.name LIKE ?) ",
-                [departure_date, departure_date, departure_date, passengers, passengers, day_of_week, departure_city, arrival_city],
+                [departure_date, departure_date, departure_date, parseInt(passengers), parseInt(passengers), day_of_week, departure_city, arrival_city],
                 (err, rows, fields) => {
                     if (err) {
                         reject(err);

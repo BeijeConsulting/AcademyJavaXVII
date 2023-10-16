@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<link rel="preconnect" href="https://fonts.googleapis.com%22%3E/">
-<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Lumanosimo&display=swap"
-	rel="stylesheet">
-<link
-	href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
-	rel="stylesheet" />
-<link href="./static/main_style.css" rel="stylesheet" type="text/css">
-<link href="./static/travels.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="./static/main_functions.js"></script>
-<script src="./static/travels.js" type="text/javascript"></script>
-<meta charset="ISO-8859-1">
-<title>Travel page</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com%22%3E/">
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Lumanosimo&display=swap"
+		rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+		rel="stylesheet" />
+	<link href="./static/main_style.css" rel="stylesheet" type="text/css">
+	<link href="./static/travels.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="./static/main_functions.js"></script>
+	<script src="./static/travels.js" type="text/javascript"></script>
+	<meta charset="ISO-8859-1">
+	<title>Travel page</title>
 
 </head>
+
 <body>
 
 	<div class="header">
@@ -27,16 +27,15 @@
 
 	</div>
 	<script>
-generateMenu();
-</script>
+		generateMenu();
+	</script>
 
 	<div class="firstContainer">
 
 
 		<div class="filtersContainer">
 			<h3>Sort by</h3>
-			<br> <select name="select" id="select" onchange="sort(value);"
-				class="form-select">
+			<br> <select name="select" id="select" onchange="sort(value);" class="form-select">
 				<option value="empty">Select
 					an option</option>
 				<option value="cheapest">Cheapest
@@ -52,27 +51,23 @@ generateMenu();
 			<br>
 			<h3>Filter by</h3>
 			<br>
-				<h4>Duration</h4>
-				<input type="range" min="0" max="14" step="1"
-					value= 0 id="slider"
-					name="sliderValue" oninput="updateSliderValue()"
-					class="slider_value">
-				<div style="text-align: center">
-					<span class="sliderValueElement">0 Hours - </span> <span
-						id="sliderValue" class="sliderValueElement"> 0
-						Hours</span>
-				</div>
+			<h4>Duration</h4>
+			<input type="range" min="0" max="14" step="1" value=0 id="slider" name="sliderValue"
+				oninput="updateSliderValue()" class="slider_value">
+			<div style="text-align: center">
+				<span class="sliderValueElement">0 Hours - </span> <span id="sliderValue" class="sliderValueElement"> 0
+					Hours</span>
+			</div>
 
-				<br> <br>
-				<hr>
-				<h4>Companies</h4>
-				<div id="containerCheckbox"></div>
+			<br> <br>
+			<hr>
+			<h4>Companies</h4>
+			<div id="containerCheckbox"></div>
 			<br>
-				<br>
-				<hr>
-				<br>
-				<button class="buttonRemove" value="remove filters"
-					onclick="removeFilters()">Remove filters</button>
+			<br>
+			<hr>
+			<br>
+			<button class="buttonRemove" value="remove filters" onclick="removeFilters()">Remove filters</button>
 		</div>
 		<br>
 		<div id="schedContainer">
@@ -83,8 +78,7 @@ generateMenu();
 			<hr>
 			<br>
 			<div id="loader" class="loader"></div>
-			<div id="departureSchedules"
-				style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
+			<div id="departureSchedules" style="display: flex; flex-wrap: wrap; gap: 20px;"></div>
 
 			<br> <br>
 		</div>
@@ -92,79 +86,79 @@ generateMenu();
 	</div>
 
 	<script>
-	localStorage.removeItem("bookings");
-	localStorage.removeItem("passengers");
-    let contSchedules = document.getElementById("departureSchedules");
-	let arr;
-	let durationNumber;
-	let companiesIds=[];
-	let arrFiltered = [];
-	let departure_city = localStorage.getItem("departure_city")
-	console.log("dep c " +  departure_city);
-    let arrival_city = localStorage.getItem("arrival_city")
-    console.log("arri c " +  arrival_city);
-    let departure_date =  localStorage.getItem("departure_date")
-    console.log("dep date " +  departure_date);
-    let return_date =  localStorage.getItem("return_date")
-     console.log("ret date " +  return_date);
-    let passengers_number =  localStorage.getItem("passengers_number")
-    console.log("pass " +  return_date);
-    let only_depart =localStorage.getItem("only_depart")
-    let isArrival = false;
-    let valueDisplay;
-    
-    let pDepartureDate = document.getElementById("departure_date");
-    pDepartureDate.innerHTML = departure_date;
-    console.log("only_depart ", only_depart);
-    loaderElement();
-    getAllCompanies();
-    
-    function searchTravels() {
-    	let api = "searchTravels";
-    	let method = "POST";
-    	let headers = "";
-    	let body = JSON.stringify({
-    		departure_city: departure_city,
-    		arrival_city: arrival_city,
-    		return_date: return_date,
-    		departure_date: departure_date,
-    		passengers_number: passengers_number,
-    		only_depart: only_depart,
-    	})
+		localStorage.removeItem("bookings");
+		localStorage.removeItem("passengers");
+		let contSchedules = document.getElementById("departureSchedules");
+		let arr;
+		let durationNumber;
+		let companiesIds = [];
+		let arrFiltered = [];
+		let departure_city = localStorage.getItem("departure_city")
+		console.log("dep c " + departure_city);
+		let arrival_city = localStorage.getItem("arrival_city")
+		console.log("arri c " + arrival_city);
+		let departure_date = localStorage.getItem("departure_date")
+		console.log("dep date " + departure_date);
+		let return_date = localStorage.getItem("return_date")
+		console.log("ret date " + return_date);
+		let passengers_number = localStorage.getItem("passengers_number")
+		console.log("pass " + return_date);
+		let only_depart = localStorage.getItem("only_depart")
+		let isArrival = false;
+		let valueDisplay;
 
-    	fetchContainer(api, method, body, headers)
-    		.then((response) => {
-    			if (response.ok) {
-    				return response.json();
-    			} else {
+		let pDepartureDate = document.getElementById("departure_date");
+		pDepartureDate.innerHTML = departure_date;
+		console.log("only_depart ", only_depart);
+		loaderElement();
+		getAllCompanies();
+		function searchTravels() {
+			let api = "searchTravels";
+			let method = "POST";
+			let headers = "";
+			let body = JSON.stringify({
+				departure_city: departure_city,
+				arrival_city: arrival_city,
+				return_date: return_date,
+				departure_date: departure_date,
+				passengers_number: passengers_number,
+				only_depart: only_depart,
+			})
 
-    				return response.json()
-    					.then(errorData => {
+			fetchContainer(api, method, body, headers)
+				.then((response) => {
+					if (response.ok) {
+						return response.json();
+					} else {
 
-    						console.error('search travels failed:', errorData.message);
-    						errorElement.textContent = errorData.message;
-    						errorElement.classList.remove("hidden");
-    					});
-    			}
-    		})
-    		.then((data) => {
-    			originalSchedules = data;
-    			arr = data;
-    			loaderElement();
-    			console.log(arr);
-    			let departureSchedulesDiv = document.getElementById("departureSchedules");
-    			travelsList(arr.departureSchedules, departureSchedulesDiv);
-    		})
+						return response.json()
+							.then(errorData => {
 
-    		.catch(error => {
+								console.error('search travels failed:', errorData.message);
+								errorElement.textContent = errorData.message;
+								errorElement.classList.remove("hidden");
+							});
+					}
+				})
+				.then((data) => {
+					originalSchedules = data;
+					arr = data;
+					loaderElement();
+					console.log("arr", arr);
+					let departureSchedulesDiv = document.getElementById("departureSchedules");
+					travelsList(arr, departureSchedulesDiv);
+				})
 
-    			console.error('Fetch error:', error);
-    		});
-    }
-    searchTravels();
+				.catch(error => {
 
-    
-	
-</script>
+					console.error('Fetch error:', error);
+				});
+		}
+		searchTravels();
+
+
+
+	</script>
 </body>
+
 </html>

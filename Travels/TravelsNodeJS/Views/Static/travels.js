@@ -1,5 +1,6 @@
 function travelsList(array, divCont) {
-	console.log("arrayLength " + array.length );
+	console.log("ARRAY", array)
+	//console.log("arrayLength " + array.length );
        if(array.length === 0) {
         let div = document.createElement("div");
         let p = document.createElement("p");
@@ -50,9 +51,9 @@ function travelsList(array, divCont) {
 			durataInOre = Math.trunc(durataInOre);
 			durataInMinuti =Math.trunc( durataInMinuti % 60);
 				
-		div.querySelector(".title").innerHTML += schedule.company.name;
-		div.querySelector(".paragraph:nth-child(3)").innerHTML += schedule.route.departureXport.city.name;
-		div.querySelector(".paragraph:nth-child(4)").innerHTML += schedule.route.arrivalXport.city.name;
+		div.querySelector(".title").innerHTML += schedule.name;
+		div.querySelector(".paragraph:nth-child(3)").innerHTML += schedule.departure_name;
+		div.querySelector(".paragraph:nth-child(4)").innerHTML += schedule.arrival_name;
 		div.querySelector(".paragraph:nth-child(5)").innerHTML += schedule.departure_time;
 		div.querySelector(".paragraph:nth-child(6)").innerHTML += schedule.arrival_time;
 		div.querySelector(".paragraph:nth-child(7)").innerHTML += durataInOre + "  H " + durataInMinuti + " m";
