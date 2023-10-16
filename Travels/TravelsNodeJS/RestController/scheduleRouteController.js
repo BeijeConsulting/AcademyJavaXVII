@@ -1,50 +1,15 @@
 const companyUtils = require('../Utils/companyUtils');
 const scheduleRouteUtils = require('../Utils/scheduleRouteUtils');
-const xportUtils = require('../Utils/xportUtils');
 const utils = require('../Utils/utils');
 const dayOfWeekUtils = require('../Utils/dayOfWeekUtils');
 
 module.exports = {
     getAllRoutes: function(){
-        return new Promise(async (resolve, reject) =>{
-            try{
-                let routes = await scheduleRouteUtils.getAllRoutes();
-                const routesPromise = routes.map(async (route) =>{
-                    let departureXport = await xportUtils.getXportById(route.departure_xport_id);
-                    route.departureXport = departureXport;
-                    let arrivalXport = await xportUtils.getXportById(route.arrival_xport_id);
-                    route.arrivalXport = arrivalXport;
-
-                });
-                await Promise.all(routesPromise);
-                resolve(routes);
-
-            } catch (error) {
-                reject(error);
-            }
-
-        });
+        return scheduleRouteUtils.getAllRoutes();
     },
 
     getAllRoutesByCityXportNameLike: function(search_name){
-        return new Promise(async (resolve, reject) =>{
-            try{
-                let routes = await scheduleRouteUtils.getAllRoutesByCityXportNameLike(search_name);
-                const routesPromise = routes.map(async (route) =>{
-                    let departureXport = await xportUtils.getXportById(route.departure_xport_id);
-                    route.departureXport = departureXport;
-                    let arrivalXport = await xportUtils.getXportById(route.arrival_xport_id);
-                    route.arrivalXport = arrivalXport;
-
-                });
-                await Promise.all(routesPromise);
-                resolve(routes);
-
-            } catch (error) {
-                reject(error);
-            }
-
-        });
+        return scheduleRouteUtils.getAllRoutesByCityXportNameLike(search_name);
     },
 
     getRouteById: function(id){
@@ -92,32 +57,15 @@ module.exports = {
                 reject(error);
             }
         } );
+    addRoute: function(type, departure_xport_id, arrival_xport_id){
+        if (departure_xport_id === arrival_xport_id) {
+            //creo e lancio un errore a mio piacere
+            throw new Error('Departure and arrival Xport cannot be the same.'); //questa descrizione apparirà in error.message
+        }
+
+        return scheduleRouteUtils.addRoute(type, departure_xport_id, arrival_xport_id);
     }
 
-    /*
-    getAllCompanies: function(){
-        return companyUtils.getAllCompanies();
-    },
-
-    getAllDisabledCompanies: function (){
-        return companyUtils.getAllDisabledCompanies();
-    },
-
-    getAllEnabledCompanies: function (){
-        return companyUtils.getAllEnabledCompanies();
-    },
-
-    addCompany: function(name){
-        return companyUtils.addCompany(name); 
-    },
-
-    enableCompany : function(id){
-        return companyUtils.enableCompany(id);
-    },
-
-    disableCompany : function(id){
-        return companyUtils.disableCompany(id); 
-    }*/
 
 
 }
