@@ -203,6 +203,19 @@ app.get('/api/purchase/:id', (req, res) => {
     })
 })
 
+//purchases
+app.get('/api/purchases', (req, res) => {
+    purchaseController.getAllPurchases().then((purchases) => {
+        res.json(purchases);
+    })
+})
+
+app.get('/api/purchase/:user_id', (req, res) =>{
+    const user_id = req.params.user_id;
+   purchaseController.getPurchasesByUserId(user_id).then((purchase) => {
+        res.json(purchase)
+    });
+})
 
 //routes
 app.get('/api/routes', (req, res) => {
@@ -291,6 +304,45 @@ app.get('/api/userAuthorityByUserId/:id', (req, res) => {
     })
 })
 
+//user profile
+app.get('/api/user/:id', (req,res) => {
+    const id =req.params.id;
+    userController.getUserById(id).then((user) => {
+        res.json(user);
+    })
+})
+
+app.put('/api/disable_user/:id', (req, res) => {
+    const id = req.params.id;
+    userController.disableUser(id).then(() => true);
+})
+
+app.put('/api/user/:id', (req, res) => {
+    const id = req.params.id;
+    const userDetails = req.body;
+    userController.editUserDetails(id,userDetails.name, userDetails.surname).then(() => true);
+})
+
+const userController = require('./RestController/userController');
+app.get('/api/customers_user', (req, res) => {
+    userController.getAllCustomers().then((users) => {
+        res.json(users);
+    })
+})
+
+app.get('/api/admins_user', (req, res) => {
+    userController.getAllAdmin().then((users) => {
+        res.json(users);
+    })
+})
+
+app.put('/api/changeUserPassword/:id', (req, res) => {
+    const id = req.params.id;
+    const changePassword = req.body;
+    userController.editUserPassword(id,changePassword.currentPassword, changePassword.newPassword).then(() => true);
+})
+
+
 //xports
 app.get('/api/xport/:id', (req, res) => {
     const id = req.params.id;
@@ -326,45 +378,6 @@ app.get('/api/xports_by_type/:type', (req, res) => {
     })
 })
 
-//user profile
-app.get('/api/user/:id', (req,res) => {
-    const id =req.params.id;
-    userController.getUserById(id).then((user) => {
-        res.json(user);
-    })
-})
-
-app.put('/api/disable_user/:id', (req, res) => {
-    const id = req.params.id;
-    userController.disableUser(id).then(() => true);
-})
-
-app.put('/api/user/:id', (req, res) => {
-    const id = req.params.id;
-    const userDetails = req.body;
-    userController.editUserDetails(id,userDetails.name, userDetails.surname).then(() => true);
-})
-
-app.put('/api/changeUserPassword/:id', (req, res) => {
-    const id = req.params.id;
-    const changePassword = req.body;
-    userController.editUserPassword(id,changePassword.currentPassword, changePassword.newPassword).then(() => true);
-})
-
-//purchases
-app.get('/api/purchases', (req, res) => {
-    purchaseController.getAllPurchases().then((purchases) => {
-        res.json(purchases);
-    })
-})
-
-app.get('/api/purchase/:user_id', (req, res) =>{
-    const user_id = req.params.user_id;
-   purchaseController.getPurchasesByUserId(user_id).then((purchase) => {
-        res.json(purchase)
-    });
-})
-
 app.post('/api/xport', (req, res) =>{
     let data = req.body;
     xportController.addXport(data).then(() => res.json(data));
@@ -378,3 +391,4 @@ app.put('/api/xport/:xport_id', (req, res) =>{
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
