@@ -78,7 +78,8 @@ app.get('/api/bookings_by_travel/:travel_id', (req, res) => {
     })
 })
 
-app.post('/api/bookings', (req,res) => {
+app.post('/api/bookingss', (req,res) => {
+    // promise , dati schedule dal db ( fetch) , prendere dati dal body passarli a createbooking con dati presi da db
     const data = req.body;
     bookingController.createBooking(data).then((booking) => 
     res.json(booking));

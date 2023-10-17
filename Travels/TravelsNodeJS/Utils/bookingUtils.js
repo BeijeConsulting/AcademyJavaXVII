@@ -110,13 +110,15 @@ module.exports = {
     createBooking: function(scheduleId, departure_xport, arrival_xport, departure_date, arrival_date, numTickets, amount) {
       let obj = {
         scheduleId : scheduleId,
-        departure_xport : departure_xport,
-        arrival_xport: arrival_xport,
+        departureXport : departure_xport,
+        arrivalXport: arrival_xport,
         departure_date : departure_date,
         arrival_date : arrival_date,
         numTickets : numTickets,
         amount : amount
       }
+
+      console.log("OBJ", obj)
       return obj;
     }
 

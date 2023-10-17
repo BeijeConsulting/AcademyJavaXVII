@@ -45,19 +45,20 @@ module.exports = {
                 let scheduleId = data.scheduleId;
                 let schedule = await scheduleRouteUtils.getScheduleById(scheduleId);
                 
-                let departure_xport = schedule.departure_xport;
-                let arrival_xport = schedule.arrival_xport;
+                let departure_xport = schedule.departureXport;
+                let arrival_xport = schedule.arrivalXport;
 
-                let departure_date = data.departure_date;
-                const dep = new Date(departure_date);
-                let arrival_date = dep;
-                arrival_date.setSeconds(arr.getSeconds + schedule.duration);
-
+                let departure_date = data.departure_date + "T" + schedule.departure_time;
+                let arrival_date = data.arrival_date + "T" + schedule.arrival_time;
+                
+                arrival_date.setSeconds(dep.getSeconds + schedule.duration);
+                console.log("ARRIVAL DATE", arrival_date)
                 let numTickets = data.passengers_number;
                 let amount = numTickets * schedule.price;
 
                let booking = bookingUtils.createBooking(scheduleId, departure_xport, arrival_xport, departure_date, arrival_date, numTickets, amount);
 
+               //console.log("OBJ PRIMA DI RESOLVE", booking)
                 resolve(booking);
             }catch(error){
                 reject (error);

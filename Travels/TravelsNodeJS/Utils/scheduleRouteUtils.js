@@ -86,12 +86,20 @@ module.exports = {
     return new Promise(
       (resolve, reject) => {
         connection.query(
-          "SELECT * FROM schedules WHERE id = ?",
+          "SELECT s.*, xd.name as dep_name, xar.name as arr_name FROM schedules as s JOIN routes as r ON s.route_id = r.id "
+          + " JOIN xports as xd ON r.departure_xport_id = xd.id "
+          + " JOIN xports as xar ON r.arrival_xport_id = xar.id WHERE s.id = ?",
           [id],
           (err, rows, fields) => {
             if (err) {
               reject(err);
             } else {
+              rows[0].departureXport = {
+                name : rows[0].dep_name
+              }
+              rows[0].arrivalXport = {
+                name : rows[0].arr_name
+              }
               resolve(rows[0]);
             }
           }

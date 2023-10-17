@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link href="./static/main_style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="./static/main_functions.js"></script>
+<script type="text/javascript" src="./static/passengers_data.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com%22%3E/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Lumanosimo&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+
+<style>    
+    
+    .card-container{
+    	width: 350px; /* Larghezza fissa della card */
+       	margin-top: 40px;
+    }
+
+    .f-right{
+    	float: right;
+    }
+    
+    .f-left{
+    	float: left;
+    }
+  	
+  	.extra-padding {
+  		padding-right: 20px;
+  	}
+    
+    
+</style>
+
+<meta charset="ISO-8859-1">
+<title>Passengers details</title>
+</head>
+<body>
+	<div class="header">
+		<div class="logo"><a href="./home.html" id="logo"><b>Beije Travels</b></a></div>
+		<div class="topnav" id="menu">
+				
+		</div>
+		  	
+	</div>
+	<div class="container">
+		<br>
+		<div class="card-container">
+			<a class="f-left" href="./travels.html"><button class="secondary-button">Back</button></a>
+			<br><br><br>
+			 <div id="form" class="card">
+			 	<h3>Add passenger detail</h3>
+			 	<hr/>
+			 	<br/>
+				<label for ="name" class="extra-padding">Name: </label>
+				<input class="form-input f-right" id="name" name="name" />
+				<br/><br/>
+				<label class="extra-padding">Surname: </label>
+				<input class="form-input f-right" id="surname" name="surname" />
+				<br/><br/><br/>
+				<button class="primary-button" onclick="addPassenger()">Add</button>
+			</div> 
+			<br/>
+			
+			
+			<div class="card" >
+				<h3>Current registered passengers:</h3>
+				<hr/>
+				<div id="registered_passengers"></div>
+			</div>
+			<br/>
+			
+			<a id="continue" href="./recap_booking.html"><button class="primary-button">Continue to Purchase Recap</button></a>
+		</div>
+	</div>
+	<script>
+		generateMenu();
+	
+		let newDiv = document.getElementById("registered_passengers");
+		let passengersJson = localStorage.getItem("passengers");
+		
+		const maxPassengers = localStorage.getItem("passengers_number");
+		//const maxPassengers = 3;
+		
+		let passengers;
+		if (passengersJson === null || passengersJson === undefined){
+			passengers = [];	
+		} else {
+			passengers = JSON.parse(passengersJson);
+		}
+		
+		
+		show();
+		replaceDivHtml(passengers);
+		
+	</script>
+</body>
+</html>
