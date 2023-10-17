@@ -113,7 +113,7 @@ function checkOnlyDepart(scheduleId) {
 		arrivalSchedulesDiv.style.gap = "20px"
 		schedContainer.append(arrivalSchedulesDiv);
 		isArrival = true;
-		travelsList(arr.arrivalSchedules, arrivalSchedulesDiv);
+		travelsList(arr.arrival_schedule, arrivalSchedulesDiv);
 
 	}
 

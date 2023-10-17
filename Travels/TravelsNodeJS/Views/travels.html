@@ -146,7 +146,7 @@
 					loaderElement();
 					console.log("arr", arr);
 					let departureSchedulesDiv = document.getElementById("departureSchedules");
-					travelsList(arr, departureSchedulesDiv);
+					travelsList(arr.departure_schedule, departureSchedulesDiv);
 				})
 
 				.catch(error => {
