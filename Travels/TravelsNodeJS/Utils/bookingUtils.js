@@ -107,6 +107,16 @@ module.exports = {
         });
     },
 
+    createBooking: function(data) {
+      let scheduleId = data.schedule_id;
+      let departure = data.departure_date;
+      let passengers = data.passengers_number;
+      let obj = {
+        
+      }
+
+    }
+
 //add booking
 
 }
