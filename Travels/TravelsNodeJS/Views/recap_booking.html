@@ -111,7 +111,7 @@
 			rightDiv.className = "time_div";
 			
 			dateTime = bookings[i].departure_date.split("T");
-			rightDiv.innerHTML = "<span class=\"city-font\">" + dateTime[1] + "</span><br><span class=\"xport-font\">" + dateTime[0] + "</span>";
+			rightDiv.innerHTML = "<span class=\"city-font\">" + dateTime[1].substring(0,5) + "</span><br><span class=\"xport-font\">" + dateTime[0] + "</span>";
 			topDiv.appendChild(rightDiv);
 			
 			//MIDDLE DIV
@@ -159,7 +159,7 @@
 			leftDiv.id = "arrival_time_div-" + i;
 			rightDiv.className = "time_div";
 			dateTime = bookings[i].arrival_date.split("T");
-			rightDiv.innerHTML = "<span class=\"city-font\">" + dateTime[1] + "</span><br><span class=\"xport-font\">" + dateTime[0] + "</span>";
+			rightDiv.innerHTML = "<span class=\"city-font\">" + dateTime[1].substring(0,5) + "</span><br><span class=\"xport-font\">" + dateTime[0] + "</span>";
 			bottomDiv.appendChild(rightDiv);
 			
 			totalAmount +=  bookings[i].amount;

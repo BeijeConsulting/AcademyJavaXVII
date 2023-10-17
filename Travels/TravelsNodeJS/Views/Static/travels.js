@@ -68,14 +68,22 @@ function checkOnlyDepart(scheduleId) {
 	let cont = document.getElementById("departureSchedules");
 	let url = "./passengers_data.html" 
         
-
-	if (only_depart !== "null" || isArrival === true) {
+	if (only_depart !== "null") {
 		createBookings(scheduleId, passengers_number, departure_date)
 			.then(() => {
 				//location.replace("./BeijeTravels/passengers_data");
 				// Reindirizza l'utente alla nuova pagina con l'URL costruito
        			 window.location.href = url;
 			});
+	}
+	else if (isArrival === true){
+		createBookings(scheduleId, passengers_number, return_date)
+			.then(() => {
+				//location.replace("./BeijeTravels/passengers_data");
+				// Reindirizza l'utente alla nuova pagina con l'URL costruito
+       			 window.location.href = url;
+			});
+
 	}
 	else {
 		createBookings(scheduleId, passengers_number, departure_date)

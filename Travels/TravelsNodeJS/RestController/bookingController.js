@@ -43,6 +43,7 @@ module.exports = {
     createBooking: function(data){
         return new Promise(async (resolve, reject) => {
             try{
+                console.log("DATAAAAAAAAAA: ", data);
                 let scheduleId = data.scheduleId;
                 let schedule = await scheduleRouteUtils.getScheduleById(scheduleId);
                 
