@@ -5,6 +5,7 @@ const xportUtils = require('../Utils/xportUtils');
 const utils = require('../Utils/utils');
 const scheduleRouteUtils = require('../Utils/scheduleRouteUtils');
 
+
 module.exports = {
     getAllBookings: function(){
        return bookingUtils.getAllBookings();
@@ -31,7 +32,7 @@ module.exports = {
 
                 await Promise.all(bookingsPromises);
                 
-                console.log(bookings);
+                //console.log(bookings);
                 resolve(bookings);
             } catch (error) {
                 reject(error);
@@ -48,15 +49,22 @@ module.exports = {
                 let departure_xport = schedule.departureXport;
                 let arrival_xport = schedule.arrivalXport;
 
-                let departure_date = data.departure_date + "T" + schedule.departure_time;
-                let arrival_date = data.arrival_date + "T" + schedule.arrival_time;
+                let departure_date = data.departure_date + "T" + schedule.departure_time + ".000Z";
                 
-                arrival_date.setSeconds(dep.getSeconds + schedule.duration);
-                console.log("ARRIVAL DATE", arrival_date)
+                let date = new Date(departure_date);
+                let arr_date = date.setSeconds(date.getSeconds() + schedule.duration);
+                 
+                let arrival_date = date.toISOString();
+
+                console.log("DATE");
+                console.log(arr_date);
+
+                //arrival_date.setSeconds(dep.getSeconds + schedule.duration);
+                //console.log("ARRIVAL DATE", arrival_date)
                 let numTickets = data.passengers_number;
                 let amount = numTickets * schedule.price;
 
-               let booking = bookingUtils.createBooking(scheduleId, departure_xport, arrival_xport, departure_date, arrival_date, numTickets, amount);
+                let booking = bookingUtils.createBooking(scheduleId, departure_xport, arrival_xport, departure_date, arrival_date, numTickets, amount);
 
                //console.log("OBJ PRIMA DI RESOLVE", booking)
                 resolve(booking);

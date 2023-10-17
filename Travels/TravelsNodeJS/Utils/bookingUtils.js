@@ -88,7 +88,7 @@ module.exports = {
             if (err) {
               reject(err);
             } else {
-              console.log(rows);
+              //console.log(rows);
               resolve(rows);
             }
         });
@@ -118,7 +118,7 @@ module.exports = {
         amount : amount
       }
 
-      console.log("OBJ", obj)
+      //console.log("OBJ", obj)
       return obj;
     }
 

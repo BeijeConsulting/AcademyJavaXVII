@@ -12,7 +12,7 @@ module.exports = {
                 let arrival_city = data.arrival_city;
                 let passengers = data.passengers_number;
                 let departure = await searchUtils.searchTravels(departure_date, departure_city, arrival_city, passengers)
-                console.log("DATA", data)
+                //console.log("DATA", data)
 
                 if (data.only_depart === 'on') {
                     obj = {
@@ -26,7 +26,7 @@ module.exports = {
                         arrival_schedule: arrival
                     }
                 }
-                console.log("OBJ", obj)
+                //console.log("OBJ", obj)
                 resolve(obj)
                 
             } catch (error) {

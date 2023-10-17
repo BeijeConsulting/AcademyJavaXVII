@@ -11,37 +11,37 @@ function travelsList(array, divCont) {
         div.style.textAlign = "center";
         divCont.appendChild(div);
     } else{
-	for (let i = 0; i < array.length; i++) {
-		// Ottieni l'oggetto schedule corrente
-		let schedule = array[i];
-		let div = document.createElement("div");
-		div.classList.add("schedule");
-		div.setAttribute("data-id", schedule.id);
-		div.classList.add("not-selected");
-		console.log("scheduleId:", schedule.id);
-		div.addEventListener("click", function() {
-			// Controlla se il div è selezionato
-			if (div.classList.contains("not-selected")) {
-				checkOnlyDepart(schedule.id);
-				// Rimuovi l'evento click dopo la selezione
-				div.classList.remove("not-selected");
-				div.removeEventListener("click", this);
-			}
-		});
-		// Crea l'HTML interno con le proprietÃ  dell'oggetto schedule
-		div.innerHTML = `
-	        <h2 class="title"></h2>
-	        <hr>
-	        <p class="paragraph"><strong>Departure city xport: </strong></p>
-	        <p class="paragraph"><strong>Arrival city xport: </strong></p>
-	        <p class="paragraph"><strong>Departure time: </strong></p>
-	        <p class="paragraph"><strong>Arrival time: </strong></p>
-	        <p class="paragraph"><strong>Duration: </strong></p>
-	        <p class="paragraph"><strong>Price: </strong></p>
-	        <p class="id" style="visibility:hidden"></p>`
+		for (let i = 0; i < array.length; i++) {
+			// Ottieni l'oggetto schedule corrente
+			let schedule = array[i];
+			let div = document.createElement("div");
+			div.classList.add("schedule");
+			div.setAttribute("data-id", schedule.id);
+			div.classList.add("not-selected");
+			console.log("scheduleId:", schedule.id);
+			div.addEventListener("click", function() {
+				// Controlla se il div è selezionato
+				if (div.classList.contains("not-selected")) {
+					checkOnlyDepart(schedule.id);
+					// Rimuovi l'evento click dopo la selezione
+					div.classList.remove("not-selected");
+					div.removeEventListener("click", this);
+				}
+			});
+			// Crea l'HTML interno con le proprietÃ  dell'oggetto schedule
+			div.innerHTML = `
+				<h2 class="title"></h2>
+				<hr>
+				<p class="paragraph"><strong>Departure city xport: </strong></p>
+				<p class="paragraph"><strong>Arrival city xport: </strong></p>
+				<p class="paragraph"><strong>Departure time: </strong></p>
+				<p class="paragraph"><strong>Arrival time: </strong></p>
+				<p class="paragraph"><strong>Duration: </strong></p>
+				<p class="paragraph"><strong>Price: </strong></p>
+				<p class="id" style="visibility:hidden"></p>`
 
-		// Aggiungi il div al tuo elemento di destinazione
-		divCont.appendChild(div);
+			// Aggiungi il div al tuo elemento di destinazione
+			divCont.appendChild(div);
 // Calcola la differenza tra le due date in millisecondi
 			let durataInSecondi =schedule.duration;
 			 //Calcola la durata in ore
@@ -414,6 +414,7 @@ function createBookings(scheduleId, passengers_number, departure_date) {
 	let api = "bookings";
 	let method = "POST";
 	let headers = "";
+	console.log("Create booking");
 	let body = JSON.stringify({
 		scheduleId: scheduleId,
 		passengers_number: passengers_number,

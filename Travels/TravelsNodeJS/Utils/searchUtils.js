@@ -17,7 +17,7 @@ module.exports = {
             // Ottieni il numero del giorno della settimana (0 = Domenica, 1 = Lunedì, ..., 6 = Sabato)
             const dayOfWeek = date.getDay();
 
-            console.log("Il numero del giorno della settimana è: " + dayOfWeek);
+            //console.log("Il numero del giorno della settimana è: " + dayOfWeek);
             departure_city = "%" + departure_city + "%";
             arrival_city = "%" + arrival_city + "%";
 
@@ -59,7 +59,7 @@ module.exports = {
                     if (err) {
                         reject(err);
                     } else {
-                        console.log(rows)
+                        //console.log(rows)
                         resolve(rows);
                     }
                 }

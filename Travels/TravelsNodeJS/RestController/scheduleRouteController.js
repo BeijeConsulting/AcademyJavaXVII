@@ -45,8 +45,8 @@ module.exports = {
         return new Promise(async (resolve, reject) =>{
             try{
                 let scheduleId = await scheduleRouteUtils.addSchedule(scheduleDTO);
-                console.log("Hello");
-                console.log(scheduleId);
+                //console.log("Hello");
+                //console.log(scheduleId);
                 
                 for(let i=0; i<scheduleDTO.daysOfWeek.length; i++){
                     dayOfWeekUtils.addDayOfWeek(scheduleDTO.daysOfWeek[i], scheduleId);
