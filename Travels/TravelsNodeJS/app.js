@@ -79,7 +79,9 @@ app.get('/api/bookings_by_travel/:travel_id', (req, res) => {
 })
 
 app.post('/api/bookings', (req,res) => {
-    
+    const data = req.body;
+    bookingController.createBooking(data).then((booking) => 
+    res.json(booking));
 })
 
 //cities

@@ -3,6 +3,7 @@ const purchaseUtils = require('../Utils/purchaseUtils');
 const userUtils = require('../Utils/userUtils');
 const xportUtils = require('../Utils/xportUtils');
 const utils = require('../Utils/utils');
+const scheduleRouteUtils = require('../Utils/scheduleRouteUtils');
 
 module.exports = {
     getAllBookings: function(){
@@ -37,6 +38,32 @@ module.exports = {
             }
         });
     },
+
+    createBooking: function(data){
+        return new Promise(async (resolve, reject) => {
+            try{
+                let scheduleId = data.scheduleId;
+                let schedule = await scheduleRouteUtils.getScheduleById(scheduleId);
+                
+                let departure_xport = schedule.departure_xport;
+                let arrival_xport = schedule.arrival_xport;
+
+                let departure_date = data.departure_date;
+                const dep = new Date(departure_date);
+                let arrival_date = dep;
+                arrival_date.setSeconds(arr.getSeconds + schedule.duration);
+
+                let numTickets = data.passengers_number;
+                let amount = numTickets * schedule.price;
+
+               let booking = bookingUtils.createBooking(scheduleId, departure_xport, arrival_xport, departure_date, arrival_date, numTickets, amount);
+
+                resolve(booking);
+            }catch(error){
+                reject (error);
+            }
+        });
+    }
 
 
 

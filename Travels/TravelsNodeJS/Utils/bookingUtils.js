@@ -107,14 +107,17 @@ module.exports = {
         });
     },
 
-    createBooking: function(data) {
-      let scheduleId = data.schedule_id;
-      let departure = data.departure_date;
-      let passengers = data.passengers_number;
+    createBooking: function(scheduleId, departure_xport, arrival_xport, departure_date, arrival_date, numTickets, amount) {
       let obj = {
-        
+        scheduleId : scheduleId,
+        departure_xport : departure_xport,
+        arrival_xport: arrival_xport,
+        departure_date : departure_date,
+        arrival_date : arrival_date,
+        numTickets : numTickets,
+        amount : amount
       }
-
+      return obj;
     }
 
 //add booking
