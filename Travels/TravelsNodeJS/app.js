@@ -78,6 +78,9 @@ app.get('/api/bookings_by_travel/:travel_id', (req, res) => {
     })
 })
 
+app.post('/api/bookings', (req,res) => {
+    
+})
 
 //cities
 
