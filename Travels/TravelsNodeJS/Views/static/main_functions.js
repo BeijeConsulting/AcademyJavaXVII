@@ -33,7 +33,7 @@ fetchContainer(...)
 .then()
 */
 
-const baseUrl = "http://localhost:3000/";
+const baseUrl = "/";
 //const baseUrl = "http://localhost:8080/";
 //const baseUrl = "http://beijetravels-env.eba-mxcwmbhe.eu-south-1.elasticbeanstalk.com/";
 const apiPrefix = "api/";
