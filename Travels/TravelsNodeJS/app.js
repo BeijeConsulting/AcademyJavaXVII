@@ -66,7 +66,7 @@ app.get('/api/booking/:id', (req, res) => {
 
 app.get('/api/booking_by_purchase/:purchase_id', (req, res) => {
     const purchase_id = req.params.purchase_id;
-    bookingUtils.getBookingByPurchaseId(purchase_id).then((booking) => {
+    bookingController.getBookingsByPurchaseId(purchase_id).then((booking) => {
         res.json(booking);
     })
 })
@@ -195,6 +195,14 @@ app.get('/api/days_of_week/:schedule_id', (req, res) => {
     })
 })
 
+//passengers
+app.get('/api/passengers_data/:purchase_id', (req, res) => {
+    const id = req.params.purchase_id;
+    passengerController.getPassengersByPurchaseId(id).then((passengers) => {
+        res.json(passengers);
+    })
+})
+
 //purchases
 app.get('/api/purchases', (req, res) => {
     purchasesUtils.getAllPurchase().then((purchases) => {
@@ -243,6 +251,24 @@ app.get('/api/route/:id', (req, res) => {
     scheduleRouteController.getRouteById(id).then((route) => {
         res.json(route)
     });
+})
+
+app.post('/api/route', (req, res) =>{
+    try {
+        let newRouteDTO = req.body; //il corpo json è inviato correttamente dal file js
+        scheduleRouteController.addRoute(newRouteDTO.type, newRouteDTO.departureXportId, newRouteDTO.arrivalXportId)
+        //bisogna inserire il parametro a sinistra del corpo della lambda altrimenti lo ritiene not defined e andrà 
+        //in errore la risposta dell api nonostante lui avesse aggiunto nel db correttamente la route 
+        //route in questo caso equivale a "true" per come è stato gestito l'inserimento nel db
+        .then((route) => {
+            res.json(route)
+        })
+        .catch(error => { //questo si attiverà quando ci sarà un errore nel db
+            res.status(503).json({ message: error.message });
+        });
+    } catch (error) { //questo si attiverà quando ci sarà un errore nel controller inserito volutamente
+        res.status(400).json({ message: error.message });
+    }
 })
 
 

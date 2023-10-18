@@ -146,7 +146,7 @@ function fetchPurchases() {
 				htmlContent +=
 					`<div class="card">
 						<p><strong>ID:</strong> ` + purchase.id + `</p>
-						<p><strong>N° Tickets:</strong>` + purchase.nTickets + `</p>
+						<p><strong>N° Tickets:</strong>` + purchase.n_tickets + `</p>
 						<p><strong>Total Amount:</strong> &euro; ` + purchase.amount + `</p>
 							<div class="button-right-container">
 								<button class="primary-button" id="fetchDetails" onclick="fetchDetails(` + purchase.id + `)"> Details </button>
@@ -164,7 +164,7 @@ function fetchDetails(purchase_id) {
 
 	let htmlContent = '';
 
-	let api = "bookings/" + purchase_id;
+	let api = "booking_by_purchase/" + purchase_id;
 
 	let body = "";
 	let headers = {
@@ -190,11 +190,11 @@ function fetchDetails(purchase_id) {
 				htmlContent += `
                 	<div>
                 	<p><strong>ID Booking:</strong> ` + booking.id + `</p>
-                	<p><strong>Departure Date:</strong> ` + parseDate(booking.departure_date) + `</p>
-                	<p><strong>Arrival Date:</strong> ` + parseDate(booking.arrival_date) + `</p>
+                	<p><strong>Departure Date:</strong> ` + parseDate(booking.departure) + `</p>
+                	<p><strong>Arrival Date:</strong> ` + parseDate(booking.arrival) + `</p>
                 	<p><strong>Departure Xport:</strong> ` + booking.departureXport.name + `</p>
                 	<p><strong>Arrival Xport:</strong> ` + booking.arrivalXport.name + `</p>
-                	<p><strong>N° Tickets:</strong> ` + booking.numTickets + `</p>
+                	<p><strong>N° Tickets:</strong> ` + booking.n_tickets + `</p>
                 	<p><strong>Price:</strong> ` + booking.amount + `</p>
                 	<hr class="line">                	
                 	</div>

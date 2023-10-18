@@ -107,9 +107,11 @@ module.exports = {
         });
     },
 
-    createBooking: function(scheduleId, departure_xport, arrival_xport, departure_date, arrival_date, numTickets, amount) {
+    createBooking: function(scheduleId, routeId, seats, departure_xport, arrival_xport, departure_date, arrival_date, numTickets, amount) {
       let obj = {
         scheduleId : scheduleId,
+        routeId : routeId,
+        seats: seats,
         departureXport : departure_xport,
         arrivalXport: arrival_xport,
         departure_date : departure_date,
@@ -120,8 +122,24 @@ module.exports = {
 
       //console.log("OBJ", obj)
       return obj;
-    }
+    },
 
-//add booking
+    addBooking: function (purchase_id, departure, arrival, departure_xport_id, arrival_xport_id, n_tickets, amount, travel_id, schedule_id) {
+      const today = new Date();
+      return new Promise((resolve, reject) => {
+          connection.query(
+            'INSERT INTO bookings (purchase_id, departure, arrival, departure_xport_id, arrival_xport_id, n_tickets, amount, travel_id, schedule_id) '+
+            'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', 
+            [purchase_id, departure, arrival, departure_xport_id, arrival_xport_id, n_tickets, amount, travel_id, schedule_id], async (err, rows, fields) => {
+              if (err) {
+                  console.log("ERROR add booking")
+                  reject(err);
+              } else {
+                  resolve(true);
+              }
+          })
+      }
+      )
+  }
 
 }
