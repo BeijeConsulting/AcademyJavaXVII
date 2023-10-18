@@ -53,6 +53,8 @@ module.exports = {
             await bookingUtils.addBooking();
 
         }
+        //prendere da schedule id la schedule e caricare route id e seats
+        //modificare in else il numero di posti vuoti
         
     
     }
