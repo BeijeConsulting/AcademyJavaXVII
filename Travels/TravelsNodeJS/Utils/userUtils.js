@@ -51,7 +51,6 @@ module.exports = {
     },
 
 
-    // da testare
     emailExist: function (email) {
         return new Promise((resolve, reject) => {
             connection.query(' SELECT * FROM users WHERE email=?', [email], (err, rows, fields) => {
@@ -59,7 +58,7 @@ module.exports = {
                     console.log("ERRORE get user by mail boolean")
                     reject(err);
                 } else {
-                    resolve(true);
+                    resolve(rows.length > 0);
                 }
             })
         }
@@ -101,11 +100,23 @@ module.exports = {
         });
     },
 
-    disableUser: function(id){
+    disableUser: async function(id){
         //da randomizzare la mail
         const today = new Date();
-        return new Promise((resolve, reject) => {
-            connection.query("UPDATE users SET `disabled_date` = ? WHERE `id` = ?", [today, id], (err, rows, fields) => {
+        let random;
+        let disabledEmail;
+        let  isNotValid;
+
+
+        return new Promise(async (resolve, reject) => {
+            do {
+                random = Math.floor(Math.random() * 100000) + 1;;
+                console.log("ransom: ", random);
+                disabledEmail = random + "@disabled.com";
+                isNotValid = await this.emailExist(disabledEmail)
+            } while (isNotValid);
+
+            connection.query("UPDATE users SET `disabled_date` = ?, `email` = ? WHERE `id` = ?", [today, disabledEmail, id], (err, rows, fields) => {
                 if (err) {
                     reject(err);
                 } else {
