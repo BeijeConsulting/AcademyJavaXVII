@@ -290,6 +290,20 @@ app.get('/api/getUserById/:id', (req, res) => {
     })
 })
 
+app.post('/api/signup', (req, res) => {
+    const data = req.body;
+    userController.signup(data).then((user) => {
+        res.json(user);
+    })
+})
+
+app.post('/api/signin', (req, res) => {
+    const data = req.body;
+    userController.getUserByEmailAndPassword(data).then((permission) => {
+        res.json(permission);
+    })
+})
+
 //users_authority
 app.get('/api/customers', (req, res) => {
     userAuthorityUtils.getAllCustomers().then((customers) => {
@@ -306,8 +320,8 @@ app.get('/api/admins', (req, res) => {
 app.post('/api/insert_user/:type', (req,res) => {
     const type = req.params.type;
     let body = req.body;
-    userController.addUser(body.name, body.surname, body.email, body.password, body.confirmPassword, type).then((users) => {
-        res.json(users);
+    userController.addUser(body.name, body.surname, body.email, body.password, body.confirmPassword, type).then(() => {
+        res.json("ok");
     })
 })
 

@@ -30,6 +30,27 @@ module.exports = {
         )
     },
 
+    getUserByEmailAndPassword: function (email, password) {
+        return new Promise((resolve, reject) => {
+            connection.query(
+            "SELECT users.id, count(*) as count FROM users " +
+            "JOIN users_authority " + 
+            "on users.id = users_authority.user_id " +
+            "where email = ? " +
+            "AND BINARY password = ? ", [email, password], (err, rows, fields) => { 
+        
+                if (err) {
+                    console.log("ERRORE get user by mail adnd password")
+                    reject(err);
+                } else {
+                    resolve(rows[0]);
+                }
+            })
+        }
+        )
+    },
+
+
     // da testare
     emailExist: function (email) {
         return new Promise((resolve, reject) => {
@@ -124,13 +145,13 @@ module.exports = {
 
     addAdmin: function (name, surname, email, password) {
         const today = new Date();
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             connection.query('INSERT INTO users (name, surname, email, password, creation_date) VALUES (?, ?, ?, ?, ?)', [name, surname, email, password, today], (err, rows, fields) => {
                 if (err) {
                     console.log("ERROR add user")
                     reject(err);
                 } else {
-                    resolve(this.getUserByEmail(email).id);
+                    resolve(true);
                 }
             })
         }
