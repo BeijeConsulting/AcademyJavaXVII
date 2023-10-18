@@ -86,7 +86,7 @@ module.exports = {
     return new Promise(
       (resolve, reject) => {
         connection.query(
-          "SELECT s.*, xd.name as dep_name, xar.name as arr_name FROM schedules as s JOIN routes as r ON s.route_id = r.id "
+          "SELECT s.*, xd.id AS dep_id, xd.name AS dep_name, xar.id AS arr_id, xar.name AS arr_name FROM schedules as s JOIN routes as r ON s.route_id = r.id "
           + " JOIN xports as xd ON r.departure_xport_id = xd.id "
           + " JOIN xports as xar ON r.arrival_xport_id = xar.id WHERE s.id = ?",
           [id],
@@ -95,10 +95,12 @@ module.exports = {
               reject(err);
             } else {
               rows[0].departureXport = {
-                name : rows[0].dep_name
+                name : rows[0].dep_name,
+                id : rows[0].dep_id
               }
               rows[0].arrivalXport = {
-                name : rows[0].arr_name
+                name : rows[0].arr_name,
+                id : rows[0].arr_id
               }
               resolve(rows[0]);
             }

@@ -38,9 +38,10 @@ module.exports = {
             })
         })
     },
-    addPassenger: function(purchase, name, surname){
+    addPassenger: function(purchase_id, name, surname){
+        console.log("add pass: ", purchase_id, name, surname);
         return new Promise((resolve, reject) =>{
-            connection.query('INSERT INTO passengers (purchase_id, name, surname) VALUES(?, ?, ?)', [purchase.id, name, surname] ,(err, rows, fields) => {
+            connection.query('INSERT INTO passengers (purchase_id, name, surname) VALUES(?, ?, ?)', [purchase_id, name, surname] ,(err, rows, fields) => {
                 if (err) {
                     reject(err);
                 }else{
@@ -60,15 +61,4 @@ module.exports = {
            })
         })
     },
-    addPassenger: function(passenger){
-        return new Promise((resolve, reject) =>{
-            connection.query('INSERT INTO passengers (purchase_id, name, surname) VALUES(?, ?, ?)', [passenger.purchase_id, passenger.name, passenger.surname] ,(err, rows, fields) => {
-                if (err) {
-                    reject(err);
-                }else{
-                    resolve(true);
-                }
-            })
-        })
-    }
 }

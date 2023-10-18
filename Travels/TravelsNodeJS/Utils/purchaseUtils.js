@@ -56,22 +56,22 @@ module.exports = {
       );
     });
   },
-  addPurchases: function (purchases) {
-    return new Promise((resolve, reject) => {
-      connection.query(
+  addPurchase: function(user_id, total, nTickets,){
+    return new Promise( async (resolve, reject) => {
+      await  connection.query(
         "INSERT INTO purchases (user_id, n_tickets, amount) VALUES (?, ?, ?)",
-        [purchases.user_id, purchases.n_tickets, purchases.amount],
-        (err, rows, fields) => {
+        [user_id, nTickets, total],
+        (err, result, fields) => {
           if (err) {
             reject(err);
-          } else {
-            resolve(rows);
+          } else{
+            console.log("inserted id: ", result.insertId);
+            resolve(result.insertId)
           }
         }
       );
+
     });
-  }
-  //mi devo ritornare l'id della purchase appena creata
-  //con questo id prendo la lista passeggeri e la metto nel db
-  //per ogni booking della lista mi devo vedere se ha il travel e lo cerco dalla schedule
+  },
+
 };

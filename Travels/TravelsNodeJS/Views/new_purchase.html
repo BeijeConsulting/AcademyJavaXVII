@@ -1,0 +1,90 @@
+<html>
+<head>
+<meta charset="ISO-8859-1">
+
+<title>New Purchase</title>
+
+<link href="./static/main_style.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="./static/main_functions.js"></script>
+<script type="text/javascript" src="./static/new_purchase.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com%22%3E/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Lumanosimo&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+<style>
+	.extra-padding{
+ 		padding-right:15px;
+ 	}
+ 	   
+    .f-left{
+    	float: left;
+    }
+</style>
+</head>
+<script>
+
+let bookingsArr = localStorage.getItem("bookings");
+if(bookingsArr == undefined) location.replace(baseUrl);
+redirectHome();
+</script>
+<body>
+	<div class="header">
+		<div class="logo"><a href="./home.html" id="logo"><b>Beije Travels</b></a></div>
+		<div class="topnav" id="menu">
+				
+		</div> 	
+
+	</div>
+	<div id="container" class="container">
+		<br><br>
+		<div class="card-container">
+			<a href="./recap_booking.html"><button class="secondary-button f-left">Back</button></a>
+			<br><br><br>
+		
+			<div class="card" style="padding:15px">
+				<h2>Payment</h2>
+				<hr>
+				<br/>
+			
+				<div id ="new_purchase" style="allign-items:right;">
+					<label for="address" class="extra-padding">Address</label>
+					<input class="form-input" style="float:right" type="text" name="address" id="address" placeholder="Street Address" />
+					<br/><br/>
+					<label for="city" class="extra-padding">City</label>
+					<input class="form-input" style="float:right" type="text" name="city" id = "city" placeholder="City" />
+					<br/><br/>
+					
+					<label for="cardNumber" class="extra-padding">Card number</label>
+					<input class="form-input" style="float:right" type="text" name="cardNumber" id="cardNumber" placeholder="1234 5678 9012 3456" />
+					<br/><br/>
+					<label for="cardName" class="extra-padding">Name on card</label>
+					<input class="form-input" style="float:right" type="text" name="cardName" id="cardName" placeholder="Ex. John Smith" />
+					<br/><br/>
+					<label for="cardExpiry" class="extra-padding">Expiry Date</label>
+					<input class="form-input" style="float:right" type="text" name="cardExpiry" id="cardExpiry" placeholder="01/19" />
+					<br/><br/>
+					<label for="cardCode" class="extra-padding">Security Code</label>
+					<input class="form-input" style="float:right" type="password" name="cardCode" id="cardCode" placeholder="***" />
+					<br/><br/>
+					<hr>
+					<div class="button-center-container">
+						<button class="primary-button" onclick="payment()">Confirm</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		generateMenu();
+
+		let nTickets = localStorage.getItem("nTickets");
+		let total = localStorage.getItem("totalAmount");
+		let passengersJson = localStorage.getItem("passengers");
+		let passengers = JSON.parse(passengersJson);
+		let bookingsJson = localStorage.getItem("bookings");
+		let bookings = JSON.parse(bookingsJson);
+
+		
+	</script>
+</body>
+</html>

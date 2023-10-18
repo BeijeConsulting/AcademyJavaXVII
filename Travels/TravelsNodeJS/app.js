@@ -223,6 +223,14 @@ app.get('/api/purchase/:user_id', (req, res) =>{
     });
 })
 
+app.post('/api/new_purchase/:user_id', (req, res) =>{
+    const data = req.body;
+    const user_id = req.params.user_id;
+    purchaseController.addPurchase(user_id, data).then(() => {
+        res.json(true)
+    });
+})
+
 //routes
 app.get('/api/routes', (req, res) => {
     scheduleRouteController.getAllRoutes().then((routes) => {
@@ -426,6 +434,11 @@ app.post('/api/searchTravels', (req, res) =>{
         res.json(travels)
     );
 })
+
+
+app.get('/api/check_token_validity', (req, res) => {
+    res.json(true);
+}) 
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

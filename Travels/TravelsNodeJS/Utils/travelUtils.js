@@ -79,18 +79,18 @@ module.exports = {
     },*/
 
     // da testare schedule e date
-    getTravelByScheduleAndDate: function (schedule, date) {
+    getTravelByScheduleAndDate: function (schedule_id, date) {
         let day = date.dayOfMonth;
         let month = date.monthValue;
         let year = date.year;
         let stringDate = year + "-" + month + "-" + day; //2023-9-21
         return new Promise((resolve, reject) => {
-            connection.query(' SELECT * FROM travels WHERE schedule_id = ? and departure_date= ? ', [schedule.id, stringDate], (err, rows, fields) => {
+            connection.query(' SELECT * FROM travels WHERE schedule_id = ? and departure_date= ? ', [schedule_id, stringDate], (err, rows, fields) => {
                 if (err) {
                     console.log("ERRORE get travels by schedule and date")
                     reject(err);
                 } else {
-                    resolve(rows);
+                    resolve(rows[0]);
                 }
             })
         }
