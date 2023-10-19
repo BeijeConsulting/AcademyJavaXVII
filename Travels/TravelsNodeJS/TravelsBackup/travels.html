@@ -141,11 +141,8 @@
 					}
 				})
 				.then((data) => {
+					originalSchedules = data;
 					arr = data;
-					//originalSchedules = data;
-					localStorage.setItem("original_schedules", JSON.stringify(arr));
-					localStorage.setItem("schedules_to_show", JSON.stringify(arr));
-					
 					loaderElement();
 					console.log("arr", arr);
 					let departureSchedulesDiv = document.getElementById("departureSchedules");

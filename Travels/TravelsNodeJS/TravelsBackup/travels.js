@@ -140,7 +140,6 @@ function loaderElement() {
 	};
 }
 
-/*
 function schedulesId(array) {
 	let newArray = "";
 
@@ -154,7 +153,7 @@ function schedulesId(array) {
 	}
 
 	return newArray;
-}*/
+}
 
 function companiesId(array) {
 	let newArray = "";
@@ -171,65 +170,21 @@ function companiesId(array) {
 	return newArray;
 }
 
-function sortByPriceAsc(f1, f2){
-	if (f1.price > f2.price) {
-		return 1;
-	  }
-	  if (f1.price < f2.price) {
-		return -1;
-	  }
-	  return 0;
-}
-
-function sortByDurationAsc(f1, f2){
-	if (f1.duration > f2.duration) {
-		return 1;
-	  }
-	  if (f1.duration < f2.duration) {
-		return -1;
-	  }
-	  return 0;
-}
-
 function sort(select) {
 	let arrayGenerics = [];
-	let divCont;
-	//console.log("arrFiltered " + arrFiltered);
-	//if(arrFiltered.length == 0){
-		let temp = [];
-		temp = JSON.parse(localStorage.getItem("schedules_to_show"));
-		if (isArrival) {
-			arrayGenerics = temp.arrival_schedule;
-			console.log("PARSEEE: ", arrayGenerics);
-			divCont = document.getElementById("arrivalSchedules");
-		} else {
-			temp = 
-			arrayGenerics = temp.departure_schedule;
-			divCont = document.getElementById("departureSchedules");
-			console.log("PARSEEE else : ", arrayGenerics);
-		}
-	//} else arrayGenerics = arrFiltered;
-	//console.log("arr filtered sort" + arrFiltered);
+	console.log("arrFiltered " + arrFiltered);
+	if(arrFiltered.length == 0){
+	if (isArrival) {
+		arrayGenerics = arr.arrivalSchedules;
+	} else {
+		arrayGenerics = arr.departureSchedules;
+	}
+	} else arrayGenerics =arrFiltered;
+	console.log("arr filtered sort" + arrFiltered);
 	
-		//console.log("sono nell'else length != 0")
-		//console.log("arrFiltered sort ", arrFiltered)
+		console.log("sono nell'else length != 0")
+		console.log("arrFiltered sort ", arrFiltered)
 
-		console.log("arr generics ", arrayGenerics);
-
-		switch(select){
-			case "cheapest": arrayGenerics.sort((f1, f2) => sortByPriceAsc(f1, f2)); break;
-			case "expensive": arrayGenerics.sort((f1, f2) => sortByPriceAsc(f2, f1)); break;
-			case "fastest": arrayGenerics.sort((f1, f2) => sortByDurationAsc(f1, f2)); break;
-			case "lowest": arrayGenerics.sort((f1, f2) => sortByDurationAsc(f2, f1)); break;	
-		}
-		
-		localStorage.setItem("schedules_to_show", arrayGenerics);
-		divCont.innerHTML = "";
-		travelsList(arrayGenerics, divCont);
-
-
-
-		/*
 		let api = "order_by/" + select + '/' + schedulesId(arrayGenerics);
 		let method = 'GET';
 		let headers = "";
@@ -260,7 +215,6 @@ function sort(select) {
 
 				console.error('Fetch error:', error);
 			});
-			*/
 		console.log("arrFiltered ", arrFiltered);
 
 }
