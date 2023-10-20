@@ -140,22 +140,6 @@ function loaderElement() {
 	};
 }
 
-/*
-function schedulesId(array) {
-	let newArray = "";
-
-	for (let i = 0; i < array.length; i++) {
-		if (i === array.length - 1)
-			newArray += array[i].id;
-		else {
-			newArray += array[i].id;
-			newArray += "_";
-		}
-	}
-
-	return newArray;
-}*/
-
 function companiesId(array) {
 	let newArray = "";
 
@@ -191,172 +175,65 @@ function sortByDurationAsc(f1, f2){
 	  return 0;
 }
 
-function sort(select) {
-	let arrayGenerics = [];
-	let divCont;
-	//console.log("arrFiltered " + arrFiltered);
-	//if(arrFiltered.length == 0){
-		let temp = [];
-		temp = JSON.parse(localStorage.getItem("schedules_to_show"));
-		if (isArrival) {
-			arrayGenerics = temp.arrival_schedule;
-			console.log("PARSEEE: ", arrayGenerics);
-			divCont = document.getElementById("arrivalSchedules");
-		} else {
-			temp = 
-			arrayGenerics = temp.departure_schedule;
-			divCont = document.getElementById("departureSchedules");
-			console.log("PARSEEE else : ", arrayGenerics);
-		}
-	//} else arrayGenerics = arrFiltered;
-	//console.log("arr filtered sort" + arrFiltered);
-	
-		//console.log("sono nell'else length != 0")
-		//console.log("arrFiltered sort ", arrFiltered)
-
-		console.log("arr generics ", arrayGenerics);
-
-		switch(select){
-			case "cheapest": arrayGenerics.sort((f1, f2) => sortByPriceAsc(f1, f2)); break;
-			case "expensive": arrayGenerics.sort((f1, f2) => sortByPriceAsc(f2, f1)); break;
-			case "fastest": arrayGenerics.sort((f1, f2) => sortByDurationAsc(f1, f2)); break;
-			case "lowest": arrayGenerics.sort((f1, f2) => sortByDurationAsc(f2, f1)); break;	
-		}
-		
-		localStorage.setItem("schedules_to_show", arrayGenerics);
-		divCont.innerHTML = "";
-		travelsList(arrayGenerics, divCont);
-
-
-
-		/*
-		let api = "order_by/" + select + '/' + schedulesId(arrayGenerics);
-		let method = 'GET';
-		let headers = "";
-		let body = "";
-
-		fetchContainer(api, method, body, headers)
-			.then((response) => {
-				if (response.ok) {
-					return response.json();
-				} else {
-
-					return response.json()
-						.then(errorData => {
-
-							console.error('Sort failed:', errorData.message);
-							errorElement.textContent = errorData.message;
-							errorElement.classList.remove("hidden");
-						});
-				}
-			})
-			.then((data) => {
-				let schedulesDiv = isArrival ? document.getElementById("arrivalSchedules") : document.getElementById("departureSchedules");
-				schedulesDiv.innerHTML = "";
-				travelsList(data, schedulesDiv)
-			})
-
-			.catch(error => {
-
-				console.error('Fetch error:', error);
-			});
-			*/
-		console.log("arrFiltered ", arrFiltered);
-
-}
-function sortFilteredList(array,select) {
-         let newArray = schedulesId(array);
-         if(newArray.length === 0) newArray = "empty";
-		let api = "order_by/" + select + '/' + newArray;
-		console.log("sortFilteredListArray" + array);
-		console.log("sortFilteredListSelect" + select);
-		let method = 'GET';
-		let headers = "";
-		let body = "";
-
-		fetchContainer(api, method, body, headers)
-			.then((response) => {
-				if (response.ok) {
-					return response.json();
-				} else {
-
-					return response.json()
-						.then(errorData => {
-
-							console.error('Sort failed:', errorData.message);
-							errorElement.textContent = errorData.message;
-							errorElement.classList.remove("hidden");
-						});
-				}
-			})
-			.then((data) => {
-				let schedulesDiv = isArrival ? document.getElementById("arrivalSchedules") : document.getElementById("departureSchedules");
-				schedulesDiv.innerHTML = "";
-				travelsList(data, schedulesDiv)
-			})
-
-			.catch(error => {
-
-				console.error('Fetch error:', error);
-			});
-		console.log("arrFiltered ", arrFiltered);
-
-}
-
-function updateSliderValue() {
-	var slider = document.getElementById("slider");
-	valueDisplay = document.getElementById("sliderValue");
-	valueDisplay.innerHTML = slider.value + " Hours";
-	let listIdSchedule = [];
-	//let dep = JSON.stringify(arr.departureSchedules);
-	if (isArrival) {
-		listIdSchedule = schedulesId(arr.arrivalSchedules);
-	} else {
-		listIdSchedule = schedulesId(arr.departureSchedules);
+function sort(select, arrayGenerics) {
+	switch(select){
+		case "cheapest": arrayGenerics.sort((f1, f2) => sortByPriceAsc(f1, f2)); break;
+		case "expensive": arrayGenerics.sort((f1, f2) => sortByPriceAsc(f2, f1)); break;
+		case "fastest": arrayGenerics.sort((f1, f2) => sortByDurationAsc(f1, f2)); break;
+		case "lowest": arrayGenerics.sort((f1, f2) => sortByDurationAsc(f2, f1)); break;	
 	}
-	let listIdCompany = companiesId(companiesIds);
-	let api = 'filters/?schedules=' + listIdSchedule + '&companiesIds=' + listIdCompany + '&sliderValue=' + slider.value.toString();
-	let method = 'GET';
-	let headers = "";
-	let body = "";
+	return arrayGenerics;
+}
 
-	fetchContainer(api, method, body, headers)
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			} else {
+function showArrayFilteredAndSorted(){
+	let divCont;
+	let temp = [];
+	temp = JSON.parse(localStorage.getItem("original_schedules"));
 
-				return response.json()
-					.then(errorData => {
+	let arrayGenerics = [];
+	if (isArrival) {
+		arrayGenerics = temp.arrival_schedule;
+		divCont = document.getElementById("arrivalSchedules");
+		//listIdSchedule = schedulesId(arr.arrivalSchedules);
+	} else {
+		arrayGenerics = temp.departure_schedule;		
+		divCont = document.getElementById("departureSchedules");
+		//listIdSchedule = schedulesId(arr.departureSchedules);
+	}
 
-						console.error('SliderValue failed:', errorData.message);
-						errorElement.textContent = errorData.message;
-						errorElement.classList.remove("hidden");
-					});
-			}
-		})
-		.then((data) => {
-			console.log(data);
-			arrFiltered = data;
-			let schedulesDiv = isArrival ? document.getElementById("arrivalSchedules") : document.getElementById("departureSchedules");
-			schedulesDiv.innerHTML = "";
-			if (document.getElementById("select").value !== "empty") {
-				console.log("entri nel sort nuovo")
-				//sort(document.getElementById("select").value);
-				sortFilteredList(arrFiltered,document.getElementById("select").value)
-			} else {
-				travelsList(data, schedulesDiv);
-			}
-		})
+	var slider = document.getElementById("slider");
+	if (slider != null && slider!= undefined && slider.value != 0){
+		valueDisplay = document.getElementById("sliderValue");
+		valueDisplay.innerHTML = slider.value + " Hours";
+		arrayGenerics = updateSliderValue(arrayGenerics);
+	} else{
+		valueDisplay = document.getElementById("sliderValue");
+		valueDisplay.innerHTML = slider.value + " Hours";
+	}
 
-		.catch(error => {
+	let checkboxes = document.getElementsByClassName("checkbox");
+	if (checkboxes.length != 0){
+		arrayGenerics = checkCompany(checkboxes, arrayGenerics);
+	}
 
-			console.error('Fetch error:', error);
-		});
+	let selected = document.getElementById("select").value;
+	if (selected != "empty"){
+		arrayGenerics = sort(selected, arrayGenerics);
+	}
 
+	localStorage.setItem("schedules_to_show", arrayGenerics);
+	divCont.innerHTML = "";
+	travelsList(arrayGenerics, divCont);
+	console.log("array to show : ", arrayGenerics);
+}
+
+function updateSliderValue(arrayGenerics) {
+	let arrayToShow = arrayGenerics.filter((f) => {return f.duration <= slider.value * 3600;});
+	return arrayToShow;
 
 }
-function checkCompany(checkbox) {
+
+function checkCompany(checkboxes, arrayGenerics) {
 
 	companiesIds = [];
 
@@ -370,19 +247,17 @@ function checkCompany(checkbox) {
 	}
 	//} 
 
-	let checkboxes = document.getElementsByClassName("checkbox");
+	let arrayToShow = [];
+	let filteredFlights = [];
+	
 
 	for (let i = 0; i < checkboxes.length; i++) {
-		console.log("checkboxes[i]", checkboxes[i])
 		if (checkboxes[i].checked) {
-			companiesIds.push(checkboxes[i].value);
-		} else {
-			console.log("sono nell'else if", checkboxes[i])
-			companiesIds.splice(i, checkboxes[i].value);
-
+			filteredFlights = arrayGenerics.filter((f) => {return f.company_id === checkboxes[i].value;});
+			arrayToShow.concat(filteredFlights);
 		}
-
 	}
+
 	let listIdCompany = companiesId(companiesIds);
 	console.log("id comanies", listIdCompany)
        if(listIdCompany.length == 0){
@@ -392,48 +267,6 @@ function checkCompany(checkbox) {
 		listIdSchedule = schedulesId(arr.departureSchedules);
 	}
 	   }
-       
-	let api = 'filters/?schedules=' + listIdSchedule + '&companiesIds=' + listIdCompany + '&sliderValue=' + slider.value.toString();
-	let method = 'GET';
-	let headers = "";
-	let body = "";
-
-	fetchContainer(api, method, body, headers)
-		.then((response) => {
-			if (response.ok) {
-				return response.json();
-			} else {
-
-				return response.json()
-					.then(errorData => {
-
-						console.error('Check company failed:', errorData.message);
-						errorElement.textContent = errorData.message;
-						errorElement.classList.remove("hidden");
-					});
-			}
-		})
-		.then((data) => {
-			console.log(data);
-			arrFiltered = data;
-			let schedulesDiv = isArrival ? document.getElementById("arrivalSchedules") : document.getElementById("departureSchedules");
-			schedulesDiv.innerHTML = "";
-			console.log("arr filtered company" + arrFiltered);
-
-			if (document.getElementById("select").value !== "empty") {
-				console.log("entri nel sort nuovo")
-				//sort(document.getElementById("select").value);
-				sortFilteredList(arrFiltered,document.getElementById("select").value);
-			} else {
-				travelsList(data, schedulesDiv);
-			}
-
-		})
-
-		.catch(error => {
-
-			console.error('Fetch error:', error);
-		});
 
 }
 

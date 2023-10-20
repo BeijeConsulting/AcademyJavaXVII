@@ -35,7 +35,7 @@
 
 		<div class="filtersContainer">
 			<h3>Sort by</h3>
-			<br> <select name="select" id="select" onchange="sort(value);" class="form-select">
+			<br> <select name="select" id="select" onchange="showArrayFilteredAndSorted();" class="form-select">
 				<option value="empty">Select
 					an option</option>
 				<option value="cheapest">Cheapest
@@ -53,7 +53,7 @@
 			<br>
 			<h4>Duration</h4>
 			<input type="range" min="0" max="14" step="1" value=0 id="slider" name="sliderValue"
-				oninput="updateSliderValue()" class="slider_value">
+				oninput="showArrayFilteredAndSorted()" class="slider_value">
 			<div style="text-align: center">
 				<span class="sliderValueElement">0 Hours - </span> <span id="sliderValue" class="sliderValueElement"> 0
 					Hours</span>
